@@ -4,6 +4,7 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
 import org.sakaiproject.qna.tool.producers.AskQuestionProducer;
+import org.sakaiproject.qna.tool.producers.CreateCategoryProducer;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
 import org.sakaiproject.qna.tool.producers.PermissionsProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionsProducer;
@@ -41,7 +42,12 @@ public class NavBarRenderer {
     	UIOutput.make(cell2, "item-separator");
     	    	
     	UIBranchContainer cell3 = UIBranchContainer.make(joint, "navigation-cell:","3");
-    	UIInternalLink.make(cell3, "item-link",UIMessage.make("qna.navbar.create-categories"),"#");
+    	if (currentViewID.equals(CreateCategoryProducer.VIEW_ID)) {
+    		UIMessage.make(cell3,"item-text","qna.navbar.create-categories");    		
+    	} else {
+    		UIInternalLink.make(cell3, "item-link",UIMessage.make("qna.navbar.create-categories"),new SimpleViewParameters(CreateCategoryProducer.VIEW_ID));
+    	}
+    	
     	UIOutput.make(cell3, "item-separator");
     	
     	UIBranchContainer cell4 = UIBranchContainer.make(joint, "navigation-cell:","4");

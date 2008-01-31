@@ -18,7 +18,6 @@
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
-
 	<bean id="QuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer" />
 
@@ -34,14 +33,20 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
 
+	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
+	
+	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">
+      <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+      <property name="messageLocator" ref="messageLocator" />
+   </bean>
+	
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ViewQuestionsProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="questionListRenderer"
 			ref="QuestionListRenderer" />
-	</bean>
-
-	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
-		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
 </beans>

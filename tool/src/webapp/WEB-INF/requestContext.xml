@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
 
-   <bean id="sakaiFCKTextEvolver"
-     class="uk.ac.cam.caret.sakai.rsf.tmp.evolverimpl.SakaiFCKTextEvolver">
-     <property name="contentHostingService"
-       ref="org.sakaiproject.content.api.ContentHostingService" />
-     <property name="context" ref="sakai-Context" />
-   </bean>
+	<bean id="sakaiFCKTextEvolver"
+		class="uk.ac.cam.caret.sakai.rsf.tmp.evolverimpl.SakaiFCKTextEvolver">
+		<property name="contentHostingService"
+			ref="org.sakaiproject.content.api.ContentHostingService" />
+		<property name="context" ref="sakai-Context" />
+	</bean>
 
-   <!-- rich text evolver bean def -->
-   <bean id="richTextEvolver" parent="sakaiFCKTextEvolver" />
-      
-   <!-- Renderers -->
-   <bean id="NavbarRenderer" class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer">
-   </bean>
+	<!-- rich text evolver bean def -->
+	<bean id="richTextEvolver" parent="sakaiFCKTextEvolver" />
 
-   <bean id="QuestionListRenderer" class="org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer">
-   </bean>
+	<!-- Renderers -->
+	<bean id="NavbarRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
-   <!-- list the producer beans here -->
-   <bean class="org.sakaiproject.qna.tool.producers.AskQuestionProducer">
-	<property name="navBarRenderer" ref="NavbarRenderer" />
-	<property name="richTextEvolver" ref="richTextEvolver" />
-   </bean>
-   
-   <bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">
-	<property name="navBarRenderer" ref="NavbarRenderer" />
-   </bean>
 
-   <bean class="org.sakaiproject.qna.tool.producers.ViewQuestionsProducer">
-   	<property name="navBarRenderer" ref="NavbarRenderer" />
-   	<property name="questionListRenderer" ref="QuestionListRenderer" />
-   </bean>
+	<bean id="QuestionListRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer" />
+
+
+	<!-- list the producer beans here -->
+	<bean
+		class="org.sakaiproject.qna.tool.producers.AskQuestionProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="richTextEvolver" ref="richTextEvolver" />
+	</bean>
+
+	<bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
+
+	<bean
+		class="org.sakaiproject.qna.tool.producers.ViewQuestionsProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="questionListRenderer"
+			ref="QuestionListRenderer" />
+	</bean>
+
+	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
 </beans>

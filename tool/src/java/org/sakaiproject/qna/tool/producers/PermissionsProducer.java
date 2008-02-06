@@ -43,7 +43,7 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
         session.setAttribute(PermissionsHelper.TARGET_REF, locationId);
         session.setAttribute(PermissionsHelper.DESCRIPTION, 
                 messageLocator.getMessage("qna.permissions.header", externalLogic.getLocationTitle(locationId)) );
-        session.setAttribute(PermissionsHelper.PREFIX, "blogwow.");
+        session.setAttribute(PermissionsHelper.PREFIX, "qna.");
 
         UIOutput.make(tofill, HelperViewParameters.HELPER_ID, HELPER);
         UICommand.make(tofill, HelperViewParameters.POST_HELPER_BINDING, "", null);

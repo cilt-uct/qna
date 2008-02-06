@@ -46,7 +46,7 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ViewQuestionsProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="questionListRenderer"
-			ref="QuestionListRenderer" />
+		<property name="questionListRenderer" ref="QuestionListRenderer" />
+		<property name="messageLocator" ref="messageLocator" />
 	</bean>
 </beans>

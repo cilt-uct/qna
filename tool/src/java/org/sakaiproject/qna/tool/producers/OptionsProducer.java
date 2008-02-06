@@ -1,5 +1,8 @@
 package org.sakaiproject.qna.tool.producers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UIBoundBoolean;
@@ -11,12 +14,15 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
+import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class OptionsProducer implements ViewComponentProducer, DefaultView  {
+public class OptionsProducer implements ViewComponentProducer, DefaultView, NavigationCaseReporter  {
     
 	public static final String VIEW_ID = "options";
     public String getViewID() {
@@ -57,8 +63,8 @@ public class OptionsProducer implements ViewComponentProducer, DefaultView  {
     	
     	UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
     	UIMessage.make(form,"custom-mail-label","qna.options.custom-mail-addresses");
-   	   	UIInput.make(form,"custom-mail-input","mock.mailBinding","something@something.com"); // TODO: get form options database    	
-   	   	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
+   	    UIInput.make(form,"custom-mail-input",null,"something@something.com"); // TODO: get form options database    	
+     	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
     	
     	UISelectChoice.make(form, "update-rights", notificationRadioSelectID, 2);
     	UIMessage.make(form,"update-rights-label","qna.options.update-rights");
@@ -77,8 +83,14 @@ public class OptionsProducer implements ViewComponentProducer, DefaultView  {
    	    UIMessage.make(form,"popular-view-label","qna.options.most-popular");
    	    
         UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),"mockbinding.save");
-        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel"),"mockbinding.cancel");
-   	    
+        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
+
     }
+
+	public List<NavigationCase> reportNavigationCases() {
+		List<NavigationCase> l = new ArrayList<NavigationCase>();
+		l.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		return l;
+	}
 }
 

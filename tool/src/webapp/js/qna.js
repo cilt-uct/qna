@@ -21,3 +21,8 @@
 			}
 		}
     }
+    
+    function init_questions_toggle(element_id,entry_id) {
+    	var element = document.getElementById(element_id);
+    	element.onclick = function() { toggle_questions(entry_id);};
+    }

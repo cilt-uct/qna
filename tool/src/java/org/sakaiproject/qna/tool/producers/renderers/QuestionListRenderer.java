@@ -8,20 +8,19 @@ import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class QuestionListRenderer {
 
     public void makeQuestionList(UIContainer tofill, String divID, String currentViewID, ListViewType type) {
     	// Front-end customization regarding permissions/options will come here
-    	
-		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
+    	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
 		UIMessage.make(listTable, "answers-title", "qna.view-questions.answers");
 		
@@ -57,8 +56,8 @@ public class QuestionListRenderer {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");		
 			UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:",Integer.toString(i));
 			
-			String markup = "<img src=\"/library/image/silk/arrow_right.png\" onclick=\"javascript:toggle_questions('"+entry.getFullID()+"')\" />";
-			UIVerbatim.make(category, "toggle-questions-link", markup);
+			UILink icon = UILink.make(category, "toggle-questions-icon", "/library/image/silk/arrow_right.png");
+			UIInitBlock.make(category,"onclick-init","init_questions_toggle", new Object[]{icon,entry});
 			
 			UIOutput.make(category,"category-name",categoryValues[i][0]);
 			UIOutput.make(category,"modified-date",categoryValues[i][1]);

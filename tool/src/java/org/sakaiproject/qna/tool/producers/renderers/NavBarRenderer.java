@@ -7,7 +7,7 @@ import org.sakaiproject.qna.tool.producers.AskQuestionProducer;
 import org.sakaiproject.qna.tool.producers.CreateCategoryProducer;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
 import org.sakaiproject.qna.tool.producers.PermissionsProducer;
-import org.sakaiproject.qna.tool.producers.ViewQuestionsProducer;
+import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -26,10 +26,10 @@ public class NavBarRenderer {
     	UIJointContainer joint = new UIJointContainer(tofill,divID,"qna-navigation:");
     	
     	UIBranchContainer cell1 = UIBranchContainer.make(joint, "navigation-cell:","1");
-    	if (currentViewID.equals(ViewQuestionsProducer.VIEW_ID)) {
+    	if (currentViewID.equals(QuestionsListProducer.VIEW_ID)) {
     		UIMessage.make(cell1,"item-text","qna.navbar.view-questions");
     	} else {	
-    		UIInternalLink.make(cell1, "item-link",UIMessage.make("qna.navbar.view-questions") ,new SimpleViewParameters(ViewQuestionsProducer.VIEW_ID));
+    		UIInternalLink.make(cell1, "item-link",UIMessage.make("qna.navbar.view-questions") ,new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
     	}
     	UIOutput.make(cell1, "item-separator");
     	

@@ -42,11 +42,18 @@
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="messageLocator" ref="messageLocator" />
    </bean>
+   
+    <bean
+		class="org.sakaiproject.qna.tool.producers.QueuedQuestionProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
 	
 	<bean
-		class="org.sakaiproject.qna.tool.producers.ViewQuestionsProducer">
+		class="org.sakaiproject.qna.tool.producers.QuestionsListProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="questionListRenderer" ref="QuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
 	</bean>
+	
+	
 </beans>

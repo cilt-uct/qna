@@ -2,7 +2,8 @@ package org.sakaiproject.qna.tool.producers.renderers;
 
 import org.sakaiproject.qna.tool.enums.ListViewType;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
-import org.sakaiproject.qna.tool.producers.ViewQuestionsProducer;
+import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
+import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -24,11 +25,11 @@ public class QuestionListRenderer {
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
 		UIMessage.make(listTable, "answers-title", "qna.view-questions.answers");
 		
-		UIInternalLink.make(listTable,"views-link",new SimpleViewParameters(ViewQuestionsProducer.VIEW_ID));
+		UIInternalLink.make(listTable,"views-link",new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
 		UILink.make(listTable,"views-icon","/library/image/sakai/sortascending.gif");	
 		UIMessage.make(listTable, "views-msg", "qna.view-questions.views");
 		
-		UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(ViewQuestionsProducer.VIEW_ID));
+		UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
 		UILink.make(listTable, "modified-icon", "/library/image/sakai/sortascending.gif");
 		UIMessage.make(listTable, "modified-msg", "qna.view-questions.modify");
 		
@@ -66,7 +67,10 @@ public class QuestionListRenderer {
 			for (int j=0;j<questionValues.length;j++) {
 				if (questionValues[j][0].equals(categoryValues[i][0])) {
 					UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:",Integer.toString(j));
-					UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(OptionsProducer.VIEW_ID));
+					if(categoryValues[i][0].equals("New Questions"))
+						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
+					else
+						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(OptionsProducer.VIEW_ID));
 					UIOutput.make(question,"answers-nr",questionValues[j][2]);
 					UIOutput.make(question,"views-nr",questionValues[j][3]);
 					UIOutput.make(question,"question-modified-date",questionValues[j][4]);

@@ -13,7 +13,7 @@ import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class ViewQuestionsProducer implements ViewComponentProducer, DefaultView {
+public class QuestionsListProducer implements ViewComponentProducer, DefaultView {
 
     public static final String VIEW_ID = "view_questions";
     public String getViewID() {

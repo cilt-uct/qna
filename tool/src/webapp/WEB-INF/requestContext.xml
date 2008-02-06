@@ -49,6 +49,12 @@
 	</bean>
 	
 	<bean
+		class="org.sakaiproject.qna.tool.producers.ReplyPrivatelyProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="richTextEvolver" ref="richTextEvolver" />
+	</bean>
+	
+	<bean
 		class="org.sakaiproject.qna.tool.producers.QuestionsListProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="questionListRenderer" ref="QuestionListRenderer" />

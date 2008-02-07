@@ -22,7 +22,22 @@
 		}
     }
     
+    // Used in questions list
     function init_questions_toggle(element_id,entry_id) {
     	var element = document.getElementById(element_id);
     	element.onclick = function() { toggle_questions(entry_id);};
+    }
+    
+    function  toggle_add_questions(link_id,icon_id,div_id) {
+	   	toggle_visibility(link_id);
+    	toggle_visibility(icon_id);
+    	toggle_visibility(div_id);
+    }
+    
+    function init_add_question_toggle(link_id,icon_id,div_id) {
+    	var link = document.getElementById(link_id);
+    	link.href= "#";
+    	link.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
+    	var icon = document.getElementById(link_id);
+    	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
     }

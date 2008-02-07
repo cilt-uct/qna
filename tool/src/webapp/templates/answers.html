@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title rsf:id="page-title"></title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
+   <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
+</head>
+<body>
+  <div rsf:id="navIntraTool:" class="navIntraTool"/>
+  <h3 rsf:id="category-title" class="insColor insBak insBorder">Ask a question</h3><br/>
+  <h4 rsf:id="question-title">Question:</h4>
+  <br/>
+  <div rsf:id="question">
+  		How is the year mark composed?
+  </div>
+  <br/>
+  <div rsf:id="question-submit-details" class="grey">Joe Bloggs, 2007-06-21 16:40</div>
+  <a rsf:id="edit-question-link" href="edit_question.html">Edit question</a>
+  <a rsf:id="move-category-link" href="move_question.html">Move to another category</a>
+  <a rsf:id="delete-question-link" href="delete_question.html">Delete</a>
+  <hr />
+  <h4 rsf:id="answers-title">4 Answers</h4><br />
+  <div id="answer:" rsf:id="answer:">
+  	<img rsf:id="answer-icon" src="/library/image/silk/user_suit.png" />
+  	<span class="grey" rsf:id="answer-heading">The lecturer has given the following answer:</span>
+  	<br/>
+  	<div rsf:id="answer-text">Answer Text</div>
+  	<span class="grey" rsf:id="answer-timestamp">2007-06-21</span>
+  	<a rsf:id="edit-answer-link" href="edit_answer.html">Edit</a>
+  	<a rsf:id="withdraw-approval-link" href="withdraw_approval.html">Withdraw approval</a>
+  	<a rsf:id="mark-correct-link" href="mark_correct.html">Mark as correct</a>
+  	<a rsf:id="delete-answer-link" href="delete_answer.html">Delete</a>
+  	<br/>
+  	<br/>
+  </div>
+	
+  <img rsf:id="add-answer-icon" id="add-answer-icon" src="/libary/image/silk/add.png"/>&nbsp;
+  <a rsf:id="add-answer-link" id="add-answer-link" href="#">Add an answer</a><br/>
+  <div rsf:id="add-answer" id="add-answer" style="display:none;">
+  	<form rsf:id="add-answer-form">
+  	  <h4 rsf:id="add-answer-title">Add your answer:</h4><br/>
+  	  <div rsf:id="answer-input:">
+	          <textarea rows="10" cols="80" name="answer">This should be the FCK editor. </textarea>
+	  </div>
+	  <input rsf:id="add-answer-button" type="submit" value="Add Answer"/>
+	  <input rsf:id="cancel-button" type="submit" value="Cancel"/>
+  	</form>
+  </div>
+  
+  <script rsf:id="onclick-init" type="text/javascript">
+   	init_questions_toggle("add-answer-link","add-answer-icon","add-answer");
+  </script>  	
+</body>
+</html>

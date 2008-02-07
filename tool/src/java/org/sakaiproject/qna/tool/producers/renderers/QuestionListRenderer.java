@@ -1,7 +1,7 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
 import org.sakaiproject.qna.tool.enums.ListViewType;
-import org.sakaiproject.qna.tool.producers.OptionsProducer;
+import org.sakaiproject.qna.tool.producers.AnswersProducer;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
@@ -57,7 +57,7 @@ public class QuestionListRenderer {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");		
 			UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:",Integer.toString(i));
 			
-			UILink icon = UILink.make(category, "toggle-questions-icon", "/library/image/silk/arrow_right.png");
+			UILink icon = UILink.make(category, "toggle-questions-icon", "/library/image/sakai/expand.gif");
 			UIInitBlock.make(category,"onclick-init","init_questions_toggle", new Object[]{icon,entry});
 			
 			UIOutput.make(category,"category-name",categoryValues[i][0]);
@@ -74,7 +74,7 @@ public class QuestionListRenderer {
 						UIInternalLink.make(question, "question-link", questionValues[j][1],new SimpleViewParameters(ViewPrivateReplyProducer.VIEW_ID));					
 					}
 					else {
-						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(OptionsProducer.VIEW_ID));
+						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(AnswersProducer.VIEW_ID));
 					}
 						
 					UIOutput.make(question,"answers-nr",questionValues[j][2]);

@@ -13,12 +13,11 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
-import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class ViewPrivateReplyProducer implements ViewComponentProducer, DefaultView, NavigationCaseReporter {
+public class ViewPrivateReplyProducer implements ViewComponentProducer, NavigationCaseReporter {
 
 	public static final String VIEW_ID = "view_private_reply";
 	public String getViewID() {

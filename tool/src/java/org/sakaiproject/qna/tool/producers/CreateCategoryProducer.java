@@ -8,11 +8,10 @@ import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.view.ComponentChecker;
-import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class CreateCategoryProducer implements ViewComponentProducer, DefaultView {
+public class CreateCategoryProducer implements ViewComponentProducer{
 
     public static final String VIEW_ID = "create_category";
     private NavBarRenderer navBarRenderer;

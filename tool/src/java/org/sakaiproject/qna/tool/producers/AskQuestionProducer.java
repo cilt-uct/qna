@@ -11,11 +11,10 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.view.ComponentChecker;
-import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class AskQuestionProducer implements ViewComponentProducer, DefaultView {
+public class AskQuestionProducer implements ViewComponentProducer{
 
     public static final String VIEW_ID = "ask_question";
     public String getViewID() {

@@ -55,6 +55,18 @@
 	</bean>
 	
 	<bean
+		class="org.sakaiproject.qna.tool.producers.EditPublishedQuestionProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="richTextEvolver" ref="richTextEvolver" />
+	</bean>
+	
+	<bean
+		class="org.sakaiproject.qna.tool.producers.EditPublishedAnswerProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="richTextEvolver" ref="richTextEvolver" />
+	</bean>
+	
+	<bean
 		class="org.sakaiproject.qna.tool.producers.ReplyPrivatelyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />

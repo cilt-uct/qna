@@ -17,13 +17,11 @@ import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
-import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class PublishQueuedQuestionProducer implements ViewComponentProducer,
-		DefaultView, NavigationCaseReporter {
+public class PublishQueuedQuestionProducer implements ViewComponentProducer,NavigationCaseReporter {
 
 	public static final String VIEW_ID = "publish_queued_question";
 	public String getViewID() {
@@ -58,7 +56,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,
 				
 		// TODO: Get the real question detail from database from some view parameter
 		UIOutput.make(form, "unpublished-question", "How is the year mark composed?");
-		UIInternalLink.make(form,"question-link",UIMessage.make("qna.publish-queued-question.question-link"),new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
+		UIInternalLink.make(form,"question-link",UIMessage.make("qna.publish-queued-question.question-link"),new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
 				
 		// Generate the category title
 		UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
@@ -71,12 +69,12 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,
         // will get name of public categories for site here
         String[] labels = {"General","Assignments","Exams"};
         
-        UISelect.make(form, "category-select", options, labels, "valuebinding");
+        UISelect.make(form, "category-select", options, labels, null);
 		
      // if (user permission to create categories)
         UIMessage.make(form,"or","qna.general.or");
         UIMessage.make(form,"new-category-label","qna.publish-queued-question.category-label");
-        UIInput.make(form, "new-category-name", "valuebinding");
+        UIInput.make(form, "new-category-name", null);
         
      // Generate the answer title
 		UIMessage.make(form, "answer-title", "qna.publish-queued-question.answer-title");
@@ -89,8 +87,8 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,
         richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons
-		UICommand.make(form, "queued-question-publish", UIMessage.make("qna.general.publish")).setReturn("publish");
-		UICommand.make(form, "queued-question-cancel",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
+		UICommand.make(form, "published-button", UIMessage.make("qna.general.publish")).setReturn("publish");
+		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 
 	}
 

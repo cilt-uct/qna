@@ -7,26 +7,22 @@
    <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
-   <script type="text/javascript" language="JavaScript" src="/library/js/jquery.js"></script>
    <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
-   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
 </head>
-
 
 <body>
   <div rsf:id="navIntraTool:" class="navIntraTool"/>
-  <h3 rsf:id="page-title" class="insColor insBak insBorder">Questions and Answers</h3>
-  <br/>
-  <span rsf:id="view-title">View:</span>
-  <form rsf:id="view-questions-form" action="post">  	
-  	<select rsf:id="view-select">
- 		<option value="categories">Categories</option>
-  		<option value="details">All Details</option>
-  	</select>
-  	<div rsf:id="questionListTool:"/>
+  <h4 rsf:id="error-message" class="messageWarn alertMessage">Warning: This question aleady has answers associated with it.</h4>
+  <h3 rsf:id="page-title" class="insColor insBak insBorder">Edit Question</h3>
+  <h4 rsf:id="question-title">Question</h4>
+  <form rsf:id="edit-published-question-form" method="post">
+  	<div rsf:id="question-input:">
+		<textarea rows="10" cols="80" name="reply">How is the year mark composed?</textarea>
+	</div>
   	<br/>
   	<input rsf:id="update-button" type="submit" value="Update"  />
+  	<input rsf:id="cancel-button" type="submit" value="Cancel"/>
   </form>
-
+  
 </body>
 </html>

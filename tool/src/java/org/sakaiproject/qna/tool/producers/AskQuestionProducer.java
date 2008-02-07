@@ -65,7 +65,7 @@ public class AskQuestionProducer implements ViewComponentProducer, DefaultView {
         UISelect.make(form, "category-select", options, labels, "valuebinding");
         
         // if (user permission to create categories)
-        UIMessage.make(form,"or","qna.ask-question.or");
+        UIMessage.make(form,"or","qna.general.or");
         UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
         UIInput.make(form, "new-category-name", "valuebinding");
         // end-if

@@ -53,7 +53,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, DefaultV
 		UIOutput.make(tofill,"private-reply-timestamp","2007-09-14");
 		
 		UIForm form = UIForm.make(tofill, "private-reply-form");
-		UICommand.make(form,"publish-question-button",UIMessage.make("qna.view-private-reply.publish"));
+		UICommand.make(form,"publish-question-button",UIMessage.make("qna.view-private-reply.publish")).setReturn("publish");
 		UICommand.make(form,"delete-button",UIMessage.make("qna.general.delete"));
 		UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
@@ -61,6 +61,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, DefaultV
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("publish",new SimpleViewParameters(PublishQueuedQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

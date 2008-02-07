@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title rsf:id="page-title"></title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
+   <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+</head>
+
+<body>
+  <div rsf:id="navIntraTool:" class="navIntraTool"/>
+  <h3 rsf:id="page-title" class="insColor insBak insBorder">Publish Question</h3>
+  
+  <form rsf:id="publish-queued-question-form" method="post">
+  <h4 rsf:id="question-title">Question</h4>
+  <br/>
+  	<div rsf:id="unpublished-question">
+  		How is the year mark composed?
+  	</div>
+  	<br/>
+  	<div>
+  		<a href="#" rsf:id="question-link">Edit Question?</a>
+  	</div>
+  	<h4 rsf:id="category-title">Category</h4>
+  	<br/>
+  	<span rsf:id="category-note">Please choose a category for this question</span>
+  	<br/>
+  	<br/>
+  	<select rsf:id="category-select">
+  		<option value="general">General</option>
+  		<option value="assignments">Assignments</option>
+  		<option value="exams">Exams</option>
+  	</select>
+  	<br/>
+  	<br/>
+  	<div rsf:id="or">OR</div>  
+  	<br/>
+  	<label rsf:id="new-category-label" for="new-category-name">Create a new category:</label>
+		<input rsf:id="new-category-name" size="20" name="new-category-name" type="text"/>	
+  	<h4 rsf:id="answer-title">Answer</h4>
+  	<br/>
+  		<span rsf:id="answer-note">If you would like to answer this question now, please type your response below.</span>
+  		<br/>
+  		<br/>
+  		<div rsf:id="reply-input:">
+	          <textarea rows="10" cols="80" name="reply">This should be the FCK editor. </textarea>
+	  	</div>
+  	<br/>
+  	<input rsf:id="publish-button" type="submit" value="Publish"  />
+  	<input rsf:id="cancel-button" type="submit" value="Cancel"/>
+  </form>
+  
+</body>
+</html>

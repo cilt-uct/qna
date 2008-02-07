@@ -4,6 +4,7 @@ import org.sakaiproject.qna.tool.enums.ListViewType;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
+import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -66,10 +67,16 @@ public class QuestionListRenderer {
 			for (int j=0;j<questionValues.length;j++) {
 				if (questionValues[j][0].equals(categoryValues[i][0])) {
 					UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:",Integer.toString(j));
-					if(categoryValues[i][0].equals("New Questions"))
+					if (categoryValues[i][0].equals("New Questions")) {
 						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
-					else
+					}
+					else if (categoryValues[i][0].equals("Private Replies")) {
+						UIInternalLink.make(question, "question-link", questionValues[j][1],new SimpleViewParameters(ViewPrivateReplyProducer.VIEW_ID));					
+					}
+					else {
 						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(OptionsProducer.VIEW_ID));
+					}
+						
 					UIOutput.make(question,"answers-nr",questionValues[j][2]);
 					UIOutput.make(question,"views-nr",questionValues[j][3]);
 					UIOutput.make(question,"question-modified-date",questionValues[j][4]);

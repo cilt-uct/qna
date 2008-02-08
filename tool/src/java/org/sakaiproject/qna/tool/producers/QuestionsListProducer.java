@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.tool.enums.ListViewType;
+import org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 
 import uk.org.ponder.messageutil.MessageLocator;
@@ -29,42 +31,46 @@ public class QuestionsListProducer implements ViewComponentProducer,DefaultView,
     }
     
     private NavBarRenderer navBarRenderer;
-    private QuestionListRenderer questionListRenderer;
+    private CategoryQuestionListRenderer categoryQuestionListRenderer;
+    private DetailedQuestionListRenderer detailedQuestionListRenderer;
     private MessageLocator messageLocator;
     
     public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
 	}
 
-
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
     
-
-	public void setQuestionListRenderer(QuestionListRenderer questionListRenderer) {
-		this.questionListRenderer = questionListRenderer;
+	public void setCategoryQuestionListRenderer(CategoryQuestionListRenderer categoryQuestionListRenderer) {
+		this.categoryQuestionListRenderer = categoryQuestionListRenderer;
+	}
+	
+	public void setDetailedQuestionListRenderer(
+			DetailedQuestionListRenderer detailedQuestionListRenderer) {
+		this.detailedQuestionListRenderer = detailedQuestionListRenderer;
 	}
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
-		UIMessage.make(tofill, "view-title", "qna.view-questions.view-title");
-		
 		
 		String[] options = {ListViewType.CATEGORIES.getOption(),ListViewType.ALL_DETAILS.getOption()};
 		String[] labels  = {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),messageLocator.getMessage(ListViewType.ALL_DETAILS.getLabel())};
 		UIForm form = UIForm.make(tofill, "view-questions-form");
+		UIMessage.make(form, "view-title", "qna.view-questions.view-title");
 		// Init value must be either default or specified
 		UISelect.make(form, "view-select", options, labels, "valueBinding" , ListViewType.CATEGORIES.getOption()); 
 		
 		// Depending on default or one selected view type, send through parameter
-		questionListRenderer.makeQuestionList(tofill, "questionListTool:", VIEW_ID, ListViewType.CATEGORIES);
+		//QuestionListRenderer renderer = detailedQuestionListRenderer;
+		QuestionListRenderer renderer = categoryQuestionListRenderer;
+		
+		renderer.makeQuestionList(tofill, "questionListTool:");
 		
 		// Generate the different buttons
 		UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
-
     }
 	
 	public List<NavigationCase> reportNavigationCases() {
@@ -72,4 +78,7 @@ public class QuestionsListProducer implements ViewComponentProducer,DefaultView,
 		list.add(new NavigationCase("update",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
+
+
+
 }

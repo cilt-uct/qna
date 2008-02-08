@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title rsf:id="page-title"></title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
+   <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+</head>
+
+<body>
+<!-- everything outside this div is thrown away -->
+<div rsf:id="question-list-table:" class="layoutViewContainer">
+	<br/>
+	<div rsf:id="sort-message">Sort questions by clicking on the appropriate column headings.</div>
+	<table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Questions table">
+		<thead id="table-head">
+			<th class="title">
+				 <a rsf:id="questions-title" href="#">Question</a>
+			</th>
+			<th class="title">
+				<a rsf:id="views-title" href="#">Views</a>
+			</th>
+			<th class="title">
+				<a rsf:id="answers-title" href="#">Answers</a>
+			</th>
+			<th class="title">
+				<a rsf:id="created-title" href="#">Created</a>
+			</th>
+			<th class="title">
+				<a rsf:id="modified-title" href="#">Modified</a>
+			</th>
+			<th class="title">
+				<a rsf:id="category-title" href="#">Category</a>
+			</th>
+			<th class="title" rsf:id="remove-title">Remove?</th>
+		</thead>
+		<tbody>
+			<tr rsf:id="question-entry:">
+				<td><a rsf:id="question-link" href="view_question.html">How are you doing?</a></td>
+				<td rsf:id="views-nr">83</td>
+				<td rsf:id="answers-nr">2</td>
+				<td rsf:id="created-date">2008-02-08</td>
+				<td rsf:id="modified-date">2008-02-08</td>
+				<td rsf:id="category">Misc</td>
+				<td><input rsf:id="remove-checkbox" name="remove-question-checkbox" type="checkbox" /></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

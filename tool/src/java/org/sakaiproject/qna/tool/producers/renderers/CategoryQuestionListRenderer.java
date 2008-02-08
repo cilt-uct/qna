@@ -1,6 +1,5 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
-import org.sakaiproject.qna.tool.enums.ListViewType;
 import org.sakaiproject.qna.tool.producers.AnswersProducer;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
@@ -17,9 +16,9 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
-public class QuestionListRenderer {
+public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
-    public void makeQuestionList(UIContainer tofill, String divID, String currentViewID, ListViewType type) {
+    public void makeQuestionList(UIContainer tofill, String divID) {
     	// Front-end customization regarding permissions/options will come here
     	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
@@ -31,7 +30,7 @@ public class QuestionListRenderer {
 		
 		UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
 		UILink.make(listTable, "modified-icon", "/library/image/sakai/sortascending.gif");
-		UIMessage.make(listTable, "modified-msg", "qna.view-questions.modify");
+		UIMessage.make(listTable, "modified-msg", "qna.view-questions.modified");
 		
 		UIMessage.make(listTable, "remove-title", "qna.view-questions.remove");
 		

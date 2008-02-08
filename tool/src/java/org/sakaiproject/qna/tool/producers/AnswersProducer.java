@@ -56,7 +56,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 		
 		// If anonymous remove name
 		UIOutput.make(tofill,"question-submit-details","Piet Pompies, 2008-02-07 12:10, Views: 13");
-		UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(AnswersProducer.VIEW_ID));
+		UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
 		UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
 		UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(AnswersProducer.VIEW_ID));
 		

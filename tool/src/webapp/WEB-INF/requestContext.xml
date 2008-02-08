@@ -18,9 +18,11 @@
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
-	<bean id="QuestionListRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer" />
+	<bean id="CategoryQuestionListRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer" />
 
+	<bean id="DetailedQuestionListRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer" />
 
 	<!-- list the producer beans here -->
 	<bean
@@ -91,7 +93,8 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.QuestionsListProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="questionListRenderer" ref="QuestionListRenderer" />
+		<property name="categoryQuestionListRenderer" ref="CategoryQuestionListRenderer" />
+		<property name="detailedQuestionListRenderer" ref="DetailedQuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
 	</bean>
 	

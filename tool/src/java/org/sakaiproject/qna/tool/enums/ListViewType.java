@@ -1,10 +1,9 @@
 package org.sakaiproject.qna.tool.enums;
 
 public enum ListViewType {
-	CATEGORIES ("1","qna.view-questions.categories"),
-	ALL_DETAILS ("2","qna.view-questions.all-details"); 
-	
-	
+	CATEGORIES ("0","qna.view-questions.categories"),
+	ALL_DETAILS ("1","qna.view-questions.all-details"); 
+		
 	private final String option;
 	private final String label;
 	
@@ -20,5 +19,5 @@ public enum ListViewType {
 	public String getLabel() {
 		return label;
 	}
-
+	
 }

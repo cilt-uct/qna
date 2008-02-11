@@ -41,3 +41,16 @@
     	var icon = document.getElementById(link_id);
     	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
     }
+    
+    function init_view_select(select_id, form_id, options_size, current_selected) {
+    	var select = document.getElementById(select_id);
+    	var form = document.getElementById(form_id);
+    	
+    	for(i=0;i<options_size;i++) {
+    		if (current_selected != i) {
+    			var link=form.action +"?viewtype="+i;
+    			select.options[i].onclick = function () { document.location=link;};
+    		}
+    	}
+    }
+    

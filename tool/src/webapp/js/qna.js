@@ -28,12 +28,24 @@
     	element.onclick = function() { toggle_questions(entry_id);};
     }
     
+    function change_view(select,form,current_selected) {
+    	document.location=form.action+"?viewtype="+select.options[select.selectedIndex].value;			    	
+    }
+
+    // View select on question list screen
+    function init_view_select(select_id, form_id, options_size, current_selected) {
+    	var select = document.getElementById(select_id);
+    	var form = document.getElementById(form_id);
+		select.onchange = function () { change_view(select,form,current_selected);};
+    }
+
     function  toggle_add_questions(link_id,icon_id,div_id) {
 	   	toggle_visibility(link_id);
     	toggle_visibility(icon_id);
     	toggle_visibility(div_id);
     }
     
+    // Add an answer in answers screen 
     function init_add_question_toggle(link_id,icon_id,div_id) {
     	var link = document.getElementById(link_id);
     	link.href= "#";
@@ -42,15 +54,5 @@
     	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
     }
     
-    function init_view_select(select_id, form_id, options_size, current_selected) {
-    	var select = document.getElementById(select_id);
-    	var form = document.getElementById(form_id);
-    	
-    	for(i=0;i<options_size;i++) {
-    		if (current_selected != i) {
-    			var link=form.action +"?viewtype="+i;
-    			select.options[i].onclick = function () { document.location=link;};
-    		}
-    	}
-    }
+
     

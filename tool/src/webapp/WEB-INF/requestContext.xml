@@ -23,7 +23,10 @@
 
 	<bean id="DetailedQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer" />
-
+	
+	<bean id="StandardQuestionListRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" />
+	
 	<!-- list the producer beans here -->
 	<bean
 		class="org.sakaiproject.qna.tool.producers.AskQuestionProducer">
@@ -110,7 +113,10 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="categoryQuestionListRenderer" ref="CategoryQuestionListRenderer" />
 		<property name="detailedQuestionListRenderer" ref="DetailedQuestionListRenderer" />
+		<property name="standardQuestionListRenderer" ref="StandardQuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
 	</bean>
 	
 	

@@ -52,7 +52,7 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		// Generate the different buttons
 		UICommand.make(form, "queued-question-reply", UIMessage.make("qna.queued-question.reply")).setReturn("private_reply");
 		UICommand.make(form, "queued-question-publish", UIMessage.make("qna.queued-question.publish")).setReturn("publish");
-		UICommand.make(form, "queued-question-delete", UIMessage.make("qna.general.delete"));
+		UICommand.make(form, "queued-question-delete", UIMessage.make("qna.general.delete")).setReturn("delete");
 		UICommand.make(form, "queued-question-cancel",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 
 	}
@@ -62,6 +62,7 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		list.add(new NavigationCase("private_reply",new SimpleViewParameters(ReplyPrivatelyProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("publish",new SimpleViewParameters(PublishQueuedQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("delete",new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

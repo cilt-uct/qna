@@ -57,6 +57,21 @@
 	</bean>
 	
 	<bean
+		class="org.sakaiproject.qna.tool.producers.DeleteCategoryProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
+	
+	<bean
+		class="org.sakaiproject.qna.tool.producers.DeleteQuestionProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
+	
+	<bean
+		class="org.sakaiproject.qna.tool.producers.DeleteAnswerProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+	</bean>
+	
+	<bean
 		class="org.sakaiproject.qna.tool.producers.EditPublishedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />

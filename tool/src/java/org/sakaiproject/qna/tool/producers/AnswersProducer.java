@@ -57,8 +57,8 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 		// If anonymous remove name
 		UIOutput.make(tofill,"question-submit-details","Piet Pompies, 2008-02-07 12:10, Views: 13");
 		UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
-		UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
-		UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(AnswersProducer.VIEW_ID));
+		UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(AnswersProducer.VIEW_ID));
+		UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
 		
 		UIMessage.make(tofill,"answers-title","qna.answers.answers-title",new String[] {"4"});
 		
@@ -77,7 +77,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 			if (answers[i][0].equals("GIVEN")) {
 				UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
 				UIMessage.make(answer,"answer-heading","qna.answers.lecturer-given-answer"); 
-				UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.answers.edit"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+				UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.answers.edit"),new SimpleViewParameters(EditPublishedAnswerProducer.VIEW_ID));
 			} else if (answers[i][0].equals("APPROVED")) {
 				UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
 				UIMessage.make(answer,"answer-heading","qna.answers.lecturer-approved-answer");
@@ -89,7 +89,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 			UIOutput.make(answer, "answer-text", answers[i][1]);
 			UIOutput.make(answer, "answer-timestamp", answers[i][2]);		
 			
-			UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+			UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));
 		}
 		
 		UILink icon = UILink.make(tofill,"add-answer-icon","/library/image/silk/add.png");

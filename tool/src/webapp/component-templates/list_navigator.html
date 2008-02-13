@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:rsf="http://ponder.org.uk/rsf" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <title rsf:id="page-title"></title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
+   <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+</head>
+
+<body>
+<!-- everything outside this div is thrown away -->
+
+
+<div rsf:id="layoutViewContainer:" class="layoutViewContainer" style="text-align: right;">
+<form rsf:id="list-navigator-form" action="post">
+		<span rsf:id="skip" class="skip">Appropriate message for js + select for screen readers</span>
+		<div rsf:id="messageInstruction" class="messageInstruction">Viewing 1 - 10 of 500 items</div>
+			   <input rsf:id="first-item" type="submit" name="eventSubmit_doList_first" value="|&lt;" disabled="disabled"/>
+			   <input rsf:id="previous-item" type="submit" name="eventSubmit_doList_prev" value="&lt;" disabled="disabled"/>
+			   <select rsf:id="select-items:" name="selectPageSize"onchange="blur();document.pagesizeForm.submit();">
+				     <option rsf:id="5-items" value="5">show 5 items...</option>
+				     <option rsf:id="10-items" value="10" selected="selected">show 10 items...</option>
+				     <option rsf:id="20-items" value="20">show 20 items...</option>
+				     <option rsf:id="50-items" value="50">show 50 items...</option>
+				     <option rsf:id="100-items" value="100">show 100 items...</option>
+				     <option rsf:id="200-items" value="200">show 200 items....</option>
+			   </select>
+
+			   <input rsf:id="next-item" type="submit" name="eventSubmit_doList_next" value="&gt;"title="Next 10" accesskey="c"/>
+			   <input rsf:id="last-item" type="submit" name="eventSubmit_doList_last" value="&gt;|"title="Last"accesskey="c"/>
+			 </form>
+		
+	</div>
+	
+</body>
+</html>

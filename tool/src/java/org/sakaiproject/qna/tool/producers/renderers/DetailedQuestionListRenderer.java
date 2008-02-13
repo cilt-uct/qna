@@ -15,7 +15,18 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class DetailedQuestionListRenderer implements QuestionListRenderer {
 	
+	 private ListNavigatorRenderer listNavigatorRenderer;	 
+	
+	public void setListNavigatorRenderer(ListNavigatorRenderer listNavigatorRenderer) {
+		this.listNavigatorRenderer = listNavigatorRenderer;
+	}
+
+
 	public void makeQuestionList(UIContainer tofill, String divID) {
+		
+		
+		listNavigatorRenderer.makeListNavigator(tofill, "pager:");
+		
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		
 		UIMessage.make(listTable,"sort-message","qna.view-questions.sort-message");

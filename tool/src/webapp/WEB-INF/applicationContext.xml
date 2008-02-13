@@ -21,7 +21,7 @@
 
    <bean id="messageTemplateContributor" parent="templateContributorParent">
       <property name="baseDirectory" value="component-templates/" />
-      <property name="templateNames" value="navbar,category_question_list,detailed_question_list,standard_question_list" />
+      <property name="templateNames" value="navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator" />
    </bean>
    
    <!-- Control the location of the html templates (default: content/templates/) -->

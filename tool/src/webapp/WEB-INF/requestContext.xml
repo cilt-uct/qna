@@ -17,6 +17,16 @@
 	<!-- Renderers -->
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
+		
+	<bean id="ListNavigatorRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.ListNavigatorRenderer">
+		<property name="messageLocator" ref="messageLocator" />
+	</bean>
+	
+	<bean id="ListIteratorRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer">
+	</bean>
+	
 
 	<bean id="CategoryQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
@@ -25,10 +35,14 @@
 	</bean>	
 
 	<bean id="DetailedQuestionListRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer" />
+		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer">
+		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
+	</bean>
 	
 	<bean id="StandardQuestionListRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" />
+		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" >
+		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
+	</bean>
 	
 	<!-- list the producer beans here -->
 	<bean
@@ -77,6 +91,8 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
 	
+	
+	
 	<bean
 		class="org.sakaiproject.qna.tool.producers.EditPublishedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
@@ -98,12 +114,17 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		
 	</bean>
 	
 	<bean
 		class="org.sakaiproject.qna.tool.producers.AnswersProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
+		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
 	</bean>
 	
 	<bean

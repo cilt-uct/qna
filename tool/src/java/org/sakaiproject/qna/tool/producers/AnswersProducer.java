@@ -3,6 +3,9 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.QnaLogic;
+import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -29,16 +32,30 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 	public String getViewID() {
 		return VIEW_ID;
 	}
-
-	private NavBarRenderer navBarRenderer;
-    private TextInputEvolver richTextEvolver;
+	
+	private ListIteratorRenderer listIteratorRenderer;	
+	public void setListIteratorRenderer(ListIteratorRenderer listIteratorRenderer) {
+		this.listIteratorRenderer = listIteratorRenderer;
+	}
     
+    private NavBarRenderer navBarRenderer;
     public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
     
+    private TextInputEvolver richTextEvolver;
     public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
+    }
+    
+    private QnaLogic qnaLogic;
+    public void setQnaLogic(QnaLogic qnaLogic) {
+        this.qnaLogic = qnaLogic;
+    }
+    
+    private ExternalLogic externalLogic;
+    public void setExternalLogic(ExternalLogic externalLogic) {
+        this.externalLogic = externalLogic;
     }
 	
 	
@@ -48,6 +65,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 		// TODO Lots of customisation regarding permissions, get dynamic content etc. 
 		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
+		listIteratorRenderer.makeListIterator(tofill, "pager1:");
 		UIMessage.make(tofill,"page-title","qna.answers.title");
 		UIOutput.make(tofill,"category-title","Exams");
 		UIMessage.make(tofill,"question-title","qna.answers.question");
@@ -56,9 +74,12 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 		
 		// If anonymous remove name
 		UIOutput.make(tofill,"question-submit-details","Piet Pompies, 2008-02-07 12:10, Views: 13");
-		UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
-		UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
-		UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
+		if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
+			UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
+			UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
+		} 
+		
 		
 		UIMessage.make(tofill,"answers-title","qna.answers.answers-title",new String[] {"4"});
 		
@@ -73,24 +94,27 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 		
 		for (int i=0;i<answers.length;i++) {
 			UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:",Integer.toString(i));
-			
-			if (answers[i][0].equals("GIVEN")) {
-				UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
-				UIMessage.make(answer,"answer-heading","qna.answers.lecturer-given-answer"); 
-				UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.answers.edit"),new SimpleViewParameters(EditPublishedAnswerProducer.VIEW_ID));
-			} else if (answers[i][0].equals("APPROVED")) {
-				UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
-				UIMessage.make(answer,"answer-heading","qna.answers.lecturer-approved-answer");
-				UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.answers.withdraw-approval"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
-			} else {
-				UIInternalLink.make(answer,"mark-correct-link",UIMessage.make("qna.answers.mark-as-correct"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+			if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+				if (answers[i][0].equals("GIVEN")) {
+					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
+					UIMessage.make(answer,"answer-heading","qna.answers.lecturer-given-answer"); 
+					UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.answers.edit"),new SimpleViewParameters(EditPublishedAnswerProducer.VIEW_ID));
+				} else if (answers[i][0].equals("APPROVED")) {
+					UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
+					UIMessage.make(answer,"answer-heading","qna.answers.lecturer-approved-answer");
+					UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.answers.withdraw-approval"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+				} else {
+					UIInternalLink.make(answer,"mark-correct-link",UIMessage.make("qna.answers.mark-as-correct"),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+				}
+				UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));
 			}
-			
 			UIOutput.make(answer, "answer-text", answers[i][1]);
 			UIOutput.make(answer, "answer-timestamp", answers[i][2]);		
 			
-			UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));
+			
 		}
+		
+		listIteratorRenderer.makeListIterator(tofill, "pager2:");
 		
 		UILink icon = UILink.make(tofill,"add-answer-icon","/library/image/silk/add.png");
 		UILink link = UIInternalLink.make(tofill, "add-answer-link", UIMessage.make("qna.answers.add-an-answer"), "");

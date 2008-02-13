@@ -3,6 +3,7 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UICommand;
@@ -24,6 +25,12 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		return VIEW_ID;
 	}
 	
+	private ListIteratorRenderer listIteratorRenderer;
+	
+	public void setListIteratorRenderer(ListIteratorRenderer listIteratorRenderer) {
+		this.listIteratorRenderer = listIteratorRenderer;
+	}
+	
 	private NavBarRenderer navBarRenderer;
 	
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
@@ -33,6 +40,8 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
+		
+		listIteratorRenderer.makeListIterator(tofill, "pager1:");
 		
 		UIMessage.make(tofill, "page-title", "qna.view-private-reply.title");
 		UIMessage.make(tofill, "sub-title", "qna.view-private-reply.subtitle");
@@ -50,6 +59,8 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		
 		UIOutput.make(tofill,"private-reply",builder.toString());
 		UIOutput.make(tofill,"private-reply-timestamp","2007-09-14");
+		
+		listIteratorRenderer.makeListIterator(tofill, "pager2:");
 		
 		UIForm form = UIForm.make(tofill, "private-reply-form");
 		UICommand.make(form,"publish-question-button",UIMessage.make("qna.view-private-reply.publish")).setReturn("publish");

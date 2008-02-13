@@ -19,7 +19,10 @@
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
 	<bean id="CategoryQuestionListRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer" />
+		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
+	</bean>	
 
 	<bean id="DetailedQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer" />

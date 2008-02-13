@@ -18,6 +18,8 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInitBlock;
+import uk.org.ponder.rsf.components.UIInternalLink;
+import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
@@ -79,7 +81,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		
 		// Depending on default or one selected view type, send through parameter
-		QuestionListRenderer renderer = null;
+		QuestionListRenderer renderer;
 		ViewTypeParams params = (ViewTypeParams) viewparams;
 		if (params.viewtype != null) {
 			if (params.viewtype.equals(ListViewType.CATEGORIES.getOption())) {
@@ -88,6 +90,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				renderer = detailedQuestionListRenderer;
 			} else if (params.viewtype.equals(ListViewType.MOST_POPULAR.getOption())) {
 				renderer = standardQuestionListRenderer;
+			} else {
+				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
 		} else {
 			renderer = categoryQuestionListRenderer;
@@ -96,29 +100,40 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
 		
-		// TODO: 
-		// Ask Question Anonymously Link
-		// Change to create different dropdowns dependant on update rights
-		// With update rights: CATEGORIES + ALL_DETAILS ("lecturer view")
-		// Without update rights: CATEGORIES + MOST_POPULAR + RECENT_CHANGES + RECENT_QUESTIONS ("student view")
-		// Probably will need different UIInitBlock OR pass offset to init_view_select
-		
-		// Set select for persons with update rights
-		String[] options = {ListViewType.CATEGORIES.getOption(),ListViewType.ALL_DETAILS.getOption(),ListViewType.MOST_POPULAR.getOption()};
-		String[] labels  = {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),messageLocator.getMessage(ListViewType.ALL_DETAILS.getLabel()),messageLocator.getMessage(ListViewType.MOST_POPULAR.getLabel())};
 		UIForm form = UIForm.make(tofill, "view-questions-form");
-		
 		UIMessage.make(form, "view-title", "qna.view-questions.view-title");
+		
+		String[] options;
+		String[] labels;
+		
+		if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			options = new String[] {ListViewType.CATEGORIES.getOption(),
+					  				ListViewType.ALL_DETAILS.getOption()};
+			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),
+			    	   			    messageLocator.getMessage(ListViewType.ALL_DETAILS.getLabel())};
+			
+			// Generate update button
+			UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
+		} else {
+			UIOutput.make(tofill,"ask-question");
+			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
+			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AnswersProducer.VIEW_ID));
+			
+			options = new String[] {ListViewType.CATEGORIES.getOption(),
+									ListViewType.MOST_POPULAR.getOption(),
+									ListViewType.RECENT_CHANGES.getOption(),
+									ListViewType.RECENT_QUESTIONS.getOption()};
+			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),
+									messageLocator.getMessage(ListViewType.MOST_POPULAR.getLabel()),
+						 		   	messageLocator.getMessage(ListViewType.RECENT_CHANGES.getLabel()),
+						 		   	messageLocator.getMessage(ListViewType.RECENT_QUESTIONS.getLabel())};
+		}
 		
 		// Init value must be either default or specified
 		UISelect select = UISelect.make(form, "view-select", options, labels, null, params.viewtype); 
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,params.viewtype});
-		// End select with update rights
-		
+
 		renderer.makeQuestionList(tofill, "questionListTool:");
-		
-		// Generate the different buttons
-		UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
     }
 	
 	public List<NavigationCase> reportNavigationCases() {

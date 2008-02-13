@@ -1,5 +1,7 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.QnaLogic;
 import org.sakaiproject.qna.tool.producers.AnswersProducer;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
@@ -17,8 +19,19 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
+	
+	ExternalLogic externalLogic;
+	QnaLogic qnaLogic;
+	
+    public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
 
-    public void makeQuestionList(UIContainer tofill, String divID) {
+	public void setQnaLogic(QnaLogic qnaLogic) {
+		this.qnaLogic = qnaLogic;
+	}
+
+	public void makeQuestionList(UIContainer tofill, String divID) {
     	// Front-end customization regarding permissions/options will come here
     	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
@@ -28,11 +41,19 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		UILink.make(listTable,"views-icon","/library/image/sakai/sortascending.gif");	
 		UIMessage.make(listTable, "views-msg", "qna.view-questions.views");
 		
-		UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
-		UILink.make(listTable, "modified-icon", "/library/image/sakai/sortascending.gif");
-		UIMessage.make(listTable, "modified-msg", "qna.view-questions.modified");
-		
-		UIMessage.make(listTable, "remove-title", "qna.view-questions.remove");
+		// Creates remove heading for users with update rights
+		if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			UIOutput.make(listTable,"modified-title");
+			UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
+			UILink.make(listTable, "modified-icon", "/library/image/sakai/sortascending.gif");
+			UIMessage.make(listTable, "modified-msg", "qna.view-questions.modified");
+			UIMessage.make(listTable, "remove-title", "qna.view-questions.remove");
+		} else { // To remove irritating scrollbar rendered
+			UIOutput.make(listTable,"modified-title-longer");
+			UIInternalLink.make(listTable, "modified-link-longer", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
+			UILink.make(listTable, "modified-icon-longer", "/library/image/sakai/sortascending.gif");
+			UIMessage.make(listTable, "modified-msg-longer", "qna.view-questions.modified");
+		}
 		
 		// TODO: Get from database, use proper objects, etc. etc. 
 		String[][] categoryValues = {{"Assignments","2007-08-22"},
@@ -53,33 +74,54 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 									};
 		
 		for (int i=0;i<categoryValues.length;i++) {
-			UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");		
-			UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:",Integer.toString(i));
-			
-			UILink icon = UILink.make(category, "toggle-questions-icon", "/library/image/sakai/expand.gif");
-			UIInitBlock.make(category,"onclick-init","init_questions_toggle", new Object[]{icon,entry});
-			
-			UIOutput.make(category,"category-name",categoryValues[i][0]);
-			UIOutput.make(category,"modified-date",categoryValues[i][1]);
-			UIBoundBoolean.make(category, "remove-checkbox",false);
-			
-			for (int j=0;j<questionValues.length;j++) {
-				if (questionValues[j][0].equals(categoryValues[i][0])) {
-					UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:",Integer.toString(j));
-					if (categoryValues[i][0].equals("New Questions")) {
-						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
-					}
-					else if (categoryValues[i][0].equals("Private Replies")) {
-						UIInternalLink.make(question, "question-link", questionValues[j][1],new SimpleViewParameters(ViewPrivateReplyProducer.VIEW_ID));					
-					}
-					else {
-						UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(AnswersProducer.VIEW_ID));
-					}
+			if ((categoryValues[i][0].equals("New Questions") ||  categoryValues[i][0].equals("Private Replies")) && 
+				(qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) || 
+				(!categoryValues[i][0].equals("New Questions") &&  !categoryValues[i][0].equals("Private Replies")))
+			{
+				UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");		
+				UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:",Integer.toString(i));
+				
+				String expandIconSrc = "/library/image/sakai/expand.gif";
+				String collapseIconSrc = "/library/image/sakai/collapse.gif";
+				
+				UILink expandIcon = UILink.make(category, "expand-icon", expandIconSrc);
+				UILink collapseIcon = UILink.make(category, "collapse-icon", collapseIconSrc);
+				
+				UIInitBlock.make(category,"onclick-init","init_questions_toggle", new Object[]{expandIcon,collapseIcon,entry});
+				
+				if (categoryValues[i][0].equals("New Questions")) { // Also check for any new messages
+					UILink.make(category,"new-question-icon","/library/image/silk/flag_yellow.png");
+				}
+				UIOutput.make(category,"category-name",categoryValues[i][0]);
+				UIOutput.make(category,"modified-date",categoryValues[i][1]);
+				
+				if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+					UIOutput.make(category,"remove-category-cell");
+					UIBoundBoolean.make(category, "remove-checkbox",false);
+				}
+				
+				for (int j=0;j<questionValues.length;j++) {
+					if (questionValues[j][0].equals(categoryValues[i][0])) {
+						UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:",Integer.toString(j));
+						if (categoryValues[i][0].equals("New Questions")) {
+							UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
+						}
+						else if (categoryValues[i][0].equals("Private Replies")) {
+							UIInternalLink.make(question, "question-link", questionValues[j][1],new SimpleViewParameters(ViewPrivateReplyProducer.VIEW_ID));					
+						}
+						else {
+							UIInternalLink.make(question,"question-link",questionValues[j][1],new SimpleViewParameters(AnswersProducer.VIEW_ID));
+						}
+							
+						UIOutput.make(question,"answers-nr",questionValues[j][2]);
+						UIOutput.make(question,"views-nr",questionValues[j][3]);
+						UIOutput.make(question,"question-modified-date",questionValues[j][4]);
 						
-					UIOutput.make(question,"answers-nr",questionValues[j][2]);
-					UIOutput.make(question,"views-nr",questionValues[j][3]);
-					UIOutput.make(question,"question-modified-date",questionValues[j][4]);
-					UIBoundBoolean.make(question, "remove-checkbox",false);
+						if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+							UIOutput.make(question,"remove-question-cell");
+							UIBoundBoolean.make(question, "remove-checkbox",false);
+						}
+					}
 				}
 			}
 		}

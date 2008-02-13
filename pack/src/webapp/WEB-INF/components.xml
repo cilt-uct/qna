@@ -23,8 +23,7 @@
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.QnaLogic"
-			class="org.sakaiproject.qna.logic.impl.QnaLogicImpl"
-			init-method="init">
+			class="org.sakaiproject.qna.logic.impl.QnaLogicImpl">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>	
 	</bean>
 	

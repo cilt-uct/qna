@@ -1,5 +1,8 @@
 package org.sakaiproject.qna.tool.producers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UIBoundBoolean;
@@ -10,11 +13,14 @@ import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
+import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
+import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class AskQuestionProducer implements ViewComponentProducer{
+public class AskQuestionProducer implements ViewComponentProducer, NavigationCaseReporter {
 
     public static final String VIEW_ID = "ask_question";
     public String getViewID() {
@@ -45,7 +51,7 @@ public class AskQuestionProducer implements ViewComponentProducer{
 
 		UIForm form = UIForm.make(tofill, "ask-question-form");
 		      
-		UIInput questiontext = UIInput.make(form, "question-input:","");
+		UIInput questiontext = UIInput.make(form, "question-input:",null);
         richTextEvolver.evolveTextInput(questiontext);
 		
         UIBoundBoolean.make(form,"answer-notify",true);
@@ -61,26 +67,32 @@ public class AskQuestionProducer implements ViewComponentProducer{
         // will get name of public categories for site here
         String[] labels = {"General","Assignments","Exams"};
         
-        UISelect.make(form, "category-select", options, labels, "valuebinding");
+        UISelect.make(form, "category-select", options, labels, null);
         
         // if (user permission to create categories)
         UIMessage.make(form,"or","qna.general.or");
         UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
-        UIInput.make(form, "new-category-name", "valuebinding");
+        UIInput.make(form, "new-category-name", null);
         // end-if
         
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
         // Something to do attachments will probably come here
         UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
-        UICommand.make(form, "add-attachment-input", UIMessage.make("qna.ask-question.add-attachment"), "mockbinding.addattachment");
+        UICommand.make(form, "add-attachment-input", UIMessage.make("qna.ask-question.add-attachment"), null);
         
         // if (user update rights false AND moderation true)
         UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         // end-if
         
         UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),"mockbinding.add");
-        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel"),"mockbinding.cancel");
+        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel"),null).setReturn("cancel");
         
         
+	}
+	
+	public List reportNavigationCases() {
+		List<NavigationCase> list = new ArrayList<NavigationCase>();
+		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		return list;
 	}
 }

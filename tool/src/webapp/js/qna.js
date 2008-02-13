@@ -7,7 +7,7 @@
 	}
 	
 	// Toggle visibility of questions of a certain entry id 
-	function toggle_questions(entry_id) {
+	function toggle_questions(entry_id,expand_icon,collapse_icon) {
     	var element = document.getElementById(entry_id);
  		var rows = document.getElementsByTagName("tr");
 				
@@ -20,12 +20,18 @@
 				}
 			}
 		}
+		
+		// Toggle Icon
+		toggle_visibility(expand_icon.id);
+		toggle_visibility(collapse_icon.id);
     }
     
     // Used in questions list
-    function init_questions_toggle(element_id,entry_id) {
-    	var element = document.getElementById(element_id);
-    	element.onclick = function() { toggle_questions(entry_id);};
+    function init_questions_toggle(expand_icon_id,collapse_icon_id,entry_id) {
+    	var expand_icon = document.getElementById(expand_icon_id);
+    	var collapse_icon = document.getElementById(collapse_icon_id);
+    	expand_icon.onclick = function() { toggle_questions(entry_id,expand_icon,collapse_icon);};
+    	collapse_icon.onclick = function() { toggle_questions(entry_id,expand_icon,collapse_icon);};
     }
     
     function change_view(select,form,current_selected) {

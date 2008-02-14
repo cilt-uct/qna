@@ -10,6 +10,8 @@
 	<classpathentry kind="var" path="M2_REPO/uk/org/ponder/j-servletutil/1.2.2/j-servletutil-1.2.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/uk/org/ponder/rsfutil/rsfutil/0.7.2/rsfutil-0.7.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/uk/org/ponder/sakairsf/sakairsf/0.7.2-sakai_2.2.x/sakairsf-0.7.2-sakai_2.2.x.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.5.ga/hibernate-3.2.5.ga.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/generic-dao/0.9.1/generic-dao-0.9.1.jar"/>
 	<classpathentry kind="src" path="tool/src/java"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/content-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/authz-api"/>
@@ -20,8 +22,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/tool-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/user-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util-api"/>
-	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.5.ga/hibernate-3.2.5.ga.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/sakaiproject/generic-dao/0.9.1/generic-dao-0.9.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

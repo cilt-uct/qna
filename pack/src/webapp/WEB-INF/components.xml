@@ -25,8 +25,8 @@
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 	</bean>
 	
-	<bean id="org.sakaiproject.qna.logic.QnaLogic"
-			class="org.sakaiproject.qna.logic.impl.QnaLogicImpl">
+	<bean id="org.sakaiproject.qna.logic.QnaGeneralLogic"
+			class="org.sakaiproject.qna.logic.impl.QnaGeneralLogicImpl">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>	
 	</bean>
 	

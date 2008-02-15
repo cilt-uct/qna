@@ -1,9 +1,9 @@
 package org.sakaiproject.qna.logic.impl;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QnaLogic;
+import org.sakaiproject.qna.logic.QnaGeneralLogic;
 
-public class QnaLogicImpl implements QnaLogic {
+public class QnaGeneralLogicImpl implements QnaGeneralLogic {
 
 	
 	private ExternalLogic externalLogic;

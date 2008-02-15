@@ -1,7 +1,7 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QnaLogic;
+import org.sakaiproject.qna.logic.QnaGeneralLogic;
 import org.sakaiproject.qna.tool.producers.AnswersProducer;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
@@ -21,14 +21,14 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	
 	ExternalLogic externalLogic;
-	QnaLogic qnaLogic;
+	QnaGeneralLogic qnaGeneralLogic;
 	
     public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
 
-	public void setQnaLogic(QnaLogic qnaLogic) {
-		this.qnaLogic = qnaLogic;
+	public void setQnaGeneralLogic(QnaGeneralLogic qnaGeneralLogic) {
+		this.qnaGeneralLogic = qnaGeneralLogic;
 	}
 
 	public void makeQuestionList(UIContainer tofill, String divID) {
@@ -42,7 +42,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		UIMessage.make(listTable, "views-msg", "qna.view-questions.views");
 		
 		// Creates remove heading for users with update rights
-		if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		if (qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			UIOutput.make(listTable,"modified-title");
 			UIInternalLink.make(listTable, "modified-link", new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
 			UILink.make(listTable, "modified-icon", "/library/image/sakai/sortascending.gif");
@@ -75,7 +75,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		
 		for (int i=0;i<categoryValues.length;i++) {
 			if ((categoryValues[i][0].equals("New Questions") ||  categoryValues[i][0].equals("Private Replies")) && 
-				(qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) || 
+				(qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) || 
 				(!categoryValues[i][0].equals("New Questions") &&  !categoryValues[i][0].equals("Private Replies")))
 			{
 				UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");		
@@ -95,7 +95,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIOutput.make(category,"category-name",categoryValues[i][0]);
 				UIOutput.make(category,"modified-date",categoryValues[i][1]);
 				
-				if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+				if (qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					UIOutput.make(category,"remove-category-cell");
 					UIBoundBoolean.make(category, "remove-checkbox",false);
 				}
@@ -117,7 +117,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 						UIOutput.make(question,"views-nr",questionValues[j][3]);
 						UIOutput.make(question,"question-modified-date",questionValues[j][4]);
 						
-						if (qnaLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+						if (qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 							UIOutput.make(question,"remove-question-cell");
 							UIBoundBoolean.make(question, "remove-checkbox",false);
 						}

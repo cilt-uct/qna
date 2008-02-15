@@ -31,7 +31,7 @@
 	<bean id="CategoryQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
 	</bean>	
 
 	<bean id="DetailedQuestionListRenderer"
@@ -124,7 +124,7 @@
 		<property name="richTextEvolver" ref="richTextEvolver" />
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
 	</bean>
 	
 	<bean
@@ -140,7 +140,7 @@
 		<property name="standardQuestionListRenderer" ref="StandardQuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaLogic" ref="org.sakaiproject.qna.logic.QnaLogic" /> 
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
 	</bean>
 	
 	

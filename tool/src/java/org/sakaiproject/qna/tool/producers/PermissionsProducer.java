@@ -22,32 +22,34 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
 public class PermissionsProducer implements ViewComponentProducer, ViewParamsReporter, NavigationCaseReporter {
-    
+
 	public static final String VIEW_ID = "permissions";
     public String getViewID() {
         return VIEW_ID;
     }
-    
+
     private ExternalLogic externalLogic;
     private SessionManager sessionManager;
     private MessageLocator messageLocator;
-    
+
     private final String HELPER = "sakai.permissions.helper";
-    
+
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
-        
+
 		String locationId = externalLogic.getCurrentLocationId();
         ToolSession session = sessionManager.getCurrentToolSession();
-        
+
         session.setAttribute(PermissionsHelper.TARGET_REF, locationId);
-        session.setAttribute(PermissionsHelper.DESCRIPTION, 
-                messageLocator.getMessage("qna.permissions.header", externalLogic.getLocationTitle(locationId)) );
+        session.setAttribute(
+    		PermissionsHelper.DESCRIPTION,
+    		messageLocator.getMessage("qna.permissions.header", externalLogic.getLocationTitle(locationId))
+		);
         session.setAttribute(PermissionsHelper.PREFIX, "qna.");
 
         UIOutput.make(tofill, HelperViewParameters.HELPER_ID, HELPER);
         UICommand.make(tofill, HelperViewParameters.POST_HELPER_BINDING, "", null);
-		
+
 	}
 	public ViewParameters getViewParameters() {
 		 return new HelperViewParameters();
@@ -58,7 +60,7 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
         l.add(new NavigationCase(null, new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
         return l;
 	}
-	
+
     public void setExternalLogic(ExternalLogic externalLogic) {
         this.externalLogic = externalLogic;
     }
@@ -66,7 +68,7 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
     public void setSessionManager(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
-    
+
     public void setMessageLocator(MessageLocator messageLocator) {
         this.messageLocator = messageLocator;
     }

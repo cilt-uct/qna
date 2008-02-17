@@ -17,37 +17,42 @@
 	<!-- Renderers -->
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
-		
+
+	<bean
+		id="SearchBarRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer"/>
+
 	<bean id="ListNavigatorRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.ListNavigatorRenderer">
 		<property name="messageLocator" ref="messageLocator" />
 	</bean>
-	
+
 	<bean id="ListIteratorRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer">
 	</bean>
-	
+
 
 	<bean id="CategoryQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
-	</bean>	
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" />
+	</bean>
 
 	<bean id="DetailedQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer">
 		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
 	</bean>
-	
+
 	<bean id="StandardQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" >
 		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
 	</bean>
-	
+
 	<!-- list the producer beans here -->
 	<bean
 		class="org.sakaiproject.qna.tool.producers.AskQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="richTextEvolver" ref="richTextEvolver" />
 	</bean>
 
@@ -57,91 +62,139 @@
 
 	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
-	
+
+	<bean class="org.sakaiproject.qna.tool.producers.EditCategoryProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+	</bean>
+
 	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">
       <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="messageLocator" ref="messageLocator" />
    </bean>
-   
+
     <bean
 		class="org.sakaiproject.qna.tool.producers.QueuedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.PublishQueuedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteCategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteAnswerProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
-	
-	
-	
+
+
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.EditPublishedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.EditPublishedAnswerProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ReplyPrivatelyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
-		
+
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.AnswersProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="richTextEvolver" ref="richTextEvolver" />
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" />
 	</bean>
-	
+
+	<bean
+		class="org.sakaiproject.qna.tool.producers.SearchResultsProducer">
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" />
+	</bean>
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.MoveQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer"/>
 	</bean>
-	
+
 	<bean
 		class="org.sakaiproject.qna.tool.producers.QuestionsListProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="categoryQuestionListRenderer" ref="CategoryQuestionListRenderer" />
 		<property name="detailedQuestionListRenderer" ref="DetailedQuestionListRenderer" />
 		<property name="standardQuestionListRenderer" ref="StandardQuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" /> 
+		<property name="qnaGeneralLogic" ref="org.sakaiproject.qna.logic.QnaGeneralLogic" />
 	</bean>
-	
-	
+
+	<!-- Organise Producers -->
+
+	<bean id="OrganiseListProducer" class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
+		<property name="messageLocator" ref="messageLocator"/>
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+		<property name="frameAdjustingProducer" ref="frameAdjustingProducer"/>
+		<property name="handler" ref="OrganiseEditHandler" />
+	</bean>
+
+	<bean id="OrganiseCategoryAddProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryAddProducer">
+		<property name="messageLocator" ref="messageLocator"/>
+		<property name="handler" ref="OrganiseEditHandler" />
+	</bean>
+
+	<bean id="OrganiseCategoryEditProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryEditProducer">
+		<property name="messageLocator" ref="messageLocator"/>
+		<property name="handler" ref="OrganiseEditHandler" />
+	</bean>
+
+	<bean id="OrganiseCategoryDelProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryDelProducer">
+		<property name="messageLocator" ref="messageLocator"/>
+		<property name="handler" ref="OrganiseEditHandler" />
+	</bean>
+
+	<bean id="OrganiseEditHandler" init-method="init" class="org.sakaiproject.qna.tool.producers.handlers.OrganiseEditHandler">
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+		<property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+	</bean>
 </beans>

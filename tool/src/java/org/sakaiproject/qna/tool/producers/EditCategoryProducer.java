@@ -12,9 +12,9 @@ import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class CreateCategoryProducer implements ViewComponentProducer{
+public class EditCategoryProducer implements ViewComponentProducer{
 
-    public static final String VIEW_ID = "create_category";
+    public static final String VIEW_ID = "edit_category";
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;
 
@@ -35,13 +35,11 @@ public class CreateCategoryProducer implements ViewComponentProducer{
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
 
-		UIMessage.make(tofill, "page-title", "qna.create-category.title");
+		UIMessage.make(tofill, "page-title", "qna.edit-category.title");
 
-		UIMessage.make(tofill, "category-note", "qna.create-category.category-note");
+		UIForm form = UIForm.make(tofill, "edit-category-form");
 
-		UIForm form = UIForm.make(tofill, "create-category-form");
-
-		UIMessage.make(form, "category-label", "qna.create-category.category");
+		UIMessage.make(form, "category-label", "qna.edit-category.category");
 
 		UIInput.make(form, "category-name", "valuebinding");
 

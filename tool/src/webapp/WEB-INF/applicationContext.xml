@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	
+
    <!-- handles configuration of internationalization messages -->
    <bean id="messageLocator" class="uk.org.ponder.springutil.SpringMessageLocator">
       <property name="messageSource">
@@ -21,9 +21,9 @@
 
    <bean id="messageTemplateContributor" parent="templateContributorParent">
       <property name="baseDirectory" value="component-templates/" />
-      <property name="templateNames" value="navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator" />
+      <property name="templateNames" value="searchbar,navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator" />
    </bean>
-   
+
    <!-- Control the location of the html templates (default: content/templates/) -->
    <bean id="templateResolverStrategy" parent="CRITemplateResolverStrategy">
       <property name="baseDirectory" value="templates/" />

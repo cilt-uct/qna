@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QnaGeneralLogic;
+import org.sakaiproject.qna.logic.GeneralLogic;
 import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
@@ -29,7 +29,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 	public static final String VIEW_ID = "search_results";
 	private ListIteratorRenderer listIteratorRenderer;
 	private SearchBarRenderer searchBarRenderer;
-	private QnaGeneralLogic qnaGeneralLogic;
+	private GeneralLogic generalLogic;
 	private ExternalLogic externalLogic;
 
 	public String getViewID() {
@@ -44,8 +44,8 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
     	this.searchBarRenderer = searchBarRenderer;
     }
 
-    public void setQnaGeneralLogic(QnaGeneralLogic qnaGeneralLogic) {
-        this.qnaGeneralLogic = qnaGeneralLogic;
+    public void setGeneralLogic(GeneralLogic generalLogic) {
+        this.generalLogic = generalLogic;
     }
 
     public void setExternalLogic(ExternalLogic externalLogic) {

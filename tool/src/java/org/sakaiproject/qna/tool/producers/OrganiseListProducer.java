@@ -34,7 +34,7 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
  * @author Joshua Ryan joshua.ryan@asu.edu
  *
  */
-public class OrganiseListProducer implements ViewComponentProducer, DynamicNavigationCaseReporter, DefaultView {
+public class OrganiseListProducer implements ViewComponentProducer, DynamicNavigationCaseReporter{
 
 	public static final String VIEW_ID = "organise_list";
 	public Map sitePages;

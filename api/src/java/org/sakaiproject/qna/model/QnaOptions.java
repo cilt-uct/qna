@@ -212,8 +212,6 @@ public class QnaOptions {
 	public void setDefaultStudentView(String defaultStudentView) {
 		this.defaultStudentView = defaultStudentView;
 	}
-    
-    
 
-    
+   
 }

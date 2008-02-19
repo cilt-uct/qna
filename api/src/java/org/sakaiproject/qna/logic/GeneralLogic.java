@@ -1,6 +1,6 @@
 package org.sakaiproject.qna.logic;
 
-public interface QnaGeneralLogic {
+public interface GeneralLogic {
 	
 	/**
 	 * Check if a specified user has QNA update rights in specific site

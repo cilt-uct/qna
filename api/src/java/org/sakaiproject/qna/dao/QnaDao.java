@@ -11,9 +11,6 @@
 
 package org.sakaiproject.qna.dao;
 
-import java.util.List;
-
-
 import org.sakaiproject.genericdao.api.CompleteGenericDao;
 
 /**

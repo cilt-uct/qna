@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QnaGeneralLogic;
+import org.sakaiproject.qna.logic.GeneralLogic;
 import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
@@ -54,9 +54,9 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
         this.richTextEvolver = richTextEvolver;
     }
 
-    private QnaGeneralLogic qnaGeneralLogic;
-    public void setQnaGeneralLogic(QnaGeneralLogic qnaGeneralLogic) {
-        this.qnaGeneralLogic = qnaGeneralLogic;
+    private GeneralLogic generalLogic;
+    public void setGeneralLogic(GeneralLogic generalLogic) {
+        this.generalLogic = generalLogic;
     }
 
     private ExternalLogic externalLogic;
@@ -82,7 +82,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 
 		// If anonymous remove name
 		UIOutput.make(tofill,"question-submit-details","Piet Pompies, 2008-02-07 12:10, Views: 13");
-		if (qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		if (generalLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
 			UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
 			UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
@@ -102,7 +102,7 @@ public class AnswersProducer implements ViewComponentProducer, NavigationCaseRep
 
 		for (int i=0;i<answers.length;i++) {
 			UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:",Integer.toString(i));
-			if (qnaGeneralLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			if (generalLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 				if (answers[i][0].equals("GIVEN")) {
 					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
 					UIMessage.make(answer,"answer-heading","qna.answers.lecturer-given-answer");

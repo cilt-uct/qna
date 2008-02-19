@@ -172,7 +172,6 @@ public class OptionsLogicImplTest extends
 		for (int i=0;i<notificationList.size();i++) {
 			assertEquals(notificationList.get(i), "something@something.com"); // TODO: Compare to array/list in test data
 		}
-		
 	}
 	
 	/**

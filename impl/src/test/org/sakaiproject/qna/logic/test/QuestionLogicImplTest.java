@@ -62,7 +62,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		} catch (SecurityException e) {
 			assertNotNull(e);
 		} catch (QnaConfigurationException qe) {
-			assertNotNull(qe);
+			fail("Should have thrown security exception exception");
 		}
 		
 		// Test with valid permission
@@ -73,7 +73,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		} catch (SecurityException e) {
 			fail("Should not have thrown exception");
 		} catch (QnaConfigurationException qe) {
-			assertNotNull(qe);
+			fail("Should not have thrown exception");
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package org.sakaiproject.qna.test;
+package org.sakaiproject.qna.logic.test;
 
 import java.util.List;
 
@@ -193,5 +193,5 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			fail("Should have thrown exception");
 		}
 	}
-
+	
 }

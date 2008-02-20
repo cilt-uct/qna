@@ -1,4 +1,4 @@
-package org.sakaiproject.qna.test;
+package org.sakaiproject.qna.logic.test;
 
 import java.util.List;
 

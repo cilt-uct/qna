@@ -1,7 +1,13 @@
 package org.sakaiproject.qna.logic.test;
 
 import java.util.Set;
-import org.sakaiproject.qna.logic.OptionsLogic;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
@@ -10,30 +16,69 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 public class OptionsLogicImplTest extends
 		AbstractTransactionalSpringContextTests {
 
-	OptionsLogic optionsLogic;
-
+	OptionsLogicImpl optionsLogic;
+	GeneralLogicImpl generalLogic;
+	
+	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
+	
+	private ExternalLogicStub logicStub = new ExternalLogicStub();
+	
+	private TestDataPreload tdp = new TestDataPreload();
+	
+    protected String[] getConfigLocations() {
+        // point to the needed spring config files, must be on the classpath
+        // (add component/src/webapp/WEB-INF to the build path in Eclipse),
+        // they also need to be referenced in the project.xml file
+        return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
+    }
+    
+    // run this before each test starts
+    protected void onSetUpBeforeTransaction() throws Exception {
+    }
+    
+    // run this before each test starts and as part of the transaction
+    protected void onSetUpInTransaction() {
+    	// load the spring created dao class bean from the Spring Application Context
+       QnaDao dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");	
+       if (dao == null) {
+           log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+       }
+       
+       generalLogic = new GeneralLogicImpl();
+       generalLogic.setExternalLogic(logicStub);
+       
+       // 	create and setup the object to be tested
+       optionsLogic = new OptionsLogicImpl();
+       optionsLogic.setDao(dao);
+       optionsLogic.setGeneralLogic(generalLogic);
+       
+       // preload testData
+       tdp.preloadTestData(dao);
+    }
+	
+	
 	/**
 	 * Test to retrieve options
 	 */
 	public void testGetOptionsByLocation() {
-		QnaOptions options = optionsLogic.getOptions("test_location");
+		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
 		assertNotNull(options);
-		assertTrue(options.getLocation().equals("test_location"));
+		assertTrue(options.getLocation().equals(TestDataPreload.LOCATION1_ID));
 
-		assertEquals(options.getModerationOn(), new Boolean(true));
-		assertEquals(options.getAnonymousAllowed(), new Boolean(false));
+		assertEquals(options.getModerationOn(), tdp.options_location1.getModerationOn());
+		assertEquals(options.getAnonymousAllowed(), tdp.options_location1.getAnonymousAllowed());
 
-		assertEquals(options.getEmailNotification(), new Boolean(true));
-		assertEquals(options.getEmailNotificationType(), QnaConstants.CUSTOM_LIST);
+		assertEquals(options.getEmailNotification(), tdp.options_location1.getEmailNotification());
+		assertEquals(options.getEmailNotificationType(), tdp.options_location1.getEmailNotificationType());
 
-		assertEquals(options.getDefaultStudentView(), QnaConstants.CATEGORY_VIEW);
+		assertEquals(options.getDefaultStudentView(), tdp.options_location1.getDefaultStudentView());
 	}
 
 	/**
 	 * Test to modify options
 	 */
 	public void testModifyOptions() {
-		QnaOptions options = optionsLogic.getOptions("test_location");
+		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
 		assertNotNull(options);
 		options.setAnonymousAllowed(true);
 		options.setModerationOn(false);
@@ -44,7 +89,7 @@ public class OptionsLogicImplTest extends
 
 		// Test with invalid permissions
 		try {
-			optionsLogic.saveOptions(options,"userid");
+			optionsLogic.saveOptions(options,TestDataPreload.USER_NO_UPDATE);
 
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
@@ -53,7 +98,7 @@ public class OptionsLogicImplTest extends
 
 		// Set user here with permissions
 		try {
-			optionsLogic.saveOptions(options,"userid");
+			optionsLogic.saveOptions(options,TestDataPreload.USER_UPDATE);
 		} catch (SecurityException e) {
 			fail("Should have thrown exception");
 		}
@@ -68,7 +113,7 @@ public class OptionsLogicImplTest extends
 
 		assertFalse(optionsLogic.hasOptions(locationId));
 
-		optionsLogic.createNewOptions(locationId);
+		QnaOptions options = optionsLogic.getOptions(locationId);
 
 		assertTrue(optionsLogic.hasOptions(locationId));
 	}

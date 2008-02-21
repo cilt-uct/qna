@@ -20,5 +20,9 @@ public class GeneralLogicImpl implements GeneralLogic {
 			return false;
 		}
 	}
+	
+	public boolean canUpdate(String userId) {
+		return canUpdate(externalLogic.getCurrentLocationId(), userId);
+	}
 
 }

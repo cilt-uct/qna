@@ -9,4 +9,12 @@ public interface GeneralLogic {
 	 * @return true if user can update, false if not
 	 */
 	public boolean canUpdate(String locationId, String userId);
+	
+	/**
+	 * Check if a specified user has QNA update rights in current location
+	 *
+	 * @param userId the internal user id (not username)
+	 * @return true if user can update, false if not
+	 */
+	public boolean canUpdate(String userId);
 }

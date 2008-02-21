@@ -61,11 +61,10 @@ public class QnaOptions {
 	 * @param emailNotificationType
 	 * @param defaultStudentView
 	 */
-	public QnaOptions(String id, String ownerId, String location,
+	public QnaOptions(String ownerId, String location,
 			Date dateLastModified, Date dateCreated, Boolean anonymousAllowed,
 			Boolean moderationOn, Boolean emailNotification,
 			String emailNotificationType, String defaultStudentView) {
-		this.id = id;
 		this.ownerId = ownerId;
 		this.location = location;
 		this.dateLastModified = dateLastModified;

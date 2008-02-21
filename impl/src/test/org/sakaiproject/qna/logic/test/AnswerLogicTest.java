@@ -2,10 +2,10 @@ package org.sakaiproject.qna.logic.test;
 
 import java.util.Set;
 
-import org.sakaiproject.qna.logic.AnswerLogic;
-import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.logic.impl.AnswerLogicImpl;
+import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -13,14 +13,12 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 
-//	Inject the answerLogic
-	AnswerLogic answerLogic;
 
-//	Inject the questionLogic
-	QuestionLogic questionLogic;
+	AnswerLogicImpl answerLogic;
 
-//	Inject the answerLogic
-	OptionsLogic optionsLogic;
+	QuestionLogicImpl questionLogic;
+
+	OptionsLogicImpl optionsLogic;
 
 	/**
 	 * Test retrieval of answer by id

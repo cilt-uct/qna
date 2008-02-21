@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class QnaAnswer {
 
+	
+
 	private String id;
 
 	// The question this answer is linked to
@@ -182,6 +184,18 @@ public class QnaAnswer {
 	 */
 	public void setAnonymous(Boolean anonymous) {
 		this.anonymous = anonymous;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof QnaAnswer){
+			return ((QnaAnswer)obj).getId().equals(this.getId());
+		}
+		
+		return false;
 	}
 
 	

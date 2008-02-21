@@ -2,45 +2,49 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaOptions {
 
     private String id;
 
+//  The list of custom email addresses associated with this option
+    private Set<QnaCustomEmail> customEmails;
+
 //	The user (sakai userid) that changed this options
-    private String ownerId; 
+    private String ownerId;
 
 //	Sakai entity reference
-    private String location; 
-    
+    private String location;
+
 //	The date these options was last modified by someone
     private Date dateLastModified;
 
 //	The date these options was created
     private Date dateCreated;
-    
+
 //  Can participants post questions anonymously
     private Boolean anonymousAllowed;
-    
-//  Are the questions moderated on this site  
+
+//  Are the questions moderated on this site
     private Boolean moderationOn;
-    
-//  Should email notifications be sent when new questions are asked  
+
+//  Should email notifications be sent when new questions are asked
     private Boolean emailNotification;
-    
-//  The type of email notification 
+
+//  The type of email notification
     private String emailNotificationType;
-    
+
 //  The default view presented to students
     private String defaultStudentView;
 
 	/**
-	 * 
+	 *
 	 */
 	public QnaOptions() {
 	}
@@ -213,5 +217,31 @@ public class QnaOptions {
 		this.defaultStudentView = defaultStudentView;
 	}
 
-   
+	/**
+	 * @return the customEmails
+	 */
+	public Set<QnaCustomEmail> getCustomEmails() {
+		return customEmails;
+	}
+
+	/**
+	 * @param customEmails the customEmails to set
+	 */
+	public void setCustomEmails(Set<QnaCustomEmail> customEmails) {
+		this.customEmails = customEmails;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof QnaOptions){
+			return ((QnaOptions)obj).getId().equals(this.getId());
+		}
+
+		return false;
+	}
+
+
 }

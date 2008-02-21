@@ -3,7 +3,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-   <!-- put your value object in the class name, 
+   <!-- put your value object in the class name,
       the table name is optional but you should specify it to avoid collisions -->
    <class name="org.sakaiproject.qna.model.QnaCategory" table="qna_CATEGORIES">
 
@@ -11,6 +11,11 @@
       <id name="id" type="string">
          <generator class="uuid.hex"/>
       </id>
+      <!--  linkage to question -->
+      <set name="questions" lazy="true" inverse="true" cascade="all">
+      		<key column="category_id"/>
+      		<one-to-many class="org.sakaiproject.qna.model.QnaCategory" />
+      </set>
       <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />
       <property name="categoryText" type="string" length="255" not-null="true" />

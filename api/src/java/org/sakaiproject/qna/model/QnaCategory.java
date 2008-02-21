@@ -2,10 +2,11 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaCategory {
@@ -13,24 +14,27 @@ public class QnaCategory {
     private String id;
 
 //	The user (sakai userid) that created this category
-	private String ownerId; 
-	
-//	Sakai entity reference
-	private String location; 
+	private String ownerId;
 
-// 	Text of the category	
+//  The list of questions associated with this category
+    private Set<QnaQuestion> questions;
+
+//	Sakai entity reference
+	private String location;
+
+// 	Text of the category
 	private String categoryText;
-	
+
 //  The date this category was last modified
 	private Date dateLastModified;
 
 // The date this category was created
 	private Date dateCreated;
 
-//	Ordering of category in category view	
-	
+//	Ordering of category in category view
+
 	private Integer sortOrder;
-	
+
 	public QnaCategory() {
 	}
 
@@ -151,8 +155,35 @@ public class QnaCategory {
 	 */
 	public void setSortOrder(Integer sortOrder) {
 		this.sortOrder = sortOrder;
+		
 	}
 
-	
+	/**
+	 * @return the questions
+	 */
+	public Set<QnaQuestion> getQuestions() {
+		return questions;
+	}
+
+	/**
+	 * @param questions the questions to set
+	 */
+	public void setQuestions(Set<QnaQuestion> questions) {
+		this.questions = questions;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof QnaCategory){
+			return ((QnaCategory)obj).getId().equals(this.getId());
+		}
+
+		return false;
+	}
+
+
 
 }

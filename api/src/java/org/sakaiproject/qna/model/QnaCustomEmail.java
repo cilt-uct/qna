@@ -6,28 +6,28 @@ import java.util.Date;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaCustomEmail {
 
     private String id;
-    
+
 //  The options this custom email is linked to
     private QnaOptions options;
 
 //	The user (sakai userid) that posted this question
 	private String ownerId;
-	
+
 //	The email address to which notification should be sent
 	private String email;
-	
+
 //	The date this answer was created
 	private Date dateCreated;
 
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public QnaCustomEmail() {
 	}
@@ -128,8 +128,19 @@ public class QnaCustomEmail {
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	
-	
-	
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof QnaCustomEmail){
+			return ((QnaCustomEmail)obj).getId().equals(this.getId());
+		}
+
+		return false;
+	}
+
+
+
 }

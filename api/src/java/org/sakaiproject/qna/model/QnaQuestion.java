@@ -2,48 +2,52 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaQuestion {
 
     private String id;
 
-//	The category this question falls in    
+//	The category this question falls in
     private QnaCategory category;
-    
+
+//  The list of answers associated with this question
+    private Set<QnaAnswer> answers;
+
 //  The user (sakai userid) that posted this question
 	private String ownerId;
-	
+
 //	Sakai entity reference
 	private String location;
-	
-// 	Text of the question text	
+
+// 	Text of the question text
 	private String questionText;
 
-//	How many times the question has been viewed	
+//	How many times the question has been viewed
 	private Integer views;
-	
+
 //  The date this question was last modified by someone
 	private Date dateLastModified;
 
 //  The date this question was created
 	private Date dateCreated;
 
-//	Order of the question in category view	
+//	Order of the question in category view
 	private Integer sortOrder;
 
-//	If this question is asked anonymously 	
+//	If this question is asked anonymously
 	private Boolean anonymous;
 
-//	If the question is published	
+//	If the question is published
 	private Boolean published;
 
 	/**
-	 * 
+	 *
 	 */
 	public QnaQuestion() {
 	}
@@ -231,6 +235,32 @@ public class QnaQuestion {
 	public void setPublished(Boolean published) {
 		this.published = published;
 	}
-	
+
+	/**
+	 * @return list of answers linked to this question
+	 */
+	public Set<QnaAnswer> getAnswers() {
+		return answers;
+	}
+
+	/**
+	 * @param answers set list of answers to this question
+	 */
+	public void setAnswers(Set<QnaAnswer> answers) {
+		this.answers = answers;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof QnaQuestion){
+			return ((QnaQuestion)obj).getId().equals(this.getId());
+		}
+
+		return false;
+	}
+
 
 }

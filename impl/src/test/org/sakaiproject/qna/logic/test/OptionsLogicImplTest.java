@@ -18,7 +18,6 @@ public class OptionsLogicImplTest extends
 	public void testGetOptionsByLocation() {
 		QnaOptions options = optionsLogic.getOptions("test_location");
 		assertNotNull(options);
-
 		assertTrue(options.getLocation().equals("test_location"));
 
 		assertEquals(options.getModerationOn(), new Boolean(true));
@@ -45,7 +44,8 @@ public class OptionsLogicImplTest extends
 
 		// Test with invalid permissions
 		try {
-			optionsLogic.saveOptions(options);
+			optionsLogic.saveOptions(options,"userid");
+
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
@@ -53,7 +53,7 @@ public class OptionsLogicImplTest extends
 
 		// Set user here with permissions
 		try {
-			optionsLogic.saveOptions(options);
+			optionsLogic.saveOptions(options,"userid");
 		} catch (SecurityException e) {
 			fail("Should have thrown exception");
 		}

@@ -21,8 +21,9 @@ public interface OptionsLogic {
 	 *
 	 * @param options
 	 *            to be saved
+	 * @param userId the internal user id (not username)
 	 */
-	public void saveOptions(QnaOptions options);
+	public void saveOptions(QnaOptions options, String userId);
 
 	/**
 	 * Creates options at locationId

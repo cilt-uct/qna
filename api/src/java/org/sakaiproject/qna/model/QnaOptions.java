@@ -4,6 +4,9 @@ package org.sakaiproject.qna.model;
 import java.util.Date;
 import java.util.Set;
 
+import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.model.constants.QnaConstants;
+
 /**
  * This is a the options table entity
  *
@@ -192,14 +195,28 @@ public class QnaOptions {
 	 * @return the emailNotificationType
 	 */
 	public String getEmailNotificationType() {
-		return emailNotificationType;
+		if (this.emailNotification == false) {
+			return null;
+		} else {
+			return emailNotificationType; 
+		}
 	}
 
 	/**
 	 * @param emailNotificationType the emailNotificationType to set
 	 */
-	public void setEmailNotificationType(String emailNotificationType) {
-		this.emailNotificationType = emailNotificationType;
+	public void setEmailNotificationType(String emailNotificationType) throws QnaConfigurationException {
+		if (!this.emailNotification) {
+			throw new QnaConfigurationException("Cannot set email notification type when email notification is switched off");
+		}
+		
+		if (emailNotificationType.equals(QnaConstants.CUSTOM_LIST) || 
+			emailNotificationType.equals(QnaConstants.SITE_CONTACT) ||
+			emailNotificationType.equals(QnaConstants.UPDATE_RIGHTS)) {
+			this.emailNotificationType = emailNotificationType;
+		} else {
+			throw new IllegalArgumentException("Invalid notification type provided");
+		}
 	}
 
 	/**
@@ -213,13 +230,18 @@ public class QnaOptions {
 	 * @param defaultStudentView the defaultStudentView to set
 	 */
 	public void setDefaultStudentView(String defaultStudentView) {
-		this.defaultStudentView = defaultStudentView;
+		
+		if (defaultStudentView.equals(QnaConstants.CATEGORY_VIEW) || defaultStudentView.equals(QnaConstants.MOST_POPULAR_VIEW)) {
+			this.defaultStudentView = defaultStudentView;
+		} else {
+			throw new IllegalArgumentException("Invalid default student view option provided");
+		}
 	}
 
 	/**
 	 * @return the customEmails
 	 */
-	public Set<QnaCustomEmail> getCustomEmails() {
+	public Set<QnaCustomEmail> getCustomEmails() {		
 		return customEmails;
 	}
 

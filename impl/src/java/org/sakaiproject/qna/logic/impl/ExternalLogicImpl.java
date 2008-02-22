@@ -16,6 +16,10 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 
 public class ExternalLogicImpl implements ExternalLogic {
 	
+	private final static String PROP_SITE_CONTACT_EMAIL = "contact-email";
+
+	private final static String PROP_SITE_CONTACT_NAME = "contact-name";
+	
 	private static Log log = LogFactory.getLog(ExternalLogicImpl.class);
 	
     private FunctionManager functionManager;
@@ -111,6 +115,26 @@ public class ExternalLogicImpl implements ExternalLogic {
 			return true;
 		}
 		return false;
+	}
+
+	public String getSiteContactEmail(String locationId) {
+		//Site s = siteService.getSite(toolManager.getCurrentPlacement().getContext());
+			
+//        Site site = (Site) entityBroker.fetchEntity(locationId);
+//		
+//		return site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL);
+		return "----";
+	}
+
+	public String getSiteContactName(String locationId) {
+//		try {
+//			Site s = siteService.getSite(toolManager.getCurrentPlacement().getContext());
+//			
+//			return s.getProperties().getProperty(PROP_SITE_CONTACT_NAME);
+//		} catch (IdUnusedException e) {
+//			return  "--------";
+//		}
+		return "----";
 	}
 
 }

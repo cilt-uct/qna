@@ -49,4 +49,20 @@ public class ExternalLogicStub implements ExternalLogic {
 		
 	}
 
+	public String getSiteContactEmail(String locationId) {
+		if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
+			return TestDataPreload.LOCATION1_CONTACT_EMAIL;
+		} else {
+			return null;
+		}
+	}
+
+	public String getSiteContactName(String locationId) {
+		if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
+			return TestDataPreload.LOCATION1_CONTACT_NAME; 
+		} else {
+			return null;
+		}
+	}
+
 }

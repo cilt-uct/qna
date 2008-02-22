@@ -31,19 +31,9 @@ public interface OptionsLogic {
 	 * @param locationId
 	 *            a unique id which represents the current location of the user
 	 *            (entity reference)
+	 * @param {@link QnaOptions} object           
 	 */
-	public void createNewOptions(String locationId);
-
-	/**
-	 * Checks if location has options
-	 *
-	 * @param locationId
-	 *            a unique id which represents the current location of the user
-	 *            (entity reference)
-	 * @return boolean true if location has options and false if location
-	 *         doesn't
-	 */
-	public boolean hasOptions(String locationId);
+	public QnaOptions createDefaultOptions(String locationId);
 
 	/**
 	 * Set custom mail list for location
@@ -53,8 +43,10 @@ public interface OptionsLogic {
 	 *            (entity reference)
 	 * @param mailList
 	 * 			  comma-separated mail list
+	 * @param userId TODO
+	 * @return TODO
 	 */
-	public void setCustomMailList(String locationId, String mailList);
+	public boolean setCustomMailList(String locationId, String mailList, String userId);
 
 	/**
 	 * Get e-mail notification list for location based on notification type

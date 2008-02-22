@@ -25,7 +25,6 @@ public class QnaCustomEmail {
 //	The date this answer was created
 	private Date dateCreated;
 
-
 	/**
 	 *
 	 */
@@ -34,15 +33,13 @@ public class QnaCustomEmail {
 
 
 	/**
-	 * @param id
 	 * @param options
 	 * @param ownerId
 	 * @param email
 	 * @param dateCreated
 	 */
-	public QnaCustomEmail(String id, QnaOptions options, String ownerId,
-			String email, Date dateCreated) {
-		this.id = id;
+	public QnaCustomEmail(QnaOptions options, String ownerId, String email,
+			Date dateCreated) {
 		this.options = options;
 		this.ownerId = ownerId;
 		this.email = email;
@@ -139,6 +136,19 @@ public class QnaCustomEmail {
 		}
 
 		return false;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (this.id != null){
+			return id.hashCode();
+		}else{
+			return email.hashCode();
+		}
 	}
 
 

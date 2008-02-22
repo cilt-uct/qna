@@ -57,4 +57,19 @@ public interface ExternalLogic {
 	 */
 	public boolean isUserAllowedInLocation(String userId, String permission, String locationId);
     
+	/**
+	 * Name of site contact
+	 * 
+	 * @param locationId
+	 * @return
+	 */
+	public String getSiteContactName(String locationId);
+	
+	/**
+	 * E-mail address of site contact
+	 * 
+	 * @param locationId
+	 * @return
+	 */
+	public String getSiteContactEmail(String locationId);
 }

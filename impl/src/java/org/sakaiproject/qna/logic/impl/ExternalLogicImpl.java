@@ -118,23 +118,30 @@ public class ExternalLogicImpl implements ExternalLogic {
 	}
 
 	public String getSiteContactEmail(String locationId) {
-		//Site s = siteService.getSite(toolManager.getCurrentPlacement().getContext());
-			
-//        Site site = (Site) entityBroker.fetchEntity(locationId);
-//		
-//		return site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL);
-		return "----";
+		try {
+			Site site = siteService.getSite(toolManager.getCurrentPlacement().getContext());
+			if (site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL) != null) {
+				return site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL);
+			} else {
+				return site.getCreatedBy().getEmail();
+			}
+		} catch (IdUnusedException e) {
+			return "----";
+		}
+		
 	}
 
 	public String getSiteContactName(String locationId) {
-//		try {
-//			Site s = siteService.getSite(toolManager.getCurrentPlacement().getContext());
-//			
-//			return s.getProperties().getProperty(PROP_SITE_CONTACT_NAME);
-//		} catch (IdUnusedException e) {
-//			return  "--------";
-//		}
-		return "----";
+		try {
+			Site site = siteService.getSite(toolManager.getCurrentPlacement().getContext());
+			if (site.getProperties().getProperty(PROP_SITE_CONTACT_NAME) != null) {
+				return site.getProperties().getProperty(PROP_SITE_CONTACT_NAME);
+			} else {
+				return site.getCreatedBy().getDisplayName();
+			}
+		} catch (IdUnusedException e) {
+			return  "--------";
+		}
 	}
 
 }

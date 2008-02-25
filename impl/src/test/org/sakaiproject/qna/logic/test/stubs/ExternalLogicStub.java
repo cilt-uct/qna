@@ -1,7 +1,11 @@
 package org.sakaiproject.qna.logic.test.stubs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.test.TestDataPreload;
+import org.sakaiproject.user.api.User;
 
 public class ExternalLogicStub implements ExternalLogic {
 
@@ -44,9 +48,18 @@ public class ExternalLogicStub implements ExternalLogic {
 					return true;
 				}
 			}
-		}
-		return false;
+		} else if (userId.equals(TestDataPreload.USER_LOC_3_UPDATE_1)
+				|| userId.equals(TestDataPreload.USER_LOC_3_UPDATE_2)
+				|| userId.equals(TestDataPreload.USER_LOC_3_UPDATE_3)) {
+			if (locationId.equals(TestDataPreload.LOCATION3_ID)) {
+				if (permission.equals(QNA_UPDATE)) {
+					return true;
+				}
+			}
+		} 
 		
+		return false;
+
 	}
 
 	public String getSiteContactEmail(String locationId) {
@@ -59,10 +72,22 @@ public class ExternalLogicStub implements ExternalLogic {
 
 	public String getSiteContactName(String locationId) {
 		if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
-			return TestDataPreload.LOCATION1_CONTACT_NAME; 
+			return TestDataPreload.LOCATION1_CONTACT_NAME;
 		} else {
 			return null;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public Set<User> getSiteUsersWithPermission(String locationId, String permission) {
+		if (locationId.equals(TestDataPreload.LOCATION3_ID) && permission.equals(QNA_UPDATE)) {
+			Set users = new HashSet<User>();
+			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_1));
+			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_2));
+			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_3));
+			return users;
+		} else {
+			return new HashSet<User>();
+		}
+	}
 }

@@ -16,6 +16,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
+import org.sakaiproject.user.api.User;
 
 public class OptionsLogicImpl implements OptionsLogic {
 
@@ -65,6 +66,16 @@ public class OptionsLogicImpl implements OptionsLogic {
 		if (options.getEmailNotification()) {
 			if (options.getEmailNotificationType().equals(QnaConstants.SITE_CONTACT)) {
 				notificationSet.add(externalLogic.getSiteContactEmail(locationId));
+			} else if (options.getEmailNotificationType().equals(QnaConstants.UPDATE_RIGHTS)) {
+				Set<User> users = externalLogic.getSiteUsersWithPermission(locationId,ExternalLogic.QNA_UPDATE);
+				for (User user : users) {
+					notificationSet.add(user.getEmail());
+				}
+			} else if (options.getEmailNotificationType().equals(QnaConstants.CUSTOM_LIST)) {
+				Set<QnaCustomEmail> customMails = options.getCustomEmails();
+				for (QnaCustomEmail qnaCustomEmail : customMails) {
+					notificationSet.add(qnaCustomEmail.getEmail());
+				}
 			}
 		} 
 		return notificationSet;

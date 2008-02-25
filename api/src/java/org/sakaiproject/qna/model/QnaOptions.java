@@ -206,16 +206,18 @@ public class QnaOptions {
 	 * @param emailNotificationType the emailNotificationType to set
 	 */
 	public void setEmailNotificationType(String emailNotificationType) throws QnaConfigurationException {
-		if (!this.emailNotification) {
-			throw new QnaConfigurationException("Cannot set email notification type when email notification is switched off");
-		}
-		
-		if (emailNotificationType.equals(QnaConstants.CUSTOM_LIST) || 
-			emailNotificationType.equals(QnaConstants.SITE_CONTACT) ||
-			emailNotificationType.equals(QnaConstants.UPDATE_RIGHTS)) {
-			this.emailNotificationType = emailNotificationType;
-		} else {
-			throw new IllegalArgumentException("Invalid notification type provided");
+		if (emailNotificationType != null) {
+			if (!this.emailNotification) {
+				throw new QnaConfigurationException("Cannot set email notification type when email notification is switched off");
+			}
+			
+			if (emailNotificationType.equals(QnaConstants.CUSTOM_LIST) || 
+				emailNotificationType.equals(QnaConstants.SITE_CONTACT) ||
+				emailNotificationType.equals(QnaConstants.UPDATE_RIGHTS)) {
+				this.emailNotificationType = emailNotificationType;
+			} else {
+				throw new IllegalArgumentException("Invalid notification type provided");
+			}
 		}
 	}
 

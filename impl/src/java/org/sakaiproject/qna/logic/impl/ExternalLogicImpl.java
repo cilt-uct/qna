@@ -1,5 +1,8 @@
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.FunctionManager;
@@ -11,6 +14,7 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
@@ -84,8 +88,8 @@ public class ExternalLogicImpl implements ExternalLogic {
 
 	public String getLocationTitle(String locationId) {
         try {
-			Site s = siteService.getSite(toolManager.getCurrentPlacement().getContext());
-			return s.getTitle();
+			 Site site = (Site) entityBroker.fetchEntity(locationId);
+			 return site.getTitle();
         } catch (Exception e) {
             // invalid site reference
             log.debug("Invalid site reference:" + locationId);
@@ -118,30 +122,35 @@ public class ExternalLogicImpl implements ExternalLogic {
 	}
 
 	public String getSiteContactEmail(String locationId) {
-		try {
-			Site site = siteService.getSite(toolManager.getCurrentPlacement().getContext());
-			if (site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL) != null) {
-				return site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL);
-			} else {
-				return site.getCreatedBy().getEmail();
-			}
-		} catch (IdUnusedException e) {
-			return "----";
+		Site site = (Site) entityBroker.fetchEntity(locationId);
+		if (site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL) != null) {
+			return site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL);
+		} else {
+			return site.getCreatedBy().getEmail();
 		}
-		
 	}
 
 	public String getSiteContactName(String locationId) {
-		try {
-			Site site = siteService.getSite(toolManager.getCurrentPlacement().getContext());
-			if (site.getProperties().getProperty(PROP_SITE_CONTACT_NAME) != null) {
-				return site.getProperties().getProperty(PROP_SITE_CONTACT_NAME);
-			} else {
-				return site.getCreatedBy().getDisplayName();
-			}
-		} catch (IdUnusedException e) {
-			return  "--------";
+		Site site = (Site) entityBroker.fetchEntity(locationId);
+		if (site.getProperties().getProperty(PROP_SITE_CONTACT_NAME) != null) {
+			return site.getProperties().getProperty(PROP_SITE_CONTACT_NAME);
+		} else {
+			return site.getCreatedBy().getDisplayName();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public Set<User> getSiteUsersWithPermission(String locationId, String permission) {
+		Site site = (Site) entityBroker.fetchEntity(locationId);
+		Set<User> users = site.getUsers();
+		
+		Set<User> usersWithPermission = new HashSet<User>();
+		for (User user : users) {
+			if (isUserAllowedInLocation(user.getId(), permission, locationId)) {
+				usersWithPermission.add(user);
+			}
+		}
+		return usersWithPermission;
 	}
 
 }

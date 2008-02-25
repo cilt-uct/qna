@@ -1,7 +1,5 @@
 package org.sakaiproject.qna.logic;
 
-import java.util.List;
-
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;

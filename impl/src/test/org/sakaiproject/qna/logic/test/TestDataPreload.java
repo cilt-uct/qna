@@ -2,7 +2,6 @@ package org.sakaiproject.qna.logic.test;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.sakaiproject.genericdao.api.GenericDao;
@@ -16,19 +15,35 @@ public class TestDataPreload {
 	 * current user, access level user in LOCATION_ID1
 	 */
 	public final static String USER_UPDATE = "user-12345678";
+	
+	public final static String USER_LOC_3_UPDATE_1 = "user-11112222";
+	public final static String USER_LOC_3_UPDATE_1_EMAIL = "user-11112222@qnatest.com";
+	
+	public final static String USER_LOC_3_UPDATE_2 = "user-22221111";
+	public final static String USER_LOC_3_UPDATE_2_EMAIL= "user-22221111@qnatest.com";
+	
+	public final static String USER_LOC_3_UPDATE_3 = "user-11144422";
+	public final static String USER_LOC_3_UPDATE_3_EMAIL = "user-11144422@qnatest.com";	
+	
+	public final static String USER_LOC_3_NO_UPDATE_1 = "user-77755577";
+	public final static String USER_LOC_3_NO_UPDATE_1_EMAIL = "user-77755577@qnatest.com";
+	
+	public final static String USER_LOC_3_NO_UPDATE_2 = "user-65000011";
+	public final static String USER_LOC_3_NO_UPDATE_2_EMAIL = "user-65000011@qnatest.com";
+	
 	public final static String USER_NO_UPDATE = "user-87654321";
-
+	
 	public final static String USER_CUSTOM_EMAIL1 = "user1@qna.com";
 	public final static String USER_CUSTOM_EMAIL2 = "user2@qna.com";
 	public final static String USER_CUSTOM_EMAIL3 = "user3@qna.com";
 	public final static String USER_CUSTOM_EMAIL4 = "user3qna.com";
-	
+
 	public final static String USER_CUSTOM_EMAIL_INVALID = USER_CUSTOM_EMAIL4
 			+ "," + USER_CUSTOM_EMAIL1 + " " + USER_CUSTOM_EMAIL2 + ","
 			+ USER_CUSTOM_EMAIL3;
 	public final static String USER_CUSTOM_EMAIL_VALID = USER_CUSTOM_EMAIL1
 			+ "," + USER_CUSTOM_EMAIL2 + " , " + USER_CUSTOM_EMAIL3;
-	
+
 	/**
 	 * current location
 	 */
@@ -36,18 +51,37 @@ public class TestDataPreload {
 	public final static String LOCATION1_TITLE = "Location 1 title";
 	public final static String LOCATION2_ID = "/site/ref-22222222";
 	public final static String LOCATION2_TITLE = "Location 2 title";
+	public final static String LOCATION3_ID = "/site/ref-33333333";
+	public final static String LOCATION3_TITLE = "Location 3 title";
+	public final static String LOCATION4_ID = "/site/ref-44444444";
+	public final static String LOCATION4_TITLE = "Location 4 title";
 
 	public final static String LOCATION1_CONTACT_NAME = "Site Contact Name";
 	public final static String LOCATION1_CONTACT_EMAIL = "sitecontact@site.com";
-	
+
 	public QnaOptions options_location1 = new QnaOptions(USER_UPDATE,
 			LOCATION1_ID, new Date(), new Date(), false, false, true,
 			QnaConstants.SITE_CONTACT, QnaConstants.CATEGORY_VIEW);
 	
-	public QnaCustomEmail customEmail1_location1 = new QnaCustomEmail(options_location1, TestDataPreload.USER_UPDATE,TestDataPreload.USER_CUSTOM_EMAIL1, new Date());
-	public QnaCustomEmail customEmail2_location1 = new QnaCustomEmail(options_location1, TestDataPreload.USER_UPDATE,TestDataPreload.USER_CUSTOM_EMAIL2, new Date());
-	public QnaCustomEmail customEmail3_location1 = new QnaCustomEmail(options_location1, TestDataPreload.USER_UPDATE,TestDataPreload.USER_CUSTOM_EMAIL3, new Date());
+	public QnaOptions options_location3 = new QnaOptions(USER_LOC_3_UPDATE_1,
+			LOCATION3_ID, new Date(), new Date(), true, true, true,
+			QnaConstants.UPDATE_RIGHTS, QnaConstants.MOST_POPULAR_VIEW);
 	
+	public QnaOptions options_location4 = new QnaOptions(USER_UPDATE,
+			LOCATION4_ID, new Date(), new Date(), false, false, false,
+			null, QnaConstants.MOST_POPULAR_VIEW);
+	
+
+	public QnaCustomEmail customEmail1_location1 = new QnaCustomEmail(
+			options_location1, TestDataPreload.USER_UPDATE,
+			TestDataPreload.USER_CUSTOM_EMAIL1, new Date());
+	public QnaCustomEmail customEmail2_location1 = new QnaCustomEmail(
+			options_location1, TestDataPreload.USER_UPDATE,
+			TestDataPreload.USER_CUSTOM_EMAIL2, new Date());
+	public QnaCustomEmail customEmail3_location1 = new QnaCustomEmail(
+			options_location1, TestDataPreload.USER_UPDATE,
+			TestDataPreload.USER_CUSTOM_EMAIL3, new Date());
+
 	/**
 	 * Preload a bunch of test data into the database
 	 * 
@@ -59,10 +93,12 @@ public class TestDataPreload {
 		dao.save(options_location1);
 		options_location1.setCustomEmails(setupCustomEmail());
 		dao.save(options_location1);
+		
+		dao.save(options_location3);
 	}
 
 	private Set<QnaCustomEmail> setupCustomEmail() {
-		
+
 		Set<QnaCustomEmail> customEmails = new HashSet<QnaCustomEmail>();
 
 		customEmails.add(customEmail1_location1);

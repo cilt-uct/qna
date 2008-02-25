@@ -85,7 +85,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
-
+		
 		// Depending on default or one selected view type, send through parameter
 		QuestionListRenderer renderer;
 		ViewTypeParams params = (ViewTypeParams) viewparams;

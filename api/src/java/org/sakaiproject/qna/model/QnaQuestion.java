@@ -53,7 +53,6 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param id
 	 * @param category
 	 * @param ownerId
 	 * @param location
@@ -65,11 +64,10 @@ public class QnaQuestion {
 	 * @param anonymous
 	 * @param published
 	 */
-	public QnaQuestion(String id, QnaCategory category, String ownerId,
-			String location, String questionText, Integer views,
-			Date dateLastModified, Date dateCreated, Integer order,
-			Boolean anonymous, Boolean published) {
-		this.id = id;
+	public QnaQuestion(QnaCategory category, String ownerId, String location,
+			String questionText, Integer views, Date dateLastModified,
+			Date dateCreated, Integer order, Boolean anonymous,
+			Boolean published) {
 		this.category = category;
 		this.ownerId = ownerId;
 		this.location = location;

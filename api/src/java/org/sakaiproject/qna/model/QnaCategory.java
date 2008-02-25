@@ -2,6 +2,7 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -39,7 +40,6 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param id
 	 * @param ownerId
 	 * @param location
 	 * @param categoryText
@@ -47,10 +47,8 @@ public class QnaCategory {
 	 * @param dateCreated
 	 * @param order
 	 */
-	public QnaCategory(String id, String ownerId, String location,
-			String categoryText, Date dateLastModified, Date dateCreated,
-			Integer order) {
-		this.id = id;
+	public QnaCategory(String ownerId, String location, String categoryText,
+			Date dateLastModified, Date dateCreated, Integer order) {
 		this.ownerId = ownerId;
 		this.location = location;
 		this.categoryText = categoryText;

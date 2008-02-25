@@ -12,11 +12,9 @@ public interface QuestionLogic {
 	 *
 	 * @param questionId
 	 * 				unique id of a {@link QnaQuestion}
-	 * @param locationId
-	 * 				a unique id which represents the current location of the user (entity reference)
 	 * @return a {@link QnaQuestion} or null
 	 */
-	public QnaQuestion getQuestionById(String questionId, String locationId);
+	public QnaQuestion getQuestionById(String questionId);
 
 	/**
 	 * Check if a question exists

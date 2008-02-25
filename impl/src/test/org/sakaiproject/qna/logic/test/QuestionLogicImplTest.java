@@ -1,48 +1,102 @@
 package org.sakaiproject.qna.logic.test;
 
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
+import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTests {
 
-	QuestionLogic questionLogic;
-	OptionsLogic optionsLogic;
+	QuestionLogicImpl questionLogic;
+	OptionsLogicImpl optionsLogic;
+	GeneralLogicImpl generalLogic;
 
+	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
+
+	private ExternalLogicStub logicStub = new ExternalLogicStub();
+
+	private TestDataPreload tdp = new TestDataPreload();
+
+	protected String[] getConfigLocations() {
+		// point to the needed spring config files, must be on the classpath
+		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
+		// they also need to be referenced in the project.xml file
+		return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
+	}
+
+	// run this before each test starts
+	protected void onSetUpBeforeTransaction() throws Exception {
+	}
+
+	// run this before each test starts and as part of the transaction
+	protected void onSetUpInTransaction() {
+		// load the spring created dao class bean from the Spring Application
+		// Context
+		QnaDao dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
+		if (dao == null) {
+			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+		}
+
+		generalLogic = new GeneralLogicImpl();
+		generalLogic.setExternalLogic(logicStub);
+
+		// create and setup the object to be tested
+		optionsLogic = new OptionsLogicImpl();
+		optionsLogic.setDao(dao);
+		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setExternalLogic(logicStub);
+		
+		// create and setup the object to be tested
+		questionLogic = new QuestionLogicImpl();
+		questionLogic.setDao(dao);
+		questionLogic.setGeneralLogic(generalLogic);
+		
+		// preload testData
+		tdp.preloadTestData(dao);
+	}
+	
 	/**
 	 * Test retrieval of question by id
 	 */
 	public void testGetQuestionById() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location1.getId());
 		assertNotNull(question);
-		assertEquals(question.getQuestionText(),"question text here");
+		assertEquals(question.getQuestionText(),tdp.question1_location1.getQuestionText());
+		assertEquals(question.getId(), tdp.question1_location1.getId());
 	}
 
 	/**
 	 * Test retrieval of published questions list
 	 */
 	public void testGetPublishedQuestions() {
-		List<QnaQuestion> list = questionLogic.getPublishedQuestions("locationId");
-		assertEquals(list.size(), 4);
-		for (int i=0;i<list.size();i++) {
-			assertEquals(list.get(i).getQuestionText(),"question text"); // TODO: Get from loaded test data list or array
-			assertTrue(list.get(i).getPublished());
-		}
+		List<QnaQuestion> questions = questionLogic.getPublishedQuestions(TestDataPreload.LOCATION1_ID);
+		assertEquals(questions.size(), 3);
+		
+		assertTrue(questions.contains(tdp.question2_location1));
+		assertTrue(questions.contains(tdp.question3_location1));
+		assertTrue(questions.contains(tdp.question4_location1));
 	}
 
 	/**
 	 * Test retrieval of unpublished questions list
 	 */
 	public void testGetNewQuestions() {
-		List<QnaQuestion> list = questionLogic.getNewQuestions("locationId");
-		assertEquals(list.size(), 4);
-		for (int i=0;i<list.size();i++) {
-			assertEquals(list.get(i).getQuestionText(),"question text"); // TODO: Get from loaded test data list or array
-			assertFalse(list.get(i).getPublished());
-		}
+		List<QnaQuestion> questions = questionLogic.getNewQuestions(TestDataPreload.LOCATION1_ID);
+		assertEquals(questions.size(), 2);
+		
+		assertTrue(questions.contains(tdp.question1_location1));
+		assertTrue(questions.contains(tdp.question5_location1));
 	}
 
 	/**
@@ -50,7 +104,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test modified date updated
 	 */
 	public void testModifyQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 
 		question.setQuestionText("Testing update");
 
@@ -129,7 +183,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test publishing of question
 	 */
 	public void testPublishQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 		questionLogic.publishQuestion(question);
 		assertTrue(question.getPublished());
 	}
@@ -138,7 +192,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test removal of question
 	 */
 	public void testRemoveQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 
 		// Test with invalid permissions
 		try {
@@ -161,7 +215,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test view increment of question
 	 */
 	public void testViewsIncrement() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 		assertEquals(question.getViews(), new Integer(77));
 		questionLogic.incrementView(question);
 		assertEquals(question.getViews(), new Integer(78));

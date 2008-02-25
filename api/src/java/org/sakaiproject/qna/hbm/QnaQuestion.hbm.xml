@@ -12,8 +12,8 @@
          <generator class="uuid.hex"/>
       </id>
       <!-- linkage to the category -->
-      <many-to-one name="category" class="org.sakaiproject.qna.model.QnaCategory" fetch="join">
-         <column name="category_id" not-null="true" />
+      <many-to-one name="category" class="org.sakaiproject.qna.model.QnaCategory">
+         <column name="category_id" />
       </many-to-one>
 
       <!--  linkage to answers -->

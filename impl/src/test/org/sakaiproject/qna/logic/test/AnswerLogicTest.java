@@ -36,8 +36,7 @@ public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 	 * Test retrieval of all answers linked to a question
 	 */
 	public void testGetAnswersToQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId",
-				"locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 		assertNotNull(question);
 
 		Set<QnaAnswer> answers = question.getAnswers();
@@ -51,11 +50,11 @@ public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 	 */
 	public void testAddAnswerToQuestion() {
 		QnaQuestion questionAllowAnonymous = questionLogic.getQuestionById(
-				"questionIdAnon", "locationIdAnon");
+				"questionIdAnon");
 		assertNotNull(questionAllowAnonymous);
 
 		QnaQuestion questionNotAnonymous = questionLogic.getQuestionById(
-				"questionIdNotAnon", "locationIdNotAnon");
+				"questionIdNotAnon");
 		assertNotNull(questionNotAnonymous);
 
 		// Add answer with an invalid userid
@@ -87,7 +86,7 @@ public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 					"Test answer text", true, true, "userid");
 
 			QnaQuestion question = questionLogic.getQuestionById(
-					"questionIdAnon", "locationIdAnon");
+					"questionIdAnon");
 
 			Set<QnaAnswer> answers = question.getAnswers();
 
@@ -115,7 +114,7 @@ public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 	 */
 	public void testAddPrivateReply() {
 		QnaQuestion questionPrivateReply = questionLogic.getQuestionById(
-				"questionIdPrivateReply", "locationIdPrivateReply");
+				"questionIdPrivateReply");
 
 		try {
 			answerLogic.addAnswerToQuestion(questionPrivateReply,
@@ -150,7 +149,7 @@ public class AnswerLogicTest extends AbstractTransactionalSpringContextTests {
 	public void testRemoveAnswerFromQuestion() {
 
 		QnaQuestion questionRemove = questionLogic.getQuestionById(
-				"questionIdRemove", "locationIdRemove");
+				"questionIdRemove");
 
 		Set<QnaAnswer> answersBeforeRemove = questionRemove.getAnswers();
 

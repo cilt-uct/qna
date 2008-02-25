@@ -113,7 +113,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		QnaCategory category = categoryLogic.getCategoryById("categoryId");
 		assertNotNull(category);
 
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 
 		// Invalid user id
 		try {
@@ -139,7 +139,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(questions.contains(question));
 
 		// Test add question with different locations
-		QnaQuestion question2 = questionLogic.getQuestionById("questionId2", "locationId2");
+		QnaQuestion question2 = questionLogic.getQuestionById("questionId2");
 		try {
 			categoryLogic.addQuestionToCategory(category, question2, "userId");
 			fail("Should throw Configuration Exception");
@@ -152,7 +152,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test removal of question from category
 	 */
 	public void testRemoveQuestionFromCategory() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 		QnaCategory category = question.getCategory();
 
 		// Invalid user id
@@ -179,13 +179,13 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test move question to category
 	 */
 	public void testMoveQuestionToCategory() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId", "locationId");
+		QnaQuestion question = questionLogic.getQuestionById("questionId");
 		QnaCategory category = categoryLogic.getCategoryById("categoryId");
 		assertFalse(question.getCategory().equals(category));
 
 		try {
 			categoryLogic.moveQuestionToCategory(category,question, "userId");
-			question = questionLogic.getQuestionById("questionId", "locationId");
+			question = questionLogic.getQuestionById("questionId");
 			assertTrue(question.getCategory().equals(category));
 		} catch (QnaConfigurationException e) {
 			fail("Should not throw exception");

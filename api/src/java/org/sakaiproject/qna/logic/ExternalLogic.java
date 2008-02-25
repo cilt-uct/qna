@@ -2,8 +2,6 @@ package org.sakaiproject.qna.logic;
 
 import java.util.Set;
 
-import org.sakaiproject.user.api.User;
-
 public interface ExternalLogic {
 
 	public final static String NO_LOCATION = "noLocationAvailable";
@@ -77,5 +75,5 @@ public interface ExternalLogic {
 	 */
 	public String getSiteContactEmail(String locationId);
 	
-	public Set<User> getSiteUsersWithPermission(String locationId, String permission);
+	public Set getSiteUsersWithPermission(String locationId, String permission);
 }

@@ -93,7 +93,7 @@ public class OptionsLogicImplTest extends
 		options.setModerationOn(false);
 		options.setEmailNotification(false);
 		options.setDefaultStudentView(QnaConstants.MOST_POPULAR_VIEW);
-
+		
 		// Set user here without permissions
 
 		// Test with invalid permissions
@@ -104,7 +104,10 @@ public class OptionsLogicImplTest extends
 		} catch (SecurityException e) {
 			assertNotNull(e);
 		}
-
+			
+		QnaOptions options2 = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
+		assertFalse(options2.getAnonymousAllowed());
+		
 		// Set user here with permissions
 		try {
 			optionsLogic.saveOptions(options, TestDataPreload.USER_UPDATE);
@@ -124,6 +127,7 @@ public class OptionsLogicImplTest extends
 				.getEmailNotification());
 		assertEquals(options.getDefaultStudentView(), modifiedOptions
 				.getDefaultStudentView());
+		
 	}
 
 	/**

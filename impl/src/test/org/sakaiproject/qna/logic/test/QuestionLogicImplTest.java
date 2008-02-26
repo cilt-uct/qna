@@ -5,14 +5,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
-import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
@@ -61,6 +58,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		questionLogic = new QuestionLogicImpl();
 		questionLogic.setDao(dao);
 		questionLogic.setGeneralLogic(generalLogic);
+		questionLogic.setOptionsLogic(optionsLogic);
 		
 		// preload testData
 		tdp.preloadTestData(dao);
@@ -104,13 +102,13 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test modified date updated
 	 */
 	public void testModifyQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location1.getId());
 
 		question.setQuestionText("Testing update");
 
 		// Test with invalid permissions
 		try {
-			questionLogic.saveQuestion(question,"test_user_id");
+			questionLogic.saveQuestion(question,TestDataPreload.LOCATION1_ID,TestDataPreload.USER_NO_UPDATE);
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
@@ -120,9 +118,9 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 
 		// Test with valid permission
 		try {
-			questionLogic.saveQuestion(question,"test_user_id");
-
-			// TODO: Test modifiedDate?
+			questionLogic.saveQuestion(question,TestDataPreload.LOCATION1_ID,TestDataPreload.USER_UPDATE);
+			QnaQuestion changedQuestion = questionLogic.getQuestionById(tdp.question1_location1.getId());
+			assertEquals(changedQuestion.getQuestionText(), "Testing update");
 		} catch (SecurityException e) {
 			fail("Should not have thrown exception");
 		} catch (QnaConfigurationException qe) {
@@ -134,23 +132,36 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test saving new question in moderated location
 	 */
 	public void testSaveNewQuestionModerated() {
-		assertTrue(optionsLogic.getOptions("location1").getModerationOn());
+		assertTrue(optionsLogic.getOptions(TestDataPreload.LOCATION3_ID).getModerationOn());
 
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("blah blah blah");
 		question.setAnonymous(false);
+		
+		// Test with invalid
 		try {
-			questionLogic.saveQuestion(question, "location1", "test_user_id");
-		} catch (QnaConfigurationException e) {
+			questionLogic.saveQuestion(question, TestDataPreload.LOCATION3_ID, TestDataPreload.USER_LOC_3_NO_UPDATE_1);
+			fail("Should have thrown exception");
+		} catch (SecurityException se) {
+			assertNotNull(se);
+		}
+		catch (QnaConfigurationException e) {
+			fail("Should not have thrown exception");
+		}
+		
+		// Test with valid
+		try {
+			questionLogic.saveQuestion(question, TestDataPreload.LOCATION3_ID, TestDataPreload.USER_LOC_3_UPDATE_1);
+		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Should not have thrown exception");
 		}
 
-		assertEquals(question.getOwnerId(), "test_user_id");
-		assertEquals(question.getLocation(), "location");
+		assertEquals(question.getOwnerId(), TestDataPreload.USER_LOC_3_UPDATE_1);
+		assertEquals(question.getLocation(), TestDataPreload.LOCATION3_ID);
 		assertEquals(question.getViews(), new Integer(0));
 		assertFalse(question.getPublished());
 		assertNull(question.getCategory());
-		// TODO: Check created date?
 
 		assertTrue(questionLogic.questionExists(question.getId()));
 	}
@@ -159,23 +170,21 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test saving new question in unmoderated location
 	 */
 	public void testSaveNewQuestionUnmoderated() {
-		assertFalse(optionsLogic.getOptions("location1").getModerationOn());
+		assertFalse(optionsLogic.getOptions(TestDataPreload.LOCATION1_ID).getModerationOn());
 
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("blah blah blah");
 		question.setAnonymous(false);
 		try {
-			questionLogic.saveQuestion(question, "location2", "test_user_id");
+			questionLogic.saveQuestion(question, TestDataPreload.LOCATION1_ID, TestDataPreload.USER_UPDATE);
 		} catch (QnaConfigurationException e) {
 			fail("Should not have thrown exception");
 		}
 
-		assertEquals(question.getOwnerId(), "test_user_id");
-		assertEquals(question.getLocation(), "location2");
+		assertEquals(question.getOwnerId(), TestDataPreload.USER_UPDATE);
+		assertEquals(question.getLocation(), TestDataPreload.LOCATION1_ID);
 		assertEquals(question.getViews(), new Integer(0));
 		assertTrue(question.getPublished());
-		// TODO: Check created date?
-
 		assertTrue(questionLogic.questionExists(question.getId()));
 	}
 
@@ -183,20 +192,42 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test publishing of question
 	 */
 	public void testPublishQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
-		questionLogic.publishQuestion(question);
-		assertTrue(question.getPublished());
+		
+		// try publish with invalid user (no update rights)
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location3.getId());
+		assertFalse(question.getPublished());
+		try {
+			questionLogic.publishQuestion(question.getId(),TestDataPreload.LOCATION3_ID, TestDataPreload.USER_LOC_3_NO_UPDATE_2);
+			fail("Should have thrown exception");
+		} catch (QnaConfigurationException e) {
+			fail("Should not have thrown QnaConfigurationException");
+		} catch(SecurityException se){
+			assertNotNull(se);
+		}
+		question = questionLogic.getQuestionById(tdp.question1_location3.getId());
+		assertFalse(question.getPublished());
+		
+		// try publish with valid user (update rights)
+		try {
+			questionLogic.publishQuestion(question.getId(),TestDataPreload.LOCATION3_ID, TestDataPreload.USER_LOC_3_UPDATE_1);
+			question = questionLogic.getQuestionById(tdp.question1_location3.getId());
+			assertTrue(question.getPublished());
+		} catch (QnaConfigurationException e) {
+			fail("Should not have thrown QnaConfigurationException");
+		} catch(SecurityException se){
+			fail("Should not have thrown SecurityException");
+		}
 	}
 
 	/**
 	 * Test removal of question
 	 */
 	public void testRemoveQuestion() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location1.getId());
 
 		// Test with invalid permissions
 		try {
-			questionLogic.removeQuestion(question, "id");
+			questionLogic.removeQuestion(question, TestDataPreload.LOCATION1_ID ,TestDataPreload.USER_NO_UPDATE);
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
@@ -204,10 +235,10 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 
 		// Test with valid permission
 		try {
-			questionLogic.removeQuestion(question, "id");
-			assertFalse(questionLogic.questionExists("questionId"));
+			questionLogic.removeQuestion(question, TestDataPreload.LOCATION1_ID ,TestDataPreload.USER_UPDATE);
+			assertFalse(questionLogic.questionExists(tdp.question1_location1.getId()));
 		} catch (SecurityException e) {
-			fail("Should have thrown exception");
+			fail("Should not have thrown exception");
 		}
 	}
 
@@ -215,18 +246,18 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test view increment of question
 	 */
 	public void testViewsIncrement() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
-		assertEquals(question.getViews(), new Integer(77));
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question4_location1.getId());
+		assertEquals(question.getViews(), new Integer(76));
 		questionLogic.incrementView(question);
-		assertEquals(question.getViews(), new Integer(78));
+		assertEquals(question.getViews(), new Integer(77));
 	}
 
 	/**
 	 * Test anonymous question
 	 */
 	public void testAnonymous() {
-		assertFalse(optionsLogic.getOptions("location1").getAnonymousAllowed());
-		assertTrue(optionsLogic.getOptions("location2").getAnonymousAllowed());
+		assertFalse(optionsLogic.getOptions(TestDataPreload.LOCATION1_ID).getAnonymousAllowed());
+		assertTrue(optionsLogic.getOptions(TestDataPreload.LOCATION3_ID).getAnonymousAllowed());
 
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("xxxx");
@@ -234,14 +265,17 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 
 		// Should get exception when trying to save a question anonymously when anonymous option isn't true
 		try	{
-			questionLogic.saveQuestion(question, "location1", "user");
+			questionLogic.saveQuestion(question, TestDataPreload.LOCATION1_ID, TestDataPreload.USER_UPDATE);
+			fail("This should have thrown an exception");
 		} catch (QnaConfigurationException e) {
 			assertNotNull(e);
+			assertNull(question.getId());
 		}
 
 		// Should not get exception when saving where anonymous is allowed
 		try	{
-			questionLogic.saveQuestion(question, "location2", "user");
+			questionLogic.saveQuestion(question, TestDataPreload.LOCATION3_ID, TestDataPreload.USER_LOC_3_UPDATE_1);
+			assertNotNull(question.getId());
 		} catch (QnaConfigurationException e) {
 			fail("Should have thrown exception");
 		}

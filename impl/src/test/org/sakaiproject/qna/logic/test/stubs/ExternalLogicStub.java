@@ -46,6 +46,8 @@ public class ExternalLogicStub implements ExternalLogic {
 			if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
 				if (permission.equals(QNA_UPDATE)) {
 					return true;
+				} else if (permission.equals(QNA_NEW_QUESTION)) {
+					return true;
 				}
 			}
 		} else if (userId.equals(TestDataPreload.USER_LOC_3_UPDATE_1)
@@ -53,6 +55,8 @@ public class ExternalLogicStub implements ExternalLogic {
 				|| userId.equals(TestDataPreload.USER_LOC_3_UPDATE_3)) {
 			if (locationId.equals(TestDataPreload.LOCATION3_ID)) {
 				if (permission.equals(QNA_UPDATE)) {
+					return true;
+				} else if (permission.equals(QNA_NEW_QUESTION)) {
 					return true;
 				}
 			}

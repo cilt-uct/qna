@@ -26,19 +26,6 @@ public interface QuestionLogic {
 	public boolean questionExists(String questionId);
 
 	/**
-	 * Save a question (uses current location)
-	 *
-	 * @param question
-	 * 				{@link QnaQuestion} object
-	 *
-     * @param userId
-     *            the internal user id (not username)
-     *
-     * @throws QnaConfigurationException
-	 */
-	public void saveQuestion(QnaQuestion question, String userId) throws QnaConfigurationException;
-
-	/**
 	 * Save a question
 	 *
 	 * @param question
@@ -59,14 +46,7 @@ public interface QuestionLogic {
 	 * @param userId
      *              the internal user id (not username)
 	 */
-	public void removeQuestion(QnaQuestion question, String userId);
-
-	/**
-	 *
-	 * @param questionId
-	 * @param userId
-	 */
-	public void removeQuestion(String questionId, String userId);
+	public void removeQuestion(QnaQuestion question, String locationId, String userId);
 
 	/**
 	 * Get all published questions for a location
@@ -88,17 +68,12 @@ public interface QuestionLogic {
 	public List<QnaQuestion> getNewQuestions(String locationId);
 
 	/**
-	 * Publish a question
-	 *
-	 * @param a {@link QnaQuestion}
-	 */
-	public void publishQuestion(QnaQuestion question);
-
-	/**
 	 *
 	 * @param questionId
+	 * @param locationId TODO
+	 * @param userId TODO
 	 */
-	public void publishQuestion(String questionId);
+	public void publishQuestion(String questionId, String locationId, String userId)  throws QnaConfigurationException ;
 
 	/**
 	 * Get all questions with private replies

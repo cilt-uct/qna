@@ -1,6 +1,5 @@
 package org.sakaiproject.qna.logic.impl;
 
-import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.GeneralLogic;
 
@@ -21,10 +20,17 @@ public class GeneralLogicImpl implements GeneralLogic {
 			return false;
 		}
 	}
-	
-	public boolean canUpdate(String userId) {
-		return canUpdate(externalLogic.getCurrentLocationId(), userId);
+
+	public boolean canAddNewQuestion(String locationId, String userId) {
+		if (externalLogic.isUserAdmin(userId)) {
+			return true; 
+		} else if (externalLogic.isUserAllowedInLocation(userId, ExternalLogic.QNA_NEW_QUESTION, locationId)) {
+			return true;
+		} else {
+			return false;
+		}		
 	}
+	
 	
 
 

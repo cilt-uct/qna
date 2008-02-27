@@ -26,7 +26,7 @@
       <property name="location" type="string" length="255" not-null="true" />
       <property name="questionText" type="text" not-null="true" />
       <property name="views" type="integer" not-null="true" />
-      <property name="dateLastModified" type="java.util.Date" />
+      <property name="dateLastModified" type="java.util.Date" not-null="true"/>
       <property name="dateCreated" type="java.util.Date" not-null="true" />
       <property name="sortOrder" type="integer" not-null="true" />
       <property name="anonymous" type="boolean" not-null="true" />

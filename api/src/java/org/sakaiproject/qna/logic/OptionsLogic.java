@@ -21,9 +21,9 @@ public interface OptionsLogic {
 	 *
 	 * @param options
 	 *            to be saved
-	 * @param userId the internal user id (not username)
+	 * @param locationId TODO
 	 */
-	public void saveOptions(QnaOptions options, String userId);
+	public void saveOptions(QnaOptions options, String locationId);
 
 	/**
 	 * Creates options at locationId
@@ -43,10 +43,9 @@ public interface OptionsLogic {
 	 *            (entity reference)
 	 * @param mailList
 	 * 			  comma-separated mail list
-	 * @param userId TODO
 	 * @return TODO
 	 */
-	public boolean setCustomMailList(String locationId, String mailList, String userId);
+	public boolean setCustomMailList(String locationId, String mailList);
 
 	/**
 	 * Get e-mail notification list for location based on notification type

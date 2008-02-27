@@ -1,5 +1,7 @@
 package org.sakaiproject.qna.logic;
 
+import java.util.List;
+
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -10,76 +12,45 @@ public interface CategoryLogic {
 	 * Get a category with a specific id
 	 *
 	 * @param categoryId
-	 *            unique id of a {@link QnaQuestion}
+	 *            unique id of a {@link QnaCategory}
 	 * @return {@link QnaCategory} object or null
 	 */
 	public QnaCategory getCategoryById(String categoryId);
 
 	/**
+	 * Check if a category exists
+	 *
+	 * @param questionId
+	 * 			unique id of a {@link QnaCategory}
+	 * @return	boolean
+	 */
+	public boolean existsCategory(String categoryId);
+	
+	/**
 	 * Save a category
 	 *
 	 * @param category
 	 *            {@link QnaCategory} object
-	 * @param userId
-	 *            the internal user id (not username)
+	 * @param locationId
 	 */
-	public void saveCategory(QnaCategory category, String userId);
+	public void saveCategory(QnaCategory category, String locationId);
 
 	/**
 	 * Removes a category
 	 *
-	 * @param category
+	 * @param categoryId
 	 *            {@link QnaCategory} object
-	 * @param userId
-	 *            the internal user id (not username)
+	 * @param locationId TODO
 	 */
-	public void removeCategory(QnaCategory category, String userId);
+	public void removeCategory(String categoryId, String locationId);
 
 	/**
-	 * Add a {@link QnaQuestion} to a {@link QnaCategory}
-	 *
-	 * @param category
-	 *            {@link QnaCategory}
-	 * @param question
-	 *            {@link QnaQuestion}
-	 * @param userId
-	 *            the internal user id (not username)
-	 * @throws QnaConfigurationException
-	 */
-	public void addQuestionToCategory(QnaCategory category,
-			QnaQuestion question, String userId)
-			throws QnaConfigurationException;
-
-	/**
-	 *
+	 * 
 	 * @param categoryId
-	 * @param questionId
-	 * @param userId
-	 * @throws QnaConfigurationException
+	 * @return
 	 */
-	public void moveQuestionToCategory(String categoryId,
-			String questionId, String userId)
-			throws QnaConfigurationException;
-
-	/**
-	 *
-	 * @param categoryId
-	 * @param questionId
-	 * @param userId
-	 * @throws QnaConfigurationException
-	 */
-	public void moveQuestionToCategory(QnaCategory category,
-			QnaQuestion question, String userId)
-			throws QnaConfigurationException;
-
-	/**
-	 * Remove a {@link QnaQuestion} from a {@link QnaCategory}
-	 *
-	 * @param category
-	 * @param question
-	 * @param userId
-	 */
-	public void removeQuestionFromCategory(QnaCategory category,
-			QnaQuestion question, String userId);
+	public List<QnaQuestion> getQuestionsForCategory(String categoryId);
+	
+	
 
 }

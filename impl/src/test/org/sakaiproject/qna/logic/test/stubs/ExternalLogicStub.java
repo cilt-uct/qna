@@ -1,22 +1,22 @@
 package org.sakaiproject.qna.logic.test.stubs;
-
+import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.test.TestDataPreload;
 import org.sakaiproject.user.api.User;
 
 public class ExternalLogicStub implements ExternalLogic {
 
+	public String currentUserId;
+	
 	public String getCurrentLocationId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getCurrentUserId() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentUserId;
 	}
 
 	public String getLocationTitle(String locationId) {
@@ -36,24 +36,22 @@ public class ExternalLogicStub implements ExternalLogic {
 
 	public boolean isUserAllowedInLocation(String userId, String permission,
 			String locationId) {
-		if (userId.equals(TestDataPreload.USER_NO_UPDATE)) {
-			if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
+		if (userId.equals(USER_NO_UPDATE)) {
+			if (locationId.equals(LOCATION1_ID)) {
 				if (permission.equals(QNA_UPDATE)) {
 					return false;
 				}
 			}
-		} else if (userId.equals(TestDataPreload.USER_UPDATE)) {
-			if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
-				if (permission.equals(QNA_UPDATE)) {
+		} else if (userId.equals(USER_UPDATE)) {
+			if (locationId.equals(LOCATION1_ID)) {
+				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY)) {
 					return true;
-				} else if (permission.equals(QNA_NEW_QUESTION)) {
-					return true;
-				}
+				} 
 			}
-		} else if (userId.equals(TestDataPreload.USER_LOC_3_UPDATE_1)
-				|| userId.equals(TestDataPreload.USER_LOC_3_UPDATE_2)
-				|| userId.equals(TestDataPreload.USER_LOC_3_UPDATE_3)) {
-			if (locationId.equals(TestDataPreload.LOCATION3_ID)) {
+		} else if (userId.equals(USER_LOC_3_UPDATE_1)
+				|| userId.equals(USER_LOC_3_UPDATE_2)
+				|| userId.equals(USER_LOC_3_UPDATE_3)) {
+			if (locationId.equals(LOCATION3_ID)) {
 				if (permission.equals(QNA_UPDATE)) {
 					return true;
 				} else if (permission.equals(QNA_NEW_QUESTION)) {
@@ -67,16 +65,16 @@ public class ExternalLogicStub implements ExternalLogic {
 	}
 
 	public String getSiteContactEmail(String locationId) {
-		if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
-			return TestDataPreload.LOCATION1_CONTACT_EMAIL;
+		if (locationId.equals(LOCATION1_ID)) {
+			return LOCATION1_CONTACT_EMAIL;
 		} else {
 			return null;
 		}
 	}
 
 	public String getSiteContactName(String locationId) {
-		if (locationId.equals(TestDataPreload.LOCATION1_ID)) {
-			return TestDataPreload.LOCATION1_CONTACT_NAME;
+		if (locationId.equals(LOCATION1_ID)) {
+			return LOCATION1_CONTACT_NAME;
 		} else {
 			return null;
 		}
@@ -84,11 +82,11 @@ public class ExternalLogicStub implements ExternalLogic {
 
 	@SuppressWarnings("unchecked")
 	public Set<User> getSiteUsersWithPermission(String locationId, String permission) {
-		if (locationId.equals(TestDataPreload.LOCATION3_ID) && permission.equals(QNA_UPDATE)) {
+		if (locationId.equals(LOCATION3_ID) && permission.equals(QNA_UPDATE)) {
 			Set users = new HashSet<User>();
-			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_1));
-			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_2));
-			users.add(new FakeUser(TestDataPreload.USER_LOC_3_UPDATE_3));
+			users.add(new FakeUser(USER_LOC_3_UPDATE_1));
+			users.add(new FakeUser(USER_LOC_3_UPDATE_2));
+			users.add(new FakeUser(USER_LOC_3_UPDATE_3));
 			return users;
 		} else {
 			return new HashSet<User>();

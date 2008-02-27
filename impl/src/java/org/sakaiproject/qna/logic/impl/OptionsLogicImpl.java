@@ -95,7 +95,13 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 	}
 
-	public void saveOptions(QnaOptions options, String userId) {
+	public void saveOptions(QnaOptions options, String locationId) {
+		String userId = externalLogic.getCurrentUserId();
+		
+		if (!options.getLocation().equals(locationId)) {
+			throw new SecurityException("Current location ("+locationId+") does not match options location ("+options.getLocation()+")");
+		}
+		
 		if (generalLogic.canUpdate(options.getLocation(), userId)) {
 			options.setDateLastModified(new Date());
 			options.setOwnerId(userId);
@@ -108,9 +114,9 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 	}
 
-	public boolean setCustomMailList(String locationId, String mailList,
-			String userId) {
-
+	public boolean setCustomMailList(String locationId, String mailList) {
+		String userId = externalLogic.getCurrentUserId();
+		
 		QnaOptions options = getOptions(locationId);
 
 		EmailValidator emailValidator = EmailValidator.getInstance();
@@ -130,7 +136,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 		
 		if(!customEmails.isEmpty()){
 			options.setCustomEmails(customEmails);
-			saveOptions(options, userId);
+			saveOptions(options, locationId);
 		}
 
 		return invalidEmail;

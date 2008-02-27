@@ -3,6 +3,7 @@ package org.sakaiproject.qna.logic;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
 public interface QuestionLogic {
@@ -23,7 +24,7 @@ public interface QuestionLogic {
 	 * 			unique id of a {@link QnaQuestion}
 	 * @return	boolean
 	 */
-	public boolean questionExists(String questionId);
+	public boolean existsQuestion(String questionId);
 
 	/**
 	 * Save a question
@@ -32,21 +33,17 @@ public interface QuestionLogic {
 	 * 				{@link QnaQuestion} object
 	 * @param locationId
 	 * 				a unique id which represents the current location of the user (entity reference)
-     * @param userId
-     *            the internal user id (not username)
 	 * @throws QnaConfigurationException
 	 */
-	public void saveQuestion(QnaQuestion question, String locationId, String userId) throws QnaConfigurationException;
+	public void saveQuestion(QnaQuestion question, String locationId) throws QnaConfigurationException;
 
 	/**
 	 * Remove a question
 	 *
-	 * @param question
+	 * @param questionId
 	 * 				{@link QnaQuestion} object
-	 * @param userId
-     *              the internal user id (not username)
 	 */
-	public void removeQuestion(QnaQuestion question, String locationId, String userId);
+	public void removeQuestion(String questionId, String locationId);
 
 	/**
 	 * Get all published questions for a location
@@ -71,9 +68,8 @@ public interface QuestionLogic {
 	 *
 	 * @param questionId
 	 * @param locationId TODO
-	 * @param userId TODO
 	 */
-	public void publishQuestion(String questionId, String locationId, String userId)  throws QnaConfigurationException ;
+	public void publishQuestion(String questionId, String locationId)  throws QnaConfigurationException ;
 
 	/**
 	 * Get all questions with private replies
@@ -87,17 +83,21 @@ public interface QuestionLogic {
 	/**
 	 * Increment view of a question
 	 *
-	 * @param {@link QnaQuestion}
-	 */
-	public void incrementView(QnaQuestion question);
-
-	/**
-	 *
-	 * @param question
+	 * @param unique id of {@link QnaQuestion}
 	 */
 	public void incrementView(String questionId);
-
-
-
+	
+	/**
+	 * Add a {@link QnaQuestion} to a {@link QnaCategory}
+	 * @param questionId
+	 *            {@link QnaQuestion}
+	 * @param categoryId
+	 *            {@link QnaCategory}
+	 * @param locationId TODO
+	 * @throws QnaConfigurationException
+	 */
+	public void addQuestionToCategory(String questionId,
+			String categoryId, String locationId)
+			throws QnaConfigurationException;
 
 }

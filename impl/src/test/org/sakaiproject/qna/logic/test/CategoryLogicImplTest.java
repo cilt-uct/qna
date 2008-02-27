@@ -1,50 +1,117 @@
 package org.sakaiproject.qna.logic.test;
 
-import java.util.Set;
-import org.sakaiproject.qna.logic.CategoryLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
+
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
+import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTests {
 
-	CategoryLogic categoryLogic;
-	QuestionLogic questionLogic;
+	OptionsLogicImpl optionsLogic;
+	CategoryLogicImpl categoryLogic;
+	QuestionLogicImpl questionLogic;
+	GeneralLogicImpl generalLogic;
 
+	private static Log log = LogFactory.getLog(CategoryLogicImplTest.class);
+	
+	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+
+	private TestDataPreload tdp = new TestDataPreload();
+
+	protected String[] getConfigLocations() {
+		// point to the needed spring config files, must be on the classpath
+		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
+		// they also need to be referenced in the project.xml file
+		return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
+	}
+
+	// run this before each test starts
+	protected void onSetUpBeforeTransaction() throws Exception {
+	}
+	
+	// run this before each test starts and as part of the transaction
+	protected void onSetUpInTransaction() {
+		// load the spring created dao class bean from the Spring Application
+		// Context
+		QnaDao dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
+		if (dao == null) {
+			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+		}
+
+		generalLogic = new GeneralLogicImpl();
+		generalLogic.setExternalLogic(externalLogicStub);
+
+		// create and setup options
+		optionsLogic = new OptionsLogicImpl();
+		optionsLogic.setDao(dao);
+		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setExternalLogic(externalLogicStub);
+		
+		// create and setup the question logic
+		questionLogic = new QuestionLogicImpl();
+		questionLogic.setDao(dao);
+		questionLogic.setGeneralLogic(generalLogic);
+		questionLogic.setOptionsLogic(optionsLogic);
+		questionLogic.setExternalLogic(externalLogicStub);
+		
+		// create and setup the category logic
+		categoryLogic = new CategoryLogicImpl();
+		categoryLogic.setDao(dao);
+		categoryLogic.setGeneralLogic(generalLogic);
+		categoryLogic.setExternalLogic(externalLogicStub);
+		categoryLogic.setQuestionLogic(questionLogic);
+		
+		// preload testData
+		tdp.preloadTestData(dao);
+	}
+	
 	/**
 	 * Test retrieval of category by id
 	 */
 	public void testGetCategoryById() {
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
+		QnaCategory category = categoryLogic.getCategoryById(tdp.category1_location1.getId());
 		assertNotNull(category);
-		assertEquals(category.getCategoryText(),"blahblahblah from preload");
-		assertEquals(category.getId(), "categoryId");
+		assertEquals(category.getCategoryText(),tdp.category1_location1.getCategoryText());
+		assertEquals(category.getId(), tdp.category1_location1.getId());
 	}
 
 	/**
 	 * Test create of new category
 	 */
 	public void testCreateCategory() {
+		
 		QnaCategory category = new QnaCategory();
 		assertNotNull(category);
-		category.setCategoryText("category text hier");
+		category.setCategoryText("New Category test");
 
 		// With invalid permissions
+		externalLogicStub.currentUserId  = USER_NO_UPDATE;
 		try {
-			categoryLogic.saveCategory(category, "userId1");
+			categoryLogic.saveCategory(category, LOCATION1_ID );
 			fail("Should have thrown exception");
 		} catch (SecurityException se) {
 			assertNotNull(se);
 		}
 
 		// With valid permissions
+		externalLogicStub.currentUserId  = USER_UPDATE;
 		try {
-			categoryLogic.saveCategory(category, "userId2");
+			categoryLogic.saveCategory(category, LOCATION1_ID );
 			assertNotNull(category.getId());
 		} catch (Exception e) {
-			fail("Should have thrown exception");
+			e.printStackTrace();
+			fail("Should not have thrown exception");
 		}
 	}
 
@@ -52,143 +119,68 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	 *	Test editing of existing category
 	 */
 	public void testEditCategory() {
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
+		QnaCategory category = categoryLogic.getCategoryById(tdp.category1_location1.getId());
 		assertNotNull(category);
-		assertEquals(category.getCategoryText(), "from data preload");
 
+		category.setCategoryText("New text to be saved");
+		
+		// Invalid permission
+		externalLogicStub.currentUserId = USER_NO_UPDATE;
 		try {
-			category.setCategoryText("new text");
-			categoryLogic.saveCategory(category, "userId");
-		} catch (Exception e) {
+			categoryLogic.saveCategory(category, LOCATION1_ID);
 			fail("Should have thrown exception");
+		} catch (SecurityException se) {
+			assertNotNull(se);
 		}
-
-		QnaCategory modifiedCategory = categoryLogic.getCategoryById("categoryId");
-		assertEquals(modifiedCategory.getCategoryText(), "new text");
+		
+		// Valid permission
+		externalLogicStub.currentUserId = USER_UPDATE;
+		try {
+			categoryLogic.saveCategory(category, LOCATION1_ID);
+		} catch (Exception e) {
+			fail("Should not have thrown exception");
+		}
 	}
 
 	/**
 	 * Test removal of category
 	 */
 	public void testRemoveCategory() {
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
-		assertNotNull(category);
-
 		// With invalid permissions
+		externalLogicStub.currentUserId = USER_NO_UPDATE;
 		try {
-			categoryLogic.removeCategory(category, "userId1");
+			categoryLogic.removeCategory(tdp.category1_location1.getId(), LOCATION1_ID);
 			fail("Should have thrown exception");
 		} catch (SecurityException se) {
 			assertNotNull(se);
 		}
-
+		
 		// With valid permissions
+		externalLogicStub.currentUserId = USER_UPDATE;
 		try {
-			categoryLogic.removeCategory(category, "userId2");
+			categoryLogic.removeCategory(tdp.category1_location1.getId(), LOCATION1_ID);
 		} catch (Exception e) {
-			fail("Should have thrown exception");
+			e.printStackTrace();
+			fail("Should not have thrown exception");
 		}
-		assertNull(categoryLogic.getCategoryById("categoryId"));
+		assertNull(categoryLogic.getCategoryById(tdp.category1_location1.getId()));
+		
+		assertFalse(questionLogic.existsQuestion(tdp.question2_location1.getId()));
+		assertFalse(questionLogic.existsQuestion(tdp.question3_location1.getId()));
+		assertFalse(questionLogic.existsQuestion(tdp.question4_location1.getId()));
+		assertFalse(questionLogic.existsQuestion(tdp.question5_location1.getId()));
 	}
 
 	/**
 	 * Test get questions for a category
 	 */
 	public void testGetQuestionsForCategory() {
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
-		assertNotNull(category);
-
-		Set<QnaQuestion> questions = category.getQuestions();
-		assertEquals(questions.size(),4);
-
-//		Compare with a collection of answers from the preload
-		assertTrue(questions.containsAll(null));
-
+		List<QnaQuestion> questions = categoryLogic.getQuestionsForCategory(tdp.category1_location1.getId());
+		assertEquals(4,  questions.size());	
+		assertTrue(questions.contains(tdp.question2_location1));
+		assertTrue(questions.contains(tdp.question3_location1));
+		assertTrue(questions.contains(tdp.question4_location1));
+		assertTrue(questions.contains(tdp.question5_location1));
 	}
 
-	/**
-	 * Test add question to category
-	 */
-	public void testAddQuestionToCategory() {
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
-		assertNotNull(category);
-
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
-
-		// Invalid user id
-		try {
-			categoryLogic.addQuestionToCategory(category, question, "userid");
-			fail("Should throw SecurityException");
-		} catch (SecurityException se) {
-			assertNotNull(se);
-		} catch (QnaConfigurationException e) {
-			fail("Should throw SecurityException");
-		}
-
-		// Valid user id
-		try {
-			categoryLogic.addQuestionToCategory(category, question, "userid");
-		} catch (SecurityException se) {
-			fail("Should not throw Exception");
-		} catch (QnaConfigurationException e) {
-			fail("Should not throw Exception");
-		}
-
-		Set<QnaQuestion> questions = category.getQuestions();
-		assertEquals(questions.size(), 5);
-		assertTrue(questions.contains(question));
-
-		// Test add question with different locations
-		QnaQuestion question2 = questionLogic.getQuestionById("questionId2");
-		try {
-			categoryLogic.addQuestionToCategory(category, question2, "userId");
-			fail("Should throw Configuration Exception");
-		} catch (QnaConfigurationException e) {
-			assertNotNull(e);
-		}
-	}
-
-	/**
-	 * Test removal of question from category
-	 */
-	public void testRemoveQuestionFromCategory() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
-		QnaCategory category = question.getCategory();
-
-		// Invalid user id
-		try {
-			categoryLogic.removeQuestionFromCategory(category, question, "invalid_userId");
-			fail("Should throw SecurityException");
-		} catch (SecurityException se) {
-			assertNotNull(se);
-		}
-
-		// Valid user id
-		try {
-			categoryLogic.removeQuestionFromCategory(question.getCategory(), question, "valid_userId");
-		} catch (SecurityException se) {
-			fail("Should not throw Exception");
-		}
-
-		Set<QnaQuestion> questions = category.getQuestions();
-
-		assertFalse(questions.contains(question));
-	}
-
-	/**
-	 * Test move question to category
-	 */
-	public void testMoveQuestionToCategory() {
-		QnaQuestion question = questionLogic.getQuestionById("questionId");
-		QnaCategory category = categoryLogic.getCategoryById("categoryId");
-		assertFalse(question.getCategory().equals(category));
-
-		try {
-			categoryLogic.moveQuestionToCategory(category,question, "userId");
-			question = questionLogic.getQuestionById("questionId");
-			assertTrue(question.getCategory().equals(category));
-		} catch (QnaConfigurationException e) {
-			fail("Should not throw exception");
-		}
-	}
 }

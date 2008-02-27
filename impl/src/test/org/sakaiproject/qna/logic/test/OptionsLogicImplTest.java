@@ -1,5 +1,6 @@
 package org.sakaiproject.qna.logic.test;
 
+import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -22,7 +23,7 @@ public class OptionsLogicImplTest extends
 
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
-	private ExternalLogicStub logicStub = new ExternalLogicStub();
+	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
 
 	private TestDataPreload tdp = new TestDataPreload();
 
@@ -45,15 +46,15 @@ public class OptionsLogicImplTest extends
 		if (dao == null) {
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
-
+		
 		generalLogic = new GeneralLogicImpl();
-		generalLogic.setExternalLogic(logicStub);
+		generalLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup the object to be tested
 		optionsLogic = new OptionsLogicImpl();
 		optionsLogic.setDao(dao);
 		optionsLogic.setGeneralLogic(generalLogic);
-		optionsLogic.setExternalLogic(logicStub);
+		optionsLogic.setExternalLogic(externalLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);
@@ -64,9 +65,9 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testGetOptionsByLocation() {
 		QnaOptions options = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 		assertNotNull(options);
-		assertTrue(options.getLocation().equals(TestDataPreload.LOCATION1_ID));
+		assertTrue(options.getLocation().equals(LOCATION1_ID));
 
 		assertEquals(options.getModerationOn(), tdp.options_location1
 				.getModerationOn());
@@ -87,7 +88,7 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testModifyOptions() {
 		QnaOptions options = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 		assertNotNull(options);
 		options.setAnonymousAllowed(true);
 		options.setModerationOn(false);
@@ -98,25 +99,24 @@ public class OptionsLogicImplTest extends
 
 		// Test with invalid permissions
 		try {
-			optionsLogic.saveOptions(options, TestDataPreload.USER_NO_UPDATE);
+			externalLogicStub.currentUserId = USER_NO_UPDATE;
+			optionsLogic.saveOptions(options, LOCATION1_ID);
 
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
 		}
-			
-		QnaOptions options2 = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
-		assertFalse(options2.getAnonymousAllowed());
 		
 		// Set user here with permissions
 		try {
-			optionsLogic.saveOptions(options, TestDataPreload.USER_UPDATE);
+			externalLogicStub.currentUserId = USER_UPDATE;
+			optionsLogic.saveOptions(options, LOCATION1_ID);
 		} catch (SecurityException e) {
 			fail("Should have thrown exception");
 		}
 
 		QnaOptions modifiedOptions = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 
 		assertNotNull(modifiedOptions);
 		assertEquals(options.getAnonymousAllowed(), modifiedOptions
@@ -135,7 +135,7 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testNewOptions() {
 		// Get new location id without options set
-		String locationId = TestDataPreload.LOCATION2_ID;
+		String locationId = LOCATION2_ID;
 
 		QnaOptions options = optionsLogic.getOptions(locationId);
 
@@ -147,7 +147,7 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testSetDefaultView() {
 		QnaOptions options = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 
 		assertEquals(options.getDefaultStudentView(),
 				QnaConstants.CATEGORY_VIEW);
@@ -172,7 +172,7 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testMailNotificationType() {
 		QnaOptions options = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 
 		assertEquals(options.getEmailNotification(), new Boolean(true));
 		assertEquals(options.getEmailNotificationType(),
@@ -205,8 +205,9 @@ public class OptionsLogicImplTest extends
 	 * Test get/set of custom mail list
 	 */
 	public void testCustomMailList() {
+		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic
-				.getOptions(TestDataPreload.LOCATION1_ID);
+				.getOptions(LOCATION1_ID);
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
 
 		assertEquals(customEmails.size(), 3);
@@ -229,31 +230,29 @@ public class OptionsLogicImplTest extends
 		assertTrue(foundEmail3);
 		
 		boolean errorOccurred = optionsLogic.setCustomMailList(
-				TestDataPreload.LOCATION1_ID,
-				TestDataPreload.USER_CUSTOM_EMAIL_INVALID,
-				TestDataPreload.USER_UPDATE);
+				LOCATION1_ID,
+				USER_CUSTOM_EMAIL_INVALID);
 		assertTrue(errorOccurred);
 
-		options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
+		options = optionsLogic.getOptions(LOCATION1_ID);
 		customEmails = options.getCustomEmails();
 
 		assertEquals(customEmails.size(), 1);
 		
 		boolean contains = false;
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
-			if(qnaCustomEmail.getEmail().equals(TestDataPreload.USER_CUSTOM_EMAIL3)){
+			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL3)){
 				contains = true;
 			}
 		}
 		assertTrue(contains);
 
 		errorOccurred = optionsLogic.setCustomMailList(
-				TestDataPreload.LOCATION1_ID,
-				TestDataPreload.USER_CUSTOM_EMAIL_VALID,
-				TestDataPreload.USER_UPDATE);
+				LOCATION1_ID,
+				USER_CUSTOM_EMAIL_VALID);
 		assertFalse(errorOccurred);
 		
-		options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
+		options = optionsLogic.getOptions(LOCATION1_ID);
 		customEmails = options.getCustomEmails();
 		
 
@@ -264,11 +263,11 @@ public class OptionsLogicImplTest extends
 		foundEmail3 = false;
 
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
-			if(qnaCustomEmail.getEmail().equals(TestDataPreload.USER_CUSTOM_EMAIL1)) {
+			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
 				foundEmail1 = true;
-			} else if (qnaCustomEmail.getEmail().equals(TestDataPreload.USER_CUSTOM_EMAIL2)) {
+			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL2)) {
 				foundEmail2 = true;
-			} else if (qnaCustomEmail.getEmail().equals(TestDataPreload.USER_CUSTOM_EMAIL3)) {
+			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL3)) {
 				foundEmail3 = true;
 			}
 		}
@@ -282,13 +281,13 @@ public class OptionsLogicImplTest extends
 	 * as site contact
 	 */
 	public void testGetMailAddressesSiteContact() {
-		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
+		QnaOptions options = optionsLogic.getOptions(LOCATION1_ID);
 		assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
 		Set<String> notificationList = optionsLogic
-				.getNotificationSet(TestDataPreload.LOCATION1_ID);
+				.getNotificationSet(LOCATION1_ID);
 		assertEquals(notificationList.size(), 1);
-		assertTrue(notificationList.contains(TestDataPreload.LOCATION1_CONTACT_EMAIL));
+		assertTrue(notificationList.contains(LOCATION1_CONTACT_EMAIL));
 	}
 
 	/**
@@ -296,15 +295,15 @@ public class OptionsLogicImplTest extends
 	 * as update rights
 	 */
 	public void testGetMailAddressesUpdateRights() {
-		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION3_ID);
+		QnaOptions options = optionsLogic.getOptions(LOCATION3_ID);
 		assertEquals(options.getEmailNotificationType(),
 				QnaConstants.UPDATE_RIGHTS);
-		Set<String> notificationSet = optionsLogic.getNotificationSet(TestDataPreload.LOCATION3_ID);
+		Set<String> notificationSet = optionsLogic.getNotificationSet(LOCATION3_ID);
 		assertEquals(notificationSet.size(), 3);
 
-		assertTrue(notificationSet.contains(TestDataPreload.USER_LOC_3_UPDATE_1_EMAIL));
-		assertTrue(notificationSet.contains(TestDataPreload.USER_LOC_3_UPDATE_2_EMAIL));
-		assertTrue(notificationSet.contains(TestDataPreload.USER_LOC_3_UPDATE_3_EMAIL));
+		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_1_EMAIL));
+		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_2_EMAIL));
+		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_3_EMAIL));
 	}
 
 	/**
@@ -312,17 +311,18 @@ public class OptionsLogicImplTest extends
 	 * as custom mail list
 	 */
 	public void testGetMailAddressesCustomList() {
-		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION1_ID);
+		externalLogicStub.currentUserId = USER_UPDATE;
+		QnaOptions options = optionsLogic.getOptions(LOCATION1_ID);
 		try {
 			options.setEmailNotificationType(QnaConstants.CUSTOM_LIST);
-			optionsLogic.saveOptions(options, TestDataPreload.USER_UPDATE);
+			optionsLogic.saveOptions(options, LOCATION1_ID);
 		} catch (QnaConfigurationException cfe) {
 			fail("Should not throw exception");
 		}
 		
 		assertEquals(options.getEmailNotificationType(),QnaConstants.CUSTOM_LIST);
 		assertEquals(options.getCustomEmails().size(),3);
-		Set<String> notificationSet = optionsLogic.getNotificationSet(TestDataPreload.LOCATION1_ID);
+		Set<String> notificationSet = optionsLogic.getNotificationSet(LOCATION1_ID);
 		Set<QnaCustomEmail> customMails = options.getCustomEmails();
 		assertEquals(notificationSet.size(), notificationSet.size());
 
@@ -336,9 +336,9 @@ public class OptionsLogicImplTest extends
 	 * Test to get zero mail addresses when notification is false for location
 	 */
 	public void testGetMailAddressesNoNotification() {
-		QnaOptions options = optionsLogic.getOptions(TestDataPreload.LOCATION4_ID);
+		QnaOptions options = optionsLogic.getOptions(LOCATION4_ID);
 		assertEquals(options.getEmailNotification(), new Boolean(false));
-		assertEquals(optionsLogic.getNotificationSet(TestDataPreload.LOCATION4_ID).size(),0);
+		assertEquals(optionsLogic.getNotificationSet(LOCATION4_ID).size(),0);
 	}
 
 }

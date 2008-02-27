@@ -17,4 +17,12 @@ public interface GeneralLogic {
 	 * @return true if user can add new question, false if not
 	 */
 	public boolean canAddNewQuestion(String locationId, String userId);
+	
+	/**
+	 * Check if a specified user can add new category in specific location
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
+	 * @param userId the internal user id (not username)
+	 * @return true if user can add new category, false if not
+	 */
+	public boolean canAddNewCategory(String locationId, String userId);
 }

@@ -1,38 +1,33 @@
-
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * This is a the options table entity
- *
+ * 
  * @author Psybergate
  */
 public class QnaCategory {
 
-    private String id;
+	private String id;
 
-//	The user (sakai userid) that created this category
+	// The user (sakai userid) that created this category
 	private String ownerId;
 
-//  The list of questions associated with this category
-    private Set<QnaQuestion> questions;
-
-//	Sakai entity reference
+	// Sakai entity reference
 	private String location;
 
-// 	Text of the category
+	// Text of the category
 	private String categoryText;
 
-//  The date this category was last modified
+	// The date this category was last modified
 	private Date dateLastModified;
 
-// The date this category was created
+	// The date this category was created
 	private Date dateCreated;
 
-//	Ordering of category in category view
+	// Ordering of category in category view
 
 	private Integer sortOrder;
 
@@ -48,13 +43,14 @@ public class QnaCategory {
 	 * @param order
 	 */
 	public QnaCategory(String ownerId, String location, String categoryText,
-			Date dateLastModified, Date dateCreated, Integer order) {
+			Integer order) {
 		this.ownerId = ownerId;
 		this.location = location;
 		this.categoryText = categoryText;
-		this.dateLastModified = dateLastModified;
-		this.dateCreated = dateCreated;
 		this.sortOrder = order;
+		Date now = new Date();
+		dateCreated = now;
+		dateLastModified = now;
 	}
 
 	/**
@@ -65,7 +61,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -79,7 +76,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param ownerId the ownerId to set
+	 * @param ownerId
+	 *            the ownerId to set
 	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
@@ -93,7 +91,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param location the location to set
+	 * @param location
+	 *            the location to set
 	 */
 	public void setLocation(String location) {
 		this.location = location;
@@ -107,7 +106,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param categoryText the categoryText to set
+	 * @param categoryText
+	 *            the categoryText to set
 	 */
 	public void setCategoryText(String categoryText) {
 		this.categoryText = categoryText;
@@ -121,7 +121,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param dateLastModified the dateLastModified to set
+	 * @param dateLastModified
+	 *            the dateLastModified to set
 	 */
 	public void setDateLastModified(Date dateLastModified) {
 		this.dateLastModified = dateLastModified;
@@ -135,7 +136,8 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param dateCreated the dateCreated to set
+	 * @param dateCreated
+	 *            the dateCreated to set
 	 */
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
@@ -149,39 +151,26 @@ public class QnaCategory {
 	}
 
 	/**
-	 * @param order the order to set
+	 * @param order
+	 *            the order to set
 	 */
 	public void setSortOrder(Integer sortOrder) {
 		this.sortOrder = sortOrder;
-		
+
 	}
 
-	/**
-	 * @return the questions
-	 */
-	public Set<QnaQuestion> getQuestions() {
-		return questions;
-	}
-
-	/**
-	 * @param questions the questions to set
-	 */
-	public void setQuestions(Set<QnaQuestion> questions) {
-		this.questions = questions;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof QnaCategory){
-			return ((QnaCategory)obj).getId().equals(this.getId());
+		if (obj instanceof QnaCategory) {
+			return ((QnaCategory) obj).getId().equals(this.getId());
 		}
 
 		return false;
 	}
-
-
 
 }

@@ -40,6 +40,16 @@ public class GeneralLogicImpl implements GeneralLogic {
 			return false;
 		}	
 	}
+
+	public boolean canAddNewAnswer(String locationId, String userId) {
+		if (externalLogic.isUserAdmin(userId)) {
+			return true;
+		} else if (externalLogic.isUserAllowedInLocation(userId, ExternalLogic.QNA_NEW_ANSWER, locationId)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	
 

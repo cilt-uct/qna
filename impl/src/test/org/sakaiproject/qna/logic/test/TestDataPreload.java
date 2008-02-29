@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sakaiproject.genericdao.api.GenericDao;
+import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
@@ -75,26 +76,31 @@ public class TestDataPreload {
 	
 
 	public QnaCustomEmail customEmail1_location1 = new QnaCustomEmail(
-			options_location1, TestDataPreload.USER_UPDATE,
-			TestDataPreload.USER_CUSTOM_EMAIL1, new Date());
+			TestDataPreload.USER_UPDATE, TestDataPreload.USER_CUSTOM_EMAIL1,
+			new Date());
 	public QnaCustomEmail customEmail2_location1 = new QnaCustomEmail(
-			options_location1, TestDataPreload.USER_UPDATE,
-			TestDataPreload.USER_CUSTOM_EMAIL2, new Date());
+			TestDataPreload.USER_UPDATE, TestDataPreload.USER_CUSTOM_EMAIL2,
+			new Date());
 	public QnaCustomEmail customEmail3_location1 = new QnaCustomEmail(
-			options_location1, TestDataPreload.USER_UPDATE,
-			TestDataPreload.USER_CUSTOM_EMAIL3, new Date());
+			TestDataPreload.USER_UPDATE, TestDataPreload.USER_CUSTOM_EMAIL3,
+			new Date());
 	
 	
-	public QnaQuestion question1_location1 = new QnaQuestion(null, TestDataPreload.USER_UPDATE,TestDataPreload.LOCATION1_ID, "Test Question1",0,new Date(), new Date(),0,false,false  );
+	public QnaQuestion question1_location1 = new QnaQuestion(null,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question1", 0,new Date(),new Date(), 0,false,false  );
 	public QnaCategory category1_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category",0);
 	
-	public QnaQuestion question2_location1 = new QnaQuestion(category1_location1, TestDataPreload.USER_UPDATE,TestDataPreload.LOCATION1_ID, "Test Question2",0,new Date(), new Date(),0,false,true);
-	public QnaQuestion question3_location1 = new QnaQuestion(category1_location1, TestDataPreload.USER_UPDATE,TestDataPreload.LOCATION1_ID, "Test Question3",0,new Date(), new Date(),0,false,true);
-	public QnaQuestion question4_location1 = new QnaQuestion(category1_location1, TestDataPreload.USER_UPDATE,TestDataPreload.LOCATION1_ID, "Test Question4",76,new Date(), new Date(),0,false,true);
-	public QnaQuestion question5_location1 = new QnaQuestion(category1_location1, TestDataPreload.USER_UPDATE,TestDataPreload.LOCATION1_ID, "Test Question5",0,new Date(), new Date(),0,false,false);
+	public QnaQuestion question2_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question2", 0,new Date(),new Date(), 0,false,true);
+	public QnaQuestion question3_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question3", 0,new Date(),new Date(), 0,false,true);
+	public QnaQuestion question4_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question4", 76,new Date(),new Date(), 0,false,true);
+	public QnaQuestion question5_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question5", 0,new Date(),new Date(), 0,false,false);
 
 	public QnaCategory category1_location3 = new QnaCategory(TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Category location 3",0);
-	public QnaQuestion question1_location3 = new QnaQuestion(category1_location3, TestDataPreload.USER_LOC_3_UPDATE_1,TestDataPreload.LOCATION3_ID, "Test Question1 location 3",0,new Date(), new Date(),0,false,false);
+	public QnaQuestion question1_location3 = new QnaQuestion(category1_location3,TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Question1 location 3", 0,new Date(),new Date(), 0,false,false);
+	
+	public QnaAnswer answer1_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an answer", true, false, false);
+	public QnaAnswer answer2_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an another answer", true, false, false);
+	
+	public QnaAnswer answer1_location3 = new QnaAnswer(question1_location3, USER_LOC_3_UPDATE_1, "ANSWER", false, false, false);
 	/**
 	 * Preload a bunch of test data into the database
 	 * 
@@ -105,7 +111,10 @@ public class TestDataPreload {
 
 		dao.save(options_location1);
 	
-		options_location1.setCustomEmails(setupCustomEmail());
+		options_location1.addCustomEmail(customEmail1_location1);
+		options_location1.addCustomEmail(customEmail2_location1);
+		options_location1.addCustomEmail(customEmail3_location1);
+		
 		dao.save(options_location1);
 		
 		dao.save(options_location3);
@@ -113,23 +122,27 @@ public class TestDataPreload {
 		dao.save(question1_location1);
 		
 		dao.save(category1_location1);
+		
+		question2_location1.addAnswer(answer1_location1);
+		question2_location1.addAnswer(answer2_location1);
 		dao.save(question2_location1);
+
+		dao.save(question3_location1);
+		dao.save(question4_location1);
+		dao.save(question5_location1);
+		dao.save(category1_location1);
+		
 		dao.save(question3_location1);
 		dao.save(question4_location1);
 		dao.save(question5_location1);
 		
 		dao.save(category1_location3);
+		
+		question1_location3.addAnswer(answer1_location3);
 		dao.save(question1_location3);
+		
+		
+		
 	}
 
-	private Set<QnaCustomEmail> setupCustomEmail() {
-
-		Set<QnaCustomEmail> customEmails = new HashSet<QnaCustomEmail>();
-
-		customEmails.add(customEmail1_location1);
-		customEmails.add(customEmail2_location1);
-		customEmails.add(customEmail3_location1);
-
-		return customEmails;
-	}
 }

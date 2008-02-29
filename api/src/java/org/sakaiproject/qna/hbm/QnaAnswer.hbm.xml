@@ -11,7 +11,7 @@
       <id name="id" type="string">
          <generator class="uuid.hex"/>
       </id>
-      <many-to-one name="question" class="org.sakaiproject.qna.model.QnaQuestion" fetch="join">
+      <many-to-one name="question" class="org.sakaiproject.qna.model.QnaQuestion" >
          <column name="question_id" not-null="true" />
       </many-to-one>
       <property name="ownerId" type="string" length="255" not-null="true" />

@@ -1,8 +1,9 @@
 package org.sakaiproject.qna.logic.exceptions;
 
-@SuppressWarnings("serial")
-public class QnaConfigurationException extends Exception {
+public class QnaConfigurationException extends RuntimeException {
 	
+	private static final long serialVersionUID = -4134063107758895700L;
+
 	public QnaConfigurationException(String message) {
 		super(message);
 	}

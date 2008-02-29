@@ -70,8 +70,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		categoryLogic.setDao(dao);
 		categoryLogic.setGeneralLogic(generalLogic);
 		categoryLogic.setExternalLogic(externalLogicStub);
-		categoryLogic.setQuestionLogic(questionLogic);
-		
+	
 		// preload testData
 		tdp.preloadTestData(dao);
 	}
@@ -165,10 +164,8 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		}
 		assertNull(categoryLogic.getCategoryById(tdp.category1_location1.getId()));
 		
-		assertFalse(questionLogic.existsQuestion(tdp.question2_location1.getId()));
-		assertFalse(questionLogic.existsQuestion(tdp.question3_location1.getId()));
-		assertFalse(questionLogic.existsQuestion(tdp.question4_location1.getId()));
-		assertFalse(questionLogic.existsQuestion(tdp.question5_location1.getId()));
+		assertEquals(0,questionLogic.getPublishedQuestions(LOCATION1_ID).size());
+		assertEquals(1,questionLogic.getNewQuestions(LOCATION1_ID).size());
 	}
 
 	/**
@@ -177,10 +174,10 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	public void testGetQuestionsForCategory() {
 		List<QnaQuestion> questions = categoryLogic.getQuestionsForCategory(tdp.category1_location1.getId());
 		assertEquals(4,  questions.size());	
-		assertTrue(questions.contains(tdp.question2_location1));
-		assertTrue(questions.contains(tdp.question3_location1));
-		assertTrue(questions.contains(tdp.question4_location1));
-		assertTrue(questions.contains(tdp.question5_location1));
+		assertEquals(tdp.question2_location1.getQuestionText(), questions.get(0).getQuestionText());
+		assertEquals(tdp.question3_location1.getQuestionText(), questions.get(1).getQuestionText());
+		assertEquals(tdp.question4_location1.getQuestionText(), questions.get(2).getQuestionText());
+		assertEquals(tdp.question5_location1.getQuestionText(), questions.get(3).getQuestionText());
 	}
 
 }

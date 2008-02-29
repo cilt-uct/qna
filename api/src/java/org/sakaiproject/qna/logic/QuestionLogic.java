@@ -2,7 +2,6 @@ package org.sakaiproject.qna.logic;
 
 import java.util.List;
 
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -33,9 +32,8 @@ public interface QuestionLogic {
 	 * 				{@link QnaQuestion} object
 	 * @param locationId
 	 * 				a unique id which represents the current location of the user (entity reference)
-	 * @throws QnaConfigurationException
 	 */
-	public void saveQuestion(QnaQuestion question, String locationId) throws QnaConfigurationException;
+	public void saveQuestion(QnaQuestion question, String locationId);
 
 	/**
 	 * Remove a question
@@ -69,7 +67,7 @@ public interface QuestionLogic {
 	 * @param questionId
 	 * @param locationId TODO
 	 */
-	public void publishQuestion(String questionId, String locationId)  throws QnaConfigurationException ;
+	public void publishQuestion(String questionId, String locationId) ;
 
 	/**
 	 * Get all questions with private replies
@@ -94,10 +92,8 @@ public interface QuestionLogic {
 	 * @param categoryId
 	 *            {@link QnaCategory}
 	 * @param locationId TODO
-	 * @throws QnaConfigurationException
 	 */
 	public void addQuestionToCategory(String questionId,
-			String categoryId, String locationId)
-			throws QnaConfigurationException;
+			String categoryId, String locationId);
 
 }

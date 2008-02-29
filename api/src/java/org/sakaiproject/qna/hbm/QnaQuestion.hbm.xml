@@ -17,11 +17,12 @@
       </many-to-one>
 
       <!--  linkage to answers -->
-      <set name="answers" lazy="true" inverse="true" cascade="all">
+      <list name="answers" lazy="true" inverse="true" cascade="all">
       		<key column="question_id"/>
+      		<list-index base="0"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaAnswer" />
-      </set>
-
+      </list>
+      
       <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />
       <property name="questionText" type="text" not-null="true" />

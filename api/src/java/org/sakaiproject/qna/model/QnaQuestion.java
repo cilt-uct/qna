@@ -1,8 +1,9 @@
 
 package org.sakaiproject.qna.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * This is a the options table entity
@@ -17,7 +18,7 @@ public class QnaQuestion {
     private QnaCategory category;
 
 //  The list of answers associated with this question
-    private Set<QnaAnswer> answers;
+    private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
 
 //  The user (sakai userid) that posted this question
 	private String ownerId;
@@ -53,7 +54,6 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param category
 	 * @param ownerId
 	 * @param location
 	 * @param questionText
@@ -64,10 +64,9 @@ public class QnaQuestion {
 	 * @param anonymous
 	 * @param published
 	 */
-	public QnaQuestion(QnaCategory category, String ownerId, String location,
-			String questionText, Integer views, Date dateLastModified,
-			Date dateCreated, Integer order, Boolean anonymous,
-			Boolean published) {
+	public QnaQuestion(QnaCategory category, String ownerId, String location, String questionText,
+			Integer views, Date dateLastModified, Date dateCreated,
+			Integer order, Boolean anonymous, Boolean published) {
 		this.category = category;
 		this.ownerId = ownerId;
 		this.location = location;
@@ -237,17 +236,22 @@ public class QnaQuestion {
 	/**
 	 * @return list of answers linked to this question
 	 */
-	public Set<QnaAnswer> getAnswers() {
+	public List<QnaAnswer> getAnswers() {
 		return answers;
 	}
 
 	/**
 	 * @param answers set list of answers to this question
 	 */
-	public void setAnswers(Set<QnaAnswer> answers) {
+	public void setAnswers(List<QnaAnswer> answers) {
 		this.answers = answers;
 	}
 
+	public void addAnswer(QnaAnswer answer) {
+		answer.setQuestion(this);
+		answers.add(answer);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -259,6 +263,4 @@ public class QnaQuestion {
 
 		return false;
 	}
-
-
 }

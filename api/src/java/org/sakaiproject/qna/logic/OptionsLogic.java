@@ -56,4 +56,5 @@ public interface OptionsLogic {
 	 * @return set of e-mail address
 	 */
 	public Set<String> getNotificationSet(String locationId);
+	
 }

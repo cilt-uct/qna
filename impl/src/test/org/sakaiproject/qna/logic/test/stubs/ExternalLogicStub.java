@@ -44,7 +44,7 @@ public class ExternalLogicStub implements ExternalLogic {
 			}
 		} else if (userId.equals(USER_UPDATE)) {
 			if (locationId.equals(LOCATION1_ID)) {
-				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY)) {
+				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY) || permission.equals(QNA_NEW_ANSWER)) {
 					return true;
 				} 
 			}
@@ -52,9 +52,7 @@ public class ExternalLogicStub implements ExternalLogic {
 				|| userId.equals(USER_LOC_3_UPDATE_2)
 				|| userId.equals(USER_LOC_3_UPDATE_3)) {
 			if (locationId.equals(LOCATION3_ID)) {
-				if (permission.equals(QNA_UPDATE)) {
-					return true;
-				} else if (permission.equals(QNA_NEW_QUESTION)) {
+				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY) || permission.equals(QNA_NEW_ANSWER)) {
 					return true;
 				}
 			}

@@ -118,27 +118,24 @@ public class OptionsLogicImpl implements OptionsLogic {
 		String userId = externalLogic.getCurrentUserId();
 		
 		QnaOptions options = getOptions(locationId);
-
+		options.getCustomEmails().clear();
+		
 		EmailValidator emailValidator = EmailValidator.getInstance();
 
 		String[] emails = mailList.split(",");
-		Set<QnaCustomEmail> customEmails = new HashSet<QnaCustomEmail>();
-
+		
 		boolean invalidEmail = false;
+	
 		for (int i = 0; i < emails.length; i++) {
 			if (!emailValidator.isValid(emails[i].trim())) {
 				invalidEmail = true;
 			} else {
-				customEmails.add(new QnaCustomEmail(options, userId, emails[i]
-						.trim(), new Date()));
+				QnaCustomEmail customEmail = new QnaCustomEmail(userId, emails[i].trim(), new Date());
+				options.addCustomEmail(customEmail);
 			}
 		}
 		
-		if(!customEmails.isEmpty()){
-			options.setCustomEmails(customEmails);
-			saveOptions(options, locationId);
-		}
-
+		saveOptions(options, locationId);
 		return invalidEmail;
 
 	}

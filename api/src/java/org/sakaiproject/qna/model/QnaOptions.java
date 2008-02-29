@@ -2,6 +2,7 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
@@ -17,7 +18,7 @@ public class QnaOptions {
     private String id;
 
 //  The list of custom email addresses associated with this option
-    private Set<QnaCustomEmail> customEmails;
+    private Set<QnaCustomEmail> customEmails = new HashSet<QnaCustomEmail>();
 
 //	The user (sakai userid) that changed this options
     private String ownerId;
@@ -254,6 +255,11 @@ public class QnaOptions {
 		this.customEmails = customEmails;
 	}
 
+	public void addCustomEmail(QnaCustomEmail customEmail) {
+		customEmail.setOptions(this);
+		customEmails.add(customEmail);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

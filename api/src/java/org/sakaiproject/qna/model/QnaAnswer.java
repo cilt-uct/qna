@@ -1,6 +1,7 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * This is a the options table entity
@@ -46,15 +47,13 @@ public class QnaAnswer {
 	/**
 	 * Full constructor
 	 */
-	public QnaAnswer(String id, QnaQuestion question, String ownerId,
-			String answerText, Date dateLastModified, Date dateCreated,
+	public QnaAnswer(QnaQuestion question, String ownerId, String answerText,
 			Boolean approved, Boolean privateReply, Boolean anonymous) {
-		this.id = id;
 		this.question = question;
 		this.ownerId = ownerId;
 		this.answerText = answerText;
-		this.dateLastModified = dateLastModified;
-		this.dateCreated = dateCreated;
+		this.dateLastModified = new Date();
+		this.dateCreated = new Date();
 		this.approved = approved;
 		this.privateReply = privateReply;
 		this.anonymous = anonymous;
@@ -197,6 +196,4 @@ public class QnaAnswer {
 		
 		return false;
 	}
-
-	
 }

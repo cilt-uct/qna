@@ -20,6 +20,7 @@ public class OptionsLogicImplTest extends
 
 	OptionsLogicImpl optionsLogic;
 	GeneralLogicImpl generalLogic;
+	QnaDao dao;
 
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
@@ -42,7 +43,7 @@ public class OptionsLogicImplTest extends
 	protected void onSetUpInTransaction() {
 		// load the spring created dao class bean from the Spring Application
 		// Context
-		QnaDao dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
+		dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
 		if (dao == null) {
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
@@ -181,8 +182,6 @@ public class OptionsLogicImplTest extends
 		try {
 			options.setEmailNotificationType("silly_string");
 			fail("Should throw exception");
-		} catch (QnaConfigurationException ce) {
-			fail("Should not throw QnaConfigurationException");
 		} catch (IllegalArgumentException e) {
 			assertNotNull(e);
 		}
@@ -195,7 +194,7 @@ public class OptionsLogicImplTest extends
 
 		try {
 			options.setEmailNotificationType(QnaConstants.MOST_POPULAR_VIEW);
-			fail("Should throw exception");
+			fail("Should throw QnaConfigurationException");
 		} catch (QnaConfigurationException ce) {
 			assertNotNull(ce);
 		}
@@ -209,25 +208,17 @@ public class OptionsLogicImplTest extends
 		QnaOptions options = optionsLogic
 				.getOptions(LOCATION1_ID);
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
-
-		assertEquals(customEmails.size(), 3);
 		
-		boolean foundEmail1 = false;
-		boolean foundEmail2 = false;
-		boolean foundEmail3 = false;
+	
+		assertEquals(3, customEmails.size());
+		
+		assertTrue(customEmails.contains(tdp.customEmail1_location1));
+		assertTrue(customEmails.contains(tdp.customEmail2_location1));
+		assertTrue(customEmails.contains(tdp.customEmail3_location1));
 		
 		for (QnaCustomEmail qnaCustomEmail2 : customEmails) {
-			if (qnaCustomEmail2.getEmail().equals(tdp.customEmail1_location1.getEmail())) {
-				foundEmail1 = true;
-			} else if (qnaCustomEmail2.getEmail().equals(tdp.customEmail2_location1.getEmail())) {
-				foundEmail2 = true;
-			} else if (qnaCustomEmail2.getEmail().equals(tdp.customEmail3_location1.getEmail())) {
-				foundEmail3 = true;
-			}
+			assertNotNull(qnaCustomEmail2.getId());
 		}
-		assertTrue(foundEmail1);
-		assertTrue(foundEmail2);
-		assertTrue(foundEmail3);
 		
 		boolean errorOccurred = optionsLogic.setCustomMailList(
 				LOCATION1_ID,
@@ -258,9 +249,9 @@ public class OptionsLogicImplTest extends
 
 		assertEquals(customEmails.size(), 3);
 		
-		foundEmail1 = false;
-		foundEmail2 = false;
-		foundEmail3 = false;
+		boolean foundEmail1 = false;
+		boolean foundEmail2 = false;
+		boolean foundEmail3 = false;
 
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
 			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
@@ -316,7 +307,7 @@ public class OptionsLogicImplTest extends
 		try {
 			options.setEmailNotificationType(QnaConstants.CUSTOM_LIST);
 			optionsLogic.saveOptions(options, LOCATION1_ID);
-		} catch (QnaConfigurationException cfe) {
+		} catch (Exception e) {
 			fail("Should not throw exception");
 		}
 		
@@ -329,7 +320,6 @@ public class OptionsLogicImplTest extends
 		for (QnaCustomEmail qnaCustomEmail : customMails) {
 			assertTrue(notificationSet.contains(qnaCustomEmail.getEmail()));
 		}
-
 	}
 
 	/**

@@ -1,7 +1,9 @@
 package org.sakaiproject.qna.model;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This is a the options table entity
@@ -11,6 +13,9 @@ import java.util.Set;
 public class QnaCategory {
 
 	private String id;
+	
+//  The list of questions associated with this option
+    private List<QnaQuestion> questions = new ArrayList<QnaQuestion>();
 
 	// The user (sakai userid) that created this category
 	private String ownerId;
@@ -171,6 +176,25 @@ public class QnaCategory {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @return the questions
+	 */
+	public List<QnaQuestion> getQuestions() {
+		return questions;
+	}
+
+	/**
+	 * @param questions the questions to set
+	 */
+	public void setQuestions(List<QnaQuestion> questions) {
+		this.questions = questions;
+	}
+
+	public void addQuestion(QnaQuestion qnaQuestion) {
+		qnaQuestion.setCategory(this);
+		questions.add(qnaQuestion);
 	}
 
 }

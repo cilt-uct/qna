@@ -80,8 +80,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		dao.save(question);
 	}
 
-	public void publishQuestion(String questionId, String locationId)
-			throws QnaConfigurationException {
+	public void publishQuestion(String questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (generalLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = getQuestionById(questionId);
@@ -118,8 +117,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
-	public void saveQuestion(QnaQuestion question, String locationId)
-			throws QnaConfigurationException {
+	public void saveQuestion(QnaQuestion question, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (existsQuestion(question.getId())) {
 
@@ -181,10 +179,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	public void addQuestionToCategory(String questionId, String categoryId,
-			String locationId) throws QnaConfigurationException {
+			String locationId) {
 		
 		String userId = externalLogic.getCurrentUserId();
-
 		QnaCategory category = categoryLogic.getCategoryById(categoryId);
 		QnaQuestion question = getQuestionById(questionId);
 
@@ -205,8 +202,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 			throw new QnaConfigurationException("Location supplied ("+locationId+") does not match location of category and question ("+question.getLocation()+")");
 		}
 
-		question.setCategory(category);
-		saveQuestion(question, locationId);
+		category.addQuestion(question);
+		categoryLogic.saveCategory(category, locationId);
 	}
 
 }

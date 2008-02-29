@@ -125,9 +125,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
-		} catch (QnaConfigurationException qe) {
-			fail("Should have thrown security exception exception");
-		}
+		} 
 
 		// Test with valid permission
 		try {
@@ -135,9 +133,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			questionLogic.saveQuestion(question,LOCATION1_ID);
 			QnaQuestion changedQuestion = questionLogic.getQuestionById(tdp.question1_location1.getId());
 			assertEquals(changedQuestion.getQuestionText(), "Testing update");
-		} catch (SecurityException e) {
-			fail("Should not have thrown exception");
-		} catch (QnaConfigurationException qe) {
+		} catch (Exception e) {
 			fail("Should not have thrown exception");
 		}
 	}
@@ -160,16 +156,13 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		} catch (SecurityException se) {
 			assertNotNull(se);
 		}
-		catch (QnaConfigurationException e) {
-			fail("Should not have thrown exception");
-		}
+
 		
 		// Test with valid
 		externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
 		try {
 			questionLogic.saveQuestion(question, LOCATION3_ID);
 		} catch (Exception e) {
-			e.printStackTrace();
 			fail("Should not have thrown exception");
 		}
 
@@ -195,7 +188,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		question.setAnonymous(false);
 		try {
 			questionLogic.saveQuestion(question, LOCATION1_ID);
-		} catch (QnaConfigurationException e) {
+		} catch (Exception e) {
 			fail("Should not have thrown exception");
 		}
 
@@ -218,8 +211,6 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		try {
 			questionLogic.publishQuestion(question.getId(),LOCATION3_ID);
 			fail("Should have thrown exception");
-		} catch (QnaConfigurationException e) {
-			fail("Should not have thrown QnaConfigurationException");
 		} catch(SecurityException se){
 			assertNotNull(se);
 		}
@@ -232,10 +223,8 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			questionLogic.publishQuestion(question.getId(),LOCATION3_ID);
 			question = questionLogic.getQuestionById(tdp.question1_location3.getId());
 			assertTrue(question.getPublished());
-		} catch (QnaConfigurationException e) {
-			fail("Should not have thrown QnaConfigurationException");
-		} catch(SecurityException se){
-			fail("Should not have thrown SecurityException");
+		} catch (Exception e) {
+			fail("Should not have thrown Exception");
 		}
 	}
 
@@ -300,8 +289,8 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		try	{
 			questionLogic.saveQuestion(question, LOCATION3_ID);
 			assertNotNull(question.getId());
-		} catch (QnaConfigurationException e) {
-			fail("Should have thrown exception");
+		} catch (Exception e) {
+			fail("Should not have thrown exception");
 		}
 	}
 	/**
@@ -315,18 +304,13 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			fail("Should throw SecurityException");
 		} catch (SecurityException se) {
 			assertNotNull(se);
-		} catch (QnaConfigurationException e) {
-			e.printStackTrace();
-			fail("Should throw SecurityException");
-		}
-
+		} 
+		
 		// Valid user id
 		externalLogicStub.currentUserId = USER_UPDATE;
 		try {
 			questionLogic.addQuestionToCategory(tdp.question1_location1.getId() , tdp.category1_location1.getId(), LOCATION1_ID);
-		} catch (SecurityException se) {
-			fail("Should not throw Exception");
-		} catch (QnaConfigurationException e) {
+		} catch (Exception se) {
 			fail("Should not throw Exception");
 		}
 		assertTrue(tdp.question1_location1.getCategory().getId().equals(tdp.category1_location1.getId()));

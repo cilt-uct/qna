@@ -25,12 +25,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 		this.generalLogic = generalLogic;
 	}
 
-	private QuestionLogic questionLogic;
-
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
-	}
-
 	private QnaDao dao;
 
 	public void setDao(QnaDao dao) {
@@ -51,10 +45,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 
 		String userId = externalLogic.getCurrentUserId();
 		if (generalLogic.canUpdate(locationId, userId)) {
-			List<QnaQuestion> questions = getQuestionsForCategory(categoryId);
-			for (QnaQuestion qnaQuestion : questions) {
-				questionLogic.removeQuestion(qnaQuestion.getId(), locationId);
-			}
 			QnaCategory category = getCategoryById(categoryId);
 			dao.delete(category);
 		} else {
@@ -107,11 +97,8 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId) {
-		return dao.findByProperties(QnaQuestion.class,
-				new String[] { "category.id" }, new Object[] { categoryId },
-				new int[] { ByPropsFinder.EQUALS });
+		return getCategoryById(categoryId).getQuestions();
 	}
 
 }

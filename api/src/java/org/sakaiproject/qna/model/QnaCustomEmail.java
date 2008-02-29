@@ -33,14 +33,11 @@ public class QnaCustomEmail {
 
 
 	/**
-	 * @param options
 	 * @param ownerId
 	 * @param email
 	 * @param dateCreated
 	 */
-	public QnaCustomEmail(QnaOptions options, String ownerId, String email,
-			Date dateCreated) {
-		this.options = options;
+	public QnaCustomEmail(String ownerId, String email, Date dateCreated) {
 		this.ownerId = ownerId;
 		this.email = email;
 		this.dateCreated = dateCreated;
@@ -142,15 +139,7 @@ public class QnaCustomEmail {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
-	@Override
 	public int hashCode() {
-		if (this.id != null){
-			return id.hashCode();
-		}else{
-			return email.hashCode();
-		}
+		return email.hashCode();
 	}
-
-
-
 }

@@ -25,4 +25,12 @@ public interface GeneralLogic {
 	 * @return true if user can add new category, false if not
 	 */
 	public boolean canAddNewCategory(String locationId, String userId);
+	
+	/**
+	 * 
+	 * @param locationId
+	 * @param userId
+	 * @return
+	 */
+	public boolean canAddNewAnswer(String locationId, String userId);
 }

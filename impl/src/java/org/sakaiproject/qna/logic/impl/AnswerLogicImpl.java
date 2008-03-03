@@ -122,12 +122,24 @@ public class AnswerLogicImpl implements AnswerLogic {
 		return (QnaAnswer) dao.findById(QnaAnswer.class, answerId);
 	}
 
-	public void removeAnswerFromQuestion(String answerId, String locationId) {
+	public void removeAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (generalLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			dao.delete(answer);
+		} else {
+			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
+		}
+	}
+	
+	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId) {
+		String userId = externalLogic.getCurrentUserId();
+		if (generalLogic.canUpdate(locationId, userId)) {
+			QnaQuestion question = questionLogic.getQuestionById(questionId);
 			
+			QnaAnswer answer = getAnswerById(answerId);
+			question.getAnswers().remove(answer);
+			dao.delete(answer);
 		} else {
 			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
 		}

@@ -35,7 +35,14 @@ public interface AnswerLogic {
 	 * @param answerId
 	 * @param locationId TODO
 	 */
-	public void removeAnswerFromQuestion(String answerId, String locationId);
+	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId);
+	
+	/**
+	 * 
+	 * @param answerId
+	 * @param locationId
+	 */
+	public void removeAnswer(String answerId, String locationId);
 
 	/**
 	 *

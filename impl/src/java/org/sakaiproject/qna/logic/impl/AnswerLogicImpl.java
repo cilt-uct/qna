@@ -1,19 +1,15 @@
 package org.sakaiproject.qna.logic.impl;
 
-import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
-
 import java.util.Date;
 
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AnswerLogic;
-import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.GeneralLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 

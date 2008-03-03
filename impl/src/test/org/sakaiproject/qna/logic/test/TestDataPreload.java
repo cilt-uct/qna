@@ -1,8 +1,6 @@
 package org.sakaiproject.qna.logic.test;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.sakaiproject.genericdao.api.GenericDao;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -125,10 +123,14 @@ public class TestDataPreload {
 		
 		question2_location1.addAnswer(answer1_location1);
 		question2_location1.addAnswer(answer2_location1);
+		category1_location1.addQuestion(question2_location1);
 		dao.save(question2_location1);
-
+		
+		category1_location1.addQuestion(question3_location1);
 		dao.save(question3_location1);
+		category1_location1.addQuestion(question4_location1);
 		dao.save(question4_location1);
+		category1_location1.addQuestion(question5_location1);		
 		dao.save(question5_location1);
 		dao.save(category1_location1);
 		

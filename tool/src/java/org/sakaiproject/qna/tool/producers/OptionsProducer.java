@@ -3,6 +3,10 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.model.QnaOptions;
+import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UIBoundBoolean;
@@ -33,36 +37,50 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
 		this.navBarRenderer = navBarRenderer;
 	}
     
+    private OptionsLogic optionsLogic;
+    public void setOptionsLogic(OptionsLogic optionsLogic) {
+    	this.optionsLogic = optionsLogic;
+    }
+    
+    private ExternalLogic externalLogic;
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
+    
     public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-    	// TODO: Setup options as it is set currently in database
     	
+    	QnaOptions options = optionsLogic.getOptions(externalLogic.getCurrentLocationId());
+		String optionsLocator = "OptionsLocator";
+		String optionsOTP = optionsLocator + "." + options.getId();
+		
     	navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
     	UIMessage.make(tofill, "page-title", "qna.options.title");
     	
     	UIForm form = UIForm.make(tofill, "options-form");
     	
-    	UIBoundBoolean.make(form,"moderation",false);
+
+    	    	
+    	UIBoundBoolean.make(form,"moderation",optionsOTP + ".moderationOn",options.getModerationOn());
     	UIMessage.make(form,"moderation-label","qna.options.moderate-questions");
     	UIMessage.make(form,"moderation-msg","qna.options.moderate-questions-msg");
     	
-    	UIBoundBoolean.make(form,"anonymous",false);
+    	UIBoundBoolean.make(form,"anonymous",optionsOTP + ".anonymousAllowed",options.getAnonymousAllowed());
     	UIMessage.make(form,"anonymous-label","qna.options.anonymous-msg");
     	
-    	UIBoundBoolean.make(form,"notification",true);
+    	UIBoundBoolean.make(form,"notification",optionsOTP + "emailNotification",options.getEmailNotification());
     	UIMessage.make(form,"notification-label","qna.options.notification-msg");
     	
-    	// TODO: Get from project constants
-    	String[] notificationRadioValues = new String[]{"site-contact","custom-mail","update-rights"};
-    	UISelect notificationRadios = UISelect.make(form,"notification-radio",notificationRadioValues,"mock.valuebind","site-contact");
+    	String[] notificationRadioValues = new String[]{QnaConstants.SITE_CONTACT,QnaConstants.CUSTOM_LIST,QnaConstants.UPDATE_RIGHTS};
+    	UISelect notificationRadios = UISelect.make(form,"notification-radio",notificationRadioValues,optionsOTP + ".emailNotificationType",options.getEmailNotificationType());
     	
     	String notificationRadioSelectID = notificationRadios.getFullID();
     	
     	UISelectChoice.make(form, "site-contact", notificationRadioSelectID, 0);
-    	UIOutput.make(form,"site-contact-label","lecturer@university.ac.za"); // TODO: Get site contact
+    	UIOutput.make(form,"site-contact-label",externalLogic.getSiteContactEmail(externalLogic.getCurrentLocationId()));
     	
     	UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
     	UIMessage.make(form,"custom-mail-label","qna.options.custom-mail-addresses");
-   	    UIInput.make(form,"custom-mail-input",null,"something@something.com"); // TODO: get form options database    	
+   	    UIInput.make(form,"custom-mail-input",null,""); // TODO: get form options database    	
      	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
     	
     	UISelectChoice.make(form, "update-rights", notificationRadioSelectID, 2);
@@ -71,9 +89,8 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	
   	   	UIMessage.make(form,"default-view-label","qna.options.default-view-msg");
    	   	
-   	   	// TODO: Get this out of Constant?
-   	   	String[] defaultViewValues = new String[] {"category","popular"}; 
-   	    UISelect defaultViewRadio = UISelect.make(form, "default-view-radio", defaultViewValues, "mock.valuebinding","category");
+   	   	String[] defaultViewValues = new String[] {QnaConstants.CATEGORY_VIEW,QnaConstants.MOST_POPULAR_VIEW}; 
+   	    UISelect defaultViewRadio = UISelect.make(form, "default-view-radio", defaultViewValues, optionsOTP + ".defaultStudentView",options.getDefaultStudentView());
    	    String defaultViewRadioSelectID = defaultViewRadio.getFullID();
    	    
    	    UISelectChoice.make(form,"category-view",defaultViewRadioSelectID,0);
@@ -81,7 +98,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
    	    UISelectChoice.make(form,"popular-view",defaultViewRadioSelectID,1);
    	    UIMessage.make(form,"popular-view-label","qna.options.most-popular");
    	    
-        UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),"mockbinding.save");
+        UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),optionsLocator + ".save");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 
     }

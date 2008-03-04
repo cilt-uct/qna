@@ -50,6 +50,12 @@ public interface CategoryLogic {
 	 */
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId);
 	
+	/**
+	 * 
+	 * @param locationId
+	 * @return
+	 */
+	public List<QnaCategory> getCategoriesForLocation(String locationId);
 	
 
 }

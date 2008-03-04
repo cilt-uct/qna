@@ -58,6 +58,8 @@
 
 	<bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
@@ -197,4 +199,18 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
+	
+	<!-- OTP -->
+	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">
+      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+      <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+   	  <property name="messages" ref="targettedMessageList"/>
+   	</bean>
+
+	<bean id="OptionsLocator" class="org.sakaiproject.qna.tool.otp.OptionsLocator">
+      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+      <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+   	</bean>
+
+	
 </beans>

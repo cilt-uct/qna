@@ -85,7 +85,9 @@ public class TestDataPreload {
 	
 	
 	public QnaQuestion question1_location1 = new QnaQuestion(null,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question1", 0,new Date(),new Date(), 0,false,false  );
-	public QnaCategory category1_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category",0);
+	public QnaCategory category1_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category1",0);
+	public QnaCategory category2_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category2",0);
+	public QnaCategory category3_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category3",0);
 	
 	public QnaQuestion question2_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question2", 0,new Date(),new Date(), 0,false,true);
 	public QnaQuestion question3_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question3", 0,new Date(),new Date(), 0,false,true);
@@ -120,6 +122,8 @@ public class TestDataPreload {
 		dao.save(question1_location1);
 		
 		dao.save(category1_location1);
+		dao.save(category2_location1);
+		dao.save(category3_location1);
 		
 		question2_location1.addAnswer(answer1_location1);
 		question2_location1.addAnswer(answer2_location1);

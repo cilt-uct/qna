@@ -30,5 +30,16 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>	
 	</bean>
 	
-
+	<bean id="org.sakaiproject.qna.logic.CategoryLogic"
+			class="org.sakaiproject.qna.logic.impl.CategoryLogicImpl">
+		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao"/>		
+	</bean>
+	
+	<bean id="org.sakaiproject.qna.logic.OptionsLogic" class="org.sakaiproject.qna.logic.impl.OptionsLogicImpl">
+		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao"/>	
+	</bean>		
 </beans>

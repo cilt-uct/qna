@@ -179,5 +179,10 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertEquals(tdp.question4_location1.getQuestionText(), questions.get(2).getQuestionText());
 		assertEquals(tdp.question5_location1.getQuestionText(), questions.get(3).getQuestionText());
 	}
+	
+	public void testGetCategoriesForLocation() {
+		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(LOCATION1_ID);
+		assertEquals(3, categories.size());
+	}
 
 }

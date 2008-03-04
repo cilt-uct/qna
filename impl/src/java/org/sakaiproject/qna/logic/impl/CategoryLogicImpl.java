@@ -101,4 +101,11 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return getCategoryById(categoryId).getQuestions();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<QnaCategory> getCategoriesForLocation(String locationId) {
+		return dao.findByProperties(QnaCategory.class, new String[] {"location"}, new Object[] {locationId}, new int[] { ByPropsFinder.EQUALS});
+	}
+	
+	
+
 }

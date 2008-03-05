@@ -45,7 +45,7 @@
 		select.onchange = function () { change_view(select,form,current_selected);};
     }
 
-    function  toggle_add_questions(link_id,icon_id,div_id) {
+    function toggle_add_questions(link_id,icon_id,div_id) {
 	   	toggle_visibility(link_id);
     	toggle_visibility(icon_id);
     	toggle_visibility(div_id);
@@ -59,3 +59,37 @@
     	var icon = document.getElementById(link_id);
     	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
     }
+    
+    function toggle_disabled(element) {
+    	if (element.disabled) {
+    		element.disabled = false;
+    	} else {
+    		element.disabled = true;
+    	}
+    }
+    
+    
+    function toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input) {
+    	toggle_disabled(site_option);
+		toggle_disabled(custom_option);
+		toggle_disabled(update_option);
+		toggle_disabled(custom_mail_input);
+    }
+    
+    function init_mail_notifications(notification_id,site_option_id,custom_option_id,update_option_id,custom_mail_input_id) {
+    	var notification = document.getElementById(notification_id);
+		var site_option = document.getElementById(site_option_id);
+		var custom_option = document.getElementById(custom_option_id);
+		var update_option = document.getElementById(update_option_id);
+		var custom_mail_input = document.getElementById(custom_mail_input_id);
+		
+		notification.onchange = function() {toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input)};   	
+    	if (!notification.checked) {
+    		site_option.disabled = true;
+    		custom_option.disabled = true;
+    		update_option.disabled = true;
+    		custom_mail_input.disabled = true;
+    	}
+    }
+    
+    

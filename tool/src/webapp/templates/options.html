@@ -8,12 +8,19 @@
    <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
    <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
 </head>
 
 <body>
   <div rsf:id="navIntraTool:" class="navIntraTool"/>
   <h3 rsf:id="page-title" class="insColor insBak insBorder">Options</h3>
 
+  <div rsf:id="message-for:*" class="alertMessage">
+	<ul style="margin:0px;">
+		<li>Message for user here</li>
+	</ul>
+  </div>
+  
   <form rsf:id="options-form" method="post">
 	  <br/>
 	  <div id="moderation-option">
@@ -37,6 +44,7 @@
 	  </div>
 
 	  <div id="notification-type" class="tier4">
+		  <span rsf:id="notification-radio"/>
 		  <fieldset class="inputRadioGroup">
 		      <p class="inputRadio checkbox">
 		         <input rsf:id="site-contact" type="radio" name="notification-radio" id="site-contact" value="site-contact" />
@@ -61,21 +69,25 @@
 		      </div>
 		  </fieldset>
 	  </div>
-
+	  <script rsf:id="email-notification-init" type="text/javascript">
+  		init_mail_notifications("notification","site-contact","custom_option_id","update_option_id","custom_mail_input_id");
+  	  </script>
+	  
 	  <br/>
 	  <div id="default-view-option">
 	  <label rsf:id="default-view-label">Default view of questions for students:</label><br/>
 	  	<div id="view-type" class="tier4">
-		  	<fieldset class="inputRadioGroup">
-		  		<p class="inputRadio checkbox">
-			         <input rsf:id="category-view" type="radio" name="default-view-radio" id="category-view" value="category-view" />
-			         <label rsf:id="category-view-label" for="category-view">Category</label>
-			    </p>
-		  		<p class="inputRadio checkbox">
-			         <input rsf:id="popular-view" type="radio" name="default-view-radio" id="popular-view" value="popular-view" />
-			         <label rsf:id="popular-view-label" for="popular-view">Most Popular</label>
-			    </p>
-		    </fieldset>
+		  	<span rsf:id="default-view-radio" />
+			<fieldset class="inputRadioGroup">
+				<p class="inputRadio checkbox">
+					<input rsf:id="category-view" type="radio" name="default-view-radio" id="category-view" value="category" />
+					<label rsf:id="category-view-label" for="category-view">Category</label>
+				</p>
+				<p class="inputRadio checkbox">
+					<input rsf:id="popular-view" type="radio" name="default-view-radio" id="popular-view" value="most_popular" />
+					<label rsf:id="popular-view-label" for="popular-view">Most Popular</label>
+				</p>
+			</fieldset>
 	  	</div>
 	  </div>
 	  <p>

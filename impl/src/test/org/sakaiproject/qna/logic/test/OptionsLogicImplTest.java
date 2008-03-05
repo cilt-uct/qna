@@ -189,15 +189,6 @@ public class OptionsLogicImplTest extends
 		assertFalse(options.getEmailNotificationType().equals("silly_string"));
 		assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
-		options.setEmailNotification(false);
-		assertNull(options.getEmailNotificationType());
-
-		try {
-			options.setEmailNotificationType(QnaConstants.MOST_POPULAR_VIEW);
-			fail("Should throw QnaConfigurationException");
-		} catch (QnaConfigurationException ce) {
-			assertNotNull(ce);
-		}
 	}
 
 	/**
@@ -252,8 +243,9 @@ public class OptionsLogicImplTest extends
 		boolean foundEmail1 = false;
 		boolean foundEmail2 = false;
 		boolean foundEmail3 = false;
-
+		
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
+			assertNotNull(qnaCustomEmail.getId());
 			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
 				foundEmail1 = true;
 			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL2)) {
@@ -265,6 +257,16 @@ public class OptionsLogicImplTest extends
 		assertTrue(foundEmail1);
 		assertTrue(foundEmail2);
 		assertTrue(foundEmail3);
+		
+		// Add it again
+		errorOccurred = optionsLogic.setCustomMailList(
+				LOCATION1_ID,
+				"clown@college.org");
+		assertFalse(errorOccurred);
+		options = optionsLogic.getOptions(LOCATION1_ID);
+		customEmails = options.getCustomEmails();
+		
+		assertEquals(customEmails.size(), 1);
 	}
 
 	/**

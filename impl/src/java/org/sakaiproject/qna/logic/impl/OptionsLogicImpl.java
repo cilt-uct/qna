@@ -13,6 +13,7 @@ import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.GeneralLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
@@ -50,6 +51,8 @@ public class OptionsLogicImpl implements OptionsLogic {
 		newOptions.setEmailNotification(false);
 		newOptions.setModerationOn(true);
 		newOptions.setDefaultStudentView(QnaConstants.CATEGORY_VIEW);
+		// Make Site contact the default to notify but set notification false as default 
+		newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT); 
 
 		Date now = new Date();
 		newOptions.setDateCreated(now);
@@ -118,22 +121,27 @@ public class OptionsLogicImpl implements OptionsLogic {
 		String userId = externalLogic.getCurrentUserId();
 		
 		QnaOptions options = getOptions(locationId);
-		options.getCustomEmails().clear();
 		
+		for (QnaCustomEmail mail : options.getCustomEmails()) {
+			dao.delete(mail);
+		}
+		options.getCustomEmails().clear();
+	
 		EmailValidator emailValidator = EmailValidator.getInstance();
 
-		String[] emails = mailList.split(",");
-		
-		boolean invalidEmail = false;
+		boolean invalidEmail = false;	
+		if (mailList != null && !mailList.trim().equals("")) {
+			String[] emails = mailList.split(",");
 	
-		for (int i = 0; i < emails.length; i++) {
-			if (!emailValidator.isValid(emails[i].trim())) {
-				invalidEmail = true;
-			} else {
-				QnaCustomEmail customEmail = new QnaCustomEmail(userId, emails[i].trim(), new Date());
-				options.addCustomEmail(customEmail);
+			for (int i = 0; i < emails.length; i++) {
+				if (!emailValidator.isValid(emails[i].trim())) {
+					invalidEmail = true;
+				} else {
+					QnaCustomEmail customEmail = new QnaCustomEmail(userId, emails[i].trim(), new Date());
+					options.addCustomEmail(customEmail);
+				}
 			}
-		}
+		} 
 		
 		saveOptions(options, locationId);
 		return invalidEmail;

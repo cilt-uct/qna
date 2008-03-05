@@ -13,7 +13,7 @@
       </id>
 
 <!--        linkage to custom emails -->
-      <set name="customEmails" lazy="true" inverse="true" cascade="all">
+      <set name="customEmails" lazy="false" inverse="true" cascade="all">
       		<key column="options_id"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaCustomEmail" />
       </set>

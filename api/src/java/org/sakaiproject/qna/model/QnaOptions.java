@@ -3,6 +3,7 @@ package org.sakaiproject.qna.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
@@ -47,6 +48,9 @@ public class QnaOptions {
 //  The default view presented to students
     private String defaultStudentView;
 
+//  This is the comma separated string used by the front-end to create the custom emails    
+    private String commaSeparated;
+    
 	/**
 	 *
 	 */
@@ -196,21 +200,14 @@ public class QnaOptions {
 	 * @return the emailNotificationType
 	 */
 	public String getEmailNotificationType() {
-		if (this.emailNotification == false) {
-			return null;
-		} else {
-			return emailNotificationType; 
-		}
+		return emailNotificationType; 
 	}
 
 	/**
 	 * @param emailNotificationType the emailNotificationType to set
 	 */
-	public void setEmailNotificationType(String emailNotificationType) throws QnaConfigurationException {
+	public void setEmailNotificationType(String emailNotificationType) {
 		if (emailNotificationType != null) {
-			if (!this.emailNotification) {
-				throw new QnaConfigurationException("Cannot set email notification type when email notification is switched off");
-			}
 			
 			if (emailNotificationType.equals(QnaConstants.CUSTOM_LIST) || 
 				emailNotificationType.equals(QnaConstants.SITE_CONTACT) ||
@@ -271,6 +268,31 @@ public class QnaOptions {
 
 		return false;
 	}
+	
+	// Used for the front-end
+	public String getCustomEmailDisplay() {
+		if (getCustomEmails().size() == 0) {
+			return "";
+		}
+		
+		StringBuilder displayed = new StringBuilder();
+		for (QnaCustomEmail email : getCustomEmails()) {
+			displayed.append(email.getEmail() + ",");
+		}
+		
+		// Remove last comma
+		displayed.replace(displayed.length()-1, displayed.length(), "");
+		
+		return displayed.toString();
+	}
+	
+	public String getCommaSeparated() {
+		return commaSeparated;
+	}
 
-
+	public void setCommaSeparated(String commaSeparated) {
+		this.commaSeparated = commaSeparated;
+	}
+	
+	
 }

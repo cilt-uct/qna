@@ -210,6 +210,7 @@
 	<bean id="OptionsLocator" class="org.sakaiproject.qna.tool.otp.OptionsLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+      <property name="messages" ref="targettedMessageList"/>
    	</bean>
 
 	

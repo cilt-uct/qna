@@ -13,6 +13,7 @@ import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
+import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
@@ -57,17 +58,15 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	UIMessage.make(tofill, "page-title", "qna.options.title");
     	
     	UIForm form = UIForm.make(tofill, "options-form");
-    	
-
-    	    	
-    	UIBoundBoolean.make(form,"moderation",optionsOTP + ".moderationOn",options.getModerationOn());
+    	    	    	
+    	UIBoundBoolean.make(form,"moderation",optionsOTP + ".moderationOn");
     	UIMessage.make(form,"moderation-label","qna.options.moderate-questions");
     	UIMessage.make(form,"moderation-msg","qna.options.moderate-questions-msg");
     	
-    	UIBoundBoolean.make(form,"anonymous",optionsOTP + ".anonymousAllowed",options.getAnonymousAllowed());
+    	UIBoundBoolean.make(form,"anonymous",optionsOTP + ".anonymousAllowed");
     	UIMessage.make(form,"anonymous-label","qna.options.anonymous-msg");
     	
-    	UIBoundBoolean.make(form,"notification",optionsOTP + "emailNotification",options.getEmailNotification());
+    	UIBoundBoolean notification = UIBoundBoolean.make(form,"notification",optionsOTP + ".emailNotification");
     	UIMessage.make(form,"notification-label","qna.options.notification-msg");
     	
     	String[] notificationRadioValues = new String[]{QnaConstants.SITE_CONTACT,QnaConstants.CUSTOM_LIST,QnaConstants.UPDATE_RIGHTS};
@@ -75,15 +74,15 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	
     	String notificationRadioSelectID = notificationRadios.getFullID();
     	
-    	UISelectChoice.make(form, "site-contact", notificationRadioSelectID, 0);
+    	UISelectChoice siteContact = UISelectChoice.make(form, "site-contact", notificationRadioSelectID, 0);
     	UIOutput.make(form,"site-contact-label",externalLogic.getSiteContactEmail(externalLogic.getCurrentLocationId()));
     	
-    	UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
+    	UISelectChoice customMail = UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
     	UIMessage.make(form,"custom-mail-label","qna.options.custom-mail-addresses");
-   	    UIInput.make(form,"custom-mail-input",null,""); // TODO: get form options database    	
+   	    UIInput customMailInput = UIInput.make(form,"custom-mail-input",optionsOTP + ".commaSeparated",options.getCustomEmailDisplay()); 
      	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
     	
-    	UISelectChoice.make(form, "update-rights", notificationRadioSelectID, 2);
+     	UISelectChoice updateRights = UISelectChoice.make(form, "update-rights", notificationRadioSelectID, 2);
     	UIMessage.make(form,"update-rights-label","qna.options.update-rights");
     	UIMessage.make(form,"update-rights-msg","qna.options.update-rights-msg");
     	
@@ -98,7 +97,9 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
    	    UISelectChoice.make(form,"popular-view",defaultViewRadioSelectID,1);
    	    UIMessage.make(form,"popular-view-label","qna.options.most-popular");
    	    
-        UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),optionsLocator + ".save");
+   	    UIInitBlock.make(form, "email-notification-init", "init_mail_notifications", new Object[] {notification,siteContact,customMail,updateRights,customMailInput});
+   	    
+        UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),optionsLocator + ".saveAll");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 
     }

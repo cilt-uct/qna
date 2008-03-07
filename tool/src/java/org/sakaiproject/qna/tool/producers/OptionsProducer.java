@@ -9,6 +9,7 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
+import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -38,21 +39,20 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
 		this.navBarRenderer = navBarRenderer;
 	}
     
-    private OptionsLogic optionsLogic;
-    public void setOptionsLogic(OptionsLogic optionsLogic) {
-    	this.optionsLogic = optionsLogic;
-    }
-    
     private ExternalLogic externalLogic;
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
+	
+	private BeanGetter ELEvaluator;
+    public void setELEvaluator(BeanGetter ELEvaluator) {
+        this.ELEvaluator = ELEvaluator;
+        }
+
     
     public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-    	
-    	QnaOptions options = optionsLogic.getOptions(externalLogic.getCurrentLocationId());
 		String optionsLocator = "OptionsLocator";
-		String optionsOTP = optionsLocator + "." + options.getId();
+		String optionsOTP = optionsLocator + "." + externalLogic.getCurrentLocationId();
 		
     	navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
     	UIMessage.make(tofill, "page-title", "qna.options.title");
@@ -70,7 +70,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	UIMessage.make(form,"notification-label","qna.options.notification-msg");
     	
     	String[] notificationRadioValues = new String[]{QnaConstants.SITE_CONTACT,QnaConstants.CUSTOM_LIST,QnaConstants.UPDATE_RIGHTS};
-    	UISelect notificationRadios = UISelect.make(form,"notification-radio",notificationRadioValues,optionsOTP + ".emailNotificationType",options.getEmailNotificationType());
+    	UISelect notificationRadios = UISelect.make(form,"notification-radio",notificationRadioValues,new String[]{},optionsOTP + ".emailNotificationType");
     	
     	String notificationRadioSelectID = notificationRadios.getFullID();
     	
@@ -79,8 +79,9 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	
     	UISelectChoice customMail = UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
     	UIMessage.make(form,"custom-mail-label","qna.options.custom-mail-addresses");
-   	    UIInput customMailInput = UIInput.make(form,"custom-mail-input",optionsOTP + ".commaSeparated",options.getCustomEmailDisplay()); 
-     	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
+   	    UIInput customMailInput = UIInput.make(form,"custom-mail-input",optionsOTP + ".commaSeparated",(String)ELEvaluator.getBean(optionsOTP + ".customEmailDisplay")); 
+    	
+    	UIMessage.make(form,"custom-mail-msg","qna.options.custom-mail-msg");
     	
      	UISelectChoice updateRights = UISelectChoice.make(form, "update-rights", notificationRadioSelectID, 2);
     	UIMessage.make(form,"update-rights-label","qna.options.update-rights");
@@ -89,7 +90,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
   	   	UIMessage.make(form,"default-view-label","qna.options.default-view-msg");
    	   	
    	   	String[] defaultViewValues = new String[] {QnaConstants.CATEGORY_VIEW,QnaConstants.MOST_POPULAR_VIEW}; 
-   	    UISelect defaultViewRadio = UISelect.make(form, "default-view-radio", defaultViewValues, optionsOTP + ".defaultStudentView",options.getDefaultStudentView());
+   	    UISelect defaultViewRadio = UISelect.make(form, "default-view-radio", defaultViewValues,new String[]{}, optionsOTP + ".defaultStudentView");
    	    String defaultViewRadioSelectID = defaultViewRadio.getFullID();
    	    
    	    UISelectChoice.make(form,"category-view",defaultViewRadioSelectID,0);

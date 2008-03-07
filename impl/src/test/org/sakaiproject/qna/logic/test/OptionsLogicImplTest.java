@@ -7,7 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
-import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.model.QnaCustomEmail;
@@ -19,7 +19,7 @@ public class OptionsLogicImplTest extends
 		AbstractTransactionalSpringContextTests {
 
 	OptionsLogicImpl optionsLogic;
-	GeneralLogicImpl generalLogic;
+	PermissionLogicImpl permissionLogic;
 	QnaDao dao;
 
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
@@ -48,13 +48,13 @@ public class OptionsLogicImplTest extends
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
 		
-		generalLogic = new GeneralLogicImpl();
-		generalLogic.setExternalLogic(externalLogicStub);
+		permissionLogic = new PermissionLogicImpl();
+		permissionLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup the object to be tested
 		optionsLogic = new OptionsLogicImpl();
 		optionsLogic.setDao(dao);
-		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 		
 		// preload testData

@@ -9,7 +9,7 @@ import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.GeneralLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCategory;
@@ -19,10 +19,10 @@ public class CategoryLogicImpl implements CategoryLogic {
 
 	private static Log log = LogFactory.getLog(OptionsLogicImpl.class);
 
-	private GeneralLogic generalLogic;
+	private PermissionLogic permissionLogic;
 
-	public void setGeneralLogic(GeneralLogic generalLogic) {
-		this.generalLogic = generalLogic;
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
 	}
 
 	private QnaDao dao;
@@ -44,7 +44,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	public void removeCategory(String categoryId, String locationId) {
 
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaCategory category = getCategoryById(categoryId);
 			dao.delete(category);
 		} else {
@@ -57,7 +57,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	public void saveCategory(QnaCategory category, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (existsCategory(category.getId())) {
-			if (generalLogic.canUpdate(locationId, userId)) {
+			if (permissionLogic.canUpdate(locationId, userId)) {
 				category.setOwnerId(userId);
 				category.setDateLastModified(new Date());
 				dao.save(category);
@@ -68,7 +68,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			}
 
 		} else {
-			if (generalLogic.canAddNewCategory(locationId, userId)) {
+			if (permissionLogic.canAddNewCategory(locationId, userId)) {
 				category.setLocation(locationId);
 				category.setOwnerId(userId);
 				Date now = new Date();

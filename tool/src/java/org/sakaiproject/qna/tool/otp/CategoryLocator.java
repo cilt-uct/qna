@@ -69,5 +69,5 @@ public class CategoryLocator implements WriteableBeanLocator {
 	public void set(String beanname, Object toset) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
-
+	
 }

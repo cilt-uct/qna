@@ -35,7 +35,7 @@
 	<bean id="CategoryQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<bean id="DetailedQuestionListRenderer"
@@ -54,12 +54,16 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="richTextEvolver" ref="richTextEvolver" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
-      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+        <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+        <property name="ELEvaluator" ref="ELEvaluator" />
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
@@ -105,8 +109,6 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
 
-
-
 	<bean
 		class="org.sakaiproject.qna.tool.producers.EditPublishedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
@@ -139,7 +141,7 @@
 		<property name="richTextEvolver" ref="richTextEvolver" />
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<bean
@@ -147,7 +149,7 @@
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<bean
@@ -164,7 +166,7 @@
 		<property name="standardQuestionListRenderer" ref="StandardQuestionListRenderer" />
 		<property name="messageLocator" ref="messageLocator" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="generalLogic" ref="org.sakaiproject.qna.logic.GeneralLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<!-- Organise Producers -->
@@ -206,12 +208,20 @@
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
    	  <property name="messages" ref="targettedMessageList"/>
    	</bean>
-
+	
+	<bean id="QuestionLocator" class="org.sakaiproject.qna.tool.otp.QuestionLocator">
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+	</bean>
+	
 	<bean id="OptionsLocator" class="org.sakaiproject.qna.tool.otp.OptionsLocator">
-      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
-      <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+	  <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
       <property name="messages" ref="targettedMessageList"/>
    	</bean>
-
+   	
+   	<bean id="QuestionAndCategoryLocator" class="org.sakaiproject.qna.tool.otp.QuestionAndCategoryLocator">
+   		<property name="questionLocator" ref="QuestionLocator" />
+   		<property name="categoryLocator" ref="CategoryLocator"/>
+   	</bean>
 	
 </beans>

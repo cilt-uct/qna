@@ -11,9 +11,8 @@ import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.GeneralLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
@@ -23,10 +22,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 	private static Log log = LogFactory.getLog(OptionsLogicImpl.class);
 
-	private GeneralLogic generalLogic;
+	private PermissionLogic permissionLogic;
 
-	public void setGeneralLogic(GeneralLogic generalLogic) {
-		this.generalLogic = generalLogic;
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
 	}
 
 	private QnaDao dao;
@@ -105,7 +104,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 			throw new SecurityException("Current location ("+locationId+") does not match options location ("+options.getLocation()+")");
 		}
 		
-		if (generalLogic.canUpdate(options.getLocation(), userId)) {
+		if (permissionLogic.canUpdate(options.getLocation(), userId)) {
 			options.setDateLastModified(new Date());
 			options.setOwnerId(userId);
 			dao.save(options);

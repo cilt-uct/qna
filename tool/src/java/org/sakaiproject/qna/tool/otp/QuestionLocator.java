@@ -1,0 +1,57 @@
+package org.sakaiproject.qna.tool.otp;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.model.QnaQuestion;
+
+import uk.org.ponder.beanutil.WriteableBeanLocator;
+
+public class QuestionLocator implements WriteableBeanLocator  {
+
+    public static final String NEW_PREFIX = "new ";
+	
+    private QuestionLogic questionLogic;
+    private ExternalLogic externalLogic;
+    
+	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
+    
+	public boolean remove(String beanname) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	public void set(String beanname, Object toset) {
+		throw new UnsupportedOperationException("Not implemented");
+		
+	}
+
+	public Object locateBean(String name) {
+		QnaQuestion togo = delivered.get(name);
+		if (togo == null) {
+			 if (name.startsWith(NEW_PREFIX)) {
+				 togo = new QnaQuestion();
+			 } else {
+				 togo = questionLogic.getQuestionById(name);
+			 }
+			 delivered.put(name, togo);
+		}
+		return togo;
+	}
+
+	 public String saveAll() {
+		for (QnaQuestion question : delivered.values()) {
+			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+		}
+		return "saved"; 
+	 }
+	
+	public void setQuestionLogic(QuestionLogic questionLogic) {
+		this.questionLogic = questionLogic;
+	}
+
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
+}

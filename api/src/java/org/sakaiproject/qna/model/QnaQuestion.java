@@ -22,6 +22,9 @@ public class QnaQuestion {
 
 //  The user (sakai userid) that posted this question
 	private String ownerId;
+	
+//  The user (sakai userid) that last modified this question
+	private String lastModifierId;
 
 //	Sakai entity reference
 	private String location;
@@ -47,6 +50,12 @@ public class QnaQuestion {
 //	If the question is published
 	private Boolean published;
 
+//	If user needs to be notified of answer	
+	private Boolean notify;
+	
+//	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/	
+	private String categoryId;
+	
 	/**
 	 *
 	 */
@@ -69,6 +78,7 @@ public class QnaQuestion {
 			Integer order, Boolean anonymous, Boolean published) {
 		this.category = category;
 		this.ownerId = ownerId;
+		this.lastModifierId = ownerId;
 		this.location = location;
 		this.questionText = questionText;
 		this.views = views;
@@ -77,6 +87,7 @@ public class QnaQuestion {
 		this.sortOrder = order;
 		this.anonymous = anonymous;
 		this.published = published;
+		this.notify = false;
 	}
 
 	/**
@@ -263,4 +274,29 @@ public class QnaQuestion {
 
 		return false;
 	}
+
+	public String getLastModifierId() {
+		return lastModifierId;
+	}
+
+	public void setLastModifierId(String lastModifierId) {
+		this.lastModifierId = lastModifierId;
+	}
+
+	public Boolean getNotify() {
+		return notify;
+	}
+
+	public void setNotify(Boolean notify) {
+		this.notify = notify;
+	}
+	
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	
+	public String getCategoryId() {
+		return categoryId;		
+	}
+	
 }

@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
-import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
@@ -21,7 +21,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	QuestionLogicImpl questionLogic;
 	CategoryLogicImpl categoryLogic;
 	OptionsLogicImpl optionsLogic;
-	GeneralLogicImpl generalLogic;
+	PermissionLogicImpl permissionLogic;
 	
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
@@ -49,25 +49,25 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
 
-		generalLogic = new GeneralLogicImpl();
-		generalLogic.setExternalLogic(externalLogicStub);
+		permissionLogic = new PermissionLogicImpl();
+		permissionLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup OptionsLogic
 		optionsLogic = new OptionsLogicImpl();
 		optionsLogic.setDao(dao);
-		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 		
 		// create and setup CategoryLogic
 		categoryLogic = new CategoryLogicImpl();
 		categoryLogic.setDao(dao);
 		categoryLogic.setExternalLogic(externalLogicStub);
-		categoryLogic.setGeneralLogic(generalLogic);
+		categoryLogic.setPermissionLogic(permissionLogic);
 		
 		// create and setup the object to be tested
 		questionLogic = new QuestionLogicImpl();
 		questionLogic.setDao(dao);
-		questionLogic.setGeneralLogic(generalLogic);
+		questionLogic.setPermissionLogic(permissionLogic);
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
 		questionLogic.setCategoryLogic(categoryLogic);
@@ -147,6 +147,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("blah blah blah");
 		question.setAnonymous(false);
+		question.setNotify(false);
 		
 		// Test with invalid
 		externalLogicStub.currentUserId = USER_LOC_3_NO_UPDATE_1;
@@ -163,6 +164,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		try {
 			questionLogic.saveQuestion(question, LOCATION3_ID);
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Should not have thrown exception");
 		}
 
@@ -186,6 +188,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("blah blah blah");
 		question.setAnonymous(false);
+		question.setNotify(false);
 		try {
 			questionLogic.saveQuestion(question, LOCATION1_ID);
 		} catch (Exception e) {
@@ -273,6 +276,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("xxxx");
 		question.setAnonymous(true);
+		question.setNotify(false);
 		
 		externalLogicStub.currentUserId = USER_UPDATE;
 		// Should get exception when trying to save a question anonymously when anonymous option isn't true

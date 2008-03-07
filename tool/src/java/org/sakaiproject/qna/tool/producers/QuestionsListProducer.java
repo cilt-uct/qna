@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.GeneralLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.tool.enums.ListViewType;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
@@ -47,7 +47,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private StandardQuestionListRenderer standardQuestionListRenderer;
     private MessageLocator messageLocator;
     private ExternalLogic externalLogic;
-    private GeneralLogic generalLogic;
+    private PermissionLogic permissionLogic;
 
 	public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
@@ -78,8 +78,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
         this.externalLogic = externalLogic;
     }
 
-    public void setGeneralLogic(GeneralLogic generalLogic) {
-		this.generalLogic = generalLogic;
+    public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
     }
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
@@ -112,7 +112,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		String[] options;
 		String[] labels;
 
-		if (generalLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			options = new String[] {ListViewType.CATEGORIES.getOption(),
 					  				ListViewType.ALL_DETAILS.getOption()};
 			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),

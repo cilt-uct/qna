@@ -5,7 +5,7 @@ import java.util.Date;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.GeneralLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
@@ -15,10 +15,10 @@ import org.sakaiproject.qna.model.QnaQuestion;
 
 public class AnswerLogicImpl implements AnswerLogic {
 
-	private GeneralLogic generalLogic;
+	private PermissionLogic permissionLogic;
 
-	public void setGeneralLogic(GeneralLogic generalLogic) {
-		this.generalLogic = generalLogic;
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
 	}
 
 	private OptionsLogic optionsLogic;
@@ -53,7 +53,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 		}
 
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canAddNewAnswer(locationId, userId)) {
+		if (permissionLogic.canAddNewAnswer(locationId, userId)) {
 			QnaQuestion question = questionLogic.getQuestionById(questionId);
 			if (question == null) {
 				throw new QnaConfigurationException("Question with id "+questionId+" does not exist");
@@ -103,7 +103,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 
 	public void approveAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			answer.setApproved(true);
 			answer.setDateLastModified(new Date());
@@ -120,7 +120,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 
 	public void removeAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			dao.delete(answer);
 		} else {
@@ -130,7 +130,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 	
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = questionLogic.getQuestionById(questionId);
 			
 			QnaAnswer answer = getAnswerById(answerId);
@@ -143,7 +143,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 
 	public void withdrawApprovalAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			answer.setApproved(false);
 			answer.setDateLastModified(new Date());

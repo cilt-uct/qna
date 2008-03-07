@@ -10,7 +10,7 @@ import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.AnswerLogicImpl;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
-import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
@@ -23,7 +23,7 @@ public class AnswerLogicImplTest extends
 
 	AnswerLogicImpl answerLogic;
 
-	GeneralLogicImpl generalLogic;
+	PermissionLogicImpl permissionLogic;
 
 	QuestionLogicImpl questionLogic;
 
@@ -61,25 +61,25 @@ public class AnswerLogicImplTest extends
 					.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
 
-		generalLogic = new GeneralLogicImpl();
-		generalLogic.setExternalLogic(externalLogicStub);
+		permissionLogic = new PermissionLogicImpl();
+		permissionLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup OptionsLogic
 		optionsLogic = new OptionsLogicImpl();
 		optionsLogic.setDao(dao);
-		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup CategoryLogic
 		categoryLogic = new CategoryLogicImpl();
 		categoryLogic.setDao(dao);
 		categoryLogic.setExternalLogic(externalLogicStub);
-		categoryLogic.setGeneralLogic(generalLogic);
+		categoryLogic.setPermissionLogic(permissionLogic);
 
 		// create and setup the object to be tested
 		questionLogic = new QuestionLogicImpl();
 		questionLogic.setDao(dao);
-		questionLogic.setGeneralLogic(generalLogic);
+		questionLogic.setPermissionLogic(permissionLogic);
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
 		questionLogic.setCategoryLogic(categoryLogic);
@@ -88,7 +88,7 @@ public class AnswerLogicImplTest extends
 		answerLogic = new AnswerLogicImpl();
 		answerLogic.setDao(dao);
 		answerLogic.setExternalLogic(externalLogicStub);
-		answerLogic.setGeneralLogic(generalLogic);
+		answerLogic.setPermissionLogic(permissionLogic);
 		answerLogic.setQuestionLogic(questionLogic);
 		answerLogic.setOptionsLogic(optionsLogic);
 

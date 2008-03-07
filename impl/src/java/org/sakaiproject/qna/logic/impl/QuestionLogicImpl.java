@@ -7,7 +7,7 @@ import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.GeneralLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
@@ -17,10 +17,10 @@ import org.sakaiproject.qna.model.QnaQuestion;
 
 public class QuestionLogicImpl implements QuestionLogic {
 
-	private GeneralLogic generalLogic;
+	private PermissionLogic permissionLogic;
 
-	public void setGeneralLogic(GeneralLogic generalLogic) {
-		this.generalLogic = generalLogic;
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
 	}
 
 	private OptionsLogic optionsLogic;
@@ -82,7 +82,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	public void publishQuestion(String questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = getQuestionById(questionId);
 			question.setPublished(true);
 			saveQuestion(question, locationId);
@@ -108,7 +108,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	public void removeQuestion(String questionId, String locationId) {
 		QnaQuestion question = getQuestionById(questionId);
 		String userId = externalLogic.getCurrentUserId();
-		if (generalLogic.canUpdate(locationId, userId)) {
+		if (permissionLogic.canUpdate(locationId, userId)) {
 			dao.delete(question);
 		} else {
 			throw new SecurityException(
@@ -121,7 +121,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		String userId = externalLogic.getCurrentUserId();
 		if (existsQuestion(question.getId())) {
 
-			if (generalLogic.canUpdate(locationId, userId)) {
+			if (permissionLogic.canUpdate(locationId, userId)) {
 				if (question.getAnonymous()) {
 					if (!optionsLogic.getOptions(locationId)
 							.getAnonymousAllowed()) {
@@ -131,7 +131,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 					}
 				}
 				question.setDateLastModified(new Date());
-				question.setOwnerId(userId);
+				question.setLastModifierId(userId);
 				dao.save(question);
 			} else {
 				throw new SecurityException(
@@ -140,13 +140,18 @@ public class QuestionLogicImpl implements QuestionLogic {
 								+ " because they do not have permission");
 			}
 		} else {
-			if (generalLogic.canAddNewQuestion(locationId, userId)) {
+			if (permissionLogic.canAddNewQuestion(locationId, userId)) {
 				QnaOptions options = optionsLogic.getOptions(locationId);
-				if (question.getAnonymous()) {
-					if (!options.getAnonymousAllowed()) {
-						throw new QnaConfigurationException("Location: "
-								+ locationId
-								+ " does not allow anonymous questions");
+
+				if (question.getAnonymous() == null) {
+					question.setAnonymous(options.getAnonymousAllowed()); // default for location
+				} else {
+					if (question.getAnonymous()) {
+						if (!options.getAnonymousAllowed()) {
+							throw new QnaConfigurationException("Location: "
+									+ locationId
+									+ " does not allow anonymous questions");
+						}
 					}
 				}
 
@@ -162,8 +167,14 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 				question.setLocation(locationId);
 				question.setOwnerId(userId);
+				question.setLastModifierId(userId);
 				question.setViews(0);
 				question.setSortOrder(0);
+				
+				if (question.getNotify() == null) {
+					question.setNotify(true);
+				}
+
 
 				dao.save(question);
 

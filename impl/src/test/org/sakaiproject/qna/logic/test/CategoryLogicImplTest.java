@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
-import org.sakaiproject.qna.logic.impl.GeneralLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
@@ -21,7 +21,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	OptionsLogicImpl optionsLogic;
 	CategoryLogicImpl categoryLogic;
 	QuestionLogicImpl questionLogic;
-	GeneralLogicImpl generalLogic;
+	PermissionLogicImpl permissionLogic;
 
 	private static Log log = LogFactory.getLog(CategoryLogicImplTest.class);
 	
@@ -49,26 +49,26 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
 
-		generalLogic = new GeneralLogicImpl();
-		generalLogic.setExternalLogic(externalLogicStub);
+		permissionLogic = new PermissionLogicImpl();
+		permissionLogic.setExternalLogic(externalLogicStub);
 
 		// create and setup options
 		optionsLogic = new OptionsLogicImpl();
 		optionsLogic.setDao(dao);
-		optionsLogic.setGeneralLogic(generalLogic);
+		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 		
 		// create and setup the question logic
 		questionLogic = new QuestionLogicImpl();
 		questionLogic.setDao(dao);
-		questionLogic.setGeneralLogic(generalLogic);
+		questionLogic.setPermissionLogic(permissionLogic);
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
 		
 		// create and setup the category logic
 		categoryLogic = new CategoryLogicImpl();
 		categoryLogic.setDao(dao);
-		categoryLogic.setGeneralLogic(generalLogic);
+		categoryLogic.setPermissionLogic(permissionLogic);
 		categoryLogic.setExternalLogic(externalLogicStub);
 	
 		// preload testData

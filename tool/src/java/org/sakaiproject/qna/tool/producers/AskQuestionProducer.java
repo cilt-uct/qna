@@ -120,7 +120,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
         if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.getModerationOn()) {
         	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); }
 
-        if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
         	UIMessage.make(form,"or","qna.general.or");
         	UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
         	UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");

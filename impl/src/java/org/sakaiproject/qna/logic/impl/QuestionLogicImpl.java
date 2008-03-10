@@ -175,9 +175,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 					question.setNotify(true);
 				}
 
-
 				dao.save(question);
-
+				// TODO: EMAIL NOTIFICATION
 			} else {
 				throw new SecurityException(
 						"Current user cannot save new question for "

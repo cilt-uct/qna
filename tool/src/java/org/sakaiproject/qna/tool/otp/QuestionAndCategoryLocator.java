@@ -42,7 +42,6 @@ public class QuestionAndCategoryLocator implements BeanLocator {
 
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
-
 		return "saved"; 
 	 }
 

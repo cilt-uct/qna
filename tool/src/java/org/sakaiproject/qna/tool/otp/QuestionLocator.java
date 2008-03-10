@@ -8,6 +8,8 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 
 import uk.org.ponder.beanutil.WriteableBeanLocator;
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements WriteableBeanLocator  {
 
@@ -17,7 +19,13 @@ public class QuestionLocator implements WriteableBeanLocator  {
     private ExternalLogic externalLogic;
     
 	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
-    
+   
+	private TargettedMessageList messages;
+
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
+	}
+	
 	public boolean remove(String beanname) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -43,6 +51,9 @@ public class QuestionLocator implements WriteableBeanLocator  {
 	 public String saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+			 messages.addMessage(new TargettedMessage("qna.ask-question.save-success",
+		                new Object[] { question.getQuestionText() }, 
+		                TargettedMessage.SEVERITY_INFO));
 		}
 		return "saved"; 
 	 }

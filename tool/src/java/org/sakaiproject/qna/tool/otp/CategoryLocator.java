@@ -53,7 +53,7 @@ public class CategoryLocator implements WriteableBeanLocator {
     public String saveAll() {
         for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-	        messages.addMessage(new TargettedMessage("qna.create-category.add-success",
+	        messages.addMessage(new TargettedMessage("qna.create-category.save-success",
 	                new Object[] { category.getCategoryText() }, 
 	                TargettedMessage.SEVERITY_INFO));
         }

@@ -171,7 +171,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertEquals(question.getOwnerId(), USER_LOC_3_UPDATE_1);
 		assertEquals(question.getLocation(), LOCATION3_ID);
 		assertEquals(question.getViews(), new Integer(0));
-		assertFalse(question.getPublished());
+		assertFalse(question.isPublished());
 		assertNull(question.getCategory());
 
 		assertTrue(questionLogic.existsQuestion(question.getId()));
@@ -198,7 +198,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertEquals(question.getOwnerId(), USER_UPDATE);
 		assertEquals(question.getLocation(), LOCATION1_ID);
 		assertEquals(question.getViews(), new Integer(0));
-		assertTrue(question.getPublished());
+		assertTrue(question.isPublished());
 		assertTrue(questionLogic.existsQuestion(question.getId()));
 	}
 
@@ -209,7 +209,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		
 		// try publish with invalid user (no update rights)
 		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location3.getId());
-		assertFalse(question.getPublished());
+		assertFalse(question.isPublished());
 		externalLogicStub.currentUserId = USER_LOC_3_NO_UPDATE_1;
 		try {
 			questionLogic.publishQuestion(question.getId(),LOCATION3_ID);
@@ -218,14 +218,14 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			assertNotNull(se);
 		}
 		question = questionLogic.getQuestionById(tdp.question1_location3.getId());
-		assertFalse(question.getPublished());
+		assertFalse(question.isPublished());
 		
 		// try publish with valid user (update rights)
 		externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
 		try {
 			questionLogic.publishQuestion(question.getId(),LOCATION3_ID);
 			question = questionLogic.getQuestionById(tdp.question1_location3.getId());
-			assertTrue(question.getPublished());
+			assertTrue(question.isPublished());
 		} catch (Exception e) {
 			fail("Should not have thrown Exception");
 		}
@@ -319,4 +319,21 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		}
 		assertTrue(tdp.question1_location1.getCategory().getId().equals(tdp.category1_location1.getId()));
 	}
+	
+	public void testGetQuestionsWithPrivateReplies() {
+		List<QnaQuestion> questions = questionLogic.getQuestionsWithPrivateReplies(LOCATION1_ID);
+		assertEquals(1, questions.size());
+		assertTrue(questions.contains(tdp.question2_location1));
+	}
+	
+	public void testGetAllQuestions() {
+		List<QnaQuestion> questions = questionLogic.getAllQuestions(LOCATION1_ID);
+		assertEquals(5, questions.size());
+		assertTrue(questions.contains(tdp.question1_location1));
+		assertTrue(questions.contains(tdp.question2_location1));
+		assertTrue(questions.contains(tdp.question3_location1));
+		assertTrue(questions.contains(tdp.question4_location1));
+		assertTrue(questions.contains(tdp.question5_location1));
+	}
+	
 }

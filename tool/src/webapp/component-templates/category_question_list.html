@@ -19,33 +19,18 @@
          	<th class="title" width="5%"></th>
             <th class="title" rsf:id="categories-title" id="categories-title" width="45%">Categories</th>
             <th class="title" rsf:id="answers-title" id="answers-title" width="10%">Answers</th>
-            <th class="title" id="views-title" width="10%">
-               <a rsf:id="views-link" href="#">
-                  <img rsf:id="views-icon" src="/library/image/sakai/sortascending.gif" alt="alt" border=" 0" width="11" height="11" /> 
-                  <span rsf:id="views-msg">Views</span>
-               </a>
-            </th>
-            <th class="title" rsf:id="modified-title" id="modified-title" width="20%">
-               <a rsf:id="modified-link" href="#">
-                  <img rsf:id="modified-icon" src="/library/image/sakai/sortascending.gif" alt=" alt" border=" 0" width="11" height="11" /> 
-                  <span rsf:id="modified-msg">Modified</span>
-               </a>
-            </th>
-            <th class="title" rsf:id="modified-title-longer" id="modified-title-longer" width="30%">
-               <a rsf:id="modified-link-longer" href="#">
-                  <img rsf:id="modified-icon-longer" src="/library/image/sakai/sortascending.gif" alt=" alt" border=" 0" width="11" height="11" /> 
-                  <span rsf:id="modified-msg-longer">Modified</span>
-               </a>
-            </th>
-            <th rsf:id="remove-title" id="remove" width="10%">Remove?</th>
+            <th class="title" rsf:id="views-title" id="views-title" width="10%">Views</th>
+            <th class="title" rsf:id="modified-title" id="modified-title" width="20%">Modified</th>
+            <th class="title" rsf:id="modified-title-longer" id="modified-title-longer" width="30%">Modified</th>
+            <th class="title" rsf:id="remove-title" id="remove" width="10%">Remove?</th>
          </tr>
       </thead>
       <tbody>
 		<span rsf:id="table-entry:" id="table-entry:">
 	         <tr id="category-entry" rsf:id="category-entry:">
 	         	<td> 
-	         		<img src="/library/image/sakai/expand.gif" id="expand-icon" rsf:id="expand-icon" style="display:none;"/>
-	         		<img src="/library/image/sakai/collapse.gif" id="collapse-icon" rsf:id="collapse-icon" />
+	         		<img src="/library/image/sakai/expand.gif" id="expand-icon" rsf:id="expand-icon" />
+	         		<img src="/library/image/sakai/collapse.gif" id="collapse-icon" rsf:id="collapse-icon" style="display:none;"/>
 	         		 <script rsf:id="onclick-init" type="text/javascript">
    						init_questions_toggle("icon","entry","expandIconSrc","ExpandIconSrc");
 	         		 </script>
@@ -56,7 +41,7 @@
 	            <td rsf:id="modified-date">2007-08-22</td>
 	            <td rsf:id="remove-category-cell"><input rsf:id="remove-checkbox" name="remove-category-checkbox" type="checkbox" /></td>
 	         </tr>
-		     <tr id="question-entry" rsf:id="question-entry:">
+		     <tr id="question-entry" rsf:id="question-entry:" style="display:none;">
 				<td></td>
 				<td><a href="#" rsf:id="question-link">Vraag?</a></td>
 				<td rsf:id="answers-nr">3</td>

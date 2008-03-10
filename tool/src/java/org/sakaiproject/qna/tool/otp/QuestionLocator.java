@@ -6,6 +6,8 @@ import java.util.Map;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.util.FormattedText;
 
 import uk.org.ponder.beanutil.WriteableBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -52,7 +54,7 @@ public class QuestionLocator implements WriteableBeanLocator  {
 		for (QnaQuestion question : delivered.values()) {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 			 messages.addMessage(new TargettedMessage("qna.ask-question.save-success",
-		                new Object[] { question.getQuestionText() }, 
+		                new Object[] { TextUtil.stripTags(question.getQuestionText()) }, 
 		                TargettedMessage.SEVERITY_INFO));
 		}
 		return "saved"; 

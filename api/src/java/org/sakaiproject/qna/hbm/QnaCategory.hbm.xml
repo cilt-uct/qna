@@ -12,11 +12,10 @@
          <generator class="uuid.hex"/>
       </id>
       <!--        linkage to questions -->
-      <list name="questions" lazy="true" inverse="true" cascade="all">
+      <bag name="questions" lazy="false" inverse="true" cascade="all">
       		<key column="category_id"/>
-      		<list-index base="0" />
       		<one-to-many class="org.sakaiproject.qna.model.QnaQuestion" />
-      </list>
+      </bag>
 
       <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />

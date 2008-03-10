@@ -1,5 +1,6 @@
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -64,14 +66,38 @@ public class QuestionLogicImpl implements QuestionLogic {
 						ByPropsFinder.EQUALS });
 		return l;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<QnaQuestion> getAllQuestions(String locationId) {
+		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
+				new String[] { "location" }, new Object[] {
+						locationId}, new int[] { ByPropsFinder.EQUALS});
+		return l;
+	}
 
 	public QnaQuestion getQuestionById(String questionId) {
 		return (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
 	}
 
 	public List<QnaQuestion> getQuestionsWithPrivateReplies(String locationId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<QnaQuestion> questions = getAllQuestions(locationId);
+		List<QnaQuestion> questionsWithPrivateReplies = new ArrayList<QnaQuestion>();
+		
+		for (QnaQuestion qnaQuestion : questions) {
+			List<QnaAnswer> answers = qnaQuestion.getAnswers();
+			boolean addQuestion = false;
+			
+			for (QnaAnswer qnaAnswer : answers) {
+				if (qnaAnswer.getPrivateReply()) {
+					addQuestion = true;
+				}
+			}
+			
+			if (addQuestion) {
+				questionsWithPrivateReplies.add(qnaQuestion);
+			}
+		}
+		return questionsWithPrivateReplies;
 	}
 
 	public void incrementView(String questionId) {
@@ -122,7 +148,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		if (existsQuestion(question.getId())) {
 
 			if (permissionLogic.canUpdate(locationId, userId)) {
-				if (question.getAnonymous()) {
+				if (question.isAnonymous()) {
 					if (!optionsLogic.getOptions(locationId)
 							.getAnonymousAllowed()) {
 						throw new QnaConfigurationException("Location: "
@@ -143,10 +169,10 @@ public class QuestionLogicImpl implements QuestionLogic {
 			if (permissionLogic.canAddNewQuestion(locationId, userId)) {
 				QnaOptions options = optionsLogic.getOptions(locationId);
 
-				if (question.getAnonymous() == null) {
+				if (question.isAnonymous() == null) {
 					question.setAnonymous(options.getAnonymousAllowed()); // default for location
 				} else {
-					if (question.getAnonymous()) {
+					if (question.isAnonymous()) {
 						if (!options.getAnonymousAllowed()) {
 							throw new QnaConfigurationException("Location: "
 									+ locationId
@@ -215,5 +241,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		category.addQuestion(question);
 		categoryLogic.saveCategory(category, locationId);
 	}
+
+
 
 }

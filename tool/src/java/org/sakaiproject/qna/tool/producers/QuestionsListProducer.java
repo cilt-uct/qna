@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.enums.ListViewType;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
@@ -48,6 +51,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private MessageLocator messageLocator;
     private ExternalLogic externalLogic;
     private PermissionLogic permissionLogic;
+    private OptionsLogic optionsLogic;
 
 	public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
@@ -81,7 +85,11 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
     }
-
+    
+    public void setOptionsLogic(OptionsLogic optionsLogic) {
+    	this.optionsLogic = optionsLogic;
+    }
+    
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
@@ -100,8 +108,14 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
 		} else {
-			renderer = categoryQuestionListRenderer;
-			params.viewtype = ListViewType.CATEGORIES.getOption(); // Should actually get default from options here
+			String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
+			if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
+				renderer = categoryQuestionListRenderer;
+				params.viewtype = ListViewType.CATEGORIES.getOption();
+			} else {
+				renderer = detailedQuestionListRenderer;
+				params.viewtype = ListViewType.MOST_POPULAR.getOption();
+			}
 		}
 
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
@@ -113,6 +127,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		String[] labels;
 
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			// For users with update permissions
 			options = new String[] {ListViewType.CATEGORIES.getOption(),
 					  				ListViewType.ALL_DETAILS.getOption()};
 			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),

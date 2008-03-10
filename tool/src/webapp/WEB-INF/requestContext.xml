@@ -36,6 +36,8 @@
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic"/>
 	</bean>
 
 	<bean id="DetailedQuestionListRenderer"
@@ -167,6 +169,7 @@
 		<property name="messageLocator" ref="messageLocator" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 	</bean>
 
 	<!-- Organise Producers -->

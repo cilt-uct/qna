@@ -17,11 +17,10 @@
       </many-to-one>
 
       <!--  linkage to answers -->
-      <list name="answers" lazy="true" inverse="true" cascade="all">
+      <bag name="answers" lazy="false" inverse="true" cascade="all">
       		<key column="question_id"/>
-      		<list-index base="0"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaAnswer" />
-      </list>
+      </bag>
       
       <property name="ownerId" type="string" length="255" not-null="true" />
        <property name="lastModifierId" type="string" length="255" not-null="true" />

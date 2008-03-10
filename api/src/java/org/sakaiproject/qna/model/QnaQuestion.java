@@ -219,7 +219,7 @@ public class QnaQuestion {
 	/**
 	 * @return the anonymous
 	 */
-	public Boolean getAnonymous() {
+	public Boolean isAnonymous() {
 		return anonymous;
 	}
 
@@ -233,7 +233,7 @@ public class QnaQuestion {
 	/**
 	 * @return the published
 	 */
-	public Boolean getPublished() {
+	public Boolean isPublished() {
 		return published;
 	}
 

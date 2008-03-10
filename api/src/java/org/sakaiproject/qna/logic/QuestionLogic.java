@@ -44,6 +44,14 @@ public interface QuestionLogic {
 	public void removeQuestion(String questionId, String locationId);
 
 	/**
+	 * Get all (published and unpublished) questions for location
+	 * 	
+	 * @param locationId
+	 * @return a list of {@link QnaQuestion}
+	 */
+	public List<QnaQuestion> getAllQuestions(String locationId);
+	
+	/**
 	 * Get all published questions for a location
 	 *
 	 * @param locationId

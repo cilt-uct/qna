@@ -98,7 +98,7 @@ public class TestDataPreload {
 	public QnaQuestion question1_location3 = new QnaQuestion(category1_location3,TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Question1 location 3", 0,new Date(),new Date(), 0,false,false);
 	
 	public QnaAnswer answer1_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an answer", true, false, false);
-	public QnaAnswer answer2_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an another answer", false, false, false);
+	public QnaAnswer answer2_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an another answer", false, true, false);
 	
 	public QnaAnswer answer1_location3 = new QnaAnswer(question1_location3, USER_LOC_3_UPDATE_1, "ANSWER", false, false, false);
 	/**

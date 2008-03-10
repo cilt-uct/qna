@@ -184,6 +184,17 @@ public class QnaCategory {
 	public List<QnaQuestion> getQuestions() {
 		return questions;
 	}
+	
+	public List<QnaQuestion> getPublishedQuestions() {
+		List<QnaQuestion> published = new ArrayList<QnaQuestion>();
+		
+		for (QnaQuestion question : questions) {
+			if (question.isPublished()) {
+				published.add(question);
+			}
+		}
+		return published;
+	}
 
 	/**
 	 * @param questions the questions to set

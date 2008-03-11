@@ -6,9 +6,8 @@ import java.util.List;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
-import org.sakaiproject.qna.tool.enums.ListViewType;
+import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer;
@@ -98,12 +97,10 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		QuestionListRenderer renderer;
 		ViewTypeParams params = (ViewTypeParams) viewparams;
 		if (params.viewtype != null) {
-			if (params.viewtype.equals(ListViewType.CATEGORIES.getOption())) {
+			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
 				renderer = categoryQuestionListRenderer;
-			} else if (params.viewtype.equals(ListViewType.ALL_DETAILS.getOption())) {
+			} else if (params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
 				renderer = detailedQuestionListRenderer;
-			} else if (params.viewtype.equals(ListViewType.MOST_POPULAR.getOption())) {
-				renderer = standardQuestionListRenderer;
 			} else {
 				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
@@ -111,10 +108,10 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
 			if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
 				renderer = categoryQuestionListRenderer;
-				params.viewtype = ListViewType.CATEGORIES.getOption();
+				params.viewtype = ViewTypeConstants.CATEGORIES;
 			} else {
 				renderer = detailedQuestionListRenderer;
-				params.viewtype = ListViewType.MOST_POPULAR.getOption();
+				params.viewtype = ViewTypeConstants.MOST_POPULAR;
 			}
 		}
 
@@ -128,10 +125,10 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			// For users with update permissions
-			options = new String[] {ListViewType.CATEGORIES.getOption(),
-					  				ListViewType.ALL_DETAILS.getOption()};
-			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),
-			    	   			    messageLocator.getMessage(ListViewType.ALL_DETAILS.getLabel())};
+			options = new String[] {ViewTypeConstants.CATEGORIES,
+									ViewTypeConstants.ALL_DETAILS};
+			labels  = new String[] {messageLocator.getMessage("qna.view-questions.categories"),
+			    	   			    messageLocator.getMessage("qna.view-questions.all-details")};
 
 			// Generate update button
 			UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
@@ -140,21 +137,21 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
 			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AnswersProducer.VIEW_ID));
 
-			options = new String[] {ListViewType.CATEGORIES.getOption(),
-									ListViewType.MOST_POPULAR.getOption(),
-									ListViewType.RECENT_CHANGES.getOption(),
-									ListViewType.RECENT_QUESTIONS.getOption()};
-			labels  = new String[] {messageLocator.getMessage(ListViewType.CATEGORIES.getLabel()),
-									messageLocator.getMessage(ListViewType.MOST_POPULAR.getLabel()),
-						 		   	messageLocator.getMessage(ListViewType.RECENT_CHANGES.getLabel()),
-						 		   	messageLocator.getMessage(ListViewType.RECENT_QUESTIONS.getLabel())};
+			options = new String[] {ViewTypeConstants.CATEGORIES,
+									ViewTypeConstants.MOST_POPULAR,
+									ViewTypeConstants.RECENT_CHANGES,
+									ViewTypeConstants.RECENT_QUESTIONS};
+			labels  = new String[] {messageLocator.getMessage("qna.view-questions.categories"),
+									messageLocator.getMessage("qna.view-questions.most-popular"),
+						 		   	messageLocator.getMessage("qna.view-questions.recent-changes"),
+						 		   	messageLocator.getMessage("qna.view-questions.recent-questions")};
 		}
 
 		// Init value must be either default or specified
 		UISelect select = UISelect.make(form, "view-select", options, labels, null, params.viewtype);
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,params.viewtype});
 
-		renderer.makeQuestionList(tofill, "questionListTool:");
+		renderer.makeQuestionList(tofill, "questionListTool:",params);
     }
 
 	public List<NavigationCase> reportNavigationCases() {

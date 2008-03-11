@@ -1,6 +1,20 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
+import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
+import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
+import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
+import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.AnswersProducer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
+import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -10,15 +24,29 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
+/**
+ * Standard question list
+ * Only shows published questions 
+ */
 public class StandardQuestionListRenderer implements QuestionListRenderer {
 	
 	private ListNavigatorRenderer listNavigatorRenderer;	 
+	private QuestionLogic questionLogic;
+	private ExternalLogic externalLogic;
 	
 	public void setListNavigatorRenderer(ListNavigatorRenderer listNavigatorRenderer) {
 		this.listNavigatorRenderer = listNavigatorRenderer;
 	}
+	
+	public void setQuestionLogic(QuestionLogic questionLogic) {
+		this.questionLogic = questionLogic;
+	}
+	
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
 
-	public void makeQuestionList(UIContainer tofill, String divID) {
+	public void makeQuestionList(UIContainer tofill, String divID, ViewTypeParams params) {
 		
 		listNavigatorRenderer.makeListNavigator(tofill, "pager:");
 		
@@ -26,24 +54,35 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");
 		UIMessage.make(listTable,"question-title","qna.view-questions.questions");
-		UIMessage.make(listTable,"views-title","qna.view-questions.views");
 		
-		// Obviously only used for mock screens
-		String questionValues[][] = {{"Where do I find old exam papers?","175"},
-								 {"How is the year mark composed?","95"},  	
-								 {"What if I can't write the exam?","88"},
-								 {"Which clown college is best?","73"},
-								 {"To be or not to be?","55"},
-								 {"Question text goes here","39"},
-								 {"Question text goes here","32"},
-								 {"Question text goes here","19"},
-								 {"Question text goes here","4"}};
+		Comparator<QnaQuestion> comparator = null;
+		if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
+			comparator = new MostPopularComparator();
+			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.views");
+		} else if (params.viewtype.equals(ViewTypeConstants.RECENT_CHANGES)) {
+			comparator = new RecentChangesComparator();
+			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.modified");
+		} else if (params.viewtype.equals(ViewTypeConstants.RECENT_QUESTIONS)) {
+			comparator = new RecentQuestionsComparator();
+			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
+		}
 		
-		for (int i=0;i<questionValues.length;i++) {
-			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:",Integer.toString(i));
-			UIOutput.make(entry,"rank-nr",Integer.toString(i+1));
-			UIInternalLink.make(entry,"question-link",questionValues[i][0],new SimpleViewParameters(AnswersProducer.VIEW_ID));
-			UIOutput.make(entry,"views-nr",questionValues[i][1]);
+		List<QnaQuestion> questions = questionLogic.getPublishedQuestions(externalLogic.getCurrentLocationId());
+		Collections.sort(questions, comparator);
+		
+		int rank = 1;
+		for (QnaQuestion qnaQuestion : questions) {
+			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
+			UIOutput.make(entry,"rank-nr",rank + "");
+			UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new SimpleViewParameters(AnswersProducer.VIEW_ID));
+			if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
+				UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
+			} else if (params.viewtype.equals(ViewTypeConstants.RECENT_CHANGES)) {
+				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
+			} else if (params.viewtype.equals(ViewTypeConstants.RECENT_QUESTIONS)) {
+				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateCreated()));
+			}
+			rank++;
 		}
 	}
 }

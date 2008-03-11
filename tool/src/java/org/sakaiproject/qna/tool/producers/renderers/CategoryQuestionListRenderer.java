@@ -1,19 +1,17 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.CategoryComparator;
+import org.sakaiproject.qna.tool.comparators.CategoryTextComparator;
+import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.AnswersProducer;
-import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
@@ -53,7 +51,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		this.questionLogic = questionLogic;
 	}
 	
-	public void makeQuestionList(UIContainer tofill, String divID) {
+	public void makeQuestionList(UIContainer tofill, String divID, ViewTypeParams params) {
     	// Front-end customization regarding permissions/options will come here
     	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
@@ -69,7 +67,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		}
 		
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
-		Collections.sort(categories,new CategoryComparator());
+		Collections.sort(categories,new CategoryTextComparator());
 
 		// List of published questions by category
 		for (QnaCategory qnaCategory : categories) {

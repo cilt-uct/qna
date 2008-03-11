@@ -12,7 +12,7 @@
          <generator class="uuid.hex"/>
       </id>
       <!-- linkage to the category -->
-      <many-to-one name="category" class="org.sakaiproject.qna.model.QnaCategory">
+      <many-to-one name="category" lazy="false" class="org.sakaiproject.qna.model.QnaCategory">
          <column name="category_id" />
       </many-to-one>
 

@@ -43,11 +43,15 @@
 	<bean id="DetailedQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer">
 		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
 
 	<bean id="StandardQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" >
 		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
 	<!-- list the producer beans here -->

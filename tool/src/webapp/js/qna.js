@@ -56,8 +56,9 @@
     	var link = document.getElementById(link_id);
     	link.href= "#";
     	link.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
-    	var icon = document.getElementById(link_id);
+    	var icon = document.getElementById(icon_id);
     	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
+    	icon.style.cursor="pointer";
     }
     
     function toggle_disabled(element) {
@@ -67,8 +68,7 @@
     		element.disabled = true;
     	}
     }
-    
-    
+        
     function toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input) {
     	toggle_disabled(site_option);
 		toggle_disabled(custom_option);

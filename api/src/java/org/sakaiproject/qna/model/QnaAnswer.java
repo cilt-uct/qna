@@ -23,6 +23,9 @@ public class QnaAnswer {
 	// The actual answer text
 	private String answerText;
 
+	//  The user (sakai userid) that last modified this question
+	private String lastModifierId;
+	
 	// The date this answer was last modified by someone
 	private Date dateLastModified;
 
@@ -57,6 +60,7 @@ public class QnaAnswer {
 		this.approved = approved;
 		this.privateReply = privateReply;
 		this.anonymous = anonymous;
+		this.lastModifierId = ownerId;
 	}
 
 	/**
@@ -146,7 +150,7 @@ public class QnaAnswer {
 	/**
 	 * @return the approved
 	 */
-	public Boolean getApproved() {
+	public Boolean isApproved() {
 		return approved;
 	}
 
@@ -160,7 +164,7 @@ public class QnaAnswer {
 	/**
 	 * @return the privateReply
 	 */
-	public Boolean getPrivateReply() {
+	public Boolean isPrivateReply() {
 		return privateReply;
 	}
 
@@ -174,7 +178,7 @@ public class QnaAnswer {
 	/**
 	 * @return the anonymous
 	 */
-	public Boolean getAnonymous() {
+	public Boolean isAnonymous() {
 		return anonymous;
 	}
 
@@ -183,6 +187,14 @@ public class QnaAnswer {
 	 */
 	public void setAnonymous(Boolean anonymous) {
 		this.anonymous = anonymous;
+	}
+	
+	public String getLastModifierId() {
+		return lastModifierId;
+	}
+
+	public void setLastModifierId(String lastModifierId) {
+		this.lastModifierId = lastModifierId;
 	}
 	
 	/* (non-Javadoc)
@@ -196,4 +208,6 @@ public class QnaAnswer {
 		
 		return false;
 	}
+
+
 }

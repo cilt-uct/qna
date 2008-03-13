@@ -22,7 +22,7 @@
       <property name="location" type="string" length="255" not-null="true" />
       <property name="dateLastModified" type="java.util.Date" />
       <property name="anonymousAllowed" type="boolean"/>
-      <property name="moderationOn" type="boolean"/>
+      <property name="moderated" type="boolean"/>
       <property name="emailNotification" type="boolean"/>
       <property name="emailNotificationType" type="string" length="255"/>
       <property name="defaultStudentView" type="string" length="255"/>

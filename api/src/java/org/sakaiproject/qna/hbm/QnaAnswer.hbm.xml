@@ -16,6 +16,7 @@
       </many-to-one>
       <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="answerText" type="text" not-null="true" />
+         <property name="lastModifierId" type="string" length="255" not-null="true" />
       <property name="dateLastModified" type="java.util.Date" />
       <property name="dateCreated" type="java.util.Date" not-null="true" />
       <property name="approved" type="boolean" not-null="true"/>

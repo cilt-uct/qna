@@ -128,15 +128,19 @@ public class AnswerLogicImplTest extends
 	/**
 	 * Test add answer to question
 	 */
-	public void testAddAnswerToQuestion() {
+	public void testSaveAnswer() {
 
 		String answerText = "Test add answer text";
 
 		// Add answer with an invalid userid
 		try {
 			externalLogicStub.currentUserId = USER_LOC_3_NO_UPDATE_1;
-			answerLogic.addAnswerToQuestion(tdp.question3_location1.getId(),
-					answerText, true, false, LOCATION1_ID);
+			QnaAnswer answer = new QnaAnswer();
+			answer.setAnswerText(answerText);
+			answer.setQuestion(tdp.question3_location1);
+			answer.setAnonymous(true);
+			answer.setPrivateReply(false);
+			answerLogic.saveAnswer(answer, LOCATION1_ID);
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
@@ -146,9 +150,12 @@ public class AnswerLogicImplTest extends
 		// allowed)
 		try {
 			externalLogicStub.currentUserId = USER_UPDATE;
-			assertFalse(tdp.options_location1.getAnonymousAllowed());
-			answerLogic.addAnswerToQuestion(tdp.question1_location1.getId(),
-					answerText, true, false, LOCATION1_ID);
+			QnaAnswer answer = new QnaAnswer();
+			answer.setAnswerText(answerText);
+			answer.setQuestion(tdp.question3_location1);
+			answer.setAnonymous(true);
+			answer.setPrivateReply(false);
+			answerLogic.saveAnswer(answer, LOCATION1_ID);;
 			fail("Should have caught the exception");
 		} catch (QnaConfigurationException e) {
 			assertNotNull(e);
@@ -157,11 +164,16 @@ public class AnswerLogicImplTest extends
 		// Add answer with valid configuration
 		try {
 			externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
-
+			
+			QnaAnswer answer = new QnaAnswer();
+			answer.setAnswerText(answerText);
+			answer.setQuestion(tdp.question1_location3);
+			answer.setAnonymous(true);
+			answer.setPrivateReply(false);
+			answerLogic.saveAnswer(answer, LOCATION3_ID);
+			
 			QnaQuestion question = questionLogic
 					.getQuestionById(tdp.question1_location3.getId());
-			answerLogic.addAnswerToQuestion(question.getId(), answerText, true,
-					false, LOCATION3_ID);
 
 			assertEquals(2, question.getAnswers().size());
 			boolean found = false;
@@ -179,22 +191,30 @@ public class AnswerLogicImplTest extends
 	}
 
 	/**
-	 * 
+	 * Test add private reply
 	 */
 	public void testAddPrivateReply() {
 		try {
 			externalLogicStub.currentUserId = USER_UPDATE;
-			answerLogic.addAnswerToQuestion(tdp.question1_location1.getId(),
-					"Private Reply", false, true, LOCATION1_ID);
+			String answerText = "Private Reply";
+			
+			QnaAnswer answer = new QnaAnswer();
+			answer.setAnswerText(answerText);
+			answer.setQuestion(tdp.question1_location1);
+			answer.setAnonymous(false);
+			answer.setPrivateReply(true);
+			answerLogic.saveAnswer(answer, LOCATION1_ID);
+			
+
 			List<QnaAnswer> answersPrivateReply = tdp.question1_location1
 					.getAnswers();
 
 			boolean found = false;
 			for (QnaAnswer qnaAnswer : answersPrivateReply) {
-				if (qnaAnswer.getAnswerText().equals("Private Reply")) {
+				if (qnaAnswer.getAnswerText().equals(answerText)) {
 					assertNotNull(qnaAnswer.getId());
-					assertFalse(qnaAnswer.getAnonymous());
-					assertTrue(qnaAnswer.getPrivateReply());
+					assertFalse(qnaAnswer.isAnonymous());
+					assertTrue(qnaAnswer.isPrivateReply());
 					assertEquals(qnaAnswer.getOwnerId(), USER_UPDATE);
 					found = true;
 				}
@@ -245,7 +265,7 @@ public class AnswerLogicImplTest extends
 	 */
 	public void testApproveAnswer() {
 		QnaAnswer answerToBeApproved = answerLogic.getAnswerById(tdp.answer2_location1.getId());
-		assertFalse(answerToBeApproved.getApproved());
+		assertFalse(answerToBeApproved.isApproved());
 		
 		// Test with invalid
 		externalLogicStub.currentUserId = USER_NO_UPDATE;
@@ -267,7 +287,7 @@ public class AnswerLogicImplTest extends
 		}
 
 		QnaAnswer answerApproved = answerLogic.getAnswerById(tdp.answer2_location1.getId());
-		assertTrue(answerApproved.getApproved());
+		assertTrue(answerApproved.isApproved());
 	}
 
 	/**
@@ -275,7 +295,7 @@ public class AnswerLogicImplTest extends
 	 */
 	public void testWithdrawApproval() {
 		QnaAnswer answerToWithdrawApproval = answerLogic.getAnswerById(tdp.answer1_location1.getId());
-		assertTrue(answerToWithdrawApproval.getApproved());
+		assertTrue(answerToWithdrawApproval.isApproved());
 		
 		// Test with invalid
 		externalLogicStub.currentUserId = USER_NO_UPDATE;
@@ -297,7 +317,7 @@ public class AnswerLogicImplTest extends
 		}
 
 		QnaAnswer answerApproved = answerLogic.getAnswerById(tdp.answer1_location1.getId());
-		assertFalse(answerApproved.getApproved());
+		assertFalse(answerApproved.isApproved());
 
 	}
 }

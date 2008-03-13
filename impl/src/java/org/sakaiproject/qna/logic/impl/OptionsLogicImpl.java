@@ -48,7 +48,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 		newOptions.setAnonymousAllowed(false);
 		newOptions.setEmailNotification(false);
-		newOptions.setModerationOn(true);
+		newOptions.setModerated(true);
 		newOptions.setDefaultStudentView(QnaConstants.CATEGORY_VIEW);
 		// Make Site contact the default to notify but set notification false as default 
 		newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT); 

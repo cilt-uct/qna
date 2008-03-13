@@ -15,22 +15,6 @@ public interface AnswerLogic {
 	public QnaAnswer getAnswerById(String answerId);
 
 	/**
-	 * Add a new answer to a {@link QnaQuestion}
-	 *
-	 * @param questionId
-	 * 				The id of the question that this answer should be added to
-	 * @param answerText
-	 * 				The text for the new answer
-	 * @param anonymous
-	 * 				Is this answer anonymous
-	 * @param privateReply
-	 * 				Is this a private reply
-	 * @param locationId TODO
-	 */
-	public void addAnswerToQuestion(String questionId, String answerText,
-			boolean anonymous, boolean privateReply, String locationId);
-
-	/**
 	 *
 	 * @param answerId
 	 * @param locationId TODO
@@ -57,5 +41,13 @@ public interface AnswerLogic {
 	 * @param locationId TODO
 	 */
 	public void withdrawApprovalAnswer(String answerId, String locationId);
+	
+	/**
+	 * Save an answer
+	 * 
+	 * @param answer
+	 * @param locationId
+	 */
+	public void saveAnswer(QnaAnswer answer, String locationId);
 
 }

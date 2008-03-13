@@ -101,7 +101,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
         UIBoundBoolean.make(form,"answer-notify",questionOTP + ".notify",true);
         UIMessage.make(form,"answer-notify-label","qna.ask-question.notify-on-answer");
 
-        if (!options.getModerationOn() || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        if (!options.isModerated() || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	        UIMessage.make(form, "category-title", "qna.ask-question.category");
 	        UIMessage.make(form, "category-text", "qna.ask-question-select-category");
         }
@@ -117,7 +117,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
         	categoriesText[i] = category.getCategoryText();
         }
         
-        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.getModerationOn()) {
+        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) {
         	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); }
 
         if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
@@ -132,7 +132,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
         UICommand.make(form, "add-attachment-input", UIMessage.make("qna.ask-question.add-attachment"), null);
 
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
-        	options.getModerationOn()) {
+        	options.isModerated()) {
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         }
 

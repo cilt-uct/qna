@@ -7,7 +7,6 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
-import org.sakaiproject.util.FormattedText;
 
 import uk.org.ponder.beanutil.WriteableBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;

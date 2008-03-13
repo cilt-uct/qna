@@ -70,8 +70,8 @@ public class OptionsLogicImplTest extends
 		assertNotNull(options);
 		assertTrue(options.getLocation().equals(LOCATION1_ID));
 
-		assertEquals(options.getModerationOn(), tdp.options_location1
-				.getModerationOn());
+		assertEquals(options.isModerated(), tdp.options_location1
+				.isModerated());
 		assertEquals(options.getAnonymousAllowed(), tdp.options_location1
 				.getAnonymousAllowed());
 
@@ -92,7 +92,7 @@ public class OptionsLogicImplTest extends
 				.getOptions(LOCATION1_ID);
 		assertNotNull(options);
 		options.setAnonymousAllowed(true);
-		options.setModerationOn(false);
+		options.setModerated(false);
 		options.setEmailNotification(false);
 		options.setDefaultStudentView(QnaConstants.MOST_POPULAR_VIEW);
 		
@@ -122,8 +122,8 @@ public class OptionsLogicImplTest extends
 		assertNotNull(modifiedOptions);
 		assertEquals(options.getAnonymousAllowed(), modifiedOptions
 				.getAnonymousAllowed());
-		assertEquals(options.getModerationOn(), modifiedOptions
-				.getModerationOn());
+		assertEquals(options.isModerated(), modifiedOptions
+				.isModerated());
 		assertEquals(options.getEmailNotification(), modifiedOptions
 				.getEmailNotification());
 		assertEquals(options.getDefaultStudentView(), modifiedOptions

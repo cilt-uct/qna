@@ -142,7 +142,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test saving new question in moderated location
 	 */
 	public void testSaveNewQuestionModerated() {
-		assertTrue(optionsLogic.getOptions(LOCATION3_ID).getModerationOn());
+		assertTrue(optionsLogic.getOptions(LOCATION3_ID).isModerated());
 
 		QnaQuestion question = new QnaQuestion();
 		question.setQuestionText("blah blah blah");
@@ -181,7 +181,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test saving new question in unmoderated location
 	 */
 	public void testSaveNewQuestionUnmoderated() {
-		assertFalse(optionsLogic.getOptions(LOCATION1_ID).getModerationOn());
+		assertFalse(optionsLogic.getOptions(LOCATION1_ID).isModerated());
 		externalLogicStub.currentUserId = USER_UPDATE;
 		
 		

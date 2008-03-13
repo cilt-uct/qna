@@ -10,5 +10,16 @@ public class ViewTypeConstants {
 	public static final String MOST_POPULAR 	= "MOST_POPULAR";
 	public static final String RECENT_QUESTIONS = "RECENT_QUESTIONS";
 	public static final String RECENT_CHANGES 	= "RECENT_CHANGES";
-
+	
+	public static boolean isValid(String str) {
+		if (str.equals(CATEGORIES) || 
+			str.equals(ALL_DETAILS) ||
+			str.equals(MOST_POPULAR) ||
+			str.equals(RECENT_QUESTIONS) ||
+			str.equals(RECENT_CHANGES)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

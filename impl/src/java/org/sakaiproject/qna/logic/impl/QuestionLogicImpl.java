@@ -88,7 +88,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 			boolean addQuestion = false;
 			
 			for (QnaAnswer qnaAnswer : answers) {
-				if (qnaAnswer.getPrivateReply()) {
+				if (qnaAnswer.isPrivateReply()) {
 					addQuestion = true;
 				}
 			}
@@ -185,7 +185,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				question.setDateCreated(now);
 				question.setDateLastModified(now);
 
-				if (options.getModerationOn()) {
+				if (options.isModerated()) {
 					question.setPublished(false);
 				} else {
 					question.setPublished(true);

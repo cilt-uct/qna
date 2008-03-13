@@ -1,5 +1,6 @@
 package org.sakaiproject.qna.tool.params;
 
+import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
@@ -13,11 +14,7 @@ public class ViewTypeParams extends SimpleViewParameters {
 	public ViewTypeParams() {}
 	
 	public ViewTypeParams(String viewid, String viewtype) {
-		if (!viewtype.equals(ViewTypeConstants.ALL_DETAILS) && 
-			!viewtype.equals(ViewTypeConstants.CATEGORIES) && 
-			!viewtype.equals(ViewTypeConstants.MOST_POPULAR) &&
-			!viewtype.equals(ViewTypeConstants.RECENT_CHANGES) &&
-			!viewtype.equals(ViewTypeConstants.RECENT_QUESTIONS)) {
+		if (!ViewTypeConstants.isValid(viewtype)) {
 			throw new IllegalArgumentException("View type must correspond to valid view type option");
 		} else {
 			this.viewID = viewid;
@@ -27,6 +24,10 @@ public class ViewTypeParams extends SimpleViewParameters {
 	
 	public ViewTypeParams(String viewid, String viewtype, String sortBy) {
 		this(viewid,viewtype);
-		this.sortBy = sortBy;
+		if (!SortByConstants.isValid(sortBy)) {
+			throw new IllegalArgumentException("Sort type must correspond to valid sort type option");
+		} else {
+			this.sortBy = sortBy;
+		}
 	}
 }

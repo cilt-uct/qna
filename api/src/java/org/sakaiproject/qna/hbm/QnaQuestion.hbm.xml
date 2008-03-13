@@ -23,7 +23,7 @@
       </bag>
       
       <property name="ownerId" type="string" length="255" not-null="true" />
-       <property name="lastModifierId" type="string" length="255" not-null="true" />
+      <property name="lastModifierId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />
       <property name="questionText" type="text" not-null="true" />
       <property name="views" type="integer" not-null="true" />

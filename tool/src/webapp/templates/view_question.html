@@ -15,7 +15,7 @@
   <div rsf:id="searchTool:" class="searchTool"/>
 
   <div rsf:id="pager1:" style="text-align: right;"></div>
-  <h3 rsf:id="category-title" class="insColor insBak insBorder">Ask a question</h3><br/>
+  <h3 rsf:id="category-title" class="insColor insBak insBorder">Category</h3>
   <h4 rsf:id="question-title">Question:</h4>
   <br/>
   <div rsf:id="question">
@@ -28,11 +28,13 @@
   <a rsf:id="delete-question-link" href="delete_question.html">Delete</a>
   <hr />
   <h4 rsf:id="answers-title">4 Answers</h4><br />
+  <div class="grey" rsf:id="no-anwers">There are no answers yet for this question</div>
   <div id="answer:" rsf:id="answer:">
-  	<img rsf:id="answer-icon" src="/library/image/silk/user_suit.png" />
-  	<span class="grey" rsf:id="answer-heading">The lecturer has given the following answer:</span>
-  	<br/>
-  	<div rsf:id="answer-text">Answer Text</div>
+	<div rsf:id="answer-detail">
+		<img rsf:id="answer-icon" src="/library/image/silk/user_suit.png" />
+		<span class="grey" rsf:id="answer-heading">The lecturer has given the following answer:</span>
+	</div>
+	<div rsf:id="answer-text">Answer Text</div>
   	<span class="grey" rsf:id="answer-timestamp">2007-06-21</span>
   	<a rsf:id="edit-answer-link" href="edit_answer.html">Edit</a>
   	<a rsf:id="withdraw-approval-link" href="withdraw_approval.html">Withdraw approval</a>

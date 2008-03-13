@@ -37,7 +37,7 @@ public class QnaOptions {
     private Boolean anonymousAllowed;
 
 //  Are the questions moderated on this site
-    private Boolean moderationOn;
+    private Boolean moderated;
 
 //  Should email notifications be sent when new questions are asked
     private Boolean emailNotification;
@@ -64,21 +64,21 @@ public class QnaOptions {
 	 * @param dateLastModified
 	 * @param dateCreated
 	 * @param anonymousAllowed
-	 * @param moderationOn
+	 * @param moderated
 	 * @param emailNotification
 	 * @param emailNotificationType
 	 * @param defaultStudentView
 	 */
 	public QnaOptions(String ownerId, String location,
 			Date dateLastModified, Date dateCreated, Boolean anonymousAllowed,
-			Boolean moderationOn, Boolean emailNotification,
+			Boolean moderated, Boolean emailNotification,
 			String emailNotificationType, String defaultStudentView) {
 		this.ownerId = ownerId;
 		this.location = location;
 		this.dateLastModified = dateLastModified;
 		this.dateCreated = dateCreated;
 		this.anonymousAllowed = anonymousAllowed;
-		this.moderationOn = moderationOn;
+		this.moderated = moderated;
 		this.emailNotification = emailNotification;
 		this.emailNotificationType = emailNotificationType;
 		this.defaultStudentView = defaultStudentView;
@@ -169,17 +169,17 @@ public class QnaOptions {
 	}
 
 	/**
-	 * @return the moderationOn
+	 * @return the moderated
 	 */
-	public Boolean getModerationOn() {
-		return moderationOn;
+	public Boolean isModerated() {
+		return moderated;
 	}
 
 	/**
-	 * @param moderationOn the moderationOn to set
+	 * @param moderated the moderated to set
 	 */
-	public void setModerationOn(Boolean moderationOn) {
-		this.moderationOn = moderationOn;
+	public void setModerated(Boolean moderated) {
+		this.moderated = moderated;
 	}
 
 	/**

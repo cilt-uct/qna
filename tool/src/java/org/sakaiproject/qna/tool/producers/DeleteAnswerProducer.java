@@ -56,7 +56,7 @@ public class DeleteAnswerProducer implements ViewComponentProducer, NavigationCa
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("delete",new SimpleViewParameters(AnswersProducer.VIEW_ID)));
+		list.add(new NavigationCase("delete",new SimpleViewParameters(ViewQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}

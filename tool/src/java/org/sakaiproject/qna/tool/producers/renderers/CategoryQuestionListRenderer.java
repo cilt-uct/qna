@@ -10,10 +10,11 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.CategoryTextComparator;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
-import org.sakaiproject.qna.tool.producers.AnswersProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
+import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
@@ -26,7 +27,6 @@ import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	
@@ -85,7 +85,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				}
 				
 				List<QnaQuestion> publishedQuestions = qnaCategory.getPublishedQuestions();
-				renderQuestions(entry,publishedQuestions,AnswersProducer.VIEW_ID);
+				renderQuestions(entry,publishedQuestions,ViewQuestionProducer.VIEW_ID);
 			}
 			
 		}
@@ -146,7 +146,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		
 		for (QnaQuestion qnaQuestion : questions) {
 			UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
-			UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new SimpleViewParameters(viewIdForLink));
+			UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId()));
 			UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
 			UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
 			UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));

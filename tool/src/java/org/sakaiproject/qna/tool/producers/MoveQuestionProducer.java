@@ -62,7 +62,7 @@ public class MoveQuestionProducer implements ViewComponentProducer, NavigationCa
 
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("cancel",new SimpleViewParameters(AnswersProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel",new SimpleViewParameters(ViewQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

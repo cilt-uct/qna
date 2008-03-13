@@ -37,7 +37,7 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
 public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter,  ViewParamsReporter {
 
-    public static final String VIEW_ID = "view_questions";
+    public static final String VIEW_ID = "questions_list";
     public String getViewID() {
         return VIEW_ID;
     }
@@ -135,7 +135,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		} else {
 			UIOutput.make(tofill,"ask-question");
 			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
-			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AnswersProducer.VIEW_ID));
+			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
 
 			options = new String[] {ViewTypeConstants.CATEGORIES,
 									ViewTypeConstants.MOST_POPULAR,
@@ -150,7 +150,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		// Init value must be either default or specified
 		UISelect select = UISelect.make(form, "view-select", options, labels, null, params.viewtype);
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,params.viewtype});
-
 		renderer.makeQuestionList(tofill, "questionListTool:",params);
     }
 

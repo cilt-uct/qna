@@ -2,8 +2,6 @@ package org.sakaiproject.qna.tool.otp;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.QnaOptions;
 

@@ -44,62 +44,76 @@ public class AnswerLogicImpl implements AnswerLogic {
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
-
-	public void addAnswerToQuestion(String questionId, String answerText,
-			boolean anonymous, boolean privateReply, String locationId) {
-		if (answerText == null) {
-			throw new IllegalArgumentException(
-					"Answer of a question may not be null");
-		}
-
-		String userId = externalLogic.getCurrentUserId();
-		if (permissionLogic.canAddNewAnswer(locationId, userId)) {
-			QnaQuestion question = questionLogic.getQuestionById(questionId);
-			if (question == null) {
-				throw new QnaConfigurationException("Question with id "+questionId+" does not exist");
-			}
-			
-			if (question.getLocation().equals(locationId)) {
-				QnaOptions options = optionsLogic.getOptions(locationId);
-
-				if (anonymous) {
-					if (!options.getAnonymousAllowed()) {
-						throw new QnaConfigurationException("The location "
-								+ locationId
-								+ " does not allow anonymous replies");
-					}
-				}
-				Date now = new Date();
-
-				QnaAnswer answer = new QnaAnswer();
-				answer.setAnswerText(answerText);
-				answer.setAnonymous(anonymous);
-				answer.setPrivateReply(privateReply);
-				answer.setDateCreated(now);
-				answer.setDateLastModified(now);
-				answer.setOwnerId(userId);
-
-				if (options.getModerationOn()) {
-					answer.setApproved(false);
-				} else {
-					answer.setApproved(true);
-				}
-				
-				question.addAnswer(answer);
-				dao.save(answer);
-			} else {
-				throw new QnaConfigurationException(
-						"The location of the question ("
-								+ question.getLocation()
-								+ ") and location supplied (" + locationId
-								+ ") does not match");
-			}
+	
+	public boolean existsAnswer(String answerId) {
+		if (answerId == null || answerId.equals("")) {
+			return false;
 		} else {
-			throw new SecurityException("Current user cannot add question for "
-					+ locationId + " because they do not have permission");
+			if (getAnswerById(answerId) != null) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
+	
+	public void saveAnswer(QnaAnswer answer, String locationId) {
+		String userId = externalLogic.getCurrentUserId();
+		if (!existsAnswer(answer.getId())) {
+			if (permissionLogic.canAddNewAnswer(locationId, userId)) {
+				QnaQuestion question = questionLogic.getQuestionById(answer.getQuestion().getId());
+				if (question == null) {
+					throw new QnaConfigurationException("Question with id "+answer.getQuestion().getId()+" does not exist");
+				}
+				
+				if (question.getLocation().equals(locationId)) {
+					QnaOptions options = optionsLogic.getOptions(locationId);
+	
+					if (answer.isAnonymous()) {
+						if (!options.getAnonymousAllowed()) {
+							throw new QnaConfigurationException("The location "
+									+ locationId
+									+ " does not allow anonymous replies");
+						}
+					}
+					Date now = new Date();
+					answer.setDateCreated(now);
+					answer.setDateLastModified(now);
+					answer.setOwnerId(userId);
+					answer.setLastModifierId(userId);
+					
+					if (options.isModerated()) {
+						answer.setApproved(false);
+					} else {
+						answer.setApproved(true);
+					}
+					question.addAnswer(answer);
+					dao.save(answer);
+				} else {
+					throw new QnaConfigurationException(
+							"The location of the question ("
+									+ question.getLocation()
+									+ ") and location supplied (" + locationId
+									+ ") does not match");
+				}
+			} else {
+				throw new SecurityException("Current user cannot add question for "
+						+ locationId + " because they do not have permission");
+			}
+		} else {
+			if (permissionLogic.canUpdate(locationId, userId)) {
+				answer.setDateLastModified(new Date());
+				answer.setLastModifierId(userId);
 
+				dao.save(answer);
+			} else {
+				throw new SecurityException(
+						"Current user cannot update answer for "
+								+ locationId
+								+ " because they do not have permission");
+			}
+		}
+	}
 
 	public void approveAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
@@ -107,7 +121,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 			QnaAnswer answer = getAnswerById(answerId);
 			answer.setApproved(true);
 			answer.setDateLastModified(new Date());
-			answer.setOwnerId(userId);
+			answer.setLastModifierId(userId);
 			dao.save(answer);
 		} else {
 			throw new SecurityException("Current user cannot approve answers for " + locationId + " because they do not have permission");
@@ -147,7 +161,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 			QnaAnswer answer = getAnswerById(answerId);
 			answer.setApproved(false);
 			answer.setDateLastModified(new Date());
-			answer.setOwnerId(userId);
+			answer.setLastModifierId(userId);
 			dao.save(answer);
 		} else {
 			throw new SecurityException("Current user cannot withdraw approval of answers for " + locationId + " because they do not have permission");

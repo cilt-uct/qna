@@ -14,6 +14,7 @@ import org.sakaiproject.qna.tool.comparators.QuestionsByCategoryTextComparator;
 import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
 import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
@@ -91,9 +92,9 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 		for (QnaQuestion qnaQuestion : questions) {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 			if (qnaQuestion.isPublished()) {
-				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
 			} else {
-				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new SimpleViewParameters(QueuedQuestionProducer.VIEW_ID));
+				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,qnaQuestion.getId()));
 			} // TODO: Special case for Private Replies?
 			
 			UIOutput.make(entry,"views-nr",qnaQuestion.getViews() + "");

@@ -11,6 +11,7 @@ import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
 import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
 import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.ViewTypeParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
@@ -74,7 +75,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		for (QnaQuestion qnaQuestion : questions) {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 			UIOutput.make(entry,"rank-nr",rank + "");
-			UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+			UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
 			if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
 				UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
 			} else if (params.viewtype.equals(ViewTypeConstants.RECENT_CHANGES)) {

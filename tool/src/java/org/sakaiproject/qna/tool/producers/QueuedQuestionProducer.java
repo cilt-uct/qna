@@ -22,7 +22,6 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 
 	public static final String VIEW_ID = "queued_question";
 	public String getViewID() {
-		// TODO Auto-generated method stub
 		return VIEW_ID;
 	}
 

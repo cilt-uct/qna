@@ -59,7 +59,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	
     	UIForm form = UIForm.make(tofill, "options-form");
     	    	    	
-    	UIBoundBoolean.make(form,"moderation",optionsOTP + ".moderationOn");
+    	UIBoundBoolean.make(form,"moderation",optionsOTP + ".moderated");
     	UIMessage.make(form,"moderation-label","qna.options.moderate-questions");
     	UIMessage.make(form,"moderation-msg","qna.options.moderate-questions-msg");
     	

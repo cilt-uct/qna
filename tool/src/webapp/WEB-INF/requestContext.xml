@@ -92,12 +92,17 @@
 		class="org.sakaiproject.qna.tool.producers.QueuedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
 
 	<bean
 		class="org.sakaiproject.qna.tool.producers.PublishQueuedQuestionProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
 	<bean
@@ -131,6 +136,8 @@
 		class="org.sakaiproject.qna.tool.producers.ReplyPrivatelyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
 	<bean
@@ -236,6 +243,7 @@
    	<bean id="AnswerLocator" class="org.sakaiproject.qna.tool.otp.AnswerLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
+      <property name="messages" ref="targettedMessageList"/>
    	</bean>
 	
 </beans>

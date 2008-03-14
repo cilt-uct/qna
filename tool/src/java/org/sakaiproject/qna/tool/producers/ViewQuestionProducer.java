@@ -26,7 +26,6 @@ import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
@@ -91,17 +90,16 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		listIteratorRenderer.makeListIterator(tofill, "pager1:");
 		UIMessage.make(tofill,"page-title","qna.view-question.title");
-		UIOutput.make(tofill,"category-title","Exams");
+		UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
 		UIMessage.make(tofill,"question-title","qna.view-question.question");
 
 		UIVerbatim.make(tofill,"question",question.getQuestionText());
 
 		// If anonymous remove name
-		String questionDetailDisplay = "";
 		if (question.isAnonymous()) {
-			UIMessage.make(tofill,"question-submit-details","qna.view-question.question-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
 		} else {
-			UIMessage.make(tofill,"question-submit-details","qna.view-question.question-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
 		}
 		
 		// TODO: make it work
@@ -144,7 +142,6 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 					} else {
 						UIInternalLink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
 					}
-	
 					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));	
 				}
 				
@@ -152,7 +149,6 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				UIOutput.make(answer, "answer-timestamp", qnaAnswer.getDateLastModified() + "");
 			}
 		}
-
 
 		// TODO: Fix pager
 		listIteratorRenderer.makeListIterator(tofill, "pager2:");
@@ -189,6 +185,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	        UICommand saveButton = UICommand.make(form,"add-answer-button",UIMessage.make("qna.view-question.add-answer"), answerLocator + ".saveAll");
 	        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 		}
+		
+		// Increment views
+		questionLogic.incrementView(question.getId());
 	}
 
 	public List reportNavigationCases() {

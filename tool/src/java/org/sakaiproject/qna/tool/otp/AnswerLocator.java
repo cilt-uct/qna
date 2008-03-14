@@ -6,8 +6,11 @@ import java.util.Map;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.beanutil.WriteableBeanLocator;
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class AnswerLocator implements WriteableBeanLocator {
 	
@@ -16,6 +19,7 @@ public class AnswerLocator implements WriteableBeanLocator {
 	
 	private ExternalLogic externalLogic;
 	private AnswerLogic answerLogic;
+	private TargettedMessageList messages;
 	
 	private Map<String, QnaAnswer> delivered = new HashMap<String,QnaAnswer>();
     
@@ -28,6 +32,10 @@ public class AnswerLocator implements WriteableBeanLocator {
 		
 	}
 
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
+	}
+	
 	public Object locateBean(String name) {
 		QnaAnswer togo = delivered.get(name);
 		if (togo == null) {
@@ -44,6 +52,9 @@ public class AnswerLocator implements WriteableBeanLocator {
     public String saveAll() {
         for (QnaAnswer answer : delivered.values()) {
         	answerLogic.saveAnswer(answer, externalLogic.getCurrentLocationId());
+	        messages.addMessage(new TargettedMessage("qna.add-answer.save-success",
+	                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
+	                TargettedMessage.SEVERITY_INFO));
         }
         return "saved";
     }

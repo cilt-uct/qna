@@ -10,51 +10,46 @@ import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
 public class CategoryLogicImpl implements CategoryLogic {
 
-	private static Log log = LogFactory.getLog(OptionsLogicImpl.class);
-
+	private static Log log = LogFactory.getLog(CategoryLogicImpl.class);
 	private PermissionLogic permissionLogic;
+	private ExternalLogic externalLogic;
+	private QnaDao dao;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
 
-	private QnaDao dao;
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
 
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
 
-	private ExternalLogic externalLogic;
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
 	public QnaCategory getCategoryById(String categoryId) {
+		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
 	}
 
 	public void removeCategory(String categoryId, String locationId) {
-
+		log.debug("CategoryLogicImpl::removeCategory");
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaCategory category = getCategoryById(categoryId);
 			dao.delete(category);
 		} else {
-			throw new SecurityException(
-					"Current user cannot remove category for " + locationId
-							+ " because they do not have permission");
+			throw new SecurityException("Current user cannot remove category for "+locationId+" because they do not have permission");
 		}
 	}
 
 	public void saveCategory(QnaCategory category, String locationId) {
+		log.debug("CategoryLogicImpl::saveCategory");
 		String userId = externalLogic.getCurrentUserId();
 		if (existsCategory(category.getId())) {
 			if (permissionLogic.canUpdate(locationId, userId)) {
@@ -62,30 +57,20 @@ public class CategoryLogicImpl implements CategoryLogic {
 				category.setDateLastModified(new Date());
 				dao.save(category);
 			} else {
-				throw new SecurityException(
-						"Current user cannot save category for " + locationId
-								+ " because they do not have permission");
+				throw new SecurityException("Current user cannot save category for "+locationId+" because they do not have permission");
 			}
-
 		} else {
 			if (permissionLogic.canAddNewCategory(locationId, userId)) {
-				category.setLocation(locationId);
-				category.setOwnerId(userId);
-				Date now = new Date();
-				category.setDateCreated(now);
-				category.setDateLastModified(now);
+				category = createDefaultCategory(locationId, userId, category.getCategoryText());
 				dao.save(category);
 			} else {
-				throw new SecurityException(
-						"Current user cannot create new category for "
-								+ locationId
-								+ " because they do not have permission");
+				throw new SecurityException("Current user cannot create new category for "+locationId+" because they do not have permission");
 			}
-
 		}
 	}
 
 	public boolean existsCategory(String categoryId) {
+		log.debug("CategoryLogicImpl::existsCategory");
 		if (categoryId == null || categoryId.equals("")) {
 			return false;
 		} else {
@@ -97,15 +82,53 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
+	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText) {
+		log.debug("CategoryLogicImpl::createDefaultCategory");
+		QnaCategory qnaCategory = new QnaCategory();
+
+		Date now = new Date();
+
+		if (categoryText != null && !categoryText.equals("")) {
+			qnaCategory.setCategoryText(categoryText);
+		} else {
+			qnaCategory.setCategoryText("");
+		}
+		qnaCategory.setDateCreated(now);
+		qnaCategory.setDateLastModified(now);
+		qnaCategory.setOwnerId(ownerId);
+		qnaCategory.setLocation(locationId);
+		qnaCategory.setQuestions(null);
+		qnaCategory.setSortOrder(new Integer(0));
+
+		return qnaCategory;
+	}
+
+	public QnaCategory getCategories(String locationId) {
+		log.debug("CategoryLogicImpl::getCategories");
+		List l = dao.findByProperties(
+			QnaCategory.class,
+			new String[] { "location" },
+			new Object[] { locationId },
+			new int[] { ByPropsFinder.EQUALS },
+			0,
+			1
+		);
+		if (l.size() > 0) {
+			return (QnaCategory) l.get(0);
+		} else {
+			QnaCategory newCategory = createDefaultCategory(locationId, "", "");
+			return newCategory;
+		}
+	}
+
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId) {
+		log.debug("CategoryLogicImpl::getQuestionsForCategory");
 		return getCategoryById(categoryId).getQuestions();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
+		log.debug("CategoryLogicImpl::getCategoriesForLocation");
 		return dao.findByProperties(QnaCategory.class, new String[] {"location"}, new Object[] {locationId}, new int[] { ByPropsFinder.EQUALS});
 	}
-	
-	
-
 }

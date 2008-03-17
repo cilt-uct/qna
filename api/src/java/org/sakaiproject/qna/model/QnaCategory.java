@@ -2,18 +2,17 @@ package org.sakaiproject.qna.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaCategory {
 
 	private String id;
-	
+
 //  The list of questions associated with this option
     private List<QnaQuestion> questions = new ArrayList<QnaQuestion>();
 
@@ -166,7 +165,7 @@ public class QnaCategory {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

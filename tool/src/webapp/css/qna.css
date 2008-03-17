@@ -40,6 +40,10 @@
 	font-size: 1em;
 }
 
+.small {
+	font-size: 10px;
+}
+
 .searchTool{
 	background-color: #fefefe;
 	padding:.3em;

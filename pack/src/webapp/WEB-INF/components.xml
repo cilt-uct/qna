@@ -47,6 +47,14 @@
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
+	<bean id="org.sakaiproject.qna.logic.SearchLogic" class="org.sakaiproject.qna.logic.impl.SearchLogicImpl">
+		<property name="permissionLogic"
+			ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="externalLogic"
+			ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
+	</bean>
+
 	<bean id="org.sakaiproject.qna.logic.OptionsLogic"
 		class="org.sakaiproject.qna.logic.impl.OptionsLogicImpl">
 		<property name="permissionLogic"

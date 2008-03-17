@@ -24,7 +24,7 @@ public interface CategoryLogic {
 	 * @return	boolean
 	 */
 	public boolean existsCategory(String categoryId);
-	
+
 	/**
 	 * Save a category
 	 *
@@ -44,18 +44,32 @@ public interface CategoryLogic {
 	public void removeCategory(String categoryId, String locationId);
 
 	/**
-	 * 
+	 *
 	 * @param categoryId
 	 * @return
 	 */
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId);
-	
+
 	/**
-	 * 
+	 *
 	 * @param locationId
 	 * @return
 	 */
 	public List<QnaCategory> getCategoriesForLocation(String locationId);
-	
 
+	/**
+	 *
+	 * @param locationId
+	 * @return QnaCategory
+	 */
+	public QnaCategory getCategories(String locationId);
+
+	/**
+	 *
+	 * @param locationId
+	 * @param ownerId
+	 * @param categoryText
+	 * @return QnaCategory
+	 */
+	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText);
 }

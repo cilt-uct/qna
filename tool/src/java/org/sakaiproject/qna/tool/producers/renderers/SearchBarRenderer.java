@@ -1,17 +1,17 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
+import org.sakaiproject.qna.tool.params.SearchParams;
 import org.sakaiproject.qna.tool.producers.SearchResultsProducer;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
+import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
-import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 
 public class SearchBarRenderer {
@@ -22,13 +22,12 @@ public class SearchBarRenderer {
 
     	UIBranchContainer cell1 = UIBranchContainer.make(joint, "search-cell:", "1");
 
-    	UIForm form = UIForm.make(cell1, "search-form");
+    	UIForm form = UIForm.make(cell1, "search-form", new SearchParams(SearchResultsProducer.VIEW_ID));
 
-		UIInput.make(form, "search-value", "valuebinding");
+		UIInput.make(form, "search-value", "");
 
-        ///UICommand.make(form, "search-button", UIMessage.make("qna.general.search"), "mockbinding.search");
-
-		UIInternalLink.make(form, "search-link", UIMessage.make("qna.general.search"), new SimpleViewParameters(SearchResultsProducer.VIEW_ID));
+		//UIInternalLink.make(form, "search-link", UIMessage.make("qna.general.search"), new SimpleViewParameters(SearchResultsProducer.VIEW_ID));
+		UICommand.make(form, "search-button", UIMessage.make("qna.general.search"));
 
 		UIOutput.make(cell1, "item-separator");
 

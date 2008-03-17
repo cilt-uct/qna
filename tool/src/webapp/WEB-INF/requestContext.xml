@@ -72,14 +72,13 @@
         <property name="ELEvaluator" ref="ELEvaluator" />
 	</bean>
 
-	<bean class="org.sakaiproject.qna.tool.producers.CreateCategoryProducer">
+	<bean class="org.sakaiproject.qna.tool.producers.CategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-	</bean>
-
-	<bean class="org.sakaiproject.qna.tool.producers.EditCategoryProducer">
-		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+<!--		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" /> -->
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">
@@ -103,11 +102,6 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-	</bean>
-
-	<bean
-		class="org.sakaiproject.qna.tool.producers.DeleteCategoryProducer">
-		<property name="navBarRenderer" ref="NavbarRenderer" />
 	</bean>
 
 	<bean
@@ -164,6 +158,7 @@
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="searchLogic" ref="org.sakaiproject.qna.logic.SearchLogic"/>
 	</bean>
 
 	<bean
@@ -216,34 +211,32 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
-	
+
 	<!-- OTP -->
 	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
    	  <property name="messages" ref="targettedMessageList"/>
    	</bean>
-	
+
 	<bean id="QuestionLocator" class="org.sakaiproject.qna.tool.otp.QuestionLocator">
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="messages" ref="targettedMessageList"/>
 	</bean>
-	
+
 	<bean id="OptionsLocator" class="org.sakaiproject.qna.tool.otp.OptionsLocator">
 	  <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
       <property name="messages" ref="targettedMessageList"/>
    	</bean>
-   	
+
    	<bean id="QuestionAndCategoryLocator" class="org.sakaiproject.qna.tool.otp.QuestionAndCategoryLocator">
    		<property name="questionLocator" ref="QuestionLocator" />
    		<property name="categoryLocator" ref="CategoryLocator"/>
    	</bean>
-   	
    	<bean id="AnswerLocator" class="org.sakaiproject.qna.tool.otp.AnswerLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
       <property name="messages" ref="targettedMessageList"/>
    	</bean>
-	
 </beans>

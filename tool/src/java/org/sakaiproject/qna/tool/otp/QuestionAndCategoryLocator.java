@@ -11,7 +11,7 @@ public class QuestionAndCategoryLocator implements BeanLocator {
     public static String NEW_1 = NEW_PREFIX + "1";
 	public static String QUESTION = "question ";
 	public static String CATEGORY = "category ";
-	
+
 	private QuestionLocator questionLocator;
 	private CategoryLocator categoryLocator;
 
@@ -19,30 +19,30 @@ public class QuestionAndCategoryLocator implements BeanLocator {
 		if (name.startsWith(QUESTION)) {
 			return questionLocator.locateBean(name.substring(QUESTION.length(), name.length()));
 		}
-		
+
 		if (name.startsWith(CATEGORY)) {
 			return categoryLocator.locateBean(name.substring(CATEGORY.length(), name.length()));
 		}
 		return null;
 	}
-	
+
 	 public String saveAll() {
-		
+
 		QnaCategory categoryToLink=null;
-		
+
 		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
-		
+
 		if (((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText() == null) {
 			if (newQuestion.getCategoryId() != null) {
 				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());}
 		} else {
-			categoryLocator.saveAll();
+			categoryLocator.save();
 			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);
 		}
 
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
-		return "saved"; 
+		return "saved";
 	 }
 
 	public void setQuestionLocator(QuestionLocator questionLocator) {

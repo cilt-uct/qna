@@ -28,6 +28,8 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -36,7 +38,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class ViewQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
+public class ViewQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
 	public static final String VIEW_ID = "view_question";
 	private SearchBarRenderer searchBarRenderer;
@@ -82,6 +84,11 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 
+		String answerLocator = "AnswerLocator";
+		String questionLocator = "QuestionLocator";
+		String optionsLocator = "OptionsLocator";
+		
+		
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
 		
@@ -108,7 +115,6 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 			UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
 			UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
 		}
-
 
 		UIMessage.make(tofill,"answers-title","qna.view-question.answers-title",new Object[] {question.getAnswers().size()});
 		
@@ -140,7 +146,11 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 					} else if (qnaAnswer.isApproved()) {
 						UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
 					} else {
-						UIInternalLink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+						UILink link = UILink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),null);
+						UIForm form = UIForm.make(answer,"mark-correct-form");
+						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", true));
+						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".markCorrect");
+						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
 					}
 					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));	
 				}
@@ -154,18 +164,14 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		listIteratorRenderer.makeListIterator(tofill, "pager2:");
 		
 		if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
+			
 			UILink icon = UILink.make(tofill,"add-answer-icon","/library/image/silk/add.png");
 			UILink link = UIInternalLink.make(tofill, "add-answer-link", UIMessage.make("qna.view-question.add-an-answer"), "");
 			UIOutput div = UIOutput.make(tofill,"add-answer");
 	
 			UIInitBlock.make(tofill, "onclick-init", "init_add_question_toggle", new Object[]{link,icon,div});
 	
-			String answerLocator = "AnswerLocator";
-			String questionLocator = "QuestionLocator";
-			String optionsLocator = "OptionsLocator";
-			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
-			
-			
 			UIForm form = UIForm.make(tofill,"add-answer-form");
 	
 			UIMessage.make(form,"add-answer-title","qna.view-question.add-your-answer");
@@ -197,6 +203,14 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	}
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
+	}
+	
+	public void interceptActionResult(ARIResult result,
+			ViewParameters incoming, Object actionReturn) {
+		if (result.resultingView instanceof QuestionParams) {
+			QuestionParams params = (QuestionParams)result.resultingView;
+			params.questionid = ((QuestionParams)incoming).questionid;
+		}
 	}
 
 }

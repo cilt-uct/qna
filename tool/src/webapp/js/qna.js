@@ -92,4 +92,9 @@
     	}
     }
     
-    
+    // Used to make links perform like submit button
+    function make_link_call_command(link_id,command_id) {
+    	var link = document.getElementById(link_id);
+    	var command = document.getElementById(command_id);
+    	link.onclick = function() {command.click(); return false;};
+    }

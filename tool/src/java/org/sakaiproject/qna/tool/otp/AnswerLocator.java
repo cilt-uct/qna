@@ -59,6 +59,14 @@ public class AnswerLocator implements WriteableBeanLocator {
         return "saved";
     }
 	
+    public String markCorrect() {
+    	for (QnaAnswer answer : delivered.values()) {	
+    		answerLogic.approveAnswer(answer.getId(), externalLogic.getCurrentLocationId());
+    		messages.addMessage(new TargettedMessage("qna.view-question.answer-approved",null,TargettedMessage.SEVERITY_INFO));
+    	}
+    	return "marked-correct";
+    }
+    
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}

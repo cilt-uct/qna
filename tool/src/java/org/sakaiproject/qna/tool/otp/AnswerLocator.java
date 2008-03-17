@@ -59,12 +59,20 @@ public class AnswerLocator implements WriteableBeanLocator {
         return "saved";
     }
 	
-    public String markCorrect() {
+    public String approve() {
     	for (QnaAnswer answer : delivered.values()) {	
     		answerLogic.approveAnswer(answer.getId(), externalLogic.getCurrentLocationId());
     		messages.addMessage(new TargettedMessage("qna.view-question.answer-approved",null,TargettedMessage.SEVERITY_INFO));
     	}
     	return "marked-correct";
+    }
+    
+    public String withdrawApproval() {
+    	for (QnaAnswer answer : delivered.values()) {
+    		answerLogic.withdrawApprovalAnswer(answer.getId(), externalLogic.getCurrentLocationId());
+    		messages.addMessage(new TargettedMessage("qna.view-question.answer-approval-withdrawn",null,TargettedMessage.SEVERITY_INFO));
+    	}
+    	return "approval-withdrawn";
     }
     
 	public void setExternalLogic(ExternalLogic externalLogic) {

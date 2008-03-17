@@ -144,12 +144,16 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 					if  (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new SimpleViewParameters(EditPublishedAnswerProducer.VIEW_ID));
 					} else if (qnaAnswer.isApproved()) {
-						UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+						UILink link = UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+						UIForm form = UIForm.make(answer,"withdraw-approval-form");
+						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", false));
+						UICommand command = UICommand.make(form,"withdraw-approval-command",answerLocator + ".withdrawApproval");
+						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
 					} else {
 						UILink link = UILink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),null);
 						UIForm form = UIForm.make(answer,"mark-correct-form");
 						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", true));
-						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".markCorrect");
+						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".approve");
 						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
 					}
 					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));	
@@ -201,6 +205,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
+	
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
 	}

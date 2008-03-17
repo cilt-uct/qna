@@ -44,15 +44,21 @@
 	<div rsf:id="answer-text">Answer Text</div>
   	<span class="grey" rsf:id="answer-timestamp">2007-06-21</span>
   	<a rsf:id="edit-answer-link" href="edit_answer.html">Edit</a>
-	<a rsf:id="withdraw-approval-link" href="withdraw_approval.html">Withdraw approval</a>
+	
+	<a rsf:id="withdraw-approval-link" id="withdraw-approval-link" href="withdraw_approval.html">Withdraw approval</a>
+	<form style="display:none;" rsf:id="withdraw-approval-form" method="post">
+		<input id="" type="submit" style="display:none;" value="" rsf:id="withdraw-approval-command" />
+	</form>
+	
 	<a rsf:id="mark-correct-link" id="mark-correct-link" href="mark_correct.html">Mark as correct</a>
+	<form style="display:none;" rsf:id="mark-correct-form" method="post">
+		<input id="" type="submit" style="display:none;" value="" rsf:id="mark-correct-command" />
+	</form>
+	
+	<a rsf:id="delete-answer-link" href="delete_answer.html">Delete</a>
 	<script rsf:id="make-link-submit" type="text/javascript">
    		make_link_call_command("link-id","command-id");
   	</script>
-	<a rsf:id="delete-answer-link" href="delete_answer.html">Delete</a>
-	<form style="display:none;" rsf:id="mark-correct-form" method="post">
-		<input id="" type="submit" style="display:none" value="" rsf:id="mark-correct-command" />
-	</form>
   	<br/>
   	<br/>
   </div>

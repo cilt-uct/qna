@@ -1,16 +1,10 @@
 package org.sakaiproject.qna.logic.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -49,20 +43,26 @@ public class SearchLogicImpl implements SearchLogic {
 			search = "%"+search+"%";
 		}
 
-		String hsql = "from QnaAnswer as a where a.answerText like :answerText";
+		String currentLocationId = externalLogic.getCurrentLocationId();
 
-		Query query = dao.getQnaSession().createQuery(hsql);
-		query.setParameter("answerText", search);
-		List<QnaAnswer> data = query.list();
+		if (search.length() > 0) {
+			search = "%"+search+"%";
+		}
 
-		/*List<QnaAnswer> findByProperties = dao.findByProperties(
+		List<QnaAnswer> findByProperties = dao.findByProperties(
 			QnaAnswer.class,
 			new String[] {"answerText"},
 			new Object[] {search},
 			new int[] {ByPropsFinder.LIKE}
 		);
-		return findByProperties;*/
-        return data;
+
+		for (QnaAnswer qnaAnswers : findByProperties) {
+			if (!qnaAnswers.getQuestion().getLocation().equalsIgnoreCase(currentLocationId)) {
+				findByProperties.remove(qnaAnswers);
+			}
+		}
+
+		return findByProperties;
 	}
 
 	@SuppressWarnings("unchecked")

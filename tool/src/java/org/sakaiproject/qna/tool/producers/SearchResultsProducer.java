@@ -76,8 +76,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		UIMessage.make(tofill, "questions", "qna.searchresults.questions");
 		UIMessage.make(tofill, "answers", "qna.searchresults.answers");
 
-		UIMessage.make(tofill,"answers-title","qna.answers.answers-title",new String[] {"4"});
-
 		// TODO: Change to get from database, use proper beans, etc.
 		// Shortcuts used only for mock-ups
 

@@ -8,11 +8,15 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.otp.AnswerLocator;
+import org.sakaiproject.qna.tool.otp.CategoryLocator;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
+import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIInternalLink;
@@ -64,6 +68,13 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 		
+		String questionLocator = "QuestionLocator";
+		String categoryLocator = "CategoryLocator";
+		String categoryOTP = categoryLocator + "." + CategoryLocator.NEW_1;
+		String answerLocator = "AnswerLocator";
+		String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
+		String multipleBeanMediator = "MultipleBeanMediator";
+		
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
@@ -90,7 +101,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the category note
 		UIMessage.make(form, "category-note", "qna.publish-queued-question.category-note");
 		
-	       List<QnaCategory> categories = categoryLogic
+	    List<QnaCategory> categories = categoryLogic
 				.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 
 		String[] categoriesIds = new String[categories.size()];
@@ -102,13 +113,13 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 			categoriesText[i] = category.getCategoryText();
 		}
 
+       
+        UISelect select = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionLocator + "." + question.getId() + ".category.id");
         
-        UISelect.make(form, "category-select", categoriesIds, categoriesText, null);
-		
      // if (user permission to create categories)
         UIMessage.make(form,"or","qna.general.or");
         UIMessage.make(form,"new-category-label","qna.publish-queued-question.category-label");
-        UIInput.make(form, "new-category-name", null);
+        UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
         
      // Generate the answer title
 		UIMessage.make(form, "answer-title", "qna.publish-queued-question.answer-title");
@@ -117,11 +128,12 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		UIMessage.make(form, "answer-note", "qna.publish-queued-question.answer-note");
         
 //		Generate the answer input box
-		UIInput answertext = UIInput.make(form, "reply-input:",null); // last parameter is value binding
+		UIInput answertext = UIInput.make(form, "reply-input:", answerOTP  +".answerText");
+		form.addParameter(new UIELBinding("AnswerLocator.new 1.question",new ELReference(questionLocator + "." + question.getId())));
         richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons
-		UICommand.make(form, "published-button", UIMessage.make("qna.general.publish")).setReturn("publish");
+		UICommand.make(form, "published-button", UIMessage.make("qna.general.publish"), multipleBeanMediator +".publish");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 
 	}

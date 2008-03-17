@@ -72,4 +72,13 @@ public interface CategoryLogic {
 	 * @return QnaCategory
 	 */
 	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText);
+	
+	/**
+	 * Sets default values for a new qnaCategory object
+	 * 
+	 * @param qnaCategory
+	 * @param locationId
+	 * @param ownerId
+	 */
+	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId);
 }

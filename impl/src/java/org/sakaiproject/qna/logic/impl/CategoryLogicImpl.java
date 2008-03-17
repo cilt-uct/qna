@@ -61,14 +61,29 @@ public class CategoryLogicImpl implements CategoryLogic {
 			}
 		} else {
 			if (permissionLogic.canAddNewCategory(locationId, userId)) {
-				category = createDefaultCategory(locationId, userId, category.getCategoryText());
+				setNewCategoryDefaults(category,locationId, userId);
 				dao.save(category);
 			} else {
 				throw new SecurityException("Current user cannot create new category for "+locationId+" because they do not have permission");
 			}
 		}
 	}
-
+	
+	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId) {
+		if (qnaCategory.getId() == null) {
+			Date now = new Date();
+			qnaCategory.setDateCreated(now);
+			qnaCategory.setDateLastModified(now);
+			qnaCategory.setOwnerId(ownerId);
+			qnaCategory.setLocation(locationId);
+			qnaCategory.setQuestions(null);
+			qnaCategory.setSortOrder(new Integer(0));
+		} else {
+			throw new RuntimeException("Should only be called on categories not yet persisted");
+		}
+	}
+	
+	
 	public boolean existsCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::existsCategory");
 		if (categoryId == null || categoryId.equals("")) {
@@ -86,19 +101,12 @@ public class CategoryLogicImpl implements CategoryLogic {
 		log.debug("CategoryLogicImpl::createDefaultCategory");
 		QnaCategory qnaCategory = new QnaCategory();
 
-		Date now = new Date();
-
 		if (categoryText != null && !categoryText.equals("")) {
 			qnaCategory.setCategoryText(categoryText);
 		} else {
-			qnaCategory.setCategoryText("");
+			qnaCategory.setCategoryText(null);
 		}
-		qnaCategory.setDateCreated(now);
-		qnaCategory.setDateLastModified(now);
-		qnaCategory.setOwnerId(ownerId);
-		qnaCategory.setLocation(locationId);
-		qnaCategory.setQuestions(null);
-		qnaCategory.setSortOrder(new Integer(0));
+		setNewCategoryDefaults(qnaCategory, locationId, ownerId);
 
 		return qnaCategory;
 	}

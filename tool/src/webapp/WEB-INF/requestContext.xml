@@ -234,9 +234,20 @@
    		<property name="questionLocator" ref="QuestionLocator" />
    		<property name="categoryLocator" ref="CategoryLocator"/>
    	</bean>
+   	
    	<bean id="AnswerLocator" class="org.sakaiproject.qna.tool.otp.AnswerLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
       <property name="messages" ref="targettedMessageList"/>
    	</bean>
+   	
+   	<bean id="MultipleBeanMediator" class="org.sakaiproject.qna.tool.otp.MultipleBeanMediator">
+		<property name="questionLocator" ref="QuestionLocator" />
+   		<property name="categoryLocator" ref="CategoryLocator"/>
+   		<property name="answerLocator" ref="AnswerLocator" />
+   		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+   	</bean>
+	
+   	
 </beans>

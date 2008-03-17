@@ -10,6 +10,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -166,7 +167,14 @@ public class AnswerLogicImpl implements AnswerLogic {
 		} else {
 			throw new SecurityException("Current user cannot withdraw approval of answers for " + locationId + " because they do not have permission");
 		}
-
+	}
+	
+	public QnaAnswer createDefaultAnswer(String locationId) {
+		QnaAnswer answer = new QnaAnswer();
+		QnaOptions options = optionsLogic.getOptions(locationId);
+		answer.setAnonymous(options.getAnonymousAllowed());
+		answer.setPrivateReply(false);
+		return answer;
 	}
 
 }

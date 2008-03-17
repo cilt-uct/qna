@@ -108,6 +108,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		try {
 			categoryLogic.saveCategory(category, LOCATION1_ID );
 			assertNotNull(category.getId());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Should not have thrown exception");
@@ -188,9 +189,24 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(questions.contains(tdp.question3_location1));
 		assertTrue(questions.contains(tdp.question4_location1));
 	}
+	
 	public void testGetCategoriesForLocation() {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(LOCATION1_ID);
 		assertEquals(3, categories.size());
+	}
+	
+	public void testSaveDefaults() {
+		try {
+			categoryLogic.setNewCategoryDefaults(tdp.category1_location1, LOCATION1_ID, USER_UPDATE);
+			fail("Should throw exception");
+		} catch (Exception expected) {
+			assertNotNull(expected);
+		}
+		
+		QnaCategory category = new QnaCategory();
+		categoryLogic.setNewCategoryDefaults(category, LOCATION1_ID, USER_UPDATE);
+		assertEquals(category.getLocation(),LOCATION1_ID);
+		assertEquals(category.getOwnerId(),USER_UPDATE);
 	}
 
 }

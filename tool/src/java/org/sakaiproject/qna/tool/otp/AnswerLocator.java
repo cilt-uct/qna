@@ -8,11 +8,11 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
-import uk.org.ponder.beanutil.WriteableBeanLocator;
+import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
-public class AnswerLocator implements WriteableBeanLocator {
+public class AnswerLocator implements EntityBeanLocator {
 	
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
@@ -40,7 +40,7 @@ public class AnswerLocator implements WriteableBeanLocator {
 		QnaAnswer togo = delivered.get(name);
 		if (togo == null) {
 			 if (name.startsWith(NEW_PREFIX)) {
-				 togo = new QnaAnswer();
+				 togo = answerLogic.createDefaultAnswer(externalLogic.getCurrentLocationId());
 			 } else {
 				 togo = answerLogic.getAnswerById(name);
 			 }
@@ -82,5 +82,8 @@ public class AnswerLocator implements WriteableBeanLocator {
 	public void setAnswerLogic(AnswerLogic answerLogic) {
 		this.answerLogic = answerLogic;
 	}
-	
+
+	public Map getDeliveredBeans() {
+		return delivered;
+	}
 }

@@ -7,11 +7,11 @@ import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 
-import uk.org.ponder.beanutil.WriteableBeanLocator;
+import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
-public class CategoryLocator implements WriteableBeanLocator {
+public class CategoryLocator implements EntityBeanLocator {
 
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
@@ -95,5 +95,9 @@ public class CategoryLocator implements WriteableBeanLocator {
 
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
+	}
+
+	public Map<String, QnaCategory> getDeliveredBeans() {
+		return delivered;
 	}
 }

@@ -49,5 +49,13 @@ public interface AnswerLogic {
 	 * @param locationId
 	 */
 	public void saveAnswer(QnaAnswer answer, String locationId);
+	
+	/**
+	 * 
+	 * @param locationId
+	 * @param ownerId
+	 * @return
+	 */
+	public QnaAnswer createDefaultAnswer(String locationId);
 
 }

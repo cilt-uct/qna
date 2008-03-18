@@ -1,5 +1,5 @@
 /******************************************************************************
- * BlogWowDaoImpl.java - created by Sakai App Builder -AZ
+ * QnaDaoImpl.java - created by Sakai App Builder -AZ
  *
  * Copyright (c) 2006 Sakai Project/Sakai Foundation
  * Licensed under the Educational Community License version 1.0
@@ -11,12 +11,16 @@
 
 package org.sakaiproject.qna.dao.impl;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Session;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.genericdao.hibernate.HibernateCompleteGenericDao;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.sakaiproject.qna.model.QnaAnswer;
 
 /**
  * Implementations of any specialized DAO methods from the specialized DAO that allows the developer to extend the functionality of the
@@ -32,11 +36,15 @@ public class QnaDaoImpl extends HibernateCompleteGenericDao implements QnaDao {
         log.debug("init");
     }
 
-    public HibernateTemplate getQnaHibernateTemplate() {
-    	return getHibernateTemplate();
-    }
+    @SuppressWarnings("unchecked")
+	public List<QnaAnswer> getSearchAnswers(String search, String location) {
+    	Criteria criteria = getSession().createCriteria(QnaAnswer.class);
+    	criteria.add(Restrictions.ilike("answerText", search));
+    	criteria.createAlias("question", "question", Criteria.LEFT_JOIN);
+    	criteria.add(Restrictions.eq("question.location", location));
+    	criteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 
-    public Session getQnaSession() {
-    	return getSession(false);
+    	return criteria.list();
     }
 }
+

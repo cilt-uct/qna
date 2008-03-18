@@ -108,9 +108,9 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 
 		for (int k=0; k<questionsList.size(); k++) {
 			QnaQuestion question = questionsList.get(k);
-			categories[k][0] = question.getQuestionText();
-			categories[k][1] = question.getDateLastModified().toString();
-			categories[k][2] = question.getId();
+			questions[k][0] = question.getQuestionText();
+			questions[k][1] = question.getDateLastModified().toString();
+			questions[k][2] = question.getId();
 		}
 
 		for (int i=0;i<questions.length;i++) {
@@ -131,9 +131,9 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 
 		for (int k=0; k<answersList.size(); k++) {
 			QnaAnswer answer = answersList.get(k);
-			categories[k][0] = answer.getAnswerText();
-			categories[k][1] = answer.getDateLastModified().toString();
-			categories[k][2] = answer.getId();
+			answers[k][0] = answer.getAnswerText();
+			answers[k][1] = answer.getDateLastModified().toString();
+			answers[k][2] = answer.getId();
 		}
 
 		for (int i=0;i<answers.length;i++) {

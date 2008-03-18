@@ -3,7 +3,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-   <!-- put your value object in the class name, 
+   <!-- put your value object in the class name,
       the table name is optional but you should specify it to avoid collisions -->
    <class name="org.sakaiproject.qna.model.QnaAnswer" table="qna_ANSWERS">
 
@@ -11,7 +11,7 @@
       <id name="id" type="string">
          <generator class="uuid.hex"/>
       </id>
-      <many-to-one name="question" class="org.sakaiproject.qna.model.QnaQuestion" >
+      <many-to-one name="question" class="org.sakaiproject.qna.model.QnaQuestion" fetch="join" lazy="false">
          <column name="question_id" not-null="true" />
       </many-to-one>
       <property name="ownerId" type="string" length="255" not-null="true" />

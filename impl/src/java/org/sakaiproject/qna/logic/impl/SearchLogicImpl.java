@@ -45,24 +45,7 @@ public class SearchLogicImpl implements SearchLogic {
 
 		String currentLocationId = externalLogic.getCurrentLocationId();
 
-		if (search.length() > 0) {
-			search = "%"+search+"%";
-		}
-
-		List<QnaAnswer> findByProperties = dao.findByProperties(
-			QnaAnswer.class,
-			new String[] {"answerText"},
-			new Object[] {search},
-			new int[] {ByPropsFinder.LIKE}
-		);
-
-		for (QnaAnswer qnaAnswers : findByProperties) {
-			if (!qnaAnswers.getQuestion().getLocation().equalsIgnoreCase(currentLocationId)) {
-				findByProperties.remove(qnaAnswers);
-			}
-		}
-
-		return findByProperties;
+		return dao.getSearchAnswers(search, currentLocationId);
 	}
 
 	@SuppressWarnings("unchecked")

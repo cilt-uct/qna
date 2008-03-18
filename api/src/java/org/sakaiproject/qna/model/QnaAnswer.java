@@ -1,16 +1,15 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * This is a the options table entity
- * 
+ *
  * @author Psybergate
  */
 public class QnaAnswer {
 
-	
+
 
 	private String id;
 
@@ -25,7 +24,7 @@ public class QnaAnswer {
 
 	//  The user (sakai userid) that last modified this question
 	private String lastModifierId;
-	
+
 	// The date this answer was last modified by someone
 	private Date dateLastModified;
 
@@ -188,7 +187,7 @@ public class QnaAnswer {
 	public void setAnonymous(Boolean anonymous) {
 		this.anonymous = anonymous;
 	}
-	
+
 	public String getLastModifierId() {
 		return lastModifierId;
 	}
@@ -196,7 +195,7 @@ public class QnaAnswer {
 	public void setLastModifierId(String lastModifierId) {
 		this.lastModifierId = lastModifierId;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -205,7 +204,7 @@ public class QnaAnswer {
 		if(obj instanceof QnaAnswer){
 			return ((QnaAnswer)obj).getId().equals(this.getId());
 		}
-		
+
 		return false;
 	}
 

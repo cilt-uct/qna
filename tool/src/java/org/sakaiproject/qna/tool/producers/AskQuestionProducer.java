@@ -9,7 +9,8 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
-import org.sakaiproject.qna.tool.otp.QuestionAndCategoryLocator;
+import org.sakaiproject.qna.tool.otp.CategoryLocator;
+import org.sakaiproject.qna.tool.otp.QuestionLocator;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
@@ -75,11 +76,12 @@ public class AskQuestionProducer implements ViewComponentProducer,
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QnaOptions options = optionsLogic.getOptions(externalLogic.getCurrentLocationId());
-		String questionAndCategoryLocator = "QuestionAndCategoryLocator";
-		String questionLocator = questionAndCategoryLocator + "." + QuestionAndCategoryLocator.QUESTION;
-		String questionOTP = questionLocator + QuestionAndCategoryLocator.NEW_1;
-		String categoryLocator =  questionAndCategoryLocator +"." + QuestionAndCategoryLocator.CATEGORY;
-		String categoryOTP = categoryLocator + QuestionAndCategoryLocator.NEW_1;
+
+		String multipleBeanMediator = "MultipleBeanMediator";
+		String questionLocator = "QuestionLocator";
+		String questionOTP = questionLocator + "." + QuestionLocator.NEW_1;
+		String categoryLocator = "CategoryLocator";
+		String categoryOTP = categoryLocator + "." + CategoryLocator.NEW_1;
 		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
@@ -136,7 +138,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         }
 
-        UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),questionAndCategoryLocator + ".saveAll");
+        UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 

@@ -113,7 +113,6 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 			categoriesText[i] = category.getCategoryText();
 		}
 
-       
         UISelect select = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionLocator + "." + question.getId() + ".category.id");
         
      // if (user permission to create categories)
@@ -129,7 +128,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
         
 //		Generate the answer input box
 		UIInput answertext = UIInput.make(form, "reply-input:", answerOTP  +".answerText");
-		form.addParameter(new UIELBinding("AnswerLocator.new 1.question",new ELReference(questionLocator + "." + question.getId())));
+		form.addParameter(new UIELBinding(answerOTP + ".question",new ELReference(questionLocator + "." + question.getId())));
         richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons
@@ -140,7 +139,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("publish",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("saved-published",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}

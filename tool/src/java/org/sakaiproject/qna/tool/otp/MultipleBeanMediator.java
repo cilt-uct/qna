@@ -6,8 +6,9 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
-import org.sakaiproject.util.StringUtil;
-import org.springframework.util.StringUtils;
+
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 
 /**
  * Mediator for working with multiple beans
@@ -24,7 +25,30 @@ public class MultipleBeanMediator {
 	
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
+    
+	private TargettedMessageList messages;
 	
+	// Used for saving new question
+    // TODO: When time permits: combine the two calls + try to remove categoryId string field from model
+    public String saveNew() {
+    	QnaCategory categoryToLink=null;
+
+		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
+
+		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
+			if (newQuestion.getCategoryId() != null) {
+				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());}
+		} else {
+			categoryLocator.save();
+			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);
+		}
+
+		newQuestion.setCategory(categoryToLink);
+		questionLocator.saveAll();
+    	
+    	return "saved";
+    }
+    
     public String saveAll() {
 
 		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) { // If a new category was created
@@ -33,14 +57,13 @@ public class MultipleBeanMediator {
 
 			for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
 				question.setCategory(categoryToLink);
-				questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 			}
+			questionLocator.saveAll();
 		} else {
-			for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
-				questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
-			}
+			questionLocator.saveAll();
 		}
 		
+		// If answer was added
 		if (!TextUtil.isEmptyWithoutTags(((QnaAnswer)answerLocator.locateBean(NEW_1)).getAnswerText())) {
 			answerLocator.saveAll();
 		}
@@ -53,6 +76,9 @@ public class MultipleBeanMediator {
 		saveAll();
 		for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
 			questionLogic.publishQuestion(question.getId(), externalLogic.getCurrentLocationId());
+			 messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-success",
+		                new Object[] { TextUtil.stripTags(question.getQuestionText()) }, 
+		                TargettedMessage.SEVERITY_INFO));
 		}
 		return "saved-published";
 	}
@@ -75,5 +101,9 @@ public class MultipleBeanMediator {
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
+	}
+	
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
 	}
 }

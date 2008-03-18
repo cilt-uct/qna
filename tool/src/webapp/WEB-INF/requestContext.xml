@@ -230,11 +230,6 @@
       <property name="messages" ref="targettedMessageList"/>
    	</bean>
 
-   	<bean id="QuestionAndCategoryLocator" class="org.sakaiproject.qna.tool.otp.QuestionAndCategoryLocator">
-   		<property name="questionLocator" ref="QuestionLocator" />
-   		<property name="categoryLocator" ref="CategoryLocator"/>
-   	</bean>
-   	
    	<bean id="AnswerLocator" class="org.sakaiproject.qna.tool.otp.AnswerLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
@@ -247,7 +242,7 @@
    		<property name="answerLocator" ref="AnswerLocator" />
    		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="messages" ref="targettedMessageList"/>
    	</bean>
-	
    	
 </beans>

@@ -16,11 +16,13 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.genericdao.hibernate.HibernateCompleteGenericDao;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 /**
  * Implementations of any specialized DAO methods from the specialized DAO that allows the developer to extend the functionality of the
@@ -37,6 +39,16 @@ public class QnaDaoImpl extends HibernateCompleteGenericDao implements QnaDao {
     }
 
     @SuppressWarnings("unchecked")
+	public List<QnaQuestion> getNewQuestions(String locationId) {
+    	String hql = "from QnaQuestion as q where q.location = '" + locationId + "' and q.published=false "
+    	 + "and ((select count(*) from QnaAnswer as a where a.question = q and a.privateReply=true)=0)";
+    	
+       	Query query = getSession().createQuery(hql);
+   
+    	return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
 	public List<QnaAnswer> getSearchAnswers(String search, String location) {
     	Criteria criteria = getSession().createCriteria(QnaAnswer.class);
     	criteria.add(Restrictions.ilike("answerText", search));
@@ -46,5 +58,6 @@ public class QnaDaoImpl extends HibernateCompleteGenericDao implements QnaDao {
 
     	return criteria.list();
     }
+    
+      
 }
-

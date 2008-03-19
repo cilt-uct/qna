@@ -76,4 +76,17 @@ public interface ExternalLogic {
 	public String getSiteContactEmail(String locationId);
 	
 	public Set getSiteUsersWithPermission(String locationId, String permission);
+	
+	/**
+	 * Send e-mails to users
+	 * 
+	 * @param from 
+	 * @param toUserIds
+	 * @param subject
+	 * @param message
+	 * @return an array of email addresses that this message was sent to
+	 */
+	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message);
+	
+	
 }

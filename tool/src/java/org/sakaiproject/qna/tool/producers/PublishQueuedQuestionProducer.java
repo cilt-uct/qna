@@ -72,13 +72,21 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		String categoryLocator = "CategoryLocator";
 		String categoryOTP = categoryLocator + "." + CategoryLocator.NEW_1;
 		String answerLocator = "AnswerLocator";
-		String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
+		String answerOTP = answerLocator + ".";
+		
 		String multipleBeanMediator = "MultipleBeanMediator";
 		
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
 		
+		String questionOTP = questionLocator + "." + question.getId();
+		
+		if (question.getAnswers().size() > 0) { // Does this question have answers (will be private)
+			answerOTP += question.getAnswers().get(0).getId(); // Only take first one
+		} else {
+			answerOTP += AnswerLocator.NEW_1;
+		}
 		
 		// Generate the page title
 		UIMessage.make(tofill, "page-title", "qna.publish-queued-question.title");
@@ -89,7 +97,6 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the question title
 		UIMessage.make(form, "question-title", "qna.publish-queued-question.question-title");
 				
-		
 		UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
 		
 		// TODO: Make edit work
@@ -101,8 +108,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the category note
 		UIMessage.make(form, "category-note", "qna.publish-queued-question.category-note");
 		
-	    List<QnaCategory> categories = categoryLogic
-				.getCategoriesForLocation(externalLogic.getCurrentLocationId());
+	    List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 
 		String[] categoriesIds = new String[categories.size()];
 		String[] categoriesText = new String[categories.size()];
@@ -112,8 +118,12 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 			categoriesIds[i] = category.getId();
 			categoriesText[i] = category.getCategoryText();
 		}
-
-        UISelect select = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionLocator + "." + question.getId() + ".category.id");
+		
+		if (question.getCategory() == null) {
+			UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" );	
+		} else {
+			UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".category.id");
+		}
         
      // if (user permission to create categories)
         UIMessage.make(form,"or","qna.general.or");
@@ -128,7 +138,9 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
         
 //		Generate the answer input box
 		UIInput answertext = UIInput.make(form, "reply-input:", answerOTP  +".answerText");
+	
 		form.addParameter(new UIELBinding(answerOTP + ".question",new ELReference(questionLocator + "." + question.getId())));
+		form.addParameter(new UIELBinding(answerOTP + ".privateReply",false)); // make it public if it isn't
         richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons

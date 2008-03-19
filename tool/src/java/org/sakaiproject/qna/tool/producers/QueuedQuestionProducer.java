@@ -74,7 +74,7 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
 		} else {
-			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detaill", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
 		}
 		// Generate the different buttons
 		UICommand.make(form, "queued-question-reply", UIMessage.make("qna.queued-question.reply")).setReturn("private_reply");

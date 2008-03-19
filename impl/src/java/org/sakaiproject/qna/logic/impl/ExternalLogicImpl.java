@@ -1,12 +1,19 @@
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -59,6 +66,11 @@ public class ExternalLogicImpl implements ExternalLogic {
     private EntityBroker entityBroker;
     public void setEntityBroker(EntityBroker entityBroker) {
         this.entityBroker = entityBroker;
+    }
+    
+    private EmailService emailService;
+    public void setEmailService(EmailService emailService) {
+       this.emailService = emailService;
     }
     
     public void init() {
@@ -151,6 +163,76 @@ public class ExternalLogicImpl implements ExternalLogic {
 			}
 		}
 		return usersWithPermission;
+	}
+
+	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message) {
+	      InternetAddress fromAddress;
+	      try {
+	         fromAddress = new InternetAddress(from);
+	      } catch (AddressException e) {
+	         // cannot recover from this failure
+	         throw new IllegalArgumentException("Invalid from address: " + from, e);
+	      }
+	      
+	      List<User> l = new ArrayList<User>(); // fill this with users
+	      for (int i = 0; i < toUserIds.length; i++) {
+	    	  User user = null;
+	    	  try {
+	              user = userDirectoryService.getUser( toUserIds[i] );  
+	          } catch (UserNotDefinedException e) {
+	              log.debug("Cannot find user object by id:" + toUserIds[i] );
+	              try {
+	                 user = userDirectoryService.getUserByEid( toUserIds[i] );
+	              } catch (UserNotDefinedException e1) {
+	            	  log.error("Invalid user: Cannot find user object by id or eid:" + toUserIds[i],e1);
+	              }
+	          }
+	          l.add(user);
+	      }
+	      
+	      // email address validity is checked at entry but value can be null
+	      List<String> toEmails = new ArrayList<String>();
+	      for (ListIterator<User> iterator = l.listIterator(); iterator.hasNext();) {
+	         User u = iterator.next();
+	         if ( u.getEmail() == null || "".equals(u.getEmail()) ) {
+	            iterator.remove();
+	            log.warn("sendEmails: Could not get an email address for " + u.getDisplayName() + " ("+u.getId()+")");
+	         } else {
+	            toEmails.add(u.getEmail());
+	         }
+	      }
+
+	      if (l == null || l.size() <= 0) {
+	         log.warn("No users with email addresses found in the provided userIds cannot send email so exiting");
+	         return new String[] {};
+	      }
+	      
+	      return sendEmails(fromAddress, toEmails, subject, message);
+	}
+	 
+	// Actual sending      
+	private String[] sendEmails(InternetAddress fromAddress, List<String> toEmails, String subject, String message) {
+	      InternetAddress[] replyTo = new InternetAddress[1];
+	      List<InternetAddress> listAddresses = new ArrayList<InternetAddress>();
+	      for (int i = 0; i < toEmails.size(); i++) {
+	         String email = toEmails.get(i);
+	         try {
+	            InternetAddress toAddress = new InternetAddress(email);
+	            listAddresses.add(toAddress);
+	         } catch (AddressException e) {
+	               log.error("Invalid to address: " + email + ", cannot send email",e);
+	         }
+	      }
+	      replyTo[0] = fromAddress;
+	      InternetAddress[] toAddresses = listAddresses.toArray(new InternetAddress[listAddresses.size()]);
+	      emailService.sendMail(fromAddress, toAddresses, subject, message, null, replyTo, null);
+
+	      // now we send back the list of people who the email was sent to
+	      String[] addresses = new String[toAddresses.length];
+	      for (int i = 0; i < toAddresses.length; i++) {
+	         addresses[i] = toAddresses[i].getAddress();
+	      }
+	      return addresses;
 	}
 
 }

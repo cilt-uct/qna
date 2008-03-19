@@ -62,7 +62,7 @@ public interface QuestionLogic {
 	public List<QnaQuestion> getPublishedQuestions(String locationId);
 
 	/**
-	 * Get all new(unpublished) questions
+	 * Get all new(unpublished without private replies) questions
 	 *
 	 * @param locationId
 	 * 				a unique id which represents the current location of the user (entity reference)

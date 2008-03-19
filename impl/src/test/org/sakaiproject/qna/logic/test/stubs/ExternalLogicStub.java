@@ -90,4 +90,10 @@ public class ExternalLogicStub implements ExternalLogic {
 			return new HashSet<User>();
 		}
 	}
+
+	public String[] sendEmailsToUsers(String from, String[] toUserIds,
+			String subject, String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

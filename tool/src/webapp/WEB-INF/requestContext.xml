@@ -138,7 +138,8 @@
 		class="org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
-
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
 	<bean

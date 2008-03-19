@@ -50,8 +50,8 @@ public class MultipleBeanMediator {
     }
     
     public String saveAll() {
-
-		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) { // If a new category was created
+    	// If a new category was created. Check that category text is not empty.
+		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) { 
 			categoryLocator.save();
 			QnaCategory categoryToLink = (QnaCategory) categoryLocator.locateBean(NEW_1);
 
@@ -60,14 +60,26 @@ public class MultipleBeanMediator {
 			}
 			questionLocator.saveAll();
 		} else {
+			if (questionLocator.getDeliveredBeans().size() == 1) { // Should only be 1
+				for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
+					if (question.getCategoryId() != null) {
+						question.setCategory((QnaCategory)categoryLocator.locateBean(question.getCategoryId()));
+					}
+				}
+			}
+			
 			questionLocator.saveAll();
 		}
 		
 		// If answer was added
-		if (!TextUtil.isEmptyWithoutTags(((QnaAnswer)answerLocator.locateBean(NEW_1)).getAnswerText())) {
-			answerLocator.saveAll();
+		if (answerLocator.getDeliveredBeans().values().size() > 0) {
+			
+			if (!answerLocator.getDeliveredBeans().containsKey(NEW_1)) {
+				answerLocator.saveAll();
+			} else if (!TextUtil.isEmptyWithoutTags(((QnaAnswer)answerLocator.locateBean(NEW_1)).getAnswerText())) {
+				answerLocator.saveAll();
+			}
 		}
-
 		return "saved";
     }
 	

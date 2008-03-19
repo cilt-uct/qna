@@ -51,11 +51,12 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getNewQuestions(String locationId) {
-		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
-				new String[] { "location", "published" }, new Object[] {
-						locationId, false }, new int[] { ByPropsFinder.EQUALS,
-						ByPropsFinder.EQUALS });
-		return l;
+//		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
+//				new String[] { "location", "published" }, new Object[] {
+//						locationId, false }, new int[] { ByPropsFinder.EQUALS,
+//						ByPropsFinder.EQUALS });
+//		return l;
+		return dao.getNewQuestions(locationId);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -33,9 +33,9 @@ public class OptionsLogicImpl implements OptionsLogic {
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
-	
+
 	private ExternalLogic externalLogic;
-	
+
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
@@ -50,8 +50,8 @@ public class OptionsLogicImpl implements OptionsLogic {
 		newOptions.setEmailNotification(false);
 		newOptions.setModerated(true);
 		newOptions.setDefaultStudentView(QnaConstants.CATEGORY_VIEW);
-		// Make Site contact the default to notify but set notification false as default 
-		newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT); 
+		// Make Site contact the default to notify but set notification false as default
+		newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT);
 
 		Date now = new Date();
 		newOptions.setDateCreated(now);
@@ -65,7 +65,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 	public Set<String> getNotificationSet(String locationId) {
 		QnaOptions options = getOptions(locationId);
 		Set<String> notificationSet = new HashSet<String>();
-			
+
 		if (options.getEmailNotification()) {
 			if (options.getEmailNotificationType().equals(QnaConstants.SITE_CONTACT)) {
 				notificationSet.add(externalLogic.getSiteContactEmail(locationId));
@@ -80,7 +80,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 					notificationSet.add(qnaCustomEmail.getEmail());
 				}
 			}
-		} 
+		}
 		return notificationSet;
 	}
 
@@ -97,13 +97,29 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 	}
 
+	public boolean isModerationOn(String locationId) {
+		List l = dao.findByProperties(
+			QnaOptions.class,
+			new String[] { "location" },
+			new Object[] { locationId },
+			new int[] { ByPropsFinder.EQUALS },
+			0,
+			1
+		);
+		if (l.size() > 0) {
+			return ((QnaOptions)l.get(0)).isModerated();
+		} else {
+			return false;
+		}
+	}
+
 	public void saveOptions(QnaOptions options, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
-		
+
 		if (!options.getLocation().equals(locationId)) {
 			throw new SecurityException("Current location ("+locationId+") does not match options location ("+options.getLocation()+")");
 		}
-		
+
 		if (permissionLogic.canUpdate(options.getLocation(), userId)) {
 			options.setDateLastModified(new Date());
 			options.setOwnerId(userId);
@@ -118,20 +134,20 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 	public boolean setCustomMailList(String locationId, String mailList) {
 		String userId = externalLogic.getCurrentUserId();
-		
+
 		QnaOptions options = getOptions(locationId);
-		
+
 		for (QnaCustomEmail mail : options.getCustomEmails()) {
 			dao.delete(mail);
 		}
 		options.getCustomEmails().clear();
-	
+
 		EmailValidator emailValidator = EmailValidator.getInstance();
 
-		boolean invalidEmail = false;	
+		boolean invalidEmail = false;
 		if (mailList != null && !mailList.trim().equals("")) {
 			String[] emails = mailList.split(",");
-	
+
 			for (int i = 0; i < emails.length; i++) {
 				if (!emailValidator.isValid(emails[i].trim())) {
 					invalidEmail = true;
@@ -140,8 +156,8 @@ public class OptionsLogicImpl implements OptionsLogic {
 					options.addCustomEmail(customEmail);
 				}
 			}
-		} 
-		
+		}
+
 		saveOptions(options, locationId);
 		return invalidEmail;
 

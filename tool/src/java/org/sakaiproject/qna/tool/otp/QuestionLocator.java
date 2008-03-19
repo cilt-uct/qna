@@ -16,25 +16,25 @@ public class QuestionLocator implements EntityBeanLocator  {
 
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
-	
+
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
-    
+
 	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
-   
+
 	private TargettedMessageList messages;
 
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
 	}
-	
+
 	public boolean remove(String beanname) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	public void set(String beanname, Object toset) {
 		throw new UnsupportedOperationException("Not implemented");
-		
+
 	}
 
 	public Object locateBean(String name) {
@@ -50,16 +50,25 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return togo;
 	}
 
-	 public String saveAll() {
+	public String saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
-			 messages.addMessage(new TargettedMessage("qna.ask-question.save-success",
-		                new Object[] { TextUtil.stripTags(question.getQuestionText()) }, 
-		                TargettedMessage.SEVERITY_INFO));
+			messages.addMessage(
+				new TargettedMessage("qna.ask-question.save-success",
+				new Object[] { TextUtil.stripTags(question.getQuestionText()) },
+				TargettedMessage.SEVERITY_INFO)
+			);
 		}
-		return "saved"; 
-	 }
-	 
+		return "saved";
+	}
+
+	public String delete() {
+		for (QnaQuestion question : delivered.values()) {
+			questionLogic.removeQuestion(question.getId(), externalLogic.getCurrentLocationId());
+		}
+		return "delete";
+	}
+
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}

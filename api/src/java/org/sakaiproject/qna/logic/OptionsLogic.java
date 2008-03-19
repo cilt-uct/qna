@@ -7,6 +7,16 @@ import org.sakaiproject.qna.model.QnaOptions;
 public interface OptionsLogic {
 
 	/**
+	 * Checks if the options for a location has moderation switched on
+	 *
+	 * @param locationId
+	 *            a unique id which represents the current location of the user
+	 *            (entity reference)
+	 * @return boolean
+	 */
+	public boolean isModerationOn(String locationId);
+
+	/**
 	 * Retrieves options for a location
 	 *
 	 * @param locationId
@@ -31,7 +41,7 @@ public interface OptionsLogic {
 	 * @param locationId
 	 *            a unique id which represents the current location of the user
 	 *            (entity reference)
-	 * @param {@link QnaOptions} object           
+	 * @param {@link QnaOptions} object
 	 */
 	public QnaOptions createDefaultOptions(String locationId);
 
@@ -56,5 +66,5 @@ public interface OptionsLogic {
 	 * @return set of e-mail address
 	 */
 	public Set<String> getNotificationSet(String locationId);
-	
+
 }

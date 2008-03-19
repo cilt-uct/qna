@@ -9,6 +9,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.AnswerLocator;
+import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
@@ -81,14 +82,12 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     }
 
 
-	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
-			ComponentChecker checker) {
+	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		String answerLocator = "AnswerLocator";
 		String questionLocator = "QuestionLocator";
 		String optionsLocator = "OptionsLocator";
-		
-		
+				
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
 		
@@ -111,59 +110,15 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		
 		// TODO: make it work
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-			UIInternalLink.make(tofill, "edit-question-link", new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
+			UIInternalLink.make(tofill, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
 			UIInternalLink.make(tofill, "move-category-link", new SimpleViewParameters(MoveQuestionProducer.VIEW_ID));
 			UIInternalLink.make(tofill, "delete-question-link", new SimpleViewParameters(DeleteQuestionProducer.VIEW_ID));
 		}
 
 		UIMessage.make(tofill,"answers-title","qna.view-question.answers-title",new Object[] {question.getAnswers().size()});
-		
-		// TODO: Finish answer sorting
-		List<QnaAnswer> answers = question.getAnswers();
-		
-		if (answers.size() == 0) {
-			UIMessage.make(tofill,"no-anwers", "qna.view-question.no-answers");
-		} else {
-			for (QnaAnswer qnaAnswer : answers) {
-				UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:");
 				
-				// Heading of answer
-				// TODO: How will the system know it is lecturer? At the moment only look at update permission
-				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
-					UIOutput.make(answer, "answer-detail");
-					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
-					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-given-answer");
-				} else if (qnaAnswer.isApproved()) {
-					UIOutput.make(answer, "answer-detail");
-					UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
-					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-approved-answer");
-					
-				}
-			
-				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-					if  (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
-						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new SimpleViewParameters(EditPublishedAnswerProducer.VIEW_ID));
-					} else if (qnaAnswer.isApproved()) {
-						UILink link = UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
-						UIForm form = UIForm.make(answer,"withdraw-approval-form");
-						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", false));
-						UICommand command = UICommand.make(form,"withdraw-approval-command",answerLocator + ".withdrawApproval");
-						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
-					} else {
-						UILink link = UILink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),null);
-						UIForm form = UIForm.make(answer,"mark-correct-form");
-						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", true));
-						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".approve");
-						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
-					}
-					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));	
-				}
-				
-				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());
-				UIOutput.make(answer, "answer-timestamp", qnaAnswer.getDateLastModified() + "");
-			}
-		}
-
+		renderAnswers(tofill, question, answerLocator);
+		
 		// TODO: Fix pager
 		listIteratorRenderer.makeListIterator(tofill, "pager2:");
 		
@@ -185,6 +140,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	        
 	        form.parameters.add(new UIELBinding(answerOTP + ".question", new ELReference(questionLocator + "." + question.getId())));
 	        
+	        // If user has moderation rights automatically approve
 	        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	        	form.addParameter(new UIELBinding(answerOTP + ".approved", true));
 	        }	
@@ -199,6 +155,56 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		// Increment views
 		questionLogic.incrementView(question.getId());
 	}
+	
+	// Renders answers
+	private void renderAnswers(UIContainer tofill, QnaQuestion question, String answerLocator) {
+		// TODO: Finish answer sorting
+		List<QnaAnswer> answers = question.getAnswers();
+		
+		if (answers.size() == 0) {
+			UIMessage.make(tofill,"no-anwers", "qna.view-question.no-answers");
+		} else {
+			for (QnaAnswer qnaAnswer : answers) {
+				UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:");
+				
+				// Heading of answer
+				// TODO: How will the system know it is lecturer? At the moment only look at update permission
+				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
+					UIOutput.make(answer, "answer-detail");
+					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
+					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-given-answer");
+				} else if (qnaAnswer.isApproved()) {
+					UIOutput.make(answer, "answer-detail");
+					UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
+					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-approved-answer");
+				}
+			
+				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+					if  (qnaAnswer.getOwnerId().equals(externalLogic.getCurrentUserId())) {
+						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
+					} else if (qnaAnswer.isApproved()) {
+						UILink link = UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+						UIForm form = UIForm.make(answer,"withdraw-approval-form");
+						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", false));
+						UICommand command = UICommand.make(form,"withdraw-approval-command",answerLocator + ".withdrawApproval");
+						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
+					} else {
+						UILink link = UILink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),null);
+						UIForm form = UIForm.make(answer,"mark-correct-form");
+						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", true));
+						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".approve");
+						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
+					}
+					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));	
+				}
+				
+				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());
+				UIOutput.make(answer, "answer-timestamp", qnaAnswer.getDateLastModified() + "");
+			}
+		}
+	}
+	
+	
 
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
@@ -210,12 +216,13 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		return new QuestionParams();
 	}
 	
-	public void interceptActionResult(ARIResult result,
-			ViewParameters incoming, Object actionReturn) {
+	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionid = ((QuestionParams)incoming).questionid;
 		}
 	}
+	
+
 
 }

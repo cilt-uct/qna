@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
@@ -47,7 +45,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
 	private BeanGetter ELEvaluator;
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
-        }
+    }
 
     
     public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {

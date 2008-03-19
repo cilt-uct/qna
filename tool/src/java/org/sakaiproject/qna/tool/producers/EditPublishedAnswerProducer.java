@@ -3,6 +3,8 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sakaiproject.qna.tool.params.AnswerParams;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.rsf.components.UICommand;
@@ -11,18 +13,19 @@ import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
+import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class EditPublishedAnswerProducer implements ViewComponentProducer, NavigationCaseReporter {
+public class EditPublishedAnswerProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
 	public static final String VIEW_ID = "edit_published_answer";
 	public String getViewID() {
-		// TODO Auto-generated method stub
 		return VIEW_ID;
 	}
 	
@@ -42,6 +45,10 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		
+		AnswerParams params = (AnswerParams) viewparams;
+		String answerLocator = "AnswerLocator"; 
+		String answerOTP = answerLocator + "." + params.answerid;
+		
 		// Generate the warning if the answers were already viewed
 		UIMessage.make(tofill, "error-message", "qna.warning.answer-already-viewed");
 		
@@ -56,20 +63,32 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 		
         
 //		Generate the answer input box
-		UIInput answertext = UIInput.make(form, "answer-input:",null); // last parameter is value binding
+		UIInput answertext = UIInput.make(form, "answer-input:",answerOTP + ".answerText");
         richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons
-		UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
+		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),answerLocator + ".saveAll");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 
 	}
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("update",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
-		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
 		return list;
+	}
+
+	public ViewParameters getViewParameters() {
+		return new AnswerParams();
+	}
+
+	public void interceptActionResult(ARIResult result,
+			ViewParameters incoming, Object actionReturn) {
+		if (result.resultingView instanceof QuestionParams) {
+			QuestionParams params = (QuestionParams)result.resultingView;
+			params.questionid = ((AnswerParams)incoming).questionid;
+		}
 	}
 
 }

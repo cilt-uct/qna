@@ -60,10 +60,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return "saved"; 
 	 }
 	 
-	public void publish() {
-		saveAll();
-	}
-	
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}

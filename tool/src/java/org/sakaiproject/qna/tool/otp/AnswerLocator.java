@@ -83,6 +83,14 @@ public class AnswerLocator implements EntityBeanLocator {
     	return "approval-withdrawn";
     }
     
+    public String delete() {
+    	for (QnaAnswer answer : delivered.values()) {
+    		answerLogic.removeAnswer(answer.getId(), externalLogic.getCurrentLocationId());
+    		messages.addMessage(new TargettedMessage("qna.delete-answer.delete-success",new String[] {TextUtil.stripTags(answer.getAnswerText())}, TargettedMessage.SEVERITY_INFO));
+    	}
+    	return "deleted";
+    }
+    
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}

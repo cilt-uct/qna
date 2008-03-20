@@ -75,7 +75,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     public void setExternalLogic(ExternalLogic externalLogic) {
         this.externalLogic = externalLogic;
     }
-
+    
     private QuestionLogic questionLogic;
     public void setQuestionLogic(QuestionLogic questionLogic) {
     	this.questionLogic = questionLogic;
@@ -87,10 +87,10 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		String answerLocator = "AnswerLocator";
 		String questionLocator = "QuestionLocator";
 		String optionsLocator = "OptionsLocator";
-
+				
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
-
+		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 
@@ -107,7 +107,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		} else {
 			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
 		}
-
+		
 		// TODO: make it work
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			UIInternalLink.make(tofill, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
@@ -116,57 +116,57 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		}
 
 		UIMessage.make(tofill,"answers-title","qna.view-question.answers-title",new Object[] {question.getAnswers().size()});
-
+				
 		renderAnswers(tofill, question, answerLocator);
-
+		
 		// TODO: Fix pager
 		listIteratorRenderer.makeListIterator(tofill, "pager2:");
-
+		
 		if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
-
+			
 			UILink icon = UILink.make(tofill,"add-answer-icon","/library/image/silk/add.png");
 			UILink link = UIInternalLink.make(tofill, "add-answer-link", UIMessage.make("qna.view-question.add-an-answer"), "");
 			UIOutput div = UIOutput.make(tofill,"add-answer");
-
-			UIInitBlock.make(tofill, "onclick-init", "init_add_question_toggle", new Object[]{link,icon,div});
-
+	
+			UIInitBlock.make(tofill, "onclick-init", "init_add_answer_toggle", new Object[]{link,icon,div});
+	
 			UIForm form = UIForm.make(tofill,"add-answer-form");
-
+	
 			UIMessage.make(form,"add-answer-title","qna.view-question.add-your-answer");
-
+	
 			UIInput answertext = UIInput.make(form, "answer-input:",answerOTP + ".answerText");
 	        richTextEvolver.evolveTextInput(answertext);
-
+	        
 	        form.parameters.add(new UIELBinding(answerOTP + ".question", new ELReference(questionLocator + "." + question.getId())));
-
+	        
 	        // If user has moderation rights automatically approve
 	        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	        	form.addParameter(new UIELBinding(answerOTP + ".approved", true));
-	        }
-
+	        }	
+	        
 	        form.addParameter(new UIELBinding(answerOTP + ".privateReply", false));
 	        form.addParameter(new UIELBinding(answerOTP + ".anonymous", new ELReference(optionsLocator + "." + externalLogic.getCurrentLocationId() + ".anonymousAllowed")));
-
+	        
 	        UICommand saveButton = UICommand.make(form,"add-answer-button",UIMessage.make("qna.view-question.add-answer"), answerLocator + ".saveAll");
 	        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 		}
-
+		
 		// Increment views
 		questionLogic.incrementView(question.getId());
 	}
-
+	
 	// Renders answers
 	private void renderAnswers(UIContainer tofill, QnaQuestion question, String answerLocator) {
 		// TODO: Finish answer sorting
 		List<QnaAnswer> answers = question.getAnswers();
-
+		
 		if (answers.size() == 0) {
 			UIMessage.make(tofill,"no-anwers", "qna.view-question.no-answers");
 		} else {
 			for (QnaAnswer qnaAnswer : answers) {
 				UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:");
-
+				
 				// Heading of answer
 				// TODO: How will the system know it is lecturer? At the moment only look at update permission
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
@@ -178,7 +178,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 					UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
 					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-approved-answer");
 				}
-
+			
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					if  (qnaAnswer.getOwnerId().equals(externalLogic.getCurrentUserId())) {
 						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
@@ -195,34 +195,30 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".approve");
 						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
 					}
-					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID));
+					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new AnswerParams(DeleteAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));	
 				}
-
+				
 				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());
 				UIOutput.make(answer, "answer-timestamp", qnaAnswer.getDateLastModified() + "");
 			}
 		}
 	}
-
-
-
+	
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
-
+	
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
 	}
-
+	
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionid = ((QuestionParams)incoming).questionid;
 		}
 	}
-
-
 
 }

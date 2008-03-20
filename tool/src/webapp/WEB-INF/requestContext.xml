@@ -31,7 +31,6 @@
 		class="org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer">
 	</bean>
 
-
 	<bean id="CategoryQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
@@ -115,6 +114,7 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteAnswerProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="ELEvaluator" ref="ELEvaluator" />
 	</bean>
 
 	<bean
@@ -185,7 +185,6 @@
 	</bean>
 
 	<!-- Organise Producers -->
-
 	<bean id="OrganiseListProducer" class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
 		<property name="messageLocator" ref="messageLocator"/>
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
@@ -216,6 +215,10 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
+
+	<bean class="org.sakaiproject.qna.tool.producers.AttachmentsProducer">
+	 	<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+	</bean> 
 
 	<!-- OTP -->
 	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">
@@ -250,4 +253,7 @@
 		<property name="messages" ref="targettedMessageList"/>
    	</bean>
 
+   	<bean id="fileAttachments" class="org.sakaiproject.qna.tool.beans.ProcessFileAttachments"> 
+   	  	<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+   	</bean>
 </beans>

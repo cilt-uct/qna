@@ -83,8 +83,7 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 		return new AnswerParams();
 	}
 
-	public void interceptActionResult(ARIResult result,
-			ViewParameters incoming, Object actionReturn) {
+	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionid = ((AnswerParams)incoming).questionid;

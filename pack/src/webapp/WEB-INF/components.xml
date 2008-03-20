@@ -69,8 +69,7 @@
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
-	<bean id="org.sakaiproject.qna.logic.AnswerLogic"
-		class="org.sakaiproject.qna.logic.impl.AnswerLogicImpl">
+	<bean id="org.sakaiproject.qna.logic.AnswerLogic" class="org.sakaiproject.qna.logic.impl.AnswerLogicImpl">
 		<property name="optionsLogic"
 			ref="org.sakaiproject.qna.logic.OptionsLogic" />
 		<property name="questionLogic"

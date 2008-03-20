@@ -44,7 +44,7 @@ public class QnaDaoImpl extends HibernateCompleteGenericDao implements QnaDao {
     	 + "and ((select count(*) from QnaAnswer as a where a.question = q and a.privateReply=true)=0)";
     	
        	Query query = getSession().createQuery(hql);
-   
+       	
     	return query.list();
     }
 

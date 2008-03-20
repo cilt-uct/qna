@@ -5,7 +5,7 @@
        else
        	document.getElementById(id).style.display = '';
 	}
-
+	
 	// Toggle visibility of questions of a certain entry id
 	function toggle_questions(entry_id,expand_icon,collapse_icon) {
     	var element = document.getElementById(entry_id);
@@ -45,19 +45,19 @@
 		select.onchange = function () { change_view(select,form,current_selected);};
     }
 
-    function toggle_add_questions(link_id,icon_id,div_id) {
+    function toggle_add_answer(link_id,icon_id,div_id) {
 	   	toggle_visibility(link_id);
     	toggle_visibility(icon_id);
     	toggle_visibility(div_id);
     }
 
     // Add an answer in answers screen
-    function init_add_question_toggle(link_id,icon_id,div_id) {
+    function init_add_answer_toggle(link_id,icon_id,div_id) {
     	var link = document.getElementById(link_id);
     	link.href= "#";
-    	link.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
+    	link.onclick = function() { toggle_add_answer(link_id,icon_id,div_id);};
     	var icon = document.getElementById(icon_id);
-    	icon.onclick = function() { toggle_add_questions(link_id,icon_id,div_id);};
+    	icon.onclick = function() { toggle_add_answer(link_id,icon_id,div_id);};
     	icon.style.cursor="pointer";
     }
     

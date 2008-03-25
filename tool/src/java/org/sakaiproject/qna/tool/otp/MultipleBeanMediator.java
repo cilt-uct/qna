@@ -34,7 +34,12 @@ public class MultipleBeanMediator {
     	QnaCategory categoryToLink=null;
 
 		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
-
+		if (TextUtil.isEmptyWithoutTags(newQuestion.getQuestionText())) {
+			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", null, TargettedMessage.SEVERITY_ERROR));
+			return "error";
+		}
+		
+		
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			if (newQuestion.getCategoryId() != null) {
 				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());}

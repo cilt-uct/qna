@@ -41,5 +41,10 @@
    <bean id="componentsTemplateResourceBase" class="java.lang.String">
    	<constructor-arg value="/" />
    </bean>
+   
+   <!-- Enable file uploads for this application by declaring a Spring MultipartResolver -->
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  </bean>
 
 </beans>

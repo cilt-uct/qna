@@ -1,11 +1,16 @@
 package org.sakaiproject.qna.tool.otp;
 
+import java.util.Map;
+
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.logic.UploadLogic;
+import org.sakaiproject.qna.logic.exceptions.UploadException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
@@ -25,6 +30,10 @@ public class MultipleBeanMediator {
 	
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
+    private UploadLogic uploadLogic;
+    
+    // Used for uploaded files
+    public Map<String,CommonsMultipartFile> multipartMap;
     
 	private TargettedMessageList messages;
 	
@@ -51,6 +60,14 @@ public class MultipleBeanMediator {
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
     	
+		if (multipartMap != null) {
+			try {
+				uploadLogic.uploadAll(newQuestion.getId(), multipartMap);
+			} catch (UploadException e) {
+				messages.addMessage(new  TargettedMessage("qna.ask-question.error-uploading-files", new Object[]{e.getMessage()}, TargettedMessage.SEVERITY_ERROR));
+			}
+		}
+		
     	return "saved";
     }
     
@@ -122,5 +139,9 @@ public class MultipleBeanMediator {
 	
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
+	}
+
+	public void setUploadLogic(UploadLogic uploadLogic) {
+		this.uploadLogic = uploadLogic;
 	}
 }

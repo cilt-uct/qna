@@ -13,6 +13,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -241,6 +242,18 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 		category.addQuestion(question);
 		categoryLogic.saveCategory(category, locationId);
+	}
+
+	public void addAttachmentToQuestion(String questionId, String reference) {
+		QnaQuestion question = getQuestionById(questionId);
+		
+		if (question != null) {
+			QnaAttachment attachment = new QnaAttachment();
+			attachment.setQuestion(question);
+			attachment.setReference(reference);
+			dao.save(attachment);
+		}
+		
 	}
 
 

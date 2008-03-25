@@ -129,10 +129,9 @@ public class AskQuestionProducer implements ViewComponentProducer,
         }
 
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
-        // Something to do attachments will probably come here
-        UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
-        UICommand.make(form, "add-attachment-input", UIMessage.make("qna.ask-question.add-attachment"), null);
-
+        // TODO: Make adding of attachments prettier?
+       // UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
+        
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");

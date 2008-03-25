@@ -216,10 +216,6 @@
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
 
-	<bean class="org.sakaiproject.qna.tool.producers.AttachmentsProducer">
-	 	<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
-	</bean> 
-
 	<!-- OTP -->
 	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
@@ -250,10 +246,9 @@
    		<property name="answerLocator" ref="AnswerLocator" />
    		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="uploadLogic" ref="org.sakaiproject.qna.logic.UploadLogic" />
 		<property name="messages" ref="targettedMessageList"/>
+		<property name="multipartMap" ref="multipartMap"/>
    	</bean>
 
-   	<bean id="fileAttachments" class="org.sakaiproject.qna.tool.beans.ProcessFileAttachments"> 
-   	  	<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
-   	</bean>
 </beans>

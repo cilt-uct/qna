@@ -3,10 +3,8 @@ package org.sakaiproject.qna.model;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 
 /**

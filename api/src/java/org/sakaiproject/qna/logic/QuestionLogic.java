@@ -103,5 +103,7 @@ public interface QuestionLogic {
 	 */
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
+	
+	public void addAttachmentToQuestion(String questionId, String reference);
 
 }

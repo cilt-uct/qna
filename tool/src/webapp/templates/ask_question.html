@@ -26,7 +26,7 @@
   <h4 rsf:id="question-title" class="insColor insBak insBorder">Question</h4><br/>
   
  
-  <form rsf:id="ask-question-form" method="post">
+  <form rsf:id="ask-question-form" method="post" enctype="multipart/form-data">
 	  <div rsf:id="question-input:">
 	          <textarea rows="10" cols="80" name="question">This should be the FCK editor. </textarea>
 	  </div>
@@ -43,7 +43,10 @@
 
 	  <h4 rsf:id="attachments-title" class="insColor insBak insBorder">Attachments</h4><br/>
 	  <div rsf:id="no-attachments-msg">No attachments yet</div>
-	  <input rsf:id="add-attachment-input" type="button" name="add-attachment-input" value="Add Attachment" />
+	  <input type="file" name="fileupload1"/><br/>
+	  <input type="file" name="fileupload2"/><br/>
+	  <input type="file" name="fileupload3"/><br/>
+	
 	  <p>
 	  	<div rsf:id="moderated-note">Note: All questions are moderated. Your questions will not be published immediately on the site.</div>
 	  </p>

@@ -4,6 +4,7 @@ package org.sakaiproject.qna.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a the options table entity
@@ -20,6 +21,9 @@ public class QnaQuestion {
 //  The list of answers associated with this question
     private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
 
+//  The list of attachments associated with this question
+    private List<QnaAttachment> attachments = new ArrayList<QnaAttachment>();
+    
 //  The user (sakai userid) that posted this question
 	private String ownerId;
 	
@@ -55,6 +59,8 @@ public class QnaQuestion {
 	
 //	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/	
 	private String categoryId;
+	
+	private Map multipartMap;
 	
 	/**
 	 *
@@ -298,5 +304,23 @@ public class QnaQuestion {
 	public String getCategoryId() {
 		return categoryId;		
 	}
+
+	public Map getMultipartMap() {
+		return multipartMap;
+	}
+
+	public void setMultipartMap(Map multipartMap) {
+		this.multipartMap = multipartMap;
+	}
+
+	public List<QnaAttachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<QnaAttachment> attachments) {
+		this.attachments = attachments;
+	}
+	
+	
 	
 }

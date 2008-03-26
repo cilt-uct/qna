@@ -135,7 +135,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		} else {
 			UIOutput.make(tofill,"ask-question");
 			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
-			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
+			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
 
 			options = new String[] {ViewTypeConstants.CATEGORIES,
 									ViewTypeConstants.MOST_POPULAR,

@@ -24,8 +24,8 @@ public class SearchBarRenderer {
 
     	UIForm form = UIForm.make(cell1, "search-form", new SearchParams(SearchResultsProducer.VIEW_ID));
 
-		UIInput.make(form, "search-value", "");
-
+		UIInput.make(form, "search-value", "#{search}");
+		
 		//UIInternalLink.make(form, "search-link", UIMessage.make("qna.general.search"), new SimpleViewParameters(SearchResultsProducer.VIEW_ID));
 		UICommand.make(form, "search-button", UIMessage.make("qna.general.search"));
 

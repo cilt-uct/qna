@@ -13,7 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
+import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -98,6 +100,11 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 
+	public String getQuestionViewUrl(String viewId) {
+    	return ServerConfigurationService.getToolUrl() + Entity.SEPARATOR
+    	+ toolManager.getCurrentPlacement().getId() + Entity.SEPARATOR + viewId;
+    }
+	
 	public String getLocationTitle(String locationId) {
         try {
 			 Site site = (Site) entityBroker.fetchEntity(locationId);

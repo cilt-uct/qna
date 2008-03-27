@@ -8,7 +8,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
-import org.sakaiproject.qna.tool.params.ViewTypeParams;
+import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
@@ -95,7 +95,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		
 		// Depending on default or one selected view type, send through parameter
 		QuestionListRenderer renderer;
-		ViewTypeParams params = (ViewTypeParams) viewparams;
+		SortPagerViewParams params = (SortPagerViewParams) viewparams;
+		
 		if (params.viewtype != null) {
 			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
 				renderer = categoryQuestionListRenderer;
@@ -160,6 +161,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	}
 
 	public ViewParameters getViewParameters() {
-		return new ViewTypeParams();
+		return new SortPagerViewParams();
 	}
 }

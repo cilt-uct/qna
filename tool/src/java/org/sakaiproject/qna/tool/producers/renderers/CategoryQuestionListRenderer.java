@@ -12,7 +12,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.CategoryTextComparator;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
-import org.sakaiproject.qna.tool.params.ViewTypeParams;
+import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.CategoryProducer;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
@@ -53,7 +53,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		this.questionLogic = questionLogic;
 	}
 
-	public void makeQuestionList(UIContainer tofill, String divID, ViewTypeParams params) {
+	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams) {
     	// Front-end customization regarding permissions/options will come here
     	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");

@@ -12,7 +12,7 @@ import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
 import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.params.QuestionParams;
-import org.sakaiproject.qna.tool.params.ViewTypeParams;
+import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
@@ -47,7 +47,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		this.externalLogic = externalLogic;
 	}
 
-	public void makeQuestionList(UIContainer tofill, String divID, ViewTypeParams params) {
+	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params) {
 		
 		listNavigatorRenderer.makeListNavigator(tofill, "pager:");
 		

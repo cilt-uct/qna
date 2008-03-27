@@ -34,6 +34,13 @@ public interface ExternalLogic {
 	 * @return the current location id of the current user
 	 */
 	public String getCurrentLocationId();
+	
+	/**
+     * Returns URL to viewId pass in
+     * @param viewId of view to build path to
+     * @return a url path to the vie
+     */
+    public String getQuestionViewUrl(String viewId);
 
 	/**
 	 * @param locationId a unique id which represents the current location of the user (entity reference)

@@ -1,6 +1,8 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.logic.utils.ComparatorsUtils;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
@@ -254,6 +257,48 @@ public class QuestionLogicImpl implements QuestionLogic {
 			dao.save(attachment);
 		}
 		
+	}
+	
+	
+	public void filterPopulateAndSortQuestionList(List<QnaQuestion> questionList, int currentStart, int currentCount, String sortBy, boolean sortDir) {
+		questionList = filterListForPaging(questionList, currentStart, currentCount);
+        sortQuestions(questionList, sortBy, sortDir);
+	}
+	
+	public List filterListForPaging(List myList, int begIndex, int numItemsToDisplay) {
+        if (myList == null || myList.isEmpty())
+        	return myList;
+        
+        int endIndex = begIndex + numItemsToDisplay;
+        if (endIndex > myList.size()) {
+        	endIndex = myList.size();
+        }
+
+		return myList.subList(begIndex, endIndex);
+	}
+	
+	
+	public void sortQuestions(List<QnaQuestion> questionList, String sortBy, boolean ascending) {
+		Comparator<QnaQuestion> comp;
+		if(QuestionLogic.SORT_BY_QUESTION_TEXT.equals(sortBy)) {
+			comp = new ComparatorsUtils.QuestionQuestionTextComparator();
+		} else if(QuestionLogic.SORT_BY_VIEWS.equals(sortBy)) {
+			comp = new ComparatorsUtils.QuestionViewsComparator();
+		} else if(QuestionLogic.SORT_BY_ANSWERS.equals(sortBy)) {
+			comp = new ComparatorsUtils.QuestionAnswersComparator();
+		} else if(QuestionLogic.SORT_BY_CREATED_DATE.equals(sortBy)){
+			comp = new ComparatorsUtils.QuestionCreatedDateComparator();
+		} else if(QuestionLogic.SORT_BY_MODIFIED_DATE.equals(sortBy)){
+			comp = new ComparatorsUtils.QuestionModifiedDateComparator();
+		} else if(QuestionLogic.SORT_BY_CATEGORY.equals(sortBy)) {
+			comp = new ComparatorsUtils.QuestionCategoryComparator();
+		}else
+			comp = new ComparatorsUtils.QuestionViewsComparator();
+
+		Collections.sort(questionList, comp);
+		if(!ascending) {
+			Collections.reverse(questionList);
+		}
 	}
 
 

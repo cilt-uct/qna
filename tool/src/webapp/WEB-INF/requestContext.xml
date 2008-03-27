@@ -15,6 +15,12 @@
 	<bean id="richTextEvolver" parent="sakaiFCKTextEvolver" />
 
 	<!-- Renderers -->
+	 <bean id="PagerRenderer" class="org.sakaiproject.qna.tool.producers.renderers.PagerRenderer">
+      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+      <property name="messageLocator" ref="messageLocator" />
+   </bean>
+   <bean id="SortHeaderRenderer" class="org.sakaiproject.qna.tool.producers.renderers.SortHeaderRenderer" />
+   
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
@@ -41,7 +47,8 @@
 
 	<bean id="DetailedQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer">
-		<property name="listNavigatorRenderer" ref="ListNavigatorRenderer" />
+		<property name="pagerRenderer" ref="PagerRenderer" />
+		<property name="sortHeaderRenderer" ref="SortHeaderRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>

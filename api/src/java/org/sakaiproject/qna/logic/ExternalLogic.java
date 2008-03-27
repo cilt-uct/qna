@@ -95,5 +95,10 @@ public interface ExternalLogic {
 	 */
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message);
 	
+	/**
+	 * Return tool id
+	 * @return
+	 */
+	public String getCurrentToolDisplayName();
 	
 }

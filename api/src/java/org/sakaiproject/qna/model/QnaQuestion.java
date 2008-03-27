@@ -20,9 +20,6 @@ public class QnaQuestion {
 
 //  The list of answers associated with this question
     private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
-
-//  The list of attachments associated with this question
-    private List<QnaAttachment> attachments = new ArrayList<QnaAttachment>();
     
 //  The user (sakai userid) that posted this question
 	private String ownerId;
@@ -61,6 +58,9 @@ public class QnaQuestion {
 	private String categoryId;
 	
 	private Map multipartMap;
+	
+//	Collection in content hosting linked to this question	
+	private String contentCollection;
 	
 	/**
 	 *
@@ -313,14 +313,12 @@ public class QnaQuestion {
 		this.multipartMap = multipartMap;
 	}
 
-	public List<QnaAttachment> getAttachments() {
-		return attachments;
+	public String getContentCollection() {
+		return contentCollection;
 	}
 
-	public void setAttachments(List<QnaAttachment> attachments) {
-		this.attachments = attachments;
+	public void setContentCollection(String contentCollection) {
+		this.contentCollection = contentCollection;
 	}
-	
-	
 	
 }

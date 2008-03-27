@@ -10,13 +10,14 @@ import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.logic.UploadLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.logic.exceptions.UploadException;
 import org.sakaiproject.qna.logic.utils.ComparatorsUtils;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -47,6 +48,12 @@ public class QuestionLogicImpl implements QuestionLogic {
 		this.categoryLogic = categoryLogic;
 	}
 
+	private UploadLogic uploadLogic;
+	
+	public void setUploadLogic(UploadLogic uploadLogic) {
+		this.uploadLogic = uploadLogic;
+	}
+	
 	private QnaDao dao;
 
 	public void setDao(QnaDao dao) {
@@ -55,11 +62,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getNewQuestions(String locationId) {
-//		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
-//				new String[] { "location", "published" }, new Object[] {
-//						locationId, false }, new int[] { ByPropsFinder.EQUALS,
-//						ByPropsFinder.EQUALS });
-//		return l;
 		return dao.getNewQuestions(locationId);
 	}
 
@@ -140,7 +142,21 @@ public class QuestionLogicImpl implements QuestionLogic {
 		QnaQuestion question = getQuestionById(questionId);
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
+			// delete attachments
+			
+			if (question.getContentCollection() != null) {
+				try {
+					uploadLogic.deleteCollection(question.getContentCollection());
+				} catch (UploadException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
 			dao.delete(question);
+			
+
+			
 		} else {
 			throw new SecurityException(
 					"Current user cannot remove question for " + locationId
@@ -247,18 +263,14 @@ public class QuestionLogicImpl implements QuestionLogic {
 		categoryLogic.saveCategory(category, locationId);
 	}
 
-	public void addAttachmentToQuestion(String questionId, String reference) {
+	public void linkCollectionToQuestion(String questionId, String collectionId) {
 		QnaQuestion question = getQuestionById(questionId);
 		
 		if (question != null) {
-			QnaAttachment attachment = new QnaAttachment();
-			attachment.setQuestion(question);
-			attachment.setReference(reference);
-			dao.save(attachment);
+			question.setContentCollection(collectionId);
+			saveQuestion(question, externalLogic.getCurrentLocationId());
 		}
-		
 	}
-	
 	
 	public void filterPopulateAndSortQuestionList(List<QnaQuestion> questionList, int currentStart, int currentCount, String sortBy, boolean sortDir) {
 		questionList = filterListForPaging(questionList, currentStart, currentCount);
@@ -300,7 +312,5 @@ public class QuestionLogicImpl implements QuestionLogic {
 			Collections.reverse(questionList);
 		}
 	}
-
-
 
 }

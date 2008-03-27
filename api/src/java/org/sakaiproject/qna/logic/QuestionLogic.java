@@ -115,7 +115,7 @@ public interface QuestionLogic {
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
 	
-	public void addAttachmentToQuestion(String questionId, String reference);
+	public void linkCollectionToQuestion(String questionId, String collectionId);
 	
 	/**
 	 * Will apply paging and sorting to the given list and populate any non-persisted

@@ -14,7 +14,6 @@
             <value>org.sakaiproject.qna.model.QnaCategory</value>
             <value>org.sakaiproject.qna.model.QnaOptions</value>
             <value>org.sakaiproject.qna.model.QnaCustomEmail</value>
-            <value>org.sakaiproject.qna.model.QnaAttachment</value>
          </list>
       </property>
    </bean>

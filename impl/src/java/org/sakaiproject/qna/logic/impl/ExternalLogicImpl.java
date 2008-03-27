@@ -171,6 +171,10 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 		return usersWithPermission;
 	}
+	
+	public String getCurrentToolDisplayName() {
+		return toolManager.getCurrentPlacement().getTool().getTitle();
+	}
 
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message) {
 	      InternetAddress fromAddress;
@@ -241,5 +245,5 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      }
 	      return addresses;
 	}
-
+	
 }

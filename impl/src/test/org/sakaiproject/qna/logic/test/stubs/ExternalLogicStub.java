@@ -97,6 +97,10 @@ public class ExternalLogicStub implements ExternalLogic {
 		return null;
 	}
 
+	public String getCurrentToolDisplayName() {
+		return "Questions and Answers";
+	}
+
 	public String getQuestionViewUrl(String viewId) {
 		// TODO Auto-generated method stub
 		return null;

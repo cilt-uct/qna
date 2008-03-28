@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.UploadLogic;
-import org.sakaiproject.qna.logic.exceptions.UploadException;
+import org.sakaiproject.qna.logic.AttachmentLogic;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -30,7 +30,7 @@ public class MultipleBeanMediator {
 	
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
-    private UploadLogic uploadLogic;
+    private AttachmentLogic attachmentLogic;
     
     // Used for uploaded files
     public Map<String,CommonsMultipartFile> multipartMap;
@@ -62,8 +62,8 @@ public class MultipleBeanMediator {
     	
 		if (multipartMap != null) {
 			try {
-				uploadLogic.uploadAll(newQuestion.getId(), multipartMap);
-			} catch (UploadException e) {
+				attachmentLogic.uploadAll(newQuestion.getId(), multipartMap);
+			} catch (AttachmentException e) {
 				messages.addMessage(new  TargettedMessage("qna.ask-question.error-uploading-files", new Object[]{e.getMessage()}, TargettedMessage.SEVERITY_ERROR));
 			}
 		}
@@ -141,7 +141,7 @@ public class MultipleBeanMediator {
 		this.messages = messages;
 	}
 
-	public void setUploadLogic(UploadLogic uploadLogic) {
-		this.uploadLogic = uploadLogic;
+	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
+		this.attachmentLogic = attachmentLogic;
 	}
 }

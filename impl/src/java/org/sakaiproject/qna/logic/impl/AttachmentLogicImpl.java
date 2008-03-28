@@ -7,11 +7,11 @@ import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.UploadLogic;
-import org.sakaiproject.qna.logic.exceptions.UploadException;
+import org.sakaiproject.qna.logic.AttachmentLogic;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-public class UploadLogicImpl implements UploadLogic {
+public class AttachmentLogicImpl implements AttachmentLogic {
 
 	private ContentHostingService chs;
 	
@@ -19,7 +19,7 @@ public class UploadLogicImpl implements UploadLogic {
 	
 	private ExternalLogic externalLogic;
 	
-	public void uploadAll(String questionId, Map<String,CommonsMultipartFile> files) throws UploadException {
+	public void uploadAll(String questionId, Map<String,CommonsMultipartFile> files) throws AttachmentException {
 		try {
 			String collectionId = null;
 			for (CommonsMultipartFile file : files.values()) {
@@ -38,7 +38,7 @@ public class UploadLogicImpl implements UploadLogic {
 				questionLogic.linkCollectionToQuestion(questionId, collectionId);
 			}
 		} catch (Exception e) {
-			throw new UploadException(e);
+			throw new AttachmentException(e);
 		}
 	}
 
@@ -54,11 +54,11 @@ public class UploadLogicImpl implements UploadLogic {
 		this.externalLogic = externalLogic;
 	}
 
-	public void deleteCollection(String collectionId) throws UploadException {
+	public void deleteCollection(String collectionId) throws AttachmentException {
 		try {
 			chs.removeCollection(collectionId);
 		} catch (Exception e) {
-			throw new UploadException(e);
+			throw new AttachmentException(e);
 		}
 	}
 }

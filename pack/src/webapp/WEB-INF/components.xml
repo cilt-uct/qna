@@ -66,7 +66,7 @@
 			ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="permissionLogic"
 			ref="org.sakaiproject.qna.logic.PermissionLogic" />
-		<property name="uploadLogic" ref="org.sakaiproject.qna.logic.UploadLogic"/>
+		<property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic"/>
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
@@ -82,7 +82,7 @@
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
-	<bean id="org.sakaiproject.qna.logic.UploadLogic" class="org.sakaiproject.qna.logic.impl.UploadLogicImpl">
+	<bean id="org.sakaiproject.qna.logic.AttachmentLogic" class="org.sakaiproject.qna.logic.impl.AttachmentLogicImpl">
 		<property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />

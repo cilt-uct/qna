@@ -13,9 +13,9 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.UploadLogic;
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
-import org.sakaiproject.qna.logic.exceptions.UploadException;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.logic.utils.ComparatorsUtils;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
@@ -48,10 +48,10 @@ public class QuestionLogicImpl implements QuestionLogic {
 		this.categoryLogic = categoryLogic;
 	}
 
-	private UploadLogic uploadLogic;
+	private AttachmentLogic attachmentLogic;
 	
-	public void setUploadLogic(UploadLogic uploadLogic) {
-		this.uploadLogic = uploadLogic;
+	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
+		this.attachmentLogic = attachmentLogic;
 	}
 	
 	private QnaDao dao;
@@ -146,8 +146,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 			
 			if (question.getContentCollection() != null) {
 				try {
-					uploadLogic.deleteCollection(question.getContentCollection());
-				} catch (UploadException e) {
+					attachmentLogic.deleteCollection(question.getContentCollection());
+				} catch (AttachmentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

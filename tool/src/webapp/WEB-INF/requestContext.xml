@@ -130,8 +130,6 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
-		<property name="deleteQuestionsHelper" ref="DeleteQuestionsHelper"/>
-		<property name="ELEvaluator" ref="ELEvaluator"/>
 	</bean>
 
 	<bean
@@ -254,7 +252,6 @@
 	<bean id="QuestionLocator" class="org.sakaiproject.qna.tool.otp.QuestionLocator">
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
-		<property name="deleteQuestionsHelper" ref="DeleteQuestionsHelper"/>
 		<property name="messages" ref="targettedMessageList"/>
 	</bean>
 

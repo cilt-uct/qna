@@ -15,14 +15,13 @@ import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements EntityBeanLocator  {
 
-	
-	
+
+
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
 
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
-    private DeleteQuestionsHelper deleteQuestionsHelper;
 
 	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
 
@@ -33,7 +32,22 @@ public class QuestionLocator implements EntityBeanLocator  {
 	}
 
 	public boolean remove(String beanname) {
-		throw new UnsupportedOperationException("Not implemented");
+		try {
+			QnaQuestion question = questionLogic.getQuestionById(beanname);
+			String questionText = question.getQuestionText();
+
+			questionLogic.removeQuestion(beanname, externalLogic.getCurrentLocationId());
+
+			messages.addMessage(
+				new TargettedMessage("qna.delete-question.delete-successful",
+				new Object[] { TextUtil.stripTags(questionText) },
+				TargettedMessage.SEVERITY_INFO)
+			);
+			return true;
+		} catch (AttachmentException ae) {
+			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_INFO));
+			return false;
+		}
 	}
 
 	public void set(String beanname, Object toset) {
@@ -72,9 +86,9 @@ public class QuestionLocator implements EntityBeanLocator  {
 				questionLogic.removeQuestion(question.getId(), externalLogic.getCurrentLocationId());
 			} catch (AttachmentException ae) {
 				messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_INFO));
-				
+
 			} finally {
-				
+
 				messages.addMessage(new TargettedMessage("qna.delete-question.delete-successful",
 									new Object[] {TextUtil.stripTags(question.getQuestionText())},
 									TargettedMessage.SEVERITY_INFO));
@@ -83,10 +97,11 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return "delete";
 	}
 
+	/*
 	public String deleteQuestions() {
-
 		return "deleteQ";
 	}
+	*/
 
 	public String deleteQuestionsPass() {
 		return "deleteQ";
@@ -103,9 +118,4 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public Map<String, QnaQuestion> getDeliveredBeans() {
 		return delivered;
 	}
-
-	public void setDeleteQuestionsHelper(DeleteQuestionsHelper deleteQuestionsHelper) {
-		this.deleteQuestionsHelper = deleteQuestionsHelper;
-	}
-
 }

@@ -9,24 +9,18 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
-import uk.org.ponder.beanutil.BeanGetter;
-import uk.org.ponder.beanutil.support.ELEvaluator;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
-import uk.org.ponder.rsf.components.UIELBinding;
+import uk.org.ponder.rsf.components.UIDeletionBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.components.UIParameter;
-import uk.org.ponder.rsf.flow.ARIResult;
-import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -34,17 +28,14 @@ import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
-import uk.org.ponder.stringutil.StringList;
 
-public class DeleteQuestionsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
+public class DeleteQuestionsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
 
 	public static final String VIEW_ID = "delete_questions";
 	private NavBarRenderer navBarRenderer;
 	private OptionsLogic optionsLogic;
 	private ExternalLogic externalLogic;
 	private QuestionLogic questionLogic;
-	private DeleteQuestionsHelper deleteQuestionsHelper;
-	private BeanGetter ELEvaluator;
 
 	public String getViewID() {
 		return VIEW_ID;
@@ -62,12 +53,6 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
-	public void setDeleteQuestionsHelper(DeleteQuestionsHelper deleteQuestionsHelper) {
-		this.deleteQuestionsHelper = deleteQuestionsHelper;
-	}
-	public void setELEvaluator(BeanGetter ELEvaluator) {
-        this.ELEvaluator = ELEvaluator;
-    }
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QuestionParams params = (QuestionParams)viewparams;
@@ -77,10 +62,7 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		String locationId = externalLogic.getCurrentLocationId();
 		String questionLocator = "QuestionLocator";
 
-
-		//UIBranchContainer entry = UIBranchContainer.make(tofill, "table-entry:");
-
-		UIForm form = UIForm.make(tofill, "delete-questions-form", params);
+		UIForm form = UIForm.make(tofill, "delete-questions-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "question-list-table", "question-list-table:");
 
@@ -97,6 +79,8 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 			UIBranchContainer questionContainer = UIBranchContainer.make(listTable, "question-entry:");
 
 			String questionOTP = questionLocator+"."+params.questionids[k];
+
+			form.parameters.add(new UIDeletionBinding(questionOTP));
 
 			QnaQuestion question = questionLogic.getQuestionById(params.questionids[k]);
 			List<QnaAnswer> answerList = question.getAnswers();
@@ -129,17 +113,10 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 			UIOutput.make(questionContainer, "answers", answerList.size()+"");
 			UIOutput.make(questionContainer, "views", question.getViews()+"");
 			UIOutput.make(questionContainer, "modified", new SimpleDateFormat("yyyy-MM-dd").format(question.getDateLastModified()));
-
 		}
 
-		StringList deleteids = new StringList();
-		deleteids.append(params.questionids);
-
-		// Generate the different buttons
-		UICommand delete = UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete"), questionLocator+".deleteQuestions");
-		delete.addParameter(new UIParameter("deleteids", deleteids.toString()));
+		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
 		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
-
 	}
 
 	public List<NavigationCase> reportNavigationCases() {
@@ -151,18 +128,5 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
-	}
-
-	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
-		DeleteQuestionsHelper dqh = (DeleteQuestionsHelper)ELEvaluator.getBean("DeleteQuestionsHelper");
-
-		QuestionParams params = (QuestionParams)incoming;
-
-		dqh.setDeleteids(params.questionids);
-
-	//	if (result.resultingView instanceof QuestionParams) {
-	//		QuestionParams params = (QuestionParams)result.resultingView;
-	//		params.questionids = dqh.getDeleteids();
-	//	}
 	}
 }

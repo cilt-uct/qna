@@ -2,6 +2,7 @@ package org.sakaiproject.qna.logic;
 
 import java.util.List;
 
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -51,8 +52,9 @@ public interface QuestionLogic {
 	 *
 	 * @param questionId
 	 * 				{@link QnaQuestion} object
+	 * @throws AttachmentException 
 	 */
-	public void removeQuestion(String questionId, String locationId);
+	public void removeQuestion(String questionId, String locationId) throws AttachmentException;
 
 	/**
 	 * Get all (published and unpublished) questions for location

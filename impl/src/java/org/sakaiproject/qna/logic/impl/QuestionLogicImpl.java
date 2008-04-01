@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -24,6 +26,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 
 public class QuestionLogicImpl implements QuestionLogic {
 
+	private static Log log = LogFactory.getLog(QuestionLogicImpl.class);
+	
 	private PermissionLogic permissionLogic;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
@@ -138,25 +142,20 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
-	public void removeQuestion(String questionId, String locationId) {
+	public void removeQuestion(String questionId, String locationId) throws AttachmentException {
 		QnaQuestion question = getQuestionById(questionId);
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
-			// delete attachments
-			
-			if (question.getContentCollection() != null) {
-				try {
+			try {
+				// delete attachments
+				if (question.getContentCollection() != null) {
 					attachmentLogic.deleteCollection(question.getContentCollection());
-				} catch (AttachmentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} finally {
+				dao.delete(question);
+				log.info("Question deleted: " + question.getId());
 			}
 		
-			dao.delete(question);
-			
-
-			
 		} else {
 			throw new SecurityException(
 					"Current user cannot remove question for " + locationId
@@ -180,6 +179,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				question.setDateLastModified(new Date());
 				question.setLastModifierId(userId);
 				dao.save(question);
+				log.info("Question updated: " + question.getId());
 			} else {
 				throw new SecurityException(
 						"Current user cannot save question for "
@@ -223,6 +223,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 
 				dao.save(question);
+				log.info("New question saved: " + question.getId());
+				
 				// TODO: EMAIL NOTIFICATION
 			} else {
 				throw new SecurityException(

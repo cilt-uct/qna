@@ -11,6 +11,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
+import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
@@ -43,7 +44,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 	public static final String VIEW_ID = "view_question";
 	private SearchBarRenderer searchBarRenderer;
-
+	
 	public String getViewID() {
 		return VIEW_ID;
 	}
@@ -57,6 +58,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
+    
     public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {
 		this.searchBarRenderer = searchBarRenderer;
 	}
@@ -80,7 +82,13 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     public void setQuestionLogic(QuestionLogic questionLogic) {
     	this.questionLogic = questionLogic;
     }
-
+    
+    private AttachmentsViewRenderer attachmentsViewRenderer;
+        	
+	public void setAttachmentsViewRenderer(
+			AttachmentsViewRenderer attachmentsViewRenderer) {
+		this.attachmentsViewRenderer = attachmentsViewRenderer;
+	}
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
@@ -101,6 +109,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		UIVerbatim.make(tofill,"question",question.getQuestionText());
 
+		// TODO: Render attachments here
+		attachmentsViewRenderer.makeAttachmentsView(tofill, "", question.getContentCollection());
+		
 		// If anonymous remove name
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});

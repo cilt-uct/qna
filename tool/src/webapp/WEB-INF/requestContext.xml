@@ -59,6 +59,10 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
+	
+	<bean id="AttachmentsViewRenderer" class="org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer">
+		<property name="chs" ref="org.sakaiproject.content.api.ContentHostingService" />
+	</bean>
 
 	<!-- list the producer beans here -->
 	<bean
@@ -162,6 +166,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 	</bean>
 
 	<bean

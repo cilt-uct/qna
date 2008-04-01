@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
@@ -242,6 +243,8 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			fail("Should have thrown exception");
 		} catch (SecurityException e) {
 			assertNotNull(e);
+		} catch (AttachmentException e) {
+			fail("Should throw SecurityException");
 		}
 
 		// Test with valid permission
@@ -250,6 +253,8 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			questionLogic.removeQuestion(tdp.question1_location1.getId(), LOCATION1_ID);
 			assertFalse(questionLogic.existsQuestion(tdp.question1_location1.getId()));
 		} catch (SecurityException e) {
+			fail("Should not have thrown exception");
+		} catch (AttachmentException e) {
 			fail("Should not have thrown exception");
 		}
 		

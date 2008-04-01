@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
@@ -13,6 +14,8 @@ import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements EntityBeanLocator  {
+	
+	
 	
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
@@ -64,7 +67,17 @@ public class QuestionLocator implements EntityBeanLocator  {
 
 	public String delete() {
 		for (QnaQuestion question : delivered.values()) {
-			questionLogic.removeQuestion(question.getId(), externalLogic.getCurrentLocationId());
+			try {
+				questionLogic.removeQuestion(question.getId(), externalLogic.getCurrentLocationId());
+			} catch (AttachmentException ae) {
+				messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_INFO));
+				
+			} finally {
+				
+				messages.addMessage(new TargettedMessage("qna.delete-question.delete-successful",
+									new Object[] {TextUtil.stripTags(question.getQuestionText())},
+									TargettedMessage.SEVERITY_INFO));
+			}
 		}
 		return "delete";
 	}

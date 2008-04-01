@@ -29,7 +29,7 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 	public String getViewID() {
 		return VIEW_ID;
 	}
-		
+
 	private TextInputEvolver richTextEvolver;
 	public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
@@ -39,39 +39,39 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
-	
+
 	private BeanGetter ELEvaluator;
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
     }
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		
+
 		QuestionParams params = (QuestionParams) viewparams;
-		
+
 		String questionLocator = "QuestionLocator";
 		String questionOTP = questionLocator + "." + params.questionid;
-		
+
 		if (((Collection)ELEvaluator.getBean(questionOTP + ".answers")).size() > 0) {
 			// Generate the warning if there is answers present
 			UIMessage.make(tofill, "error-message", "qna.warning.question-has-answers");
 		}
-		
+
 		// Generate the page title
 		UIMessage.make(tofill, "page-title", "qna.edit-published-question.title");
-		
+
 		// Generate the question title
 		UIMessage.make(tofill, "question-title", "qna.publish-queued-question.question-title");
-		
+
 		// Put in the form
-		UIForm form = UIForm.make(tofill,"edit-published-question-form");		
-		        
+		UIForm form = UIForm.make(tofill,"edit-published-question-form");
+
 //		Generate the question input box
 		UIInput questiontext = UIInput.make(form, "question-input:",questionOTP + ".questionText");
         richTextEvolver.evolveTextInput(questiontext);
-        
+
 		// Generate the different buttons
 		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),questionLocator + ".saveAll");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
@@ -80,8 +80,8 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
-		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

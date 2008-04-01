@@ -19,43 +19,43 @@ import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 /**
  * Standard question list
- * Only shows published questions 
+ * Only shows published questions
  */
 public class StandardQuestionListRenderer implements QuestionListRenderer {
-	
-	private ListNavigatorRenderer listNavigatorRenderer;	 
+
+	private ListNavigatorRenderer listNavigatorRenderer;
 	private QuestionLogic questionLogic;
 	private ExternalLogic externalLogic;
-	
+
 	public void setListNavigatorRenderer(ListNavigatorRenderer listNavigatorRenderer) {
 		this.listNavigatorRenderer = listNavigatorRenderer;
 	}
-	
+
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
-	
+
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
 
-	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params) {
-		
+	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
+
 		listNavigatorRenderer.makeListNavigator(tofill, "pager:");
-		
+
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
-		
+
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");
 		UIMessage.make(listTable,"question-title","qna.view-questions.questions");
-		
+
 		Comparator<QnaQuestion> comparator = null;
 		if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
 			comparator = new MostPopularComparator();
@@ -67,10 +67,10 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 			comparator = new RecentQuestionsComparator();
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
 		}
-		
+
 		List<QnaQuestion> questions = questionLogic.getPublishedQuestions(externalLogic.getCurrentLocationId());
 		Collections.sort(questions, comparator);
-		
+
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");

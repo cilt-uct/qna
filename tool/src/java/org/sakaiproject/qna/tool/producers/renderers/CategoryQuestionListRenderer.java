@@ -23,12 +23,16 @@ import org.sakaiproject.qna.tool.utils.TextUtil;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.stringutil.StringList;
 
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
@@ -53,7 +57,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		this.questionLogic = questionLogic;
 	}
 
-	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams) {
+	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams, UIForm form) {
     	// Front-end customization regarding permissions/options will come here
     	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
@@ -71,6 +75,8 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 		Collections.sort(categories,new CategoryTextComparator());
 
+		UISelect deleteselect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteQuestionsHelper.deleteids}", null);
+
 		// List of published questions by category
 		for (QnaCategory qnaCategory : categories) {
 			if (qnaCategory.getPublishedQuestions().size() > 0) {
@@ -84,11 +90,11 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					UIOutput.make(category,"remove-category-cell");
-					UIBoundBoolean.make(category, "remove-checkbox",false);
+					UIBoundBoolean.make(category, "remove-checkbox", false);
 				}
 
 				List<QnaQuestion> publishedQuestions = qnaCategory.getPublishedQuestions();
-				renderQuestions(entry,publishedQuestions,ViewQuestionProducer.VIEW_ID);
+				renderQuestions(entry, publishedQuestions, ViewQuestionProducer.VIEW_ID, deleteselect);
 			}
 
 		}
@@ -111,7 +117,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIMessage.make(category,"category-name","qna.view-questions.new-questions");
 				UIOutput.make(category,"modified-date","");
 				UIOutput.make(category,"remove-category-cell","");
-				renderQuestions(entry,newQuestions,QueuedQuestionProducer.VIEW_ID);
+				renderQuestions(entry, newQuestions, QueuedQuestionProducer.VIEW_ID, deleteselect);
 			}
 
 			// All questions with Private Replies
@@ -124,7 +130,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIMessage.make(category,"category-name","qna.view-questions.questions-with-private-replies");
 				UIOutput.make(category,"modified-date","");
 				UIOutput.make(category,"remove-category-cell","");
-				renderQuestions(entry,questionsWithPrivateReplies,ViewPrivateReplyProducer.VIEW_ID);
+				renderQuestions(entry, questionsWithPrivateReplies, ViewPrivateReplyProducer.VIEW_ID, deleteselect);
 			}
 		}
 	}
@@ -145,9 +151,11 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	/**
 	 * Renders list of questions
 	 */
-	private void renderQuestions(UIBranchContainer entry, List<QnaQuestion> questions, String viewIdForLink) {
+	private void renderQuestions(UIBranchContainer entry, List<QnaQuestion> questions, String viewIdForLink, UISelect select) {
+		StringList deletable = new StringList();
 
-		for (QnaQuestion qnaQuestion : questions) {
+		for (int k=0; k<questions.size(); k++) {
+			QnaQuestion qnaQuestion = questions.get(k);
 			UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
 			UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId()));
 			UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
@@ -155,10 +163,17 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 			UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
 
 			if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-				UIOutput.make(question,"remove-question-cell");
-				UIBoundBoolean.make(question, "remove-checkbox",false);
+				//UIOutput.make(question,"remove-question-cell");
+				//UIBoundBoolean.make(question, "remove-checkbox", false);
+				UISelectChoice.make(question, "remove-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
+				deletable.add(qnaQuestion.getId());
 			}
 		}
+		StringList tmpIds = deletable;
+		deletable = new StringList();
+		deletable.append(select.optionlist.getValue());
+		deletable.append(tmpIds);
+		select.optionlist.setValue(deletable.toStringArray());
 	}
 
 	/**

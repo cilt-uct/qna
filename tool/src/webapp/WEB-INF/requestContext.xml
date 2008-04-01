@@ -15,12 +15,13 @@
 	<bean id="richTextEvolver" parent="sakaiFCKTextEvolver" />
 
 	<!-- Renderers -->
-	 <bean id="PagerRenderer" class="org.sakaiproject.qna.tool.producers.renderers.PagerRenderer">
-      <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
-      <property name="messageLocator" ref="messageLocator" />
-   </bean>
-   <bean id="SortHeaderRenderer" class="org.sakaiproject.qna.tool.producers.renderers.SortHeaderRenderer" />
-   
+	<bean id="PagerRenderer" class="org.sakaiproject.qna.tool.producers.renderers.PagerRenderer">
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="messageLocator" ref="messageLocator" />
+ 	</bean>
+
+	<bean id="SortHeaderRenderer" class="org.sakaiproject.qna.tool.producers.renderers.SortHeaderRenderer" />
+
 	<bean id="NavbarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
 
@@ -59,7 +60,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
-	
+
 	<bean id="AttachmentsViewRenderer" class="org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer">
 		<property name="chs" ref="org.sakaiproject.content.api.ContentHostingService" />
 	</bean>
@@ -120,6 +121,16 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+	</bean>
+
+	<bean
+		class="org.sakaiproject.qna.tool.producers.DeleteQuestionsProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="deleteQuestionsHelper" ref="DeleteQuestionsHelper"/>
+		<property name="ELEvaluator" ref="ELEvaluator"/>
 	</bean>
 
 	<bean
@@ -194,6 +205,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
+		<property name="ELEvaluator" ref="ELEvaluator"/>
 	</bean>
 
 	<!-- Organise Producers -->
@@ -229,6 +241,9 @@
 	</bean>
 
 	<!-- OTP -->
+	<bean id="DeleteQuestionsHelper" class="org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper">
+	</bean>
+
 	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">
       <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
@@ -238,6 +253,7 @@
 	<bean id="QuestionLocator" class="org.sakaiproject.qna.tool.otp.QuestionLocator">
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="deleteQuestionsHelper" ref="DeleteQuestionsHelper"/>
 		<property name="messages" ref="targettedMessageList"/>
 	</bean>
 
@@ -262,5 +278,4 @@
 		<property name="messages" ref="targettedMessageList"/>
 		<property name="multipartMap" ref="multipartMap"/>
    	</bean>
-
 </beans>

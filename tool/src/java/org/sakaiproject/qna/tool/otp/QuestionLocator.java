@@ -14,7 +14,7 @@ import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements EntityBeanLocator  {
-	
+
 	
 	
     public static final String NEW_PREFIX = "new ";
@@ -22,6 +22,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
+    private DeleteQuestionsHelper deleteQuestionsHelper;
 
 	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
 
@@ -82,6 +83,15 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return "delete";
 	}
 
+	public String deleteQuestions() {
+
+		return "deleteQ";
+	}
+
+	public String deleteQuestionsPass() {
+		return "deleteQ";
+	}
+
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
@@ -93,4 +103,9 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public Map<String, QnaQuestion> getDeliveredBeans() {
 		return delivered;
 	}
+
+	public void setDeleteQuestionsHelper(DeleteQuestionsHelper deleteQuestionsHelper) {
+		this.deleteQuestionsHelper = deleteQuestionsHelper;
+	}
+
 }

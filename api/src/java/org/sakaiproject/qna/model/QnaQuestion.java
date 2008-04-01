@@ -20,10 +20,10 @@ public class QnaQuestion {
 
 //  The list of answers associated with this question
     private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
-    
+
 //  The user (sakai userid) that posted this question
 	private String ownerId;
-	
+
 //  The user (sakai userid) that last modified this question
 	private String lastModifierId;
 
@@ -51,17 +51,17 @@ public class QnaQuestion {
 //	If the question is published
 	private Boolean published;
 
-//	If user needs to be notified of answer	
+//	If user needs to be notified of answer
 	private Boolean notify;
-	
-//	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/	
+
+//	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/
 	private String categoryId;
-	
+
 	private Map multipartMap;
-	
-//	Collection in content hosting linked to this question	
+
+//	Collection in content hosting linked to this question
 	private String contentCollection;
-	
+
 	/**
 	 *
 	 */
@@ -268,7 +268,7 @@ public class QnaQuestion {
 		answer.setQuestion(this);
 		answers.add(answer);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -296,13 +296,13 @@ public class QnaQuestion {
 	public void setNotify(Boolean notify) {
 		this.notify = notify;
 	}
-	
+
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
-	
+
 	public String getCategoryId() {
-		return categoryId;		
+		return categoryId;
 	}
 
 	public Map getMultipartMap() {
@@ -320,5 +320,4 @@ public class QnaQuestion {
 	public void setContentCollection(String contentCollection) {
 		this.contentCollection = contentCollection;
 	}
-	
 }

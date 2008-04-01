@@ -38,7 +38,7 @@ public class DeleteAnswerProducer implements ViewComponentProducer, NavigationCa
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
-	
+
 	private BeanGetter ELEvaluator;
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
@@ -46,37 +46,37 @@ public class DeleteAnswerProducer implements ViewComponentProducer, NavigationCa
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		
+
 		AnswerParams params = (AnswerParams) viewparams;
-		String answerLocator = "AnswerLocator"; 
+		String answerLocator = "AnswerLocator";
 		String answerOTP = answerLocator + "." + params.answerid;
 		String questionLocator = "QuestionLocator";
 		String questionOTP = questionLocator + "." + params.questionid;
-		
+
 		// Generate confirmation warning for the delete action
 		UIMessage.make(tofill, "error-message", "qna.warning.delete-confirmation-note");
-		
+
 		// Generate the page title
 		UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
-		
+
 		// Put in the form
-		UIForm form = UIForm.make(tofill,"delete-answer-form");	
-		
+		UIForm form = UIForm.make(tofill,"delete-answer-form");
+
 		UIMessage.make(form, "name-title", "qna.delete-answer.name-title");
 		UIMessage.make(form, "category-title", "qna.delete-answer.category-title");
 		UIMessage.make(form, "question-title", "qna.delete-answer.question-title");
 		UIMessage.make(form, "modified-title", "qna.delete-answer.modified-title");
-		
+
 		QnaAnswer answer = (QnaAnswer)ELEvaluator.getBean(answerOTP);
 		QnaQuestion question = (QnaQuestion)ELEvaluator.getBean(questionOTP);
-		
+
 		UIOutput.make(form, "answer-text", TextUtil.stripTags(answer.getAnswerText()));
 		UIOutput.make(form, "category", question.getCategory().getCategoryText());
 		UIOutput.make(form, "question-text", TextUtil.stripTags(question.getQuestionText()));
 		UIOutput.make(form, "modified-date", DateUtil.getSimpleDate(answer.getDateLastModified()));
-		
+
 		// Generate the different buttons
 		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete"), answerLocator + ".delete");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
@@ -86,8 +86,8 @@ public class DeleteAnswerProducer implements ViewComponentProducer, NavigationCa
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("deleted",new QuestionParams(ViewQuestionProducer.VIEW_ID, null)));
-		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID, null)));
+		list.add(new NavigationCase("deleted", new QuestionParams(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel", new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

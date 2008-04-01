@@ -36,28 +36,28 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 	private SearchBarRenderer searchBarRenderer;
 	private QuestionLogic questionLogic;
 	private ExternalLogic externalLogic;
-	
+
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
-	
+
 	public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {
 		this.searchBarRenderer = searchBarRenderer;
 	}
-	
+
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
-	
+
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-		
+
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-		
+
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 
@@ -85,10 +85,10 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("private_reply",new QuestionParams(ReplyPrivatelyProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("private_reply",new QuestionParams(ReplyPrivatelyProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
-		list.add(new NavigationCase("publish",new QuestionParams(PublishQueuedQuestionProducer.VIEW_ID,null)));
-		list.add(new NavigationCase("delete",new QuestionParams(DeleteQuestionProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("publish",new QuestionParams(PublishQueuedQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("delete",new QuestionParams(DeleteQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

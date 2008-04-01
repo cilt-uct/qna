@@ -8,6 +8,8 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
+import org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.DetailedQuestionListRenderer;
@@ -16,6 +18,7 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
 
+import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -26,6 +29,8 @@ import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -35,7 +40,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter,  ViewParamsReporter {
+public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
     public static final String VIEW_ID = "questions_list";
     public String getViewID() {
@@ -51,6 +56,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private ExternalLogic externalLogic;
     private PermissionLogic permissionLogic;
     private OptionsLogic optionsLogic;
+    private BeanGetter ELEvaluator;
 
 	public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
@@ -84,19 +90,24 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
     }
-    
+
     public void setOptionsLogic(OptionsLogic optionsLogic) {
     	this.optionsLogic = optionsLogic;
     }
-    
+
+    public void setELEvaluator(BeanGetter ELEvaluator) {
+        this.ELEvaluator = ELEvaluator;
+    }
+
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
-		
+
 		// Depending on default or one selected view type, send through parameter
 		QuestionListRenderer renderer;
 		SortPagerViewParams params = (SortPagerViewParams) viewparams;
-		
+
+
 		if (params.viewtype != null) {
 			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
 				renderer = categoryQuestionListRenderer;
@@ -132,7 +143,9 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			    	   			    messageLocator.getMessage("qna.view-questions.all-details")};
 
 			// Generate update button
-			UICommand.make(form, "update-button", UIMessage.make("qna.general.update")).setReturn("update");
+			UICommand.make(form, "update-button", UIMessage.make("qna.general.update"), "QuestionLocator.deleteQuestionsPass");
+			//UICommand.make(form, "update-button", "#{QuestionLocator.deleteQuestions}");
+
 		} else {
 			UIOutput.make(tofill,"ask-question");
 			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
@@ -151,16 +164,27 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		// Init value must be either default or specified
 		UISelect select = UISelect.make(form, "view-select", options, labels, null, params.viewtype);
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,params.viewtype});
-		renderer.makeQuestionList(tofill, "questionListTool:",params);
+		renderer.makeQuestionList(tofill, "questionListTool:", params, form);
     }
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("update",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("update", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("deleteQ", new QuestionParams(DeleteQuestionsProducer.VIEW_ID)));
 		return list;
 	}
 
 	public ViewParameters getViewParameters() {
 		return new SortPagerViewParams();
+	}
+
+	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
+		DeleteQuestionsHelper dqh = (DeleteQuestionsHelper)ELEvaluator.getBean("DeleteQuestionsHelper");
+
+		if (result.resultingView instanceof QuestionParams) {
+			QuestionParams params = (QuestionParams)result.resultingView;
+			params.questionids = dqh.getDeleteids();
+		}
+
 	}
 }

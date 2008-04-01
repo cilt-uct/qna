@@ -35,10 +35,10 @@ public class ReplyPrivatelyProducer implements ViewComponentProducer, Navigation
 	public String getViewID() {
 		return VIEW_ID;
 	}
-	
+
 	private NavBarRenderer navBarRenderer;
 	private TextInputEvolver richTextEvolver;
-	
+
     public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
     }
@@ -51,58 +51,58 @@ public class ReplyPrivatelyProducer implements ViewComponentProducer, Navigation
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
-	
+
 	private ExternalLogic externalLogic;
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-	
+
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
-		
+
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
-		
-		String answerLocator = "AnswerLocator"; 
+
+		String answerLocator = "AnswerLocator";
 		String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
 		String questionLocator = "QuestionLocator";
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		UIMessage.make(tofill, "page-title", "qna.reply-privately.title");
 		UIMessage.make(tofill, "sub-title", "qna.reply-privately.subtitle");
-		
+
 		UIForm form = UIForm.make(tofill,"reply-privately-form");
-		
+
 		UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
-		
+
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
 		} else {
 			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
 		}
-		
+
 		UIMessage.make(form,"answer-title","qna.reply-privately.answer");
 		UIInput answertext = UIInput.make(form, "reply-input:",answerOTP + ".answerText"); // last parameter is value binding
-		
+
 		form.addParameter(new UIELBinding(answerOTP + ".privateReply", true));
 		form.parameters.add(new UIELBinding(answerOTP + ".question", new ELReference(questionLocator + "." + question.getId())));
 	    richTextEvolver.evolveTextInput(answertext);
-        
+
         UICommand.make(form,"send-button",UIMessage.make("qna.reply-privately.send"),answerLocator + ".saveAll");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("cancel",new QuestionParams(QueuedQuestionProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("cancel",new QuestionParams(QueuedQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
-	
+
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
 	}
-	
+
 	public void interceptActionResult(ARIResult result,
 			ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionParams) {

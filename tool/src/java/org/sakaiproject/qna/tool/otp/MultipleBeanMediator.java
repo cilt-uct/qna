@@ -27,16 +27,16 @@ public class MultipleBeanMediator {
     private QuestionLocator questionLocator;
 	private CategoryLocator categoryLocator;
 	private AnswerLocator answerLocator;
-	
+
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
     private AttachmentLogic attachmentLogic;
-    
+
     // Used for uploaded files
     public Map<String,CommonsMultipartFile> multipartMap;
-    
+
 	private TargettedMessageList messages;
-	
+
 	// Used for saving new question
     // TODO: When time permits: combine the two calls + try to remove categoryId string field from model
     public String saveNew() {
@@ -47,8 +47,8 @@ public class MultipleBeanMediator {
 			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", null, TargettedMessage.SEVERITY_ERROR));
 			return "error";
 		}
-		
-		
+
+
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			if (newQuestion.getCategoryId() != null) {
 				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());}
@@ -59,7 +59,7 @@ public class MultipleBeanMediator {
 
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
-    	
+
 		if (multipartMap != null) {
 			try {
 				attachmentLogic.uploadAll(newQuestion.getId(), multipartMap);
@@ -67,13 +67,13 @@ public class MultipleBeanMediator {
 				messages.addMessage(new  TargettedMessage("qna.ask-question.error-uploading-files", new Object[]{e.getMessage()}, TargettedMessage.SEVERITY_ERROR));
 			}
 		}
-		
+
     	return "saved";
     }
-    
+
     public String saveAll() {
     	// If a new category was created. Check that category text is not empty.
-		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) { 
+		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			categoryLocator.save();
 			QnaCategory categoryToLink = (QnaCategory) categoryLocator.locateBean(NEW_1);
 
@@ -89,13 +89,13 @@ public class MultipleBeanMediator {
 					}
 				}
 			}
-			
+
 			questionLocator.saveAll();
 		}
-		
+
 		// If answer was added
 		if (answerLocator.getDeliveredBeans().values().size() > 0) {
-			
+
 			if (!answerLocator.getDeliveredBeans().containsKey(NEW_1)) {
 				answerLocator.saveAll();
 			} else if (!TextUtil.isEmptyWithoutTags(((QnaAnswer)answerLocator.locateBean(NEW_1)).getAnswerText())) {
@@ -104,19 +104,24 @@ public class MultipleBeanMediator {
 		}
 		return "saved";
     }
-	
+
 	// Used when publishing questions
 	public String publish() {
 		saveAll();
 		for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
 			questionLogic.publishQuestion(question.getId(), externalLogic.getCurrentLocationId());
 			 messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-success",
-		                new Object[] { TextUtil.stripTags(question.getQuestionText()) }, 
+		                new Object[] { TextUtil.stripTags(question.getQuestionText()) },
 		                TargettedMessage.SEVERITY_INFO));
 		}
 		return "saved-published";
 	}
-	
+
+	public String deleteQuestions() {
+
+		return "deletedQuestions";
+	}
+
 	public void setQuestionLocator(QuestionLocator questionLocator) {
 		this.questionLocator = questionLocator;
 	}
@@ -128,7 +133,7 @@ public class MultipleBeanMediator {
 	public void setAnswerLocator(AnswerLocator answerLocator) {
 		this.answerLocator = answerLocator;
 	}
-	
+
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
@@ -136,7 +141,7 @@ public class MultipleBeanMediator {
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-	
+
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
 	}

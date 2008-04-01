@@ -28,8 +28,8 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 	public String getViewID() {
 		return VIEW_ID;
 	}
-	
-	
+
+
 	private TextInputEvolver richTextEvolver;
 	public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
@@ -42,30 +42,30 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		
+
 		AnswerParams params = (AnswerParams) viewparams;
-		String answerLocator = "AnswerLocator"; 
+		String answerLocator = "AnswerLocator";
 		String answerOTP = answerLocator + "." + params.answerid;
-		
+
 		// Generate the warning if the answers were already viewed
 		UIMessage.make(tofill, "error-message", "qna.warning.answer-already-viewed");
-		
+
 		// Generate the page title
 		UIMessage.make(tofill, "page-title", "qna.edit-published-answer.title");
-		
+
 		// Generate the answer title
 		UIMessage.make(tofill, "answer-title", "qna.edit-published-answer.answer-title");
-		
+
 		// Put in the form
-		UIForm form = UIForm.make(tofill,"edit-published-answer-form");		
-		
-        
+		UIForm form = UIForm.make(tofill,"edit-published-answer-form");
+
+
 //		Generate the answer input box
 		UIInput answertext = UIInput.make(form, "answer-input:",answerOTP + ".answerText");
         richTextEvolver.evolveTextInput(answertext);
-        
+
 		// Generate the different buttons
 		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),answerLocator + ".saveAll");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
@@ -74,8 +74,8 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
-		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID,null)));
+		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

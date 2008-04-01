@@ -23,13 +23,13 @@
       <property name="baseDirectory" value="component-templates/" />
       <property name="templateNames" value="Messages,searchbar,navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator,fileAttachments,Pager,SortHeader" />
    </bean>
-	
+
 	<!-- For security purposes, only beans listed in the comma separated value list
       may be the target of EL operations coming in over the request -->
    <bean parent="requestAddressibleParent">
-      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator" />
+      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteQuestionsHelper" />
    </bean>
-	
+
    <!-- Control the location of the html templates (default: content/templates/) -->
    <bean id="templateResolverStrategy" parent="CRITemplateResolverStrategy">
       <property name="baseDirectory" value="templates/" />
@@ -41,10 +41,9 @@
    <bean id="componentsTemplateResourceBase" class="java.lang.String">
    	<constructor-arg value="/" />
    </bean>
-   
+
    <!-- Enable file uploads for this application by declaring a Spring MultipartResolver -->
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
   </bean>
-
 </beans>

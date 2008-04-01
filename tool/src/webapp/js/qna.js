@@ -98,3 +98,20 @@
     	var command = document.getElementById(command_id);
     	link.onclick = function() {command.click(); return false;};
     }
+    
+    // Used to add new file upload inputs 
+    // Parameters: div_id = The div to append to
+    //			   index_value_id = Index of file input
+    //			   id_name = Id to give file input  
+    function addFileInput(div_id, index_value_id,id_name) {
+    	var div = document.getElementById(div_id);
+    	var index = document.getElementById(index_value_id);
+    	var newInput = document.createElement('input');
+    	newInput.type = 'file';
+    	newInput.name= 'id_name' + index.value;
+    	index.value = index.value + 1;
+    	div.appendChild(newInput);
+    	div.appendChild(document.createElement('br'));
+    }
+    
+    

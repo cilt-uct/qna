@@ -6,10 +6,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentHostingService;
-import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.AttachmentLogic;
@@ -29,40 +27,33 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 	
 	public void uploadAll(String questionId, Map<String,CommonsMultipartFile> files) throws AttachmentException {
 	
-		String collectionId = buildQuestionCollectionId(questionId);
-		//System.out.println(collectionId);
-		
-		try {
-			ContentCollectionEdit collection = chs.addCollection(collectionId);
-			collection.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, questionId);
-			chs.commitCollection(collection);
-						
-			for (CommonsMultipartFile file : files.values()) {
-				if (file.getBytes().length > 0) {
-						
-						ResourceProperties properties = chs.newResourceProperties();
-						properties.addProperty(ResourceProperties.PROP_DISPLAY_NAME, file.getOriginalFilename());
-						properties.addProperty(ResourceProperties.PROP_CONTENT_TYPE, file.getContentType());
-								
-						ContentResourceEdit resource = chs.addResource(collectionId, file.getOriginalFilename(), null, ContentHostingService.MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
-						//ContentResourceEdit resource = chs.addResource(collectionId + "/" + file.getOriginalFilename());
-						resource.setContent(file.getBytes());
-						resource.getPropertiesEdit().addAll(properties);
-						
-						chs.commitResource(resource);
-						
-						//ContentResource attachment = chs.addAttachmentResource(questionId, externalLogic.getCurrentLocationId(), externalLogic.getCurrentToolDisplayName(), file.getContentType(), file.getBytes(), properties);
-											
-						//if (collectionId == null) {	collectionId = attachment.getContainingCollection().getId(); }
+		if (containsValidFiles(files)) {
+			String collectionId = buildQuestionCollectionId(questionId);
+				
+			try {
+				ContentCollectionEdit collection = chs.addCollection(collectionId);
+				collection.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, questionId);
+				chs.commitCollection(collection);
+							
+				for (CommonsMultipartFile file : files.values()) {
+					ResourceProperties properties = chs.newResourceProperties();
+					properties.addProperty(ResourceProperties.PROP_DISPLAY_NAME, file.getOriginalFilename());
+					properties.addProperty(ResourceProperties.PROP_CONTENT_TYPE, file.getContentType());
+									
+					ContentResourceEdit resource = chs.addResource(collectionId, file.getOriginalFilename(), null, ContentHostingService.MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
+					resource.setContent(file.getBytes());
+					resource.getPropertiesEdit().addAll(properties);
+							
+					chs.commitResource(resource);
 				}
+				
+				if (collectionId != null) {
+					questionLogic.linkCollectionToQuestion(questionId, collectionId);
+				}
+			} catch (Exception e) {
+				log.error("Error uploading attachments: " +collectionId + " : " + e.toString());
+				throw new AttachmentException(e);
 			}
-			
-			if (collectionId != null) {
-				questionLogic.linkCollectionToQuestion(questionId, collectionId);
-			}
-		} catch (Exception e) {
-			log.error("Error uploading attachments: " +collectionId + " : " + e.toString());
-			throw new AttachmentException(e);
 		}
 	}
 	
@@ -70,6 +61,20 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 		return ContentHostingService.ATTACHMENTS_COLLECTION + Validator.escapeResourceName(externalLogic.getCurrentLocationId()) + "/" +Validator.escapeResourceName(externalLogic.getCurrentToolDisplayName()) + "/" + questionId + "/";
 	}
 
+	private boolean containsValidFiles(Map<String,CommonsMultipartFile> files) {
+		if (files == null || files.size() == 0) {
+			return false;
+		} else {
+			boolean valid = false;
+			for (CommonsMultipartFile file : files.values()) {
+				if (file.getBytes().length > 0) {
+					valid = true;
+				}
+			}
+			return valid;
+		}
+	}
+	
 	public void setContentHostingService(ContentHostingService chs) {
 		this.chs = chs;
 	}

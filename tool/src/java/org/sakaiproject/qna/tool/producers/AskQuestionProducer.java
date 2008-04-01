@@ -19,7 +19,9 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
+import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIMessage;
+import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
@@ -129,8 +131,9 @@ public class AskQuestionProducer implements ViewComponentProducer,
         }
 
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
-        // TODO: Make adding of attachments prettier?
        // UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
+        UIMessage.make(form,"add-attachment-button","qna.ask-question.add-attachment");   
+        
         
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {

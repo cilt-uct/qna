@@ -8,6 +8,7 @@
    <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
    <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
 </head>
 
 <body>
@@ -43,9 +44,15 @@
 
 	  <h4 rsf:id="attachments-title" class="insColor insBak insBorder">Attachments</h4><br/>
 	  <div rsf:id="no-attachments-msg">No attachments yet</div>
-	  <input type="file" name="fileupload1"/><br/>
-	  <input type="file" name="fileupload2"/><br/>
-	  <input type="file" name="fileupload3"/><br/>
+	  
+	  <input type="hidden" value="0" id="uploadIndex" />
+	  <div id="attachments">
+		<input rsf:id="add-attachment-button" type="button" name="add_attachment" value="Add Attachment" onclick="javascript:addFileInput('attachments','uploadIndex','fileupload');"/><br/><br/>
+	  </div>
+	  
+<!--	  <input type="file" name="fileupload1"/><br/> -->
+<!--	  <input type="file" name="fileupload2"/><br/> -->
+<!--	  <input type="file" name="fileupload3"/><br/> -->
 	
 	  <p>
 	  	<div rsf:id="moderated-note">Note: All questions are moderated. Your questions will not be published immediately on the site.</div>

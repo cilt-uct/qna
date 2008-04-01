@@ -7,6 +7,7 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
+import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
@@ -36,7 +37,8 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 	private SearchBarRenderer searchBarRenderer;
 	private QuestionLogic questionLogic;
 	private ExternalLogic externalLogic;
-
+    private AttachmentsViewRenderer attachmentsViewRenderer;
+	
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
@@ -52,7 +54,11 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-
+	
+	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
+		this.attachmentsViewRenderer = attachmentsViewRenderer;
+	}
+	
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
@@ -69,7 +75,9 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		UIForm form = UIForm.make(tofill, "queued-question-form");
 
 		UIVerbatim.make(form,"queued-question", question.getQuestionText());
-
+		if (question.getContentCollection() != null) {
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question.getContentCollection()); }
+		
 		// If anonymous remove name
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});

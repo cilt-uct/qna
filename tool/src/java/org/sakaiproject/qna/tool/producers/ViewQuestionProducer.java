@@ -109,8 +109,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		UIVerbatim.make(tofill,"question",question.getQuestionText());
 
-		// TODO: Render attachments here
-		attachmentsViewRenderer.makeAttachmentsView(tofill, "", question.getContentCollection());
+		// Render attachments
+		if (question.getContentCollection() != null) {
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question.getContentCollection()); }
 		
 		// If anonymous remove name
 		if (question.isAnonymous()) {

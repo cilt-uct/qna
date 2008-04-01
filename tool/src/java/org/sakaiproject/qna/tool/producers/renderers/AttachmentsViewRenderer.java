@@ -9,7 +9,11 @@ import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.ResourceProperties;
 
+import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIJointContainer;
+import uk.org.ponder.rsf.components.UILink;
+import uk.org.ponder.rsf.components.UIMessage;
 
 public class AttachmentsViewRenderer {
 
@@ -21,14 +25,16 @@ public class AttachmentsViewRenderer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void makeAttachmentsView(UIContainer tofill, String divID, String collectionId) {
-		System.out.println("****************** " + collectionId + " ******************");
+	public void makeAttachmentsView(UIContainer tofill, String divId, String collectionId) {
 		try {
+			UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
+			
+			UIMessage.make(joint, "attachments-title", "qna.attachments.title");
 			ContentCollection collection = chs.getCollection(collectionId);
 			List<ContentResource> members = collection.getMemberResources();
 			for (ContentResource contentResource : members) {
-				System.out.println("URL: " + contentResource.getUrl());
-				System.out.println("Name: " + contentResource.getProperties().get(ResourceProperties.PROP_DISPLAY_NAME));
+				UIBranchContainer branch = UIBranchContainer.make(joint, "attachment:");
+				UILink.make(branch, "attachment-link", contentResource.getProperties().get(ResourceProperties.PROP_DISPLAY_NAME).toString(), contentResource.getUrl());
 			}
 			
 		} catch (Exception e) {

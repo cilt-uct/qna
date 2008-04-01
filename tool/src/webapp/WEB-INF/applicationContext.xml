@@ -21,7 +21,7 @@
 
    <bean id="messageTemplateContributor" parent="templateContributorParent">
       <property name="baseDirectory" value="component-templates/" />
-      <property name="templateNames" value="Messages,searchbar,navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator,fileAttachments,Pager,SortHeader" />
+      <property name="templateNames" value="Messages,searchbar,navbar,category_question_list,detailed_question_list,standard_question_list,list_navigator,list_iterator,Pager,SortHeader,attachments_view" />
    </bean>
 
 	<!-- For security purposes, only beans listed in the comma separated value list

@@ -104,6 +104,7 @@
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 	</bean>
 
 	<bean

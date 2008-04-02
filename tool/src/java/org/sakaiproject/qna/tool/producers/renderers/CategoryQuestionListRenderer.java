@@ -74,8 +74,8 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 		Collections.sort(categories,new CategoryTextComparator());
 
-		UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteQuestionsHelper.deleteids}", null);
-		UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{DeleteQuestionsHelper.categoryids}", null);
+		UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
+		UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{DeleteMultiplesHelper.categoryids}", null);
 
 		StringList deletable = new StringList();
 		// List of published questions by category

@@ -21,6 +21,9 @@ import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.stringutil.StringList;
 
 public class DetailedQuestionListRenderer implements QuestionListRenderer {
 
@@ -122,6 +125,9 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         	current_sort_dir.equals(QuestionLogic.SORT_DIR_ASC)
     	);
 
+        StringList deletable = new StringList();
+        UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
+
 		//Fill out Table
         for (QnaQuestion question : questions){
         	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
@@ -141,7 +147,10 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 			} else {
 				UIOutput.make(row,"question_row_category","");
 			}
-        	UIBoundBoolean.make(row, "question_row_remove",false);
+        	//UIBoundBoolean.make(row, "question_row_remove",false);
+        	UISelectChoice.make(row, "remove-question-checkbox", questionDeleteSelect.getFullID(), deletable.size());
+			deletable.add(question.getId());
         }
+        questionDeleteSelect.optionlist.setValue(deletable.toStringArray());
 	}
 }

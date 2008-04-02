@@ -2,16 +2,15 @@ package org.sakaiproject.qna.tool.otp;
 
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
-public class DeleteQuestionsHelper extends SimpleViewParameters {
-	public String[] deleteids;
+public class DeleteMultiplesHelper extends SimpleViewParameters {
+	public String[] questionids;
 	public String[] categoryids;
 
-	public String[] getDeleteids() {
-		return deleteids;
+	public String[] getQuestionids() {
+		return questionids;
 	}
-
-	public void setDeleteids(String[] deleteids) {
-		this.deleteids = deleteids;
+	public void setQuestionids(String[] questionids) {
+		this.questionids = questionids;
 	}
 
 	public String[] getCategoryids() {

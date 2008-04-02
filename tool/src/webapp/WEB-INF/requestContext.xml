@@ -135,8 +135,6 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteCategoriesProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
-		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 	</bean>
 
@@ -248,7 +246,7 @@
 	</bean>
 
 	<!-- OTP -->
-	<bean id="DeleteQuestionsHelper" class="org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper">
+	<bean id="DeleteMultiplesHelper" class="org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper">
 	</bean>
 
 	<bean id="CategoryLocator" class="org.sakaiproject.qna.tool.otp.CategoryLocator">

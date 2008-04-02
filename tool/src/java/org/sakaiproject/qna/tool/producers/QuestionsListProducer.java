@@ -8,7 +8,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
-import org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper;
+import org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
@@ -152,7 +152,10 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 
 			// Generate update button
 			UICommand.make(form, "questions-delete-button", UIMessage.make("qna.view-question.delete-questions")).setReturn("deleteQ");
-			UICommand.make(form, "categories-delete-button", UIMessage.make("qna.view-question.delete-categories")).setReturn("deleteC"); //, "CategoryLocator.deleteCategoriesPass");
+
+			if (!params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
+				UICommand.make(form, "categories-delete-button", UIMessage.make("qna.view-question.delete-categories")).setReturn("deleteC");
+			}
 			//UICommand.make(form, "update-button", "#{QuestionLocator.deleteQuestions}");
 
 		} else {
@@ -189,20 +192,24 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	}
 
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
-		DeleteQuestionsHelper dqh = (DeleteQuestionsHelper)ELEvaluator.getBean("DeleteQuestionsHelper");
+		DeleteMultiplesHelper dmh = (DeleteMultiplesHelper)ELEvaluator.getBean("DeleteMultiplesHelper");
 
-		if ((dqh.getDeleteids() == null) & (dqh.getCategoryids() == null)) {
+		if ((dmh.getQuestionids() == null) & (dmh.getCategoryids() == null)) {
 			result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
-//					new TargettedMessage("qna.warning.no-questions-selected",
-//					new Object[] { TextUtil.stripTags(question.getQuestionText()) },
-//					TargettedMessage.SEVERITY_INFO)
-//				);
 		} else if (result.resultingView instanceof QuestionParams) {
-			QuestionParams params = (QuestionParams)result.resultingView;
-			params.questionids = dqh.getDeleteids();
+			if (dmh.getQuestionids() == null) {
+				result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
+			} else {
+				QuestionParams params = (QuestionParams)result.resultingView;
+				params.questionids = dmh.getQuestionids();
+			}
 		} else if (result.resultingView instanceof CategoryParams) {
-			CategoryParams params = (CategoryParams)result.resultingView;
-			params.categoryids = dqh.getCategoryids();
+			if (dmh.getCategoryids() == null) {
+				result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
+			} else {
+				CategoryParams params = (CategoryParams)result.resultingView;
+				params.categoryids = dmh.getCategoryids();
+			}
 		}
 
 	}

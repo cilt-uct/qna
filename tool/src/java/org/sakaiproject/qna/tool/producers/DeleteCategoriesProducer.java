@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
-import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.CategoryParams;
@@ -33,8 +31,6 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 
 	public static final String VIEW_ID = "delete_categories";
 	private NavBarRenderer navBarRenderer;
-	private OptionsLogic optionsLogic;
-	private ExternalLogic externalLogic;
 	private CategoryLogic categoryLogic;
 
 	public String getViewID() {
@@ -43,12 +39,6 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
-	}
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
 	}
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
 		this.categoryLogic = categoryLogic;
@@ -62,7 +52,6 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 		String categoryLocator = "CategoryLocator";
 
 		UIForm form = UIForm.make(tofill, "delete-categories-form");
-		UIForm cancelForm = UIForm.make(tofill, "cancel-delete-categories-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "category-list-table", "category-list-table:");
 

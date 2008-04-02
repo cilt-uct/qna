@@ -61,7 +61,8 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		QuestionParams params = (QuestionParams)viewparams;
 
 		if ((params.questionids == null) || (params.questionids.length == 0)) {
-			UIMessage.make(tofill, "error-message", "qna.warning.no-questions-selected");
+			UIMessage.make(tofill, "error-message", "" +
+					"qna.warning.no-questions-selected");
 		}
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
@@ -123,7 +124,8 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		}
 
 		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
-		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
+		UICommand cancel = UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
+		cancel.parent.parameters.clear();
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

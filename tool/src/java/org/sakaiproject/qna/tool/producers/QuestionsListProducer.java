@@ -191,7 +191,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		DeleteQuestionsHelper dqh = (DeleteQuestionsHelper)ELEvaluator.getBean("DeleteQuestionsHelper");
 
-		if (dqh.getDeleteids() == null) {
+		if ((dqh.getDeleteids() == null) & (dqh.getCategoryids() == null)) {
 			result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
 //					new TargettedMessage("qna.warning.no-questions-selected",
 //					new Object[] { TextUtil.stripTags(question.getQuestionText()) },
@@ -200,6 +200,9 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		} else if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionids = dqh.getDeleteids();
+		} else if (result.resultingView instanceof CategoryParams) {
+			CategoryParams params = (CategoryParams)result.resultingView;
+			params.categoryids = dqh.getCategoryids();
 		}
 
 	}

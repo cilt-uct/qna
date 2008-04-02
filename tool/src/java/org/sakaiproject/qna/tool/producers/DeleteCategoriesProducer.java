@@ -59,18 +59,19 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 
-		String locationId = externalLogic.getCurrentLocationId();
 		String categoryLocator = "CategoryLocator";
 
 		UIForm form = UIForm.make(tofill, "delete-categories-form");
+		UIForm cancelForm = UIForm.make(tofill, "cancel-delete-categories-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "category-list-table", "category-list-table:");
 
 		UIBranchContainer categoryHeadings = UIBranchContainer.make(listTable, "category-headings:");
 
-		UIMessage.make(categoryHeadings, "dqs-name", "qna.delete-category.name-title");
-		UIMessage.make(categoryHeadings, "dqs-questions", "qna.delete-category.category-title");
-		UIMessage.make(categoryHeadings, "dqs-modified", "qna.delete-category.modified-title");
+		UIMessage.make(categoryHeadings, "dcs-name", "qna.delete-category.name-title");
+		UIMessage.make(categoryHeadings, "dcs-questions", "qna.delete-category.question-title");
+		UIMessage.make(categoryHeadings, "dcs-answers", "qna.delete-category.answers-title");
+		UIMessage.make(categoryHeadings, "dcs-modified", "qna.delete-category.modified-title");
 
 		for (int k=0; k<params.categoryids.length; k++) {
 
@@ -81,12 +82,18 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 			form.parameters.add(new UIDeletionBinding(categoryOTP));
 
 			QnaCategory category = categoryLogic.getCategoryById(params.categoryids[k]);
-			List<QnaQuestion> answerList = category.getQuestions();
+			List<QnaQuestion> questionList = category.getQuestions();
 
 
 			// Generate warning for associated answers
-			if (answerList.size() > 0) {
-				UIMessage.make(tofill, "error-message1", "qna.warning.categories-with-questions");
+			if (questionList.size() > 0) {
+				UIMessage.make(tofill, "error-message1", "qna.warning.qna-associated");
+			}
+
+			int answerTotal = 0;
+			// Count the total number of answers
+			for (QnaQuestion question: questionList) {
+				answerTotal += question.getAnswers().size();
 			}
 
 			// Generate confirmation warning for the delete action
@@ -96,12 +103,14 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
 
 			UIOutput.make(categoryContainer, "name", TextUtil.stripTags(category.getCategoryText()));
-			UIOutput.make(categoryContainer, "questions", answerList.size()+"");
+			UIOutput.make(categoryContainer, "questions", questionList.size()+"");
+			UIOutput.make(categoryContainer, "answers", answerTotal+"");
 			UIOutput.make(categoryContainer, "modified", new SimpleDateFormat("yyyy-MM-dd").format(category.getDateLastModified()));
 		}
 
 		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
-		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
+		UICommand cancel = UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
+		cancel.parent.parameters.clear();
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

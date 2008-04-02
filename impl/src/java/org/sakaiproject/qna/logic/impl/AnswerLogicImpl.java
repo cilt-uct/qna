@@ -5,6 +5,7 @@ import java.util.Date;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -40,6 +41,12 @@ public class AnswerLogicImpl implements AnswerLogic {
 		this.externalLogic = externalLogic;
 	}
 
+	private NotificationLogic notificationLogic;
+	
+	public void setNotificationLogic(NotificationLogic notificationLogic) {
+		this.notificationLogic = notificationLogic;
+	}
+	
 	private QnaDao dao;
 
 	public void setDao(QnaDao dao) {
@@ -90,6 +97,14 @@ public class AnswerLogicImpl implements AnswerLogic {
 					}
 					question.addAnswer(answer);
 					dao.save(answer);
+					
+					// Notification emails
+					if (answer.isPrivateReply()) {
+						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
+					} else if (question.getNotify()) {
+						notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
+					}
+					
 				} else {
 					throw new QnaConfigurationException(
 							"The location of the question ("

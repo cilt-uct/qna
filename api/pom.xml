@@ -45,7 +45,7 @@
             </includes>
             <filtering>false</filtering>
          </resource>
-      </resources>
+     </resources>
    </build>
 
 </project>

@@ -79,6 +79,8 @@
 			ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="permissionLogic"
 			ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="notificationLogic" 
+			ref="org.sakaiproject.qna.logic.NotificationLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
@@ -87,4 +89,12 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 	</bean>
+	
+	<bean id="org.sakaiproject.qna.logic.QnaBundleLogic" class="org.sakaiproject.qna.logic.impl.QnaBundleLogicImpl" init-method="init" />
+	
+	<bean id="org.sakaiproject.qna.logic.NotificationLogic" class="org.sakaiproject.qna.logic.impl.NotificationLogicImpl">
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+	</bean>	
 </beans>

@@ -19,6 +19,7 @@ public class AnswerLocator implements EntityBeanLocator {
 	
 	private ExternalLogic externalLogic;
 	private AnswerLogic answerLogic;
+	
 	private TargettedMessageList messages;
 	
 	private Map<String, QnaAnswer> delivered = new HashMap<String,QnaAnswer>();
@@ -98,7 +99,7 @@ public class AnswerLocator implements EntityBeanLocator {
 	public void setAnswerLogic(AnswerLogic answerLogic) {
 		this.answerLogic = answerLogic;
 	}
-
+	
 	public Map getDeliveredBeans() {
 		return delivered;
 	}

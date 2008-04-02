@@ -14,6 +14,7 @@ import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
+import org.sakaiproject.qna.logic.test.stubs.NotificationLogicStub;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -36,6 +37,8 @@ public class AnswerLogicImplTest extends
 	private static Log log = LogFactory.getLog(AnswerLogicImplTest.class);
 
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	
+	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
 
 	private TestDataPreload tdp = new TestDataPreload();
 
@@ -54,11 +57,9 @@ public class AnswerLogicImplTest extends
 	protected void onSetUpInTransaction() {
 		// load the spring created dao class bean from the Spring Application
 		// Context
-		dao = (QnaDao) applicationContext
-				.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
+		dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
 		if (dao == null) {
-			log
-					.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
 		}
 
 		permissionLogic = new PermissionLogicImpl();
@@ -91,7 +92,8 @@ public class AnswerLogicImplTest extends
 		answerLogic.setPermissionLogic(permissionLogic);
 		answerLogic.setQuestionLogic(questionLogic);
 		answerLogic.setOptionsLogic(optionsLogic);
-
+		answerLogic.setNotificationLogic(notificationLogicStub);
+		
 		// preload testData
 		tdp.preloadTestData(dao);
 	}
@@ -221,6 +223,7 @@ public class AnswerLogicImplTest extends
 			}
 			assertTrue(found);
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("This should not have thrown this exception");
 		}
 	}

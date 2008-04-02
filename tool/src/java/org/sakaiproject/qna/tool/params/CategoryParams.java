@@ -7,9 +7,14 @@ public class CategoryParams extends SimpleViewParameters {
 	public String id;
 	public String number;
 	public String categoryText;
+	public String[] categoryids;
 
 	public CategoryParams() {
 		number = "1";
+	}
+
+	public CategoryParams(String viewID) {
+		this.viewID = viewID;
 	}
 
 	public CategoryParams(String viewID, String number) {

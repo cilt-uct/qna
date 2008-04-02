@@ -21,15 +21,18 @@ import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
+import uk.org.ponder.rsf.viewstate.AnyViewParameters;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class DeleteQuestionsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
+public class DeleteQuestionsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
 	public static final String VIEW_ID = "delete_questions";
 	private NavBarRenderer navBarRenderer;
@@ -56,6 +59,10 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QuestionParams params = (QuestionParams)viewparams;
+
+		if ((params.questionids == null) || (params.questionids.length == 0)) {
+			UIMessage.make(tofill, "error-message", "qna.warning.no-questions-selected");
+		}
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 
@@ -128,5 +135,10 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
+	}
+
+	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
+		// TODO Auto-generated method stub
+
 	}
 }

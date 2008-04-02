@@ -20,7 +20,6 @@ import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
-import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -75,8 +74,10 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 		Collections.sort(categories,new CategoryTextComparator());
 
-		UISelect deleteselect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteQuestionsHelper.deleteids}", null);
+		UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteQuestionsHelper.deleteids}", null);
+		UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{DeleteQuestionsHelper.categoryids}", null);
 
+		StringList deletable = new StringList();
 		// List of published questions by category
 		for (QnaCategory qnaCategory : categories) {
 			if (qnaCategory.getPublishedQuestions().size() > 0) {
@@ -89,15 +90,18 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIOutput.make(category,"modified-date",DateUtil.getSimpleDate(qnaCategory.getDateLastModified()));
 
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-					UIOutput.make(category,"remove-category-cell");
-					UIBoundBoolean.make(category, "remove-checkbox", false);
+					//UIOutput.make(category,"remove-category-cell");
+					//UIBoundBoolean.make(category, "remove-checkbox", false);
+					UISelectChoice.make(category, "remove-category-checkbox", categoryDeleteSelect.getFullID(), deletable.size());
+					deletable.add(qnaCategory.getId());
 				}
 
 				List<QnaQuestion> publishedQuestions = qnaCategory.getPublishedQuestions();
-				renderQuestions(entry, publishedQuestions, ViewQuestionProducer.VIEW_ID, deleteselect);
+				renderQuestions(entry, publishedQuestions, ViewQuestionProducer.VIEW_ID, questionDeleteSelect);
 			}
 
 		}
+		categoryDeleteSelect.optionlist.setValue(deletable.toStringArray());
 
 		// Only users with update permissions can view new questions + private replies
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
@@ -117,7 +121,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIMessage.make(category,"category-name","qna.view-questions.new-questions");
 				UIOutput.make(category,"modified-date","");
 				UIOutput.make(category,"remove-category-cell","");
-				renderQuestions(entry, newQuestions, QueuedQuestionProducer.VIEW_ID, deleteselect);
+				renderQuestions(entry, newQuestions, QueuedQuestionProducer.VIEW_ID, questionDeleteSelect);
 			}
 
 			// All questions with Private Replies
@@ -130,7 +134,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIMessage.make(category,"category-name","qna.view-questions.questions-with-private-replies");
 				UIOutput.make(category,"modified-date","");
 				UIOutput.make(category,"remove-category-cell","");
-				renderQuestions(entry, questionsWithPrivateReplies, ViewPrivateReplyProducer.VIEW_ID, deleteselect);
+				renderQuestions(entry, questionsWithPrivateReplies, ViewPrivateReplyProducer.VIEW_ID, questionDeleteSelect);
 			}
 		}
 	}
@@ -165,7 +169,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 			if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 				//UIOutput.make(question,"remove-question-cell");
 				//UIBoundBoolean.make(question, "remove-checkbox", false);
-				UISelectChoice.make(question, "remove-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
+				UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
 				deletable.add(qnaQuestion.getId());
 			}
 		}

@@ -14,9 +14,6 @@ import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements EntityBeanLocator  {
-
-
-
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
 
@@ -95,16 +92,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 			}
 		}
 		return "delete";
-	}
-
-	/*
-	public String deleteQuestions() {
-		return "deleteQ";
-	}
-	*/
-
-	public String deleteQuestionsPass() {
-		return "deleteQ";
 	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {

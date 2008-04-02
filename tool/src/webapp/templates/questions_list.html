@@ -30,6 +30,7 @@
   </div>
   <form rsf:id="view-questions-form" id="view-questions-form" action="post">
    	<span rsf:id="remove-question-cell"/>
+   	<span rsf:id="remove-category-cell"/>
    	<span rsf:id="view-title">View:</span>
   	<select rsf:id="view-select" id="view-select">
  		<option value="categories">Categories</option>
@@ -42,7 +43,8 @@
 	<div rsf:id="pagerDiv:" class="listNav"></div>
   	<div rsf:id="questionListTool:"/>
   	<br/>
-  	<input rsf:id="update-button" type="submit" value="Update"  />
+  	<input rsf:id="questions-delete-button" type="submit" value="Delete Questions"/>
+  	<input rsf:id="categories-delete-button" type="submit" value="Delete Categories"/>
   </form>
 
 </body>

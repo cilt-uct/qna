@@ -4,6 +4,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class DeleteQuestionsHelper extends SimpleViewParameters {
 	public String[] deleteids;
+	public String[] categoryids;
 
 	public String[] getDeleteids() {
 		return deleteids;
@@ -11,5 +12,12 @@ public class DeleteQuestionsHelper extends SimpleViewParameters {
 
 	public void setDeleteids(String[] deleteids) {
 		this.deleteids = deleteids;
+	}
+
+	public String[] getCategoryids() {
+		return categoryids;
+	}
+	public void setCategoryids(String[] categoryids) {
+		this.categoryids = categoryids;
 	}
 }

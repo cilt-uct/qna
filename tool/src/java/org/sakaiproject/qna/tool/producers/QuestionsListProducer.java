@@ -9,6 +9,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.otp.DeleteQuestionsHelper;
+import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.renderers.CategoryQuestionListRenderer;
@@ -17,9 +18,11 @@ import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
+import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
+import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -33,6 +36,11 @@ import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
+import uk.org.ponder.rsf.mappings.RSFMappingLoader;
+import uk.org.ponder.rsf.processor.RSFActionHandler;
+import uk.org.ponder.rsf.processor.RSFRenderHandler;
+import uk.org.ponder.rsf.util.RSFUtil;
+import uk.org.ponder.rsf.util.html.RSFHTMLUtil;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
@@ -143,7 +151,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			    	   			    messageLocator.getMessage("qna.view-questions.all-details")};
 
 			// Generate update button
-			UICommand.make(form, "update-button", UIMessage.make("qna.general.update"), "QuestionLocator.deleteQuestionsPass");
+			UICommand.make(form, "questions-delete-button", UIMessage.make("qna.view-question.delete-questions")).setReturn("deleteQ");
+			UICommand.make(form, "categories-delete-button", UIMessage.make("qna.view-question.delete-categories")).setReturn("deleteC"); //, "CategoryLocator.deleteCategoriesPass");
 			//UICommand.make(form, "update-button", "#{QuestionLocator.deleteQuestions}");
 
 		} else {
@@ -171,6 +180,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("update", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("deleteQ", new QuestionParams(DeleteQuestionsProducer.VIEW_ID)));
+		list.add(new NavigationCase("deleteC", new CategoryParams(DeleteCategoriesProducer.VIEW_ID)));
 		return list;
 	}
 
@@ -181,7 +191,13 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		DeleteQuestionsHelper dqh = (DeleteQuestionsHelper)ELEvaluator.getBean("DeleteQuestionsHelper");
 
-		if (result.resultingView instanceof QuestionParams) {
+		if (dqh.getDeleteids() == null) {
+			result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
+//					new TargettedMessage("qna.warning.no-questions-selected",
+//					new Object[] { TextUtil.stripTags(question.getQuestionText()) },
+//					TargettedMessage.SEVERITY_INFO)
+//				);
+		} else if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionids = dqh.getDeleteids();
 		}

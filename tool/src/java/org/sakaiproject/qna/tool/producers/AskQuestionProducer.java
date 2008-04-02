@@ -19,9 +19,7 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
-import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIMessage;
-import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
@@ -31,8 +29,7 @@ import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
-public class AskQuestionProducer implements ViewComponentProducer,
-		NavigationCaseReporter {
+public class AskQuestionProducer implements ViewComponentProducer, NavigationCaseReporter {
 
 	public static final String VIEW_ID = "ask_question";
 
@@ -84,12 +81,12 @@ public class AskQuestionProducer implements ViewComponentProducer,
 		String questionOTP = questionLocator + "." + QuestionLocator.NEW_1;
 		String categoryLocator = "CategoryLocator";
 		String categoryOTP = categoryLocator + "." + CategoryLocator.NEW_1;
-		
+
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
 
 		UIMessage.make(tofill, "page-title", "qna.ask-question.title");
-		
+
 
 		if (options.getAnonymousAllowed()) {
 			UIMessage.make(tofill,"anonymous-note","qna.ask-question.anonymous-note");
@@ -98,7 +95,7 @@ public class AskQuestionProducer implements ViewComponentProducer,
 		UIMessage.make(tofill, "question-title", "qna.ask-question.question");
 
 		UIForm form = UIForm.make(tofill, "ask-question-form");
-		
+
 		UIInput questiontext = UIInput.make(form, "question-input:",questionOTP +".questionText");
         richTextEvolver.evolveTextInput(questiontext);
 
@@ -111,16 +108,16 @@ public class AskQuestionProducer implements ViewComponentProducer,
         }
 
         List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
-        
-        String[] categoriesIds = new String[categories.size()]; 
-        String[] categoriesText = new String[categories.size()]; 
-        
+
+        String[] categoriesIds = new String[categories.size()];
+        String[] categoriesText = new String[categories.size()];
+
         for (int i=0;i<categories.size();i++) {
         	QnaCategory category = categories.get(i);
         	categoriesIds[i] = category.getId();
         	categoriesText[i] = category.getCategoryText();
         }
-        
+
         if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) {
         	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); }
 
@@ -132,9 +129,9 @@ public class AskQuestionProducer implements ViewComponentProducer,
 
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
        // UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
-        UIMessage.make(form,"add-attachment-button","qna.ask-question.add-attachment");   
-        
-        
+        UIMessage.make(form,"add-attachment-button","qna.ask-question.add-attachment");
+
+
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");

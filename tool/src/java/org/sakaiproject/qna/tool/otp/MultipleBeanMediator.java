@@ -1,6 +1,7 @@
 package org.sakaiproject.qna.tool.otp;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -37,6 +38,37 @@ public class MultipleBeanMediator {
 
 	private TargettedMessageList messages;
 
+	public String moveQuestionSave() {
+		QnaCategory categoryToLink = null;
+		Set<String> keys = questionLocator.getDeliveredBeans().keySet();
+		String questionId = keys.iterator().next();
+
+		QnaQuestion question = (QnaQuestion)questionLocator.getDeliveredBeans().get(questionId);
+
+		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
+			if (question.getCategoryId() != null) {
+				categoryToLink = (QnaCategory)categoryLocator.locateBean(question.getCategoryId());
+			}
+		} else {
+			categoryLocator.save();
+			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);
+		}
+
+		String oldCategory = TextUtil.stripTags(question.getCategory().getCategoryText());
+
+		question.setCategory(categoryToLink);
+		questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+
+		messages.addMessage(
+			new TargettedMessage("qna.move-question.moved-successfully",
+			new Object[] { oldCategory, TextUtil.stripTags(categoryToLink.getCategoryText()) },
+			TargettedMessage.SEVERITY_INFO)
+		);
+
+		return "saved";
+	}
+
+
 	// Used for saving new question
     // TODO: When time permits: combine the two calls + try to remove categoryId string field from model
     public String saveNew() {
@@ -51,7 +83,8 @@ public class MultipleBeanMediator {
 
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			if (newQuestion.getCategoryId() != null) {
-				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());}
+				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());
+			}
 		} else {
 			categoryLocator.save();
 			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);

@@ -11,6 +11,7 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -95,7 +96,7 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 		UIMessage.make(form, "answers-title", "qna.delete-question.answers-title");
 		UIMessage.make(form, "modified-title", "qna.delete-question.modified-title");
 
-		UIOutput.make(form, "name", question.getQuestionText());
+		UIOutput.make(form, "name", TextUtil.stripTags(question.getQuestionText()));
 		UIOutput.make(form, "category", question.getCategory().getCategoryText());
 		UIOutput.make(form, "answers", answerList.size()+"");
 		UIOutput.make(form, "modified", new SimpleDateFormat("yyyy-MM-dd").format(question.getDateLastModified()));

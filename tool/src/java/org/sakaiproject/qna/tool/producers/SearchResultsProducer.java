@@ -9,10 +9,13 @@ import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.CategoryParams;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
 import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
+import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
@@ -114,9 +117,13 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		}
 
 		for (int i=0;i<questions.length;i++) {
+			String questionText = TextUtil.stripTags(questions[i][0]);
+			if (questionText.length() > 100) {
+				questionText = questionText.substring(0, 100);
+			}
 			UIBranchContainer question = UIBranchContainer.make(tofill, "question:",Integer.toString(i));
-			UIInternalLink.make(question, "view-question-link", UIMessage.make("qna.searchresults.view"), new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
-			UIOutput.make(question, "question-text", questions[i][0]);
+			UIInternalLink.make(question, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(ViewQuestionProducer.VIEW_ID, questions[i][2]));
+			UIOutput.make(question, "question-text", questionText);
 			UIOutput.make(question, "question-timestamp", questions[i][1]);
 		}
 
@@ -127,19 +134,24 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 			{"Another new answer. In student view this will not be visible","2008-02-06"}
 		};*/
 		List<QnaAnswer> answersList = searchLogic.getAnswers(params.search);
-		String[][] answers = new String[answersList.size()][3];
+		String[][] answers = new String[answersList.size()][4];
 
 		for (int k=0; k<answersList.size(); k++) {
 			QnaAnswer answer = answersList.get(k);
 			answers[k][0] = answer.getAnswerText();
 			answers[k][1] = answer.getDateLastModified().toString();
 			answers[k][2] = answer.getId();
+			answers[k][3] = answer.getQuestion().getId();
 		}
 
 		for (int i=0;i<answers.length;i++) {
+			String answerText = TextUtil.stripTags(answers[i][0]);
+			if (answerText.length() > 100) {
+				answerText = answerText.substring(0, 100);
+			}
 			UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:",Integer.toString(i));
-			UIInternalLink.make(answer, "view-answer-link", UIMessage.make("qna.searchresults.view"), new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
-			UIOutput.make(answer, "answer-text", answers[i][0]);
+			UIInternalLink.make(answer, "view-answer-link", UIMessage.make("qna.searchresults.view"), new AnswerParams(ViewQuestionProducer.VIEW_ID, answers[i][2], answers[i][3]));
+			UIOutput.make(answer, "answer-text", answerText);
 			UIOutput.make(answer, "answer-timestamp", answers[i][1]);
 		}
 

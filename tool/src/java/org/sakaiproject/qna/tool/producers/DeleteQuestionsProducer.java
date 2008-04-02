@@ -70,6 +70,7 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		String questionLocator = "QuestionLocator";
 
 		UIForm form = UIForm.make(tofill, "delete-questions-form");
+		UIForm cancelForm = UIForm.make(tofill, "cancel-delete-questions-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "question-list-table", "question-list-table:");
 
@@ -123,8 +124,7 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		}
 
 		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
-		UICommand cancel = UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
-		cancel.parent.parameters.clear();
+		UICommand.make(cancelForm, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

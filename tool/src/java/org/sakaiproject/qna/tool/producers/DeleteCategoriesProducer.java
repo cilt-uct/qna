@@ -52,6 +52,7 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 		String categoryLocator = "CategoryLocator";
 
 		UIForm form = UIForm.make(tofill, "delete-categories-form");
+		UIForm cancelForm = UIForm.make(tofill, "cancel-delete-categories-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "category-list-table", "category-list-table:");
 
@@ -98,8 +99,7 @@ public class DeleteCategoriesProducer implements ViewComponentProducer, Navigati
 		}
 
 		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
-		UICommand cancel = UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
-		cancel.parent.parameters.clear();
+		UICommand.make(cancelForm, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

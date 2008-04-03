@@ -1,10 +1,10 @@
 package org.sakaiproject.qna.logic.test.stubs;
 import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.user.api.User;
 
 public class ExternalLogicStub implements ExternalLogic {
 
@@ -79,15 +79,15 @@ public class ExternalLogicStub implements ExternalLogic {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<User> getSiteUsersWithPermission(String locationId, String permission) {
+	public Set<String> getSiteUsersWithPermission(String locationId, String permission) {
 		if (locationId.equals(LOCATION3_ID) && permission.equals(QNA_UPDATE)) {
-			Set users = new HashSet<User>();
-			users.add(new FakeUser(USER_LOC_3_UPDATE_1));
-			users.add(new FakeUser(USER_LOC_3_UPDATE_2));
-			users.add(new FakeUser(USER_LOC_3_UPDATE_3));
+			Set users = new HashSet<String>();
+			users.add(USER_LOC_3_UPDATE_1);
+			users.add(USER_LOC_3_UPDATE_2);
+			users.add(USER_LOC_3_UPDATE_3);
 			return users;
 		} else {
-			return new HashSet<User>();
+			return new HashSet<String>();
 		}
 	}
 
@@ -104,5 +104,15 @@ public class ExternalLogicStub implements ExternalLogic {
 	public String getQuestionViewUrl(String viewId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String[] sendEmails(String from, String[] toEmails,
+			String subject, String message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getUserEmail(String userId) {
+		return (new FakeUser(userId)).getEmail();
 	}
 }

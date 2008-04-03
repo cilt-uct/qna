@@ -11,7 +11,6 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -91,7 +90,12 @@ public class AnswerLogicImpl implements AnswerLogic {
 					answer.setLastModifierId(userId);
 					
 					if (options.isModerated()) {
-						answer.setApproved(false);
+						// If user has update permission it is automatically approved
+						if (permissionLogic.canUpdate(locationId, answer.getOwnerId())) {
+							answer.setApproved(true);
+						} else {
+							answer.setApproved(false);
+						}
 					} else {
 						answer.setApproved(true);
 					}
@@ -102,7 +106,8 @@ public class AnswerLogicImpl implements AnswerLogic {
 					if (answer.isPrivateReply()) {
 						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
 					} else if (question.getNotify()) {
-						notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
+						if (answer.isApproved()) {
+							notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());}
 					}
 					
 				} else {
@@ -139,6 +144,11 @@ public class AnswerLogicImpl implements AnswerLogic {
 			answer.setDateLastModified(new Date());
 			answer.setLastModifierId(userId);
 			dao.save(answer);
+			
+			if (answer.getQuestion().getNotify()) {
+				notificationLogic.sendNewAnswerNotification(new String[]{answer.getQuestion().getOwnerId()}, answer.getQuestion().getQuestionText(), answer.getAnswerText());
+			}
+			
 		} else {
 			throw new SecurityException("Current user cannot approve answers for " + locationId + " because they do not have permission");
 		}

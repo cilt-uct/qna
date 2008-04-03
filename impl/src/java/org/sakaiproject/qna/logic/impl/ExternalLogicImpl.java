@@ -1,7 +1,9 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -159,17 +161,26 @@ public class ExternalLogicImpl implements ExternalLogic {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<User> getSiteUsersWithPermission(String locationId, String permission) {
+	public Set<String> getSiteUsersWithPermission(String locationId, String permission) {
 		Site site = (Site) entityBroker.fetchEntity(locationId);
-		Set<User> users = site.getUsers();
+		Set<String> users = site.getUsers();
 		
-		Set<User> usersWithPermission = new HashSet<User>();
-		for (User user : users) {
-			if (isUserAllowedInLocation(user.getId(), permission, locationId)) {
-				usersWithPermission.add(user);
+		Set<String> usersWithPermission = new HashSet<String>();
+		for (String userid : users) {
+			if (isUserAllowedInLocation(userid, permission, locationId)) {
+				usersWithPermission.add(userid);
 			}
 		}
 		return usersWithPermission;
+	}
+	
+	public String getUserEmail(String userId) {
+		try {
+			return userDirectoryService.getUser(userId).getEmail();
+		} catch (UserNotDefinedException unde) {
+			  log.error("Invalid user: Cannot find user object by id: " + userId);
+			  return null;
+		}
 	}
 	
 	public String getCurrentToolDisplayName() {
@@ -220,20 +231,40 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      
 	      return sendEmails(fromAddress, toEmails, subject, message);
 	}
+	
+	public String[] sendEmails(String from, String[] emails, String subject, String message) {
+	      InternetAddress fromAddress;
+	      try {
+	         fromAddress = new InternetAddress(from);
+	      } catch (AddressException e) {
+	         // cannot recover from this failure
+	         throw new IllegalArgumentException("Invalid from address: " + from, e);
+	      }
+	      List<String> toEmails = new ArrayList<String>();
+	      for (String email : emails) {
+	    	  if (email != null && !"".equals(email)) {
+	    		  toEmails.add(email);
+	    	  }
+	      }
+	      
+	      return sendEmails(fromAddress, toEmails, subject, message);
+	}
 	 
 	// Actual sending      
-	private String[] sendEmails(InternetAddress fromAddress, List<String> toEmails, String subject, String message) {
+	private String[] sendEmails(InternetAddress fromAddress, Collection<String> toEmails, String subject, String message) {
 	      InternetAddress[] replyTo = new InternetAddress[1];
 	      List<InternetAddress> listAddresses = new ArrayList<InternetAddress>();
-	      for (int i = 0; i < toEmails.size(); i++) {
-	         String email = toEmails.get(i);
-	         try {
-	            InternetAddress toAddress = new InternetAddress(email);
-	            listAddresses.add(toAddress);
-	         } catch (AddressException e) {
-	               log.error("Invalid to address: " + email + ", cannot send email",e);
-	         }
+	      
+	      for (Iterator<String> it=toEmails.iterator();it.hasNext();) {
+	    	  String email = it.next();
+		      try {
+		    	  InternetAddress toAddress = new InternetAddress(email);
+		    	  listAddresses.add(toAddress);
+		      } catch (AddressException e) {
+		    	  log.error("Invalid to address: " + email + ", cannot send email",e);
+		      }
 	      }
+
 	      replyTo[0] = fromAddress;
 	      InternetAddress[] toAddresses = listAddresses.toArray(new InternetAddress[listAddresses.size()]);
 	      emailService.sendMail(fromAddress, toAddresses, subject, message, null, replyTo, null);
@@ -245,5 +276,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      }
 	      return addresses;
 	}
+
+
 	
 }

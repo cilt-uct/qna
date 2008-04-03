@@ -166,7 +166,7 @@ public class AnswerLogicImplTest extends
 		// Add answer with valid configuration
 		try {
 			externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
-			
+					
 			QnaAnswer answer = new QnaAnswer();
 			answer.setAnswerText(answerText);
 			answer.setQuestion(tdp.question1_location3);

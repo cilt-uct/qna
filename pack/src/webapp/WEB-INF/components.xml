@@ -67,6 +67,7 @@
 		<property name="permissionLogic"
 			ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic"/>
+		<property name="notificationLogic" ref="org.sakaiproject.qna.logic.NotificationLogic" />
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 

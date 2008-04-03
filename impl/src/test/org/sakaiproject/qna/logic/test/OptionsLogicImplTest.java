@@ -277,8 +277,7 @@ public class OptionsLogicImplTest extends
 		QnaOptions options = optionsLogic.getOptions(LOCATION1_ID);
 		assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
-		Set<String> notificationList = optionsLogic
-				.getNotificationSet(LOCATION1_ID);
+		Set<String> notificationList = optionsLogic.getNotificationSet(LOCATION1_ID);
 		assertEquals(notificationList.size(), 1);
 		assertTrue(notificationList.contains(LOCATION1_CONTACT_EMAIL));
 	}

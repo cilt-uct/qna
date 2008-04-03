@@ -16,4 +16,9 @@ public class NotificationLogicStub implements NotificationLogic {
 
 	}
 
+	public void sendNewQuestionNotification(String[] emails, String questionText) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

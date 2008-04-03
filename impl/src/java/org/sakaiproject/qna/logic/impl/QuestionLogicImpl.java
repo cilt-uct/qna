@@ -1,6 +1,7 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,14 +11,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.AttachmentLogic;
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.utils.ComparatorsUtils;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
@@ -56,6 +58,12 @@ public class QuestionLogicImpl implements QuestionLogic {
 	
 	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
 		this.attachmentLogic = attachmentLogic;
+	}
+	
+	private NotificationLogic notificationLogic; 
+	
+	public void setNotificationLogic(NotificationLogic notificationLogic) {
+		this.notificationLogic = notificationLogic;
 	}
 	
 	private QnaDao dao;
@@ -225,7 +233,11 @@ public class QuestionLogicImpl implements QuestionLogic {
 				dao.save(question);
 				log.info("New question saved: " + question.getId());
 				
-				// TODO: EMAIL NOTIFICATION
+				// Notification
+				if (options.getEmailNotification()) {
+					String[] emails = (String[])optionsLogic.getNotificationSet(locationId).toArray(new String[]{});
+					notificationLogic.sendNewQuestionNotification(emails, question.getQuestionText());
+				}
 			} else {
 				throw new SecurityException(
 						"Current user cannot save new question for "

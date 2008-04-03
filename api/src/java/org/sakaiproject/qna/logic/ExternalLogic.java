@@ -1,5 +1,6 @@
 package org.sakaiproject.qna.logic;
 
+import java.util.Collection;
 import java.util.Set;
 
 public interface ExternalLogic {
@@ -82,6 +83,19 @@ public interface ExternalLogic {
 	 */
 	public String getSiteContactEmail(String locationId);
 	
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public String getUserEmail(String userId);
+
+	/**
+	 * 
+	 * @param locationId
+	 * @param permission
+	 * @return
+	 */
 	public Set getSiteUsersWithPermission(String locationId, String permission);
 	
 	/**
@@ -94,6 +108,16 @@ public interface ExternalLogic {
 	 * @return an array of email addresses that this message was sent to
 	 */
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message);
+	
+	/**
+	 * 
+	 * @param from
+	 * @param toEmails
+	 * @param subject
+	 * @param message
+	 * @return
+	 */
+	public String[] sendEmails(String from, String[] emails, String subject, String message);
 	
 	/**
 	 * Return tool id

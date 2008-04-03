@@ -14,6 +14,7 @@ import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
+import org.sakaiproject.qna.logic.test.stubs.NotificationLogicStub;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
@@ -27,7 +28,8 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
-
+	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
+	
 	private TestDataPreload tdp = new TestDataPreload();
 
 	protected String[] getConfigLocations() {
@@ -72,6 +74,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
 		questionLogic.setCategoryLogic(categoryLogic);
+		questionLogic.setNotificationLogic(notificationLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);

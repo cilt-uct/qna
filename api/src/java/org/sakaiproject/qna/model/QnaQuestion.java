@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class QnaQuestion {
 
-    private String id;
+	private String id;
 
 //	The category this question falls in
     private QnaCategory category;

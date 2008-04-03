@@ -10,9 +10,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
@@ -22,23 +23,26 @@ public class OptionsLogicImpl implements OptionsLogic {
 	private static Log log = LogFactory.getLog(OptionsLogicImpl.class);
 
 	private PermissionLogic permissionLogic;
-
+	private QnaDao dao;
+	private ExternalLogic externalLogic;
+	private ExternalEventLogic externalEventLogic;
+	
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
-
-	private QnaDao dao;
 
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
 
-	private ExternalLogic externalLogic;
-
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-
+	
+	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
+		this.externalEventLogic = externalEventLogic;
+	}
+	
 	public QnaOptions createDefaultOptions(String locationId) {
 		QnaOptions newOptions = new QnaOptions();
 
@@ -57,6 +61,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 		newOptions.setDateLastModified(now);
 
 		dao.save(newOptions);
+		externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_CREATE, newOptions.getId());
 		return newOptions;
 	}
 
@@ -123,6 +128,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 			options.setDateLastModified(new Date());
 			options.setOwnerId(userId);
 			dao.save(options);
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_UPDATE, options.getId());
 		} else {
 			throw new SecurityException("Current user cannot save options for "
 					+ options.getLocation()

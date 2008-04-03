@@ -1,7 +1,6 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -13,6 +12,7 @@ import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
+import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
@@ -31,43 +31,42 @@ public class QuestionLogicImpl implements QuestionLogic {
 	private static Log log = LogFactory.getLog(QuestionLogicImpl.class);
 	
 	private PermissionLogic permissionLogic;
+	private OptionsLogic optionsLogic;
+	private ExternalLogic externalLogic;
+	private CategoryLogic categoryLogic;
+	private AttachmentLogic attachmentLogic;
+	private NotificationLogic notificationLogic;
+	private ExternalEventLogic externalEventLogic;
+	private QnaDao dao;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
 
-	private OptionsLogic optionsLogic;
-
 	public void setOptionsLogic(OptionsLogic optionsLogic) {
 		this.optionsLogic = optionsLogic;
 	}
-
-	private ExternalLogic externalLogic;
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
 
-	private CategoryLogic categoryLogic;
-
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
 		this.categoryLogic = categoryLogic;
 	}
-
-	private AttachmentLogic attachmentLogic;
 	
 	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
 		this.attachmentLogic = attachmentLogic;
 	}
 	
-	private NotificationLogic notificationLogic; 
-	
 	public void setNotificationLogic(NotificationLogic notificationLogic) {
 		this.notificationLogic = notificationLogic;
 	}
-	
-	private QnaDao dao;
 
+	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
+		this.externalEventLogic = externalEventLogic;
+	}
+		
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
@@ -161,6 +160,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 			} finally {
 				dao.delete(question);
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_DELETE, question.getId());
 				log.info("Question deleted: " + question.getId());
 			}
 		
@@ -187,7 +187,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				question.setDateLastModified(new Date());
 				question.setLastModifierId(userId);
 				dao.save(question);
-				log.info("Question updated: " + question.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_UPDATE, question.getId());
 			} else {
 				throw new SecurityException(
 						"Current user cannot save question for "
@@ -231,7 +231,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 
 				dao.save(question);
-				log.info("New question saved: " + question.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_CREATE, question.getId());
 				
 				// Notification
 				if (options.getEmailNotification()) {
@@ -286,6 +286,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void filterPopulateAndSortQuestionList(List<QnaQuestion> questionList, int currentStart, int currentCount, String sortBy, boolean sortDir) {
 		questionList = filterListForPaging(questionList, currentStart, currentCount);
         sortQuestions(questionList, sortBy, sortDir);

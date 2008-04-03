@@ -11,6 +11,7 @@ import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -26,6 +27,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	private static Log log = LogFactory.getLog(CategoryLogicImplTest.class);
 	
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
 
 	private TestDataPreload tdp = new TestDataPreload();
 
@@ -57,6 +59,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		optionsLogic.setDao(dao);
 		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
+		optionsLogic.setExternalEventLogic(externalEventLogicStub);
 		
 		// create and setup the question logic
 		questionLogic = new QuestionLogicImpl();
@@ -64,13 +67,15 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		questionLogic.setPermissionLogic(permissionLogic);
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
+		questionLogic.setExternalEventLogic(externalEventLogicStub);
 		
 		// create and setup the category logic
 		categoryLogic = new CategoryLogicImpl();
 		categoryLogic.setDao(dao);
 		categoryLogic.setPermissionLogic(permissionLogic);
 		categoryLogic.setExternalLogic(externalLogicStub);
-	
+		categoryLogic.setExternalEventLogic(externalEventLogicStub);
+		
 		// preload testData
 		tdp.preloadTestData(dao);
 	}

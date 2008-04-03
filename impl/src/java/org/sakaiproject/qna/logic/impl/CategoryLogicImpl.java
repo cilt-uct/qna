@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
+import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
@@ -19,7 +20,8 @@ public class CategoryLogicImpl implements CategoryLogic {
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
 	private QnaDao dao;
-
+	private ExternalEventLogic externalEventLogic;
+	
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
@@ -32,6 +34,10 @@ public class CategoryLogicImpl implements CategoryLogic {
 		this.dao = dao;
 	}
 
+	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
+		this.externalEventLogic = externalEventLogic;
+	}
+	
 	public QnaCategory getCategoryById(String categoryId) {
 		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
@@ -43,6 +49,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaCategory category = getCategoryById(categoryId);
 			dao.delete(category);
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_DELETE, category.getId());
 		} else {
 			throw new SecurityException("Current user cannot remove category for "+locationId+" because they do not have permission");
 		}
@@ -56,6 +63,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 				category.setOwnerId(userId);
 				category.setDateLastModified(new Date());
 				dao.save(category);
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_UPDATE, category.getId());
 			} else {
 				throw new SecurityException("Current user cannot save category for "+locationId+" because they do not have permission");
 			}
@@ -63,6 +71,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			if (permissionLogic.canAddNewCategory(locationId, userId)) {
 				setNewCategoryDefaults(category,locationId, userId);
 				dao.save(category);
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_CREATE, category.getId());
 			} else {
 				throw new SecurityException("Current user cannot create new category for "+locationId+" because they do not have permission");
 			}

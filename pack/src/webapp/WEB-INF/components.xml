@@ -23,65 +23,58 @@
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
 	</bean>
+	
+	<bean id="org.sakaiproject.qna.logic.ExternalEventLogic" class="org.sakaiproject.qna.logic.impl.ExternalEventLogicImpl">
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService" />
+	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.PermissionLogic"
 		class="org.sakaiproject.qna.logic.impl.PermissionLogicImpl">
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.CategoryLogic"
 		class="org.sakaiproject.qna.logic.impl.CategoryLogicImpl">
-		<property name="permissionLogic"
-			ref="org.sakaiproject.qna.logic.PermissionLogic"/>
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.SearchLogic" class="org.sakaiproject.qna.logic.impl.SearchLogicImpl">
-		<property name="permissionLogic"
-			ref="org.sakaiproject.qna.logic.PermissionLogic" />
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.OptionsLogic"
 		class="org.sakaiproject.qna.logic.impl.OptionsLogicImpl">
-		<property name="permissionLogic"
-			ref="org.sakaiproject.qna.logic.PermissionLogic" />
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.QuestionLogic"
 		class="org.sakaiproject.qna.logic.impl.QuestionLogicImpl">
-		<property name="optionsLogic"
-			ref="org.sakaiproject.qna.logic.OptionsLogic" />
-		<property name="categoryLogic"
-			ref="org.sakaiproject.qna.logic.CategoryLogic" />
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
-		<property name="permissionLogic"
-			ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic"/>
 		<property name="notificationLogic" ref="org.sakaiproject.qna.logic.NotificationLogic" />
+		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.AnswerLogic" class="org.sakaiproject.qna.logic.impl.AnswerLogicImpl">
-		<property name="optionsLogic"
-			ref="org.sakaiproject.qna.logic.OptionsLogic" />
-		<property name="questionLogic"
-			ref="org.sakaiproject.qna.logic.QuestionLogic" />
-		<property name="externalLogic"
-			ref="org.sakaiproject.qna.logic.ExternalLogic" />
-		<property name="permissionLogic"
-			ref="org.sakaiproject.qna.logic.PermissionLogic" />
-		<property name="notificationLogic" 
-			ref="org.sakaiproject.qna.logic.NotificationLogic" />	
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="notificationLogic" ref="org.sakaiproject.qna.logic.NotificationLogic" />	
+		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
 

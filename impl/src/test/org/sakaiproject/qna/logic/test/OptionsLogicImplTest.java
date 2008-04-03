@@ -6,9 +6,9 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
@@ -25,6 +25,8 @@ public class OptionsLogicImplTest extends
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	
+	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
 
 	private TestDataPreload tdp = new TestDataPreload();
 
@@ -56,6 +58,7 @@ public class OptionsLogicImplTest extends
 		optionsLogic.setDao(dao);
 		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
+		optionsLogic.setExternalEventLogic(externalEventLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AnswerLogic;
+import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
@@ -17,37 +18,37 @@ import org.sakaiproject.qna.model.QnaQuestion;
 public class AnswerLogicImpl implements AnswerLogic {
 
 	private PermissionLogic permissionLogic;
-
+	private OptionsLogic optionsLogic;
+	private QuestionLogic questionLogic;
+	private ExternalLogic externalLogic;
+	private NotificationLogic notificationLogic;
+	private ExternalEventLogic externalEventLogic;
+	private QnaDao dao;
+	
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
-
-	private OptionsLogic optionsLogic;
 
 	public void setOptionsLogic(OptionsLogic optionsLogic) {
 		this.optionsLogic = optionsLogic;
 	}
 
-	private QuestionLogic questionLogic;
-
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
 
-	private ExternalLogic externalLogic;
-
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-
-	private NotificationLogic notificationLogic;
 	
 	public void setNotificationLogic(NotificationLogic notificationLogic) {
 		this.notificationLogic = notificationLogic;
 	}
-	
-	private QnaDao dao;
 
+	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
+		this.externalEventLogic = externalEventLogic;
+	}
+	
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
@@ -102,6 +103,8 @@ public class AnswerLogicImpl implements AnswerLogic {
 					question.addAnswer(answer);
 					dao.save(answer);
 					
+					externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_CREATE, answer.getId());
+					
 					// Notification emails
 					if (answer.isPrivateReply()) {
 						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
@@ -127,6 +130,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 				answer.setLastModifierId(userId);
 
 				dao.save(answer);
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_UPDATE, answer.getId());
 			} else {
 				throw new SecurityException(
 						"Current user cannot update answer for "
@@ -163,6 +167,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			dao.delete(answer);
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_DELETE, answer.getId());
 		} else {
 			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
 		}

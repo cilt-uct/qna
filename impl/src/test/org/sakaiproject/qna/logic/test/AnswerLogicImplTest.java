@@ -13,6 +13,7 @@ import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.NotificationLogicStub;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -23,20 +24,16 @@ public class AnswerLogicImplTest extends
 		AbstractTransactionalSpringContextTests {
 
 	AnswerLogicImpl answerLogic;
-
 	PermissionLogicImpl permissionLogic;
-
 	QuestionLogicImpl questionLogic;
-
 	OptionsLogicImpl optionsLogic;
-
 	CategoryLogicImpl categoryLogic;
-
 	QnaDao dao;
 
 	private static Log log = LogFactory.getLog(AnswerLogicImplTest.class);
 
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
 	
 	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
 
@@ -70,13 +67,15 @@ public class AnswerLogicImplTest extends
 		optionsLogic.setDao(dao);
 		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
+		optionsLogic.setExternalEventLogic(externalEventLogicStub);
 
 		// create and setup CategoryLogic
 		categoryLogic = new CategoryLogicImpl();
 		categoryLogic.setDao(dao);
 		categoryLogic.setExternalLogic(externalLogicStub);
 		categoryLogic.setPermissionLogic(permissionLogic);
-
+		categoryLogic.setExternalEventLogic(externalEventLogicStub);
+		
 		// create and setup the object to be tested
 		questionLogic = new QuestionLogicImpl();
 		questionLogic.setDao(dao);
@@ -84,7 +83,8 @@ public class AnswerLogicImplTest extends
 		questionLogic.setOptionsLogic(optionsLogic);
 		questionLogic.setExternalLogic(externalLogicStub);
 		questionLogic.setCategoryLogic(categoryLogic);
-
+		questionLogic.setExternalEventLogic(externalEventLogicStub);
+		
 		// create and setup answer object
 		answerLogic = new AnswerLogicImpl();
 		answerLogic.setDao(dao);
@@ -93,6 +93,7 @@ public class AnswerLogicImplTest extends
 		answerLogic.setQuestionLogic(questionLogic);
 		answerLogic.setOptionsLogic(optionsLogic);
 		answerLogic.setNotificationLogic(notificationLogicStub);
+		answerLogic.setExternalEventLogic(externalEventLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);

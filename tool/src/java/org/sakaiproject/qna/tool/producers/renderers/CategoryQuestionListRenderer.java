@@ -9,7 +9,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.CategoryTextComparator;
+import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
@@ -72,7 +72,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		}
 
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
-		Collections.sort(categories,new CategoryTextComparator());
+		Collections.sort(categories, new CategoriesSortOrderComparator());
 
 		UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
 		UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{DeleteMultiplesHelper.categoryids}", null);

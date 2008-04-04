@@ -216,11 +216,18 @@
 	<!-- Organise Producers -->
 	<bean id="OrganiseListProducer" class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
 		<property name="messageLocator" ref="messageLocator"/>
-		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
-		<property name="frameAdjustingProducer" ref="frameAdjustingProducer"/>
-		<property name="handler" ref="OrganiseEditHandler" />
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 	</bean>
 
+	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+	</bean>
+
+<!--
 	<bean id="OrganiseCategoryAddProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryAddProducer">
 		<property name="messageLocator" ref="messageLocator"/>
 		<property name="handler" ref="OrganiseEditHandler" />
@@ -244,6 +251,7 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 	</bean>
+-->
 
 	<!-- OTP -->
 	<bean id="DeleteMultiplesHelper" class="org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper">

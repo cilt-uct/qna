@@ -6,11 +6,11 @@
 		<link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all"/>
 		<link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
 		<script type="text/javascript" rsf:id="resize"/>
-		<script type="text/javascript" src="../js/jquery-1.2.pack.js"></script>
-		<script type="text/javascript" src="../js/interface-1.2.js"></script>
-		<script type="text/javascript" src="../js/json.js"></script>
-		<script type="text/javascript" src="../js/inestedsortable.js"></script>
-		<script type="text/javascript" src="../js/jquery.nestedsortablewidget.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.2.3.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.dimensions.js"></script>
+		<script type="text/javascript" src="../js/ui.mouse.js"></script>
+		<script type="text/javascript" src="../js/ui.sortable.js"></script>
+		<script type="text/javascript" src="../js/ui.sortable.ext.js"></script>
 		<script type="text/javascript" src="../js/qna.js" rsf:id="scr=rewrite-url"></script>
 		<script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
 	</head>
@@ -20,130 +20,39 @@
 			<div rsf:id="navIntraTool:" class="navIntraTool"/>
 			<div rsf:id="searchTool:" class="searchTool"/>
 
-				<h3 rsf:id="page-title" class="insColor insBak insBorder">Organise</h3>
+			<h3 rsf:id="page-title" class="insColor insBak insBorder">Organise</h3>
+			<p rsf:id="page-message">page-message</p>
 
-			<div rsf:id="content:">
-			<form rsf:id="organise-form" class="order_action_form">
-				<p class="act">
-					<input rsf:id="cancel-button" type="submit" value="Cancel"/>
-					<input rsf:id="save-button" type="submit" value="Save"/>
-				</p>
-				<div class="alertMessage" id="call-results">
-					<strong rsf:id="message">Note: Changes to page ordering will not take effect until you click 'Save'. Deleting, Adding or Editing a Page is saved immediately</strong>
-				</div>
-				<div>
-					<strong rsf:id="list-label">Current QnA Ordering</strong>
-				</div>
+			<form rsf:id="organise-form" id="organise-form">
+			<table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0">
+			<tbody>
+				<script rsf:id="makeCategoriesSortable" type="text/javascript">
+					makeCategoriesSortable("content");
+				</script>
+				<span rsf:id="category-sort-order"/>
+				<ul rsf:id="content:" id="content" class="sortable">
+					<li rsf:id="category-entry:" id="category-entry" class="sortable_item">
+						<span rsf:id="category-name" id="category-name">Assignments</span>
+						<input rsf:id="category-sort-order-checkbox" id="category-sort-order-checkbox" type="checkbox" style="display:none"/>
+						<script rsf:id="makeQuestionsSortable" type="text/javascript">
+							makeQuestionsSortable("category-entry");
+						</script>
+						<ul class="sortablequestion">
 
-				<div id="sorting_widget"></div>
+							<li rsf:id="question-entry:" id="question-entry" class="editable_item">
+								<span rsf:id="question-text" id="question-text">Question1</span>
+							</li>
+						</ul>
 
-				<ul id="sortable-categories" class="sortable">
-					<li class="sortable_item" id="category1">
-						Category 1
-						<ul id="sortable-questions" class="sortablequestion">
-							<li class="editable_item" id="question1">
-								Question 1
-							</li>
-							<li class="editable_item" id="question2">
-								Question 2
-							</li>
-						</ul>
-					</li>
-					<li class="sortable_item" id="category2">
-						Category 2
-						<ul id="sortable-questions2" class="sortablequestion">
-							<li class="editable_item" id="question1">
-								Question 1
-							</li>
-							<li class="editable_item" id="question2">
-								Question 2
-							</li>
-						</ul>
-					</li>
-					<li class="sortable_item" id="category3">
-						Category 3
-						<ul id="sortable-questions3" class="sortablequestion">
-							<li class="editable_item" id="question1">
-								Question 1
-							</li>
-							<li class="editable_item" id="question2">
-								Question 2
-							</li>
-						</ul>
-					</li>
-					<li class="sortable_item" id="category4">
-						Category 4
-						<ul id="sortable-questions4" class="sortablequestion">
-							<li class="editable_item" id="question1">
-								Question 1
-							</li>
-							<li class="editable_item" id="question2">
-								Question 2
-							</li>
-						</ul>
 					</li>
 				</ul>
-
-				<script type="text/javascript">
-					jQuery( function($) {
-						$('#sortable-categories').Sortable(
-							{
-								accept: 'sortable_item',
-								opacity: .8,
-								helperclass: 'helper'
-							}
-						);
-					});
-				</script>
-
-				<script type="text/javascript">
-					jQuery( function($) {
-						$('#sortable-questions').Sortable(
-							{
-								accept: 'editable_item',
-								opacity: .8,
-							}
-						);
-						$('#sortable-questions2').Sortable(
-							{
-								accept: 'editable_item',
-								opacity: .8,
-							}
-						);
-						$('#sortable-questions3').Sortable(
-							{
-								accept: 'editable_item',
-								opacity: .8,
-							}
-						);
-						$('#sortable-questions4').Sortable(
-							{
-								accept: 'editable_item',
-								opacity: .8,
-							}
-						);
-					});
-				</script>
-
-				<script type="text/javascript">
-					jQuery( function($) {
-						$('#sorting_widget').NestedSortableWidget(
-						{
-							name: 'my_sorting_widget',
-							loadUrl: "json_load.js",
-							paginate: true,
-							itemsPerPage: 4,
-							startPage: 1,
-						}
-					});
-				</script>
-
-				<p class="act">
-					<input rsf:id="cancel-button" type="submit" value="Cancel"/>
-					<input rsf:id="save-button" type="submit" value="Save"/>
-				</p>
+			</tbody>
+			</table>
+			<p class="act">
+				<input rsf:id="cancel-button" type="submit" value="Cancel"/>
+				<input rsf:id="save-button" type="submit" value="Save"/>
+			</p>
 			</form>
-			</div>
 		</div>
 	</body>
 </html>

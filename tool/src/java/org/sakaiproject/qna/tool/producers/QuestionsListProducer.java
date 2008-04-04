@@ -234,16 +234,25 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				}
 			}
 			
-			if (view.equals(ViewTypeConstants.CATEGORIES)) {
-				renderer = categoryQuestionListRenderer;
-			} else {
-				renderer = detailedQuestionListRenderer;
-			}
+			renderer = getRendererForViewType(view);
 			params.viewtype = view;
 			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, params.viewtype);
 		}
 		
 		return renderer;
+	}
+	
+	private QuestionListRenderer getRendererForViewType(String view) {
+		if (ViewTypeConstants.isValid(view)) {
+			if (view.equals(ViewTypeConstants.ALL_DETAILS)) {
+				return detailedQuestionListRenderer;
+			} else if (view.equals(ViewTypeConstants.CATEGORIES)) {
+				return categoryQuestionListRenderer;
+			} else {
+				return standardQuestionListRenderer;
+			}
+		}
+		return null;
 	}
 	
 }

@@ -31,13 +31,8 @@ import uk.org.ponder.rsf.components.UIOutput;
  */
 public class StandardQuestionListRenderer implements QuestionListRenderer {
 
-	private ListNavigatorRenderer listNavigatorRenderer;
 	private QuestionLogic questionLogic;
 	private ExternalLogic externalLogic;
-
-	public void setListNavigatorRenderer(ListNavigatorRenderer listNavigatorRenderer) {
-		this.listNavigatorRenderer = listNavigatorRenderer;
-	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
@@ -48,8 +43,6 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 	}
 
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
-
-		listNavigatorRenderer.makeListNavigator(tofill, "pager:");
 
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 

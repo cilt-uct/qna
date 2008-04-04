@@ -216,6 +216,7 @@
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="ELEvaluator" ref="ELEvaluator"/>
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
 	</bean>
 
 	<!-- Organise Producers -->

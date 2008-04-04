@@ -25,7 +25,7 @@ public class PagerRenderer {
 	private MessageLocator messageLocator;
 	private ExternalLogic externalLogic;
 	
-	public static final int DEFAULT_START_COUNT = 50;
+	public static final int DEFAULT_START_COUNT = 25;
 	
 	public Integer currentStart = 0;
 	public Integer currentCount = DEFAULT_START_COUNT;		//actually set in the pager view parameters :-)

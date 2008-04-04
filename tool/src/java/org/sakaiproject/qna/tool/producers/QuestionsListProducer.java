@@ -18,11 +18,11 @@ import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolSession;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
-import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -36,11 +36,6 @@ import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
-import uk.org.ponder.rsf.mappings.RSFMappingLoader;
-import uk.org.ponder.rsf.processor.RSFActionHandler;
-import uk.org.ponder.rsf.processor.RSFRenderHandler;
-import uk.org.ponder.rsf.util.RSFUtil;
-import uk.org.ponder.rsf.util.html.RSFHTMLUtil;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
@@ -51,9 +46,6 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
     public static final String VIEW_ID = "questions_list";
-    public String getViewID() {
-        return VIEW_ID;
-    }
 
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;
@@ -65,7 +57,12 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private PermissionLogic permissionLogic;
     private OptionsLogic optionsLogic;
     private BeanGetter ELEvaluator;
+    private SessionManager sessionManager;
 
+    public String getViewID() {
+        return VIEW_ID;
+    }
+    
 	public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
 	}
@@ -106,34 +103,19 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
     }
+    
+    public void setSessionManager(SessionManager sessionManager) {
+  	  this.sessionManager = sessionManager;
+    }
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 
 		// Depending on default or one selected view type, send through parameter
-		QuestionListRenderer renderer;
+		
 		SortPagerViewParams params = (SortPagerViewParams) viewparams;
-
-
-		if (params.viewtype != null) {
-			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
-				renderer = categoryQuestionListRenderer;
-			} else if (params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
-				renderer = detailedQuestionListRenderer;
-			} else {
-				renderer = standardQuestionListRenderer; // Just make default standard list for now
-			}
-		} else {
-			String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
-			if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
-				renderer = categoryQuestionListRenderer;
-				params.viewtype = ViewTypeConstants.CATEGORIES;
-			} else {
-				renderer = detailedQuestionListRenderer;
-				params.viewtype = ViewTypeConstants.MOST_POPULAR;
-			}
-		}
+		QuestionListRenderer renderer = getRenderer(params);
 
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
 
@@ -213,4 +195,55 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		}
 
 	}
+	
+	/**
+	 * Determine which renderer to use (as well as update the view type / session)
+	 * @param params
+	 * @return
+	 */
+	private QuestionListRenderer getRenderer(SortPagerViewParams params) {
+		QuestionListRenderer renderer = null;
+		ToolSession toolSession = sessionManager.getCurrentToolSession();
+		
+		if (params.viewtype != null) { // Type has been selected
+			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
+				renderer = categoryQuestionListRenderer;
+			} else if (params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
+				renderer = detailedQuestionListRenderer;
+			} else {
+				renderer = standardQuestionListRenderer; // Just make default standard list for now
+			}
+			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, params.viewtype);
+		} else {
+			String view;
+			
+			if (toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR) != null) {
+				view = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
+			} else { // default
+				String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
+				if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
+					view = ViewTypeConstants.CATEGORIES;
+				} else if (defaultView.equals(QnaConstants.MOST_POPULAR_VIEW)){
+					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+						view = ViewTypeConstants.ALL_DETAILS; // Admin users see all details
+					} else {
+						view = ViewTypeConstants.MOST_POPULAR;
+					}
+				} else { // Shouldn't happen
+					view = ViewTypeConstants.CATEGORIES;
+				}
+			}
+			
+			if (view.equals(ViewTypeConstants.CATEGORIES)) {
+				renderer = categoryQuestionListRenderer;
+			} else {
+				renderer = detailedQuestionListRenderer;
+			}
+			params.viewtype = view;
+			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, params.viewtype);
+		}
+		
+		return renderer;
+	}
+	
 }

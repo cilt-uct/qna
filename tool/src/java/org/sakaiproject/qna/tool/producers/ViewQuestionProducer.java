@@ -12,7 +12,7 @@ import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
-import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
+import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
@@ -49,9 +49,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		return VIEW_ID;
 	}
 
-	private ListIteratorRenderer listIteratorRenderer;
-	public void setListIteratorRenderer(ListIteratorRenderer listIteratorRenderer) {
-		this.listIteratorRenderer = listIteratorRenderer;
+	private QuestionIteratorRenderer questionIteratorRenderer;
+	public void setQuestionIteratorRenderer(QuestionIteratorRenderer questionIteratorRenderer) {
+		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 
     private NavBarRenderer navBarRenderer;
@@ -102,7 +102,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 
-		listIteratorRenderer.makeListIterator(tofill, "pager1:");
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",ViewQuestionProducer.VIEW_ID, question);
 		UIMessage.make(tofill,"page-title","qna.view-question.title");
 		UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
 		UIMessage.make(tofill,"question-title","qna.view-question.question");
@@ -120,7 +120,6 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
 		}
 
-		// TODO: make it work
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			UIInternalLink.make(tofill, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
 			UIInternalLink.make(tofill, "move-category-link", new QuestionParams(MoveQuestionProducer.VIEW_ID, question.getId()));
@@ -132,7 +131,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		renderAnswers(tofill, question, answerLocator);
 
 		// TODO: Fix pager
-		listIteratorRenderer.makeListIterator(tofill, "pager2:");
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:",ViewQuestionProducer.VIEW_ID, question);
 
 		if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;
@@ -229,7 +228,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
-			params.questionid = ((QuestionParams)incoming).questionid;
+			if (params.questionid == null) {
+				params.questionid = ((QuestionParams)incoming).questionid; 
+			}
 		}
 	}
 

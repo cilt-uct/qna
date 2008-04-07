@@ -13,7 +13,7 @@ import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
-import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
+import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
@@ -35,7 +35,7 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 public class SearchResultsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
 
 	public static final String VIEW_ID = "search_results";
-	private ListIteratorRenderer listIteratorRenderer;
+	private QuestionIteratorRenderer questionIteratorRenderer;
 	private SearchBarRenderer searchBarRenderer;
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
@@ -45,8 +45,8 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		return VIEW_ID;
 	}
 
-	public void setListIteratorRenderer(ListIteratorRenderer listIteratorRenderer) {
-		this.listIteratorRenderer = listIteratorRenderer;
+	public void setListIteratorRenderer(QuestionIteratorRenderer questionIteratorRenderer) {
+		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 
     public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {

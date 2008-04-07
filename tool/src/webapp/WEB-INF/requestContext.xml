@@ -29,8 +29,17 @@
 		id="SearchBarRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer"/>
 
-	<bean id="ListIteratorRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer">
+	<bean id="QuestionIteratorRenderer"
+		class="org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer">
+		<property name="questionIteratorHelper" ref="QuestionIteratorHelper"/>
+	</bean>
+
+	<!-- Question Iterator Helper -->
+	<bean id="QuestionIteratorHelper" class="org.sakaiproject.qna.tool.otp.QuestionIteratorHelper">
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 	</bean>
 
 	<bean id="CategoryQuestionListRenderer"
@@ -162,7 +171,7 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		<property name="questionIteratorRenderer" ref="QuestionIteratorRenderer" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
@@ -172,7 +181,7 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="richTextEvolver" ref="richTextEvolver" />
-		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		<property name="questionIteratorRenderer" ref="QuestionIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
@@ -182,7 +191,7 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.SearchResultsProducer">
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-		<property name="listIteratorRenderer" ref="ListIteratorRenderer" />
+		<property name="questionIteratorRenderer" ref="QuestionIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="searchLogic" ref="org.sakaiproject.qna.logic.SearchLogic"/>
@@ -227,6 +236,8 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
+
+	
 <!--
 	<bean id="OrganiseCategoryAddProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryAddProducer">
 		<property name="messageLocator" ref="messageLocator"/>

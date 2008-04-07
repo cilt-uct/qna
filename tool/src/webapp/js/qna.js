@@ -98,7 +98,7 @@
     	var command = document.getElementById(command_id);
     	link.onclick = function() {command.click(); return false;};
     }
-
+    
     // Used to add new file upload inputs
     // Parameters: div_id = The div to append to
     //			   index_value_id = Index of file input

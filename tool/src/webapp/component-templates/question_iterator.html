@@ -12,14 +12,10 @@
 
 <body>
 <!-- everything outside this div is thrown away -->
-
-
-<div rsf:id="list-iterator:" class="layoutViewContainer" style="text-align: right;">
-	<form rsf:id="list-iterator-form" action="post">
-	   <input rsf:id="previous-item" type="submit" name="eventSubmit_doList_next" title="Previous"/>
-	   <input rsf:id="return-to-list" type="submit" name="eventSubmit_doList_last" title="Return to List"/>
-	   <input rsf:id="next-item" type="submit" name="eventSubmit_doList_next" title="Next" />
-	</form>
+<div rsf:id="question-iterator:" class="navItem itemNav" style="text-align: right;">
+	   <a rsf:id="previous-item" id="previous-item"><input accesskey="c" type="button" rsf:id="previous-item-btn" id="previous-item-btn" name="Previous" /></a>
+	   <a rsf:id="return-to-list" id="return-to-list"><input accesskey="c" type="button" rsf:id="return-to-list-btn" id="return-to-list-btn" name="Return to List"/></a>
+	   <a rsf:id="next-item" id="next-item"><input accesskey="c" type="button" rsf:id="next-item-btn" id="next-item-btn" name="Next" /></a>
 </div>
 
 </body>

@@ -8,7 +8,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
-import org.sakaiproject.qna.tool.producers.renderers.ListIteratorRenderer;
+import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 
@@ -36,9 +36,9 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		return VIEW_ID;
 	}
 
-	private ListIteratorRenderer listIteratorRenderer;
-	public void setListIteratorRenderer(ListIteratorRenderer listIteratorRenderer) {
-		this.listIteratorRenderer = listIteratorRenderer;
+	private QuestionIteratorRenderer questionIteratorRenderer;
+	public void setQuestionIteratorRenderer(QuestionIteratorRenderer questionIteratorRenderer) {
+		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 
 	private NavBarRenderer navBarRenderer;
@@ -63,7 +63,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		listIteratorRenderer.makeListIterator(tofill, "pager1:");
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:", ViewPrivateReplyProducer.VIEW_ID, question);
 
 		UIMessage.make(tofill, "page-title", "qna.view-private-reply.title");
 		UIMessage.make(tofill, "sub-title", "qna.view-private-reply.subtitle");
@@ -88,7 +88,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 			}
 		}
 
-		listIteratorRenderer.makeListIterator(tofill, "pager2:");
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:", ViewPrivateReplyProducer.VIEW_ID, question);
 
 		UIForm form = UIForm.make(tofill, "private-reply-form");
 		UICommand.make(form,"publish-question-button",UIMessage.make("qna.view-private-reply.publish")).setReturn("publish");

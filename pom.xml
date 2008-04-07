@@ -16,7 +16,7 @@
 
    <!-- Sakai master pom is the parent -->
    <parent>
-      <artifactId>master</artifactId>
+      <artifactId>../master</artifactId>
       <groupId>org.sakaiproject</groupId>
       <version>M2</version>
    </parent>

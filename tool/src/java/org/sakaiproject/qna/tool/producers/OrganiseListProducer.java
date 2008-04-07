@@ -9,6 +9,7 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
+import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.tool.params.OrganiseParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
@@ -82,30 +83,42 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 		UIForm form = UIForm.make(tofill, "organise-form");
 
 		UISelect catorder = UISelect.makeMultiple(form, "category-sort-order", null, "#{OrganiserHelper.catorder}", null);
+		UISelect queorder = UISelect.makeMultiple(form, "question-sort-order", null, "#{OrganiserHelper.queorder}", null);
 
 		UIBranchContainer content = UIBranchContainer.make(form, "content:");
 
 		UIInitBlock.make(form, "makeCategoriesSortable", "makeCategoriesSortable", new Object[] {content} );
 
-		StringList deletable = new StringList();
+		StringList catorderlist = new StringList();
+		StringList queorderlist = new StringList();
+
 		for (QnaCategory qnaCategory : categories) {
 			UIBranchContainer categoryContainer = UIBranchContainer.make(content, "category-entry:");
-
-			UIInitBlock.make(categoryContainer, "makeQuestionsSortable", "makeQuestionsSortable", new Object[] {categoryContainer} );
+			UIBranchContainer questionContent = UIBranchContainer.make(categoryContainer, "question-content:");
 
 			UIOutput.make(categoryContainer, "category-name", qnaCategory.getCategoryText());
 
-			UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), deletable.size());
-			deletable.add(qnaCategory.getId());
+			UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), catorderlist.size());
+			catorderlist.add(qnaCategory.getId());
 
 			List<QnaQuestion> questions = qnaCategory.getQuestions();
-			for (QnaQuestion qnaQuestion : questions) {
-				UIBranchContainer questionContainer = UIBranchContainer.make(categoryContainer, "question-entry:");
+			Collections.sort(questions, new QuestionsSortOrderComparator());
+			for (int k=0; k<questions.size(); k++) {
+				QnaQuestion qnaQuestion = questions.get(k);
+				UIBranchContainer questionContainer = UIBranchContainer.make(questionContent, "question-entry:");
+
+				UIOutput.make(questionContainer, "question-entry-nr", k+"");
+
+				UIInitBlock.make(categoryContainer, "makeQuestionsSortable", "makeQuestionsSortable", new Object[] {questionContent, k} );
 
 				UIOutput.make(questionContainer, "question-text", TextUtil.stripTags(qnaQuestion.getQuestionText()));
+
+				UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());
+				queorderlist.add(qnaQuestion.getId());
 			}
 		}
-		catorder.optionlist.setValue(deletable.toStringArray());
+		catorder.optionlist.setValue(catorderlist.toStringArray());
+		queorder.optionlist.setValue(queorderlist.toStringArray());
 
 		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 		UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), "#{OrganiserHelper.saveOrder}");

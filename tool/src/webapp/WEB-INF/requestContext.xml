@@ -234,35 +234,8 @@
 	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
-
-
-	
-<!--
-	<bean id="OrganiseCategoryAddProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryAddProducer">
-		<property name="messageLocator" ref="messageLocator"/>
-		<property name="handler" ref="OrganiseEditHandler" />
-	</bean>
-
-	<bean id="OrganiseCategoryEditProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryEditProducer">
-		<property name="messageLocator" ref="messageLocator"/>
-		<property name="handler" ref="OrganiseEditHandler" />
-	</bean>
-
-	<bean id="OrganiseCategoryDelProducer" class="org.sakaiproject.qna.tool.producers.OrganiseCategoryDelProducer">
-		<property name="messageLocator" ref="messageLocator"/>
-		<property name="handler" ref="OrganiseEditHandler" />
-	</bean>
-
-	<bean id="OrganiseEditHandler" init-method="init" class="org.sakaiproject.qna.tool.producers.handlers.OrganiseEditHandler">
-		<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
-		<property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
-		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
-		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-	</bean>
--->
 
 	<!-- OTP -->
 	<bean id="DeleteMultiplesHelper" class="org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper">

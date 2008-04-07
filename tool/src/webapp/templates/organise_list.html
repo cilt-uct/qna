@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="../js/ui.mouse.js"></script>
 		<script type="text/javascript" src="../js/ui.sortable.js"></script>
 		<script type="text/javascript" src="../js/ui.sortable.ext.js"></script>
+		<script type="text/javascript" src="../js/inestedsortable-1.0.1.pack.js"></script>
 		<script type="text/javascript" src="../js/qna.js" rsf:id="scr=rewrite-url"></script>
 		<script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
 	</head>
@@ -30,17 +31,20 @@
 					makeCategoriesSortable("content");
 				</script>
 				<span rsf:id="category-sort-order"/>
+				<span rsf:id="question-sort-order"/>
+
 				<ul rsf:id="content:" id="content" class="sortable">
 					<li rsf:id="category-entry:" id="category-entry" class="sortable_item">
 						<span rsf:id="category-name" id="category-name">Assignments</span>
 						<input rsf:id="category-sort-order-checkbox" id="category-sort-order-checkbox" type="checkbox" style="display:none"/>
 						<script rsf:id="makeQuestionsSortable" type="text/javascript">
-							makeQuestionsSortable("category-entry");
+							makeQuestionsSortable("question-content", "question-entry-nr");
 						</script>
-						<ul class="sortablequestion">
-
+						<ul rsf:id="question-content:" id="question-content" class="sortablequestion">
+							<input type="hidden" rsf:id="question-entry-nr"/>
 							<li rsf:id="question-entry:" id="question-entry" class="editable_item">
 								<span rsf:id="question-text" id="question-text">Question1</span>
+								<input rsf:id="question-sort-order-checkbox" id="question-sort-order-checkbox" type="checkbox" style="display:none"/>
 							</li>
 						</ul>
 

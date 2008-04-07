@@ -118,36 +118,44 @@
     	$(document).ready(function() {
 	    	var content = document.getElementById(content_id);
 	    	var category = ".sortable_item";
-	    	var questionContainer = ".sortablequestion";
-	    	var questions = ".editable_item";
-	    	//document.getElementById(category_entry);
-	    	//var question = document.getElementById(question_entry);
 
-//	    	alert(content.id);
-	    	//alert(category.id);
-	    	//alert(question.id);
-
-//	    	var expr = new RegExp(element.id +"question-entry:([0-9]*):$");
-
-			$(content).sortable({ items: $(category), revert: true, tree: true });
-			//$(questionContainer).sortable({ items: $(questions), revert: true, tree: true });
-			//$(content).sortable({ connectWith: $(category) });
-			//$(category).sortable({ connectWith: content });
+			$(content).sortable(
+				{
+					items: $(category),
+					revert: true,
+					opacity: 0.6,
+					containment: content
+				}
+			);
 		});
     }
 
-    function makeQuestionsSortable(category_entry) {
+    function makeQuestionsSortable(question_content, question_entry_nr) {
     	$(document).ready(function() {
+
     		$('input:checkbox').each( function() {
 				if (this.checked == false) {
 					this.checked = true;
 				}
 			});
 
-    		var category = ".sortablequestion";
-    		//document.getElementById(category_id);
-    		var questions = ".editable_item";
+			var quecontent = document.getElementById(question_content);
+			var queentries = new Array();
 
-    		$(category).sortable({ items: $(questions), revert: true, tree: true});
+			for (var k=0; k<=question_entry_nr; k++) {
+				if (k==0) var nr = ""
+				if (k>0) var nr = k;
+				var entry = quecontent.id+"question-entry:"+nr+":";
+				queentries[k] = document.getElementById(entry);
+			}
+
+    		$(quecontent).sortable(
+    			{
+    				items: $(queentries),
+    				revert: true,
+    				opacity: 0.6,
+    				containment: quecontent
+   				}
+ 			);
     	});
     }

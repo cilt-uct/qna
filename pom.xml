@@ -15,11 +15,20 @@
    <version>0.1</version>
 
    <!-- Sakai master pom is the parent -->
+   <!--
    <parent>
-      <artifactId>../master</artifactId>
+      <artifactId>master</artifactId>
       <groupId>org.sakaiproject</groupId>
-      <version>M2</version>
+      <version>SNAPSHOT</version>
    </parent>
+   -->
+
+	<parent>
+		<artifactId>base</artifactId>
+		<groupId>org.sakaiproject</groupId>
+		<version>M2</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
    <modules>
       <module>api</module>

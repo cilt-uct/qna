@@ -35,7 +35,11 @@
     }
 
     function change_view(select,form,current_selected) {
-    	document.location=form.action+"?viewtype="+select.options[select.selectedIndex].value;
+    	if ((select.options[select.selectedIndex].value == "CATEGORIES") || (select.options[select.selectedIndex].value == "ALL_DETAILS")) {
+			document.location=form.action+"?viewtype="+select.options[select.selectedIndex].value;
+    	} else {
+    		document.location=form.action+"?viewtype=STANDARD&sortBy="+select.options[select.selectedIndex].value;
+    	}	
     }
 
     // View select on question list screen

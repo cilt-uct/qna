@@ -23,18 +23,18 @@ public class SortHeaderRenderer {
     	
     	//Link Text
     	UIMessage.make(joint, "text", link_text);
-    	if (params.sort_by.equals(sort_by)){
-    		UILink.make(joint, "arrow", (params.sort_dir.equals(QuestionLogic.SORT_DIR_ASC) ? BULLET_UP_IMG_SRC : BULLET_DOWN_IMG_SRC));
+    	if (params.sortBy.equals(sort_by)){
+    		UILink.make(joint, "arrow", (params.sortDir.equals(QuestionLogic.SORT_DIR_ASC) ? BULLET_UP_IMG_SRC : BULLET_DOWN_IMG_SRC));
     	}
 
     	//Add Link and modify params
-    	String newSortDir = (params.sort_by.equals(sort_by) ? (params.sort_dir.equals(QuestionLogic.SORT_DIR_ASC) 
+    	String newSortDir = (params.sortBy.equals(sort_by) ? (params.sortDir.equals(QuestionLogic.SORT_DIR_ASC) 
     			? QuestionLogic.SORT_DIR_DESC 
     			: QuestionLogic.SORT_DIR_ASC) : QuestionLogic.SORT_DIR_ASC);
     	
     	ViewParameters new_params = viewparams.copyBase();
-    	((SortPagerViewParams)new_params).sort_by = sort_by;
-    	((SortPagerViewParams)new_params).sort_dir = newSortDir;
+    	((SortPagerViewParams)new_params).sortBy = sort_by;
+    	((SortPagerViewParams)new_params).sortDir = newSortDir;
 
     	UIInternalLink.make(joint, "link", new_params);
     }

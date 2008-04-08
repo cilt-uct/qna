@@ -1,13 +1,19 @@
 package org.sakaiproject.qna.tool.otp;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
+import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
+import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
+import org.sakaiproject.qna.tool.utils.ComparatorHelper;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
 
@@ -66,11 +72,19 @@ public class QuestionIteratorHelper {
 	private List<QnaQuestion> getCurrentList() {
 		checkSetup();
 		ToolSession toolSession = sessionManager.getCurrentToolSession();
-		String sortedType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
-		if (sortedType.equals(ViewTypeConstants.CATEGORIES)) {
+		String viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
+		String sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
+		if (viewType.equals(ViewTypeConstants.CATEGORIES)) {
 			if (current.isPublished()) {
 				return current.getCategory().getPublishedQuestions();
 			}
+		} else if (viewType.equals(ViewTypeConstants.ALL_DETAILS)) {
+			// TODO: Detailed view sorting
+		} else {
+			Comparator<QnaQuestion> comparator = ComparatorHelper.getComparator(viewType, sortBy);
+			List<QnaQuestion> questions = questionLogic.getPublishedQuestions(current.getLocation());
+			Collections.sort(questions, comparator);
+			return questions;
 		}
 		return null;
 	}

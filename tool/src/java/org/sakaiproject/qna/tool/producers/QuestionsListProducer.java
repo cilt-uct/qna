@@ -7,6 +7,7 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
+import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper;
 import org.sakaiproject.qna.tool.params.CategoryParams;
@@ -115,6 +116,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		// Depending on default or one selected view type, send through parameter
 		
 		SortPagerViewParams params = (SortPagerViewParams) viewparams;
+		
+		setupSession(params.viewtype, params.sortBy);	
 		QuestionListRenderer renderer = getRenderer(params);
 
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
@@ -146,9 +149,9 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
 
 			options = new String[] {ViewTypeConstants.CATEGORIES,
-									ViewTypeConstants.MOST_POPULAR,
-									ViewTypeConstants.RECENT_CHANGES,
-									ViewTypeConstants.RECENT_QUESTIONS};
+									SortByConstants.VIEWS,
+									SortByConstants.MODIFIED,
+									SortByConstants.CREATED};
 			labels  = new String[] {messageLocator.getMessage("qna.view-questions.categories"),
 									messageLocator.getMessage("qna.view-questions.most-popular"),
 						 		   	messageLocator.getMessage("qna.view-questions.recent-changes"),
@@ -156,8 +159,15 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		}
 
 		// Init value must be either default or specified
-		UISelect select = UISelect.make(form, "view-select", options, labels, null, params.viewtype);
-		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,params.viewtype});
+		String currentSelected;
+		if (params.viewtype.equals(ViewTypeConstants.CATEGORIES) || params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
+			currentSelected = params.viewtype;
+		} else {
+			currentSelected = params.sortBy;
+		}
+		
+		UISelect select = UISelect.make(form, "view-select", options, labels, null, currentSelected);
+		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,currentSelected});
 		renderer.makeQuestionList(tofill, "questionListTool:", params, form);
     }
 
@@ -213,12 +223,13 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			} else {
 				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
-			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, params.viewtype);
 		} else {
-			String view;
+			String view = null;
+			String sortBy = null;
 			
 			if (toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR) != null) {
 				view = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
+				sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
 			} else { // default
 				String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
 				if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
@@ -227,8 +238,9 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 						view = ViewTypeConstants.ALL_DETAILS; // Admin users see all details
 					} else {
-						view = ViewTypeConstants.MOST_POPULAR;
+						view = ViewTypeConstants.STANDARD;
 					}
+					sortBy = SortByConstants.VIEWS;
 				} else { // Shouldn't happen
 					view = ViewTypeConstants.CATEGORIES;
 				}
@@ -236,7 +248,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			
 			renderer = getRendererForViewType(view);
 			params.viewtype = view;
-			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, params.viewtype);
+			params.sortBy = sortBy;
+			setupSession(view,sortBy);
 		}
 		
 		return renderer;
@@ -253,6 +266,17 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			}
 		}
 		return null;
+	}
+	
+	private void setupSession(String viewType, String sortBy) {
+		ToolSession toolSession = sessionManager.getCurrentToolSession();
+		if (viewType != null) {
+			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, viewType);
+		}
+		
+		if (sortBy != null) {
+			toolSession.setAttribute(QuestionListRenderer.SORT_BY_ATTR, sortBy);
+		}
 	}
 	
 }

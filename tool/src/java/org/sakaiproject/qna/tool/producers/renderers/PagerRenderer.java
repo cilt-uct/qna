@@ -60,7 +60,7 @@ public class PagerRenderer {
 		String href_params = "";
 		//If we are on the Question list page... add in the view params to keep the sorting accurate
 		if (QuestionsListProducer.VIEW_ID.equals(currentViewID)){
-			href_params = "sort_dir=" + pagerparams.sort_dir + "&sort_by=" + pagerparams.sort_by + "&";
+			href_params = "sortDir=" + pagerparams.sortDir + "&sortBy=" + pagerparams.sortBy + "&";
 		}		
 		//build url
 		String url = externalLogic.getQuestionViewUrl(currentViewID);

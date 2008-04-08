@@ -10,10 +10,12 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
 import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
 import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
+import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
+import org.sakaiproject.qna.tool.utils.ComparatorHelper;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
@@ -49,15 +51,12 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");
 		UIMessage.make(listTable,"question-title","qna.view-questions.questions");
 
-		Comparator<QnaQuestion> comparator = null;
-		if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
-			comparator = new MostPopularComparator();
+		Comparator<QnaQuestion> comparator = ComparatorHelper.getComparator(params.viewtype, params.sortBy);
+		if (params.sortBy.equals(SortByConstants.VIEWS)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.views");
-		} else if (params.viewtype.equals(ViewTypeConstants.RECENT_CHANGES)) {
-			comparator = new RecentChangesComparator();
+		} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.modified");
-		} else if (params.viewtype.equals(ViewTypeConstants.RECENT_QUESTIONS)) {
-			comparator = new RecentQuestionsComparator();
+		} else if (params.sortBy.equals(SortByConstants.CREATED)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
 		}
 
@@ -69,11 +68,11 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 			UIOutput.make(entry,"rank-nr",rank + "");
 			UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
-			if (params.viewtype.equals(ViewTypeConstants.MOST_POPULAR)) {
+			if (params.sortBy.equals(SortByConstants.VIEWS)) {
 				UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
-			} else if (params.viewtype.equals(ViewTypeConstants.RECENT_CHANGES)) {
+			} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
 				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
-			} else if (params.viewtype.equals(ViewTypeConstants.RECENT_QUESTIONS)) {
+			} else if (params.sortBy.equals(SortByConstants.CREATED)) {
 				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateCreated()));
 			}
 			rank++;

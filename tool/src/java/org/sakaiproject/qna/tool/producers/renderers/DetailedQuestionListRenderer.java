@@ -59,11 +59,11 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 
-		if (params.sort_by == null) params.sort_by = DEFAULT_SORT_BY;
-    	if (params.sort_dir == null) params.sort_dir = DEFAULT_SORT_DIR;
+		if (params.sortBy == null) params.sortBy = DEFAULT_SORT_BY;
+    	if (params.sortDir == null) params.sortDir = DEFAULT_SORT_DIR;
 
-    	current_sort_by = params.sort_by;
-    	current_sort_dir = params.sort_dir;
+    	current_sort_by = params.sortBy;
+    	current_sort_dir = params.sortDir;
     	opposite_sort_dir = (QuestionLogic.SORT_DIR_ASC.equals(current_sort_dir) ? QuestionLogic.SORT_DIR_DESC : QuestionLogic.SORT_DIR_ASC);
 
 

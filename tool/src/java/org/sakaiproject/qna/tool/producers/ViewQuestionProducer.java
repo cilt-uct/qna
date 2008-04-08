@@ -44,17 +44,22 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 	public static final String VIEW_ID = "view_question";
 	private SearchBarRenderer searchBarRenderer;
-
+	private QuestionIteratorRenderer questionIteratorRenderer;
+    private NavBarRenderer navBarRenderer;
+    private TextInputEvolver richTextEvolver;
+    private PermissionLogic permissionLogic;
+    private ExternalLogic externalLogic;
+    private QuestionLogic questionLogic;
+    private AttachmentsViewRenderer attachmentsViewRenderer;
+    
 	public String getViewID() {
 		return VIEW_ID;
 	}
 
-	private QuestionIteratorRenderer questionIteratorRenderer;
 	public void setQuestionIteratorRenderer(QuestionIteratorRenderer questionIteratorRenderer) {
 		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 
-    private NavBarRenderer navBarRenderer;
     public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
@@ -63,30 +68,23 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		this.searchBarRenderer = searchBarRenderer;
 	}
 
-    private TextInputEvolver richTextEvolver;
     public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
     }
 
-    private PermissionLogic permissionLogic;
     public void setPermissionLogic(PermissionLogic permissionLogic) {
         this.permissionLogic = permissionLogic;
     }
 
-    private ExternalLogic externalLogic;
     public void setExternalLogic(ExternalLogic externalLogic) {
         this.externalLogic = externalLogic;
     }
 
-    private QuestionLogic questionLogic;
     public void setQuestionLogic(QuestionLogic questionLogic) {
     	this.questionLogic = questionLogic;
     }
 
-    private AttachmentsViewRenderer attachmentsViewRenderer;
-
-	public void setAttachmentsViewRenderer(
-			AttachmentsViewRenderer attachmentsViewRenderer) {
+	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
 		this.attachmentsViewRenderer = attachmentsViewRenderer;
 	}
 
@@ -102,7 +100,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",ViewQuestionProducer.VIEW_ID, question);
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);
 		UIMessage.make(tofill,"page-title","qna.view-question.title");
 		UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
 		UIMessage.make(tofill,"question-title","qna.view-question.question");
@@ -131,7 +129,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		renderAnswers(tofill, question, answerLocator);
 
 		// TODO: Fix pager
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:",ViewQuestionProducer.VIEW_ID, question);
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:",question);
 
 		if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;

@@ -63,7 +63,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:", ViewPrivateReplyProducer.VIEW_ID, question);
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:", question);
 
 		UIMessage.make(tofill, "page-title", "qna.view-private-reply.title");
 		UIMessage.make(tofill, "sub-title", "qna.view-private-reply.subtitle");
@@ -88,7 +88,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 			}
 		}
 
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:", ViewPrivateReplyProducer.VIEW_ID, question);
+		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:", question);
 
 		UIForm form = UIForm.make(tofill, "private-reply-form");
 		UICommand.make(form,"publish-question-button",UIMessage.make("qna.view-private-reply.publish")).setReturn("publish");

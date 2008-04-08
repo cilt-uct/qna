@@ -1,16 +1,18 @@
 package org.sakaiproject.qna.tool.otp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
-import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
-import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
+import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
+import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.utils.ComparatorHelper;
@@ -20,11 +22,13 @@ import org.sakaiproject.tool.api.ToolSession;
 public class QuestionIteratorHelper {
 	
 	private QuestionLogic questionLogic;
+	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;
 	private PermissionLogic permissionLogic;
 	private SessionManager sessionManager;
 	private QnaQuestion current;
 	private List<QnaQuestion> questionList;
+	
 	
 	public void setCurrentQuestion(QnaQuestion current) {
 		if (current == null || current.getId() == null) {
@@ -74,19 +78,36 @@ public class QuestionIteratorHelper {
 		ToolSession toolSession = sessionManager.getCurrentToolSession();
 		String viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
 		String sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
+		
+		List<QnaQuestion> questions;
+		String location = externalLogic.getCurrentLocationId();
+		
 		if (viewType.equals(ViewTypeConstants.CATEGORIES)) {
-			if (current.isPublished()) {
-				return current.getCategory().getPublishedQuestions();
+			questions = new ArrayList<QnaQuestion>();
+			List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
+			Collections.sort(categories, new CategoriesSortOrderComparator());
+			for (QnaCategory qnaCategory : categories) {
+				if (qnaCategory.getPublishedQuestions().size() > 0) {
+					List<QnaQuestion> publishedQuestion = qnaCategory.getPublishedQuestions();
+					Collections.sort(publishedQuestion, new QuestionsSortOrderComparator());
+					questions.addAll(publishedQuestion);
+				}
 			}
-		} else if (viewType.equals(ViewTypeConstants.ALL_DETAILS)) {
-			// TODO: Detailed view sorting
+			if (permissionLogic.canUpdate(location, externalLogic.getCurrentUserId())) {
+				questions.addAll(questionLogic.getNewQuestions(location));
+				questions.addAll(questionLogic.getQuestionsWithPrivateReplies(location));
+			}
+		
 		} else {
+			if (permissionLogic.canUpdate(location, externalLogic.getCurrentUserId())) {
+				questions = questionLogic.getAllQuestions(externalLogic.getCurrentLocationId());
+			} else {
+				questions = questionLogic.getPublishedQuestions(location);
+			}
 			Comparator<QnaQuestion> comparator = ComparatorHelper.getComparator(viewType, sortBy);
-			List<QnaQuestion> questions = questionLogic.getPublishedQuestions(current.getLocation());
 			Collections.sort(questions, comparator);
-			return questions;
 		}
-		return null;
+		return questions;
 	}
 	
     public void setSessionManager(SessionManager sessionManager) {
@@ -103,6 +124,10 @@ public class QuestionIteratorHelper {
 	
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
+	}
+	
+	public void setCategoryLogic(CategoryLogic categoryLogic) {
+		this.categoryLogic = categoryLogic;
 	}
 	
 	public void checkSetup() {

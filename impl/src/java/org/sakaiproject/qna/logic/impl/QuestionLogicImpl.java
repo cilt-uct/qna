@@ -102,16 +102,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		List<QnaQuestion> questionsWithPrivateReplies = new ArrayList<QnaQuestion>();
 		
 		for (QnaQuestion qnaQuestion : questions) {
-			List<QnaAnswer> answers = qnaQuestion.getAnswers();
-			boolean addQuestion = false;
-			
-			for (QnaAnswer qnaAnswer : answers) {
-				if (qnaAnswer.isPrivateReply()) {
-					addQuestion = true;
-				}
-			}
-			
-			if (addQuestion) {
+			if (qnaQuestion.hasPrivateReplies()) {
 				questionsWithPrivateReplies.add(qnaQuestion);
 			}
 		}

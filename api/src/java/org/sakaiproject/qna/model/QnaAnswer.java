@@ -3,7 +3,7 @@ package org.sakaiproject.qna.model;
 import java.util.Date;
 
 /**
- * This is a the options table entity
+ * This is a the QnaAnswer table entity
  *
  * @author Psybergate
  */

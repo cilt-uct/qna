@@ -320,4 +320,19 @@ public class QnaQuestion {
 	public void setContentCollection(String contentCollection) {
 		this.contentCollection = contentCollection;
 	}
+	
+	// Helper function
+	public boolean hasPrivateReplies() {
+		if (answers == null || answers.size() == 0) {
+			return false;
+		} else {
+			for (QnaAnswer answer: answers) {
+				if (answer.isPrivateReply()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }

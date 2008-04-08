@@ -220,9 +220,14 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				renderer = categoryQuestionListRenderer;
 			} else if (params.viewtype.equals(ViewTypeConstants.ALL_DETAILS)) {
 				renderer = detailedQuestionListRenderer;
+				if (params.sortBy == null) {
+					params.sortBy = SortByConstants.VIEWS; // default
+					
+				}
 			} else {
 				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
+			setupSession(params.viewtype,params.sortBy);
 		} else {
 			String view = null;
 			String sortBy = null;

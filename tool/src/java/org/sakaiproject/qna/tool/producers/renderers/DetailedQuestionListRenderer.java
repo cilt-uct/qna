@@ -9,6 +9,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
+import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
@@ -134,7 +135,11 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         	if (question.isPublished()) {
 				UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId()));
 			} else {
-				UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId()));
+				if (question.hasPrivateReplies()) {
+					UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId()));					
+				} else {
+					UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId()));					
+				}
 			}
 
         	UIOutput.make(row, "question_row_views", question.getViews() + "");

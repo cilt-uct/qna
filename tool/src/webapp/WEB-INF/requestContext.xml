@@ -37,10 +37,9 @@
 	<!-- Question Iterator Helper -->
 	<bean id="QuestionIteratorHelper" class="org.sakaiproject.qna.tool.otp.QuestionIteratorHelper">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
-		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+		<property name="questionsSorter" ref="QuestionsSorter"/>
 	</bean>
 
 	<bean id="CategoryQuestionListRenderer"
@@ -61,7 +60,7 @@
 
 	<bean id="StandardQuestionListRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" >
-		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="questionsSorter" ref="QuestionsSorter" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 	</bean>
 
@@ -237,6 +236,12 @@
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+	</bean>
+	
+	<!-- Question Sorter -->
+	<bean id="QuestionsSorter" class="org.sakaiproject.qna.tool.utils.QuestionsSorter">
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 	</bean>
 
 	<!-- OTP -->

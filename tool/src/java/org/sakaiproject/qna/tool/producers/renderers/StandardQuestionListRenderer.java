@@ -1,22 +1,17 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
-import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
-import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
-import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
-import org.sakaiproject.qna.tool.utils.ComparatorHelper;
+import org.sakaiproject.qna.tool.utils.ComparatorUtil;
 import org.sakaiproject.qna.tool.utils.DateUtil;
+import org.sakaiproject.qna.tool.utils.QuestionsSorter;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -33,11 +28,11 @@ import uk.org.ponder.rsf.components.UIOutput;
  */
 public class StandardQuestionListRenderer implements QuestionListRenderer {
 
-	private QuestionLogic questionLogic;
+	private QuestionsSorter questionsSorter;
 	private ExternalLogic externalLogic;
 
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
+	public void setQuestionsSorter(QuestionsSorter questionsSorter) {
+		this.questionsSorter = questionsSorter;
 	}
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
@@ -51,7 +46,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");
 		UIMessage.make(listTable,"question-title","qna.view-questions.questions");
 
-		Comparator<QnaQuestion> comparator = ComparatorHelper.getComparator(params.viewtype, params.sortBy);
+		Comparator<QnaQuestion> comparator = ComparatorUtil.getComparator(params.viewtype, params.sortBy);
 		if (params.sortBy.equals(SortByConstants.VIEWS)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.views");
 		} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
@@ -60,8 +55,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
 		}
 
-		List<QnaQuestion> questions = questionLogic.getPublishedQuestions(externalLogic.getCurrentLocationId());
-		Collections.sort(questions, comparator);
+		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, false);
 
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {

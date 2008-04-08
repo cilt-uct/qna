@@ -13,7 +13,7 @@ import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 
-public class ComparatorHelper {
+public class ComparatorUtil {
 	
 	public static Comparator<QnaQuestion> getComparator(String viewType, String sortBy) {
 		if (viewType.equals(ViewTypeConstants.CATEGORIES)) {

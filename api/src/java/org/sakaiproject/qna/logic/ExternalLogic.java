@@ -1,6 +1,5 @@
 package org.sakaiproject.qna.logic;
 
-import java.util.Collection;
 import java.util.Set;
 
 public interface ExternalLogic {

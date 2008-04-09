@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
@@ -55,7 +54,7 @@
 		<property name="pagerRenderer" ref="PagerRenderer" />
 		<property name="sortHeaderRenderer" ref="SortHeaderRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="questionsSorter" ref="QuestionsSorter" />
 	</bean>
 
 	<bean id="StandardQuestionListRenderer"

@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.tool.params.QuestionListParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.QuestionsListProducer;
 

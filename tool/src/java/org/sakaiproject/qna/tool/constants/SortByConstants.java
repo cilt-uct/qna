@@ -8,6 +8,9 @@ public class SortByConstants {
 	public static final String MODIFIED = "modified";
 	public static final String CATEGORY = "category";
 	
+	public static final String SORT_DIR_ASC = "asc";
+	public static final String SORT_DIR_DESC = "desc";
+	
 	public static boolean isValid(String str) {
 		if (str.equals(QUESTIONS) || 
 			str.equals(VIEWS) ||

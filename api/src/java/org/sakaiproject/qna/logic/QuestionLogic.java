@@ -8,17 +8,6 @@ import org.sakaiproject.qna.model.QnaQuestion;
 
 public interface QuestionLogic {
 	
-	// sorting information
-	 public static final String SORT_DIR_ASC = "asc";
-	    public static final String SORT_DIR_DESC = "desc";
-	    public static final String SORT_BY_ORDER = "sortOrder";
-	    public static final String SORT_BY_QUESTION_TEXT = "questionText";
-	    public static final String SORT_BY_VIEWS = "views";
-	    public static final String SORT_BY_ANSWERS = "answers";
-	    public static final String SORT_BY_CREATED_DATE = "createdDate";
-	    public static final String SORT_BY_MODIFIED_DATE = "modifiedDate";
-	    public static final String SORT_BY_CATEGORY = "category";
-
 	/**
 	 * Get a question with a specific id
 	 *
@@ -119,18 +108,4 @@ public interface QuestionLogic {
 	
 	public void linkCollectionToQuestion(String questionId, String collectionId);
 	
-	/**
-	 * Will apply paging and sorting to the given list and populate any non-persisted
-	 * fields that need to be populated from the UI (ie fields that require access
-	 * to the bundle)
-	 * @param questionList
-	 * @param currentStart
-	 * @param currentCount
-	 * @param sortBy
-	 * @param sortDir
-	 */
-	public void filterPopulateAndSortQuestionList(List<QnaQuestion> questionList, int currentStart, int currentCount, String sortBy, boolean sortDir);
-
-	
-	public List filterListForPaging(List questionList, int begIndex, int numItemsToDisplay);
 }

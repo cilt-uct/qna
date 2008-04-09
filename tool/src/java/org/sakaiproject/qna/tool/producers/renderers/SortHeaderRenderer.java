@@ -1,7 +1,6 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
-
-import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 
 import uk.org.ponder.rsf.components.UIContainer;
@@ -24,13 +23,13 @@ public class SortHeaderRenderer {
     	//Link Text
     	UIMessage.make(joint, "text", link_text);
     	if (params.sortBy.equals(sort_by)){
-    		UILink.make(joint, "arrow", (params.sortDir.equals(QuestionLogic.SORT_DIR_ASC) ? BULLET_UP_IMG_SRC : BULLET_DOWN_IMG_SRC));
+    		UILink.make(joint, "arrow", (params.sortDir.equals(SortByConstants.SORT_DIR_ASC) ? BULLET_UP_IMG_SRC : BULLET_DOWN_IMG_SRC));
     	}
 
     	//Add Link and modify params
-    	String newSortDir = (params.sortBy.equals(sort_by) ? (params.sortDir.equals(QuestionLogic.SORT_DIR_ASC) 
-    			? QuestionLogic.SORT_DIR_DESC 
-    			: QuestionLogic.SORT_DIR_ASC) : QuestionLogic.SORT_DIR_ASC);
+    	String newSortDir = (params.sortBy.equals(sort_by) ? (params.sortDir.equals(SortByConstants.SORT_DIR_ASC) 
+    			? SortByConstants.SORT_DIR_DESC 
+    			: SortByConstants.SORT_DIR_ASC) : SortByConstants.SORT_DIR_ASC);
     	
     	ViewParameters new_params = viewparams.copyBase();
     	((SortPagerViewParams)new_params).sortBy = sort_by;

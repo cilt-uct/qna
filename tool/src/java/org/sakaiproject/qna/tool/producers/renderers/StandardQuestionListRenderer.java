@@ -30,6 +30,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 
 	private QuestionsSorter questionsSorter;
 	private ExternalLogic externalLogic;
+	private PagerRenderer pagerRenderer;
 
 	public void setQuestionsSorter(QuestionsSorter questionsSorter) {
 		this.questionsSorter = questionsSorter;
@@ -37,6 +38,10 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
+	}
+	
+    public void setPagerRenderer(PagerRenderer pagerRenderer) {
+		this.pagerRenderer = pagerRenderer;
 	}
 
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
@@ -55,8 +60,12 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
 		}
 
-		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, false);
-
+		List<QnaQuestion> questionsAll = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, false);
+		List<QnaQuestion> questions = questionsSorter.filterQuestions(questionsAll, params.current_start, params.current_count);
+		
+        int total_count = questionsAll != null ? questionsAll.size() : 0;
+    	pagerRenderer.makePager(listTable, "pagerDiv:", params.viewID, params, total_count);
+		
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
 			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");

@@ -61,6 +61,7 @@
 		class="org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer" >
 		<property name="questionsSorter" ref="QuestionsSorter" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="pagerRenderer" ref="PagerRenderer"/>
 	</bean>
 
 	<bean id="AttachmentsViewRenderer" class="org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer">

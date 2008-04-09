@@ -69,7 +69,6 @@ public class PagerRenderer {
         UIInput selection = new UIInput();
         selection.setValue(this.getCurrentSelect());
         select_box.selection = selection;
-        //select_box.selection.valuebinding = new ELReference("#{PagerBean.currentSelect}");
         UIBoundList comboValues = new UIBoundList();
         comboValues.setValue(new String[] {"5","10","20","50","100","200"});
         select_box.optionlist = comboValues;

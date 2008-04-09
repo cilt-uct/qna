@@ -10,7 +10,9 @@ import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
 import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
+import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.OrganiseParams;
+import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
@@ -21,6 +23,8 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInitBlock;
+import uk.org.ponder.rsf.components.UIInternalLink;
+import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
@@ -92,28 +96,52 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 		StringList queorderlist = new StringList();
 
 		for (QnaCategory qnaCategory : categories) {
-			UIBranchContainer categoryContainer = UIBranchContainer.make(content, "category-entry:");
-			UIBranchContainer questionContent = UIBranchContainer.make(categoryContainer, "question-content:");
+			if (qnaCategory.getPublishedQuestions().size() > 0) {
+				UIBranchContainer categoryContainer = UIBranchContainer.make(content, "category-entry:");
+				UIBranchContainer questionContent = UIBranchContainer.make(categoryContainer, "question-content:");
 
-			UIOutput.make(categoryContainer, "category-name", qnaCategory.getCategoryText());
+				UIOutput.make(categoryContainer, "category-name", qnaCategory.getCategoryText());
 
-			UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), catorderlist.size());
-			catorderlist.add(qnaCategory.getId());
+				UILink.make(categoryContainer, "edit-category-icon", "/library/image/silk/page_white_edit.png");
+				UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
 
-			List<QnaQuestion> questions = qnaCategory.getQuestions();
-			Collections.sort(questions, new QuestionsSortOrderComparator());
-			for (int k=0; k<questions.size(); k++) {
-				QnaQuestion qnaQuestion = questions.get(k);
-				UIBranchContainer questionContainer = UIBranchContainer.make(questionContent, "question-entry:");
+				UILink.make(categoryContainer, "delete-category-icon", "/library/image/silk/delete.png");
+				UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
 
-				UIOutput.make(questionContainer, "question-entry-nr", k+"");
+				UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), catorderlist.size());
+				catorderlist.add(qnaCategory.getId());
 
-				UIInitBlock.make(categoryContainer, "makeQuestionsSortable", "makeQuestionsSortable", new Object[] {questionContent, k} );
+				List<QnaQuestion> questions = qnaCategory.getQuestions();
+				int publishedQuestions = -1;
+				for (QnaQuestion qnaQuestion : questions) {
+					if (qnaQuestion.isPublished()) {
+						publishedQuestions++;
+					}
+				}
 
-				UIOutput.make(questionContainer, "question-text", TextUtil.stripTags(qnaQuestion.getQuestionText()));
 
-				UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());
-				queorderlist.add(qnaQuestion.getId());
+				Collections.sort(questions, new QuestionsSortOrderComparator());
+				for (int k=0; k<questions.size(); k++) {
+					QnaQuestion qnaQuestion = questions.get(k);
+					if (qnaQuestion.isPublished()) {
+						UIBranchContainer questionContainer = UIBranchContainer.make(questionContent, "question-entry:");
+
+						UIOutput.make(questionContainer, "question-entry-nr", publishedQuestions+"");
+
+						UIInitBlock.make(categoryContainer, "makeQuestionsSortable", "makeQuestionsSortable", new Object[] {questionContent, publishedQuestions} );
+
+						UIOutput.make(questionContainer, "question-text", TextUtil.stripTags(qnaQuestion.getQuestionText()));
+
+						UILink.make(questionContainer, "edit-question-icon", "/library/image/silk/page_white_edit.png");
+						UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(ViewQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+
+						UILink.make(questionContainer, "delete-question-icon", "/library/image/silk/delete.png");
+						UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+
+						UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());
+						queorderlist.add(qnaQuestion.getId());
+					}
+				}
 			}
 		}
 		catorder.optionlist.setValue(catorderlist.toStringArray());

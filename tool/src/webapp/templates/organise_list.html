@@ -35,8 +35,21 @@
 
 				<ul rsf:id="content:" id="content" class="sortable">
 					<li rsf:id="category-entry:" id="category-entry" class="sortable_item">
-						<span rsf:id="category-name" id="category-name">Assignments</span>
+						<div align="left" rsf:id="category-name" id="category-name">Assignments</div>
 						<input rsf:id="category-sort-order-checkbox" id="category-sort-order-checkbox" type="checkbox" style="display:none"/>
+
+
+						<div style="float:top" align="right">
+							<a rsf:id="edit-category-link" id="edit-category-link" href="#" style="align:right">
+								<img rsf:id="edit-category-icon" id="edit-category-icon" src="/libary/image/silk/page_white_edit.png" />
+							</a>
+
+							<a rsf:id="delete-category-link" id="edit-category-link" href="#" style="align:right">
+								<img rsf:id="delete-category-icon" id="edit-category-icon" src="/libary/image/silk/page_white_edit.png" />
+							</a>
+						</div>
+
+
 						<script rsf:id="makeQuestionsSortable" type="text/javascript">
 							makeQuestionsSortable("question-content", "question-entry-nr");
 						</script>
@@ -45,6 +58,15 @@
 							<li rsf:id="question-entry:" id="question-entry" class="editable_item">
 								<span rsf:id="question-text" id="question-text">Question1</span>
 								<input rsf:id="question-sort-order-checkbox" id="question-sort-order-checkbox" type="checkbox" style="display:none"/>
+								<div align="right">
+									<a rsf:id="edit-question-link" id="edit-question-link" href="#">
+										<img rsf:id="edit-question-icon" id="edit-question-icon" src="/libary/image/silk/page_white_edit.png" />
+									</a>
+
+									<a rsf:id="delete-question-link" id="edit-question-link" href="#">
+										<img rsf:id="delete-question-icon" id="edit-question-icon" src="/libary/image/silk/page_white_edit.png" />
+									</a>
+								</div>
 							</li>
 						</ul>
 

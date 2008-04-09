@@ -52,11 +52,9 @@ public class OrganiserHelper {
 			QnaQuestion question = questionLogic.getQuestionById(id);
 
 			String catid = question.getCategory().getId();
-			if (tmpcatid.equals("")) {
+			if (tmpcatid.equals(catid)) {
 				nr++;
-			} else if (tmpcatid.equals(catid)) {
-				nr++;
-			} else if (!tmpcatid.equals(catid)) {
+			} else {
 				nr = 0;
 			}
 			tmpcatid = catid;

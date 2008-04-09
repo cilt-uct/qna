@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+   <bean id="qnaDefault" class="org.sakaiproject.component.app.help.model.ResourceBean">
+      <property name="docId"><value>qnadefault</value></property>
+      <property name="name"><value>QNA Help Page</value></property>
+      <property name="location"><value>/sakai_qna/qnadefault.html</value></property>
+      <property name="defaultForTool"><value>sakai.qna</value></property>
+   </bean>
+
+    <bean id="org.sakaiproject.api.app.help.TableOfContents" 
+          class="org.sakaiproject.component.app.help.model.TableOfContentsBean">
+      <property name="name"><value>root</value></property>
+      <property name="categories">
+         <list>
+            <bean id="announcementCategory" class="org.sakaiproject.component.app.help.model.CategoryBean">
+               <property name="name"><value>QNA</value></property>
+               <property name="resources">
+                  <list>
+                     <ref bean="qnaDefault"/>
+                  </list>
+               </property>
+            </bean>
+           </list>
+         </property>
+       </bean>
+</beans>

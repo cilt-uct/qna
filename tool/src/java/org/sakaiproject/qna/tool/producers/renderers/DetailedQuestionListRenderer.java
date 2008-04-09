@@ -59,6 +59,8 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 	
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
 
+		UIMessage.make(tofill,"sort-message","qna.view-questions.sort-message");
+		
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 
 		if (params.sortBy == null) params.sortBy = DEFAULT_SORT_BY;
@@ -68,7 +70,7 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
     	current_sort_dir = params.sortDir;
 
 		//get paging data
-        List<QnaQuestion> questions = new ArrayList<QnaQuestion>();
+        List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, current_sort_by, true, current_sort_dir.equals(SortByConstants.SORT_DIR_DESC));
         int total_count = questions != null ? questions.size() : 0;
 
     	pagerRenderer.makePager(listTable, "pagerDiv:", params.viewID, params, total_count);
@@ -88,8 +90,6 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         		SortByConstants.CATEGORY, "qna.view-questions.category");
         UIMessage.make(listTable, "tableheader.remove:", "qna.view-questions.remove");
 
-        questions = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, current_sort_by, true, current_sort_dir.equals(SortByConstants.SORT_DIR_DESC));
-        
         StringList deletable = new StringList();
         UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
 

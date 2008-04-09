@@ -74,4 +74,12 @@ public class QuestionsSorter {
 		
 		return questions;
 	}
+	
+	public List<QnaQuestion> filterQuestions(List<QnaQuestion> questions,int fromIndex, int amount) {
+		if ((amount + fromIndex) > questions.size()) {
+			return questions.subList(fromIndex, questions.size());
+		} else {
+			return questions.subList(fromIndex, fromIndex + amount);
+		}
+	}
 }

@@ -24,7 +24,7 @@ public class PagerRenderer {
 	private MessageLocator messageLocator;
 	private ExternalLogic externalLogic;
 	
-	public static final int DEFAULT_START_COUNT = 25;
+	public static final int DEFAULT_START_COUNT = 20;
 	
 	public Integer currentStart = 0;
 	public Integer currentCount = DEFAULT_START_COUNT;		//actually set in the pager view parameters :-)
@@ -155,10 +155,10 @@ public class PagerRenderer {
 		return currentCount.toString();
 	}
 	
-	//Form Submit Methods
-	private void changePageSize(){
-		//do nothing
-	}
+//	//Form Submit Methods
+//	private void changePageSize(){
+//		//do nothing
+//	}
 	
 	private String goToFirstPage(){
 		Integer newCurrentStart = 0;

@@ -1,10 +1,8 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.params.QuestionParams;
@@ -70,8 +68,9 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
     	current_sort_dir = params.sortDir;
 
 		//get paging data
-        List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, current_sort_by, true, current_sort_dir.equals(SortByConstants.SORT_DIR_DESC));
-        int total_count = questions != null ? questions.size() : 0;
+        List<QnaQuestion> questionsAll = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, current_sort_by, true, current_sort_dir.equals(SortByConstants.SORT_DIR_DESC));
+        List<QnaQuestion> questions = questionsSorter.filterQuestions(questionsAll, params.current_start, params.current_count);
+        int total_count = questionsAll != null ? questionsAll.size() : 0;
 
     	pagerRenderer.makePager(listTable, "pagerDiv:", params.viewID, params, total_count);
 

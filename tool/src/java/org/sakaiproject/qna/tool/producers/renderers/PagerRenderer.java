@@ -73,7 +73,12 @@ public class PagerRenderer {
         comboValues.setValue(new String[] {"5","10","20","50","100","200"});
         select_box.optionlist = comboValues;
 		UIBoundList comboNames = new UIBoundList();
-		comboNames.setValue(new String[] {"Show 5 items", "Show 10 items", "Show 20 items", "Show 50 items", "Show 100 items", "Show 200 items"});
+		comboNames.setValue(new String[] {messageLocator.getMessage("qna.pager.5-items"),
+										  messageLocator.getMessage("qna.pager.10-items"),
+										  messageLocator.getMessage("qna.pager.20-items"),
+										  messageLocator.getMessage("qna.pager.50-items"),
+										  messageLocator.getMessage("qna.pager.100-items"),
+										  messageLocator.getMessage("qna.pager.200-items")});
 		select_box.optionnames = comboNames;
 		Map attrmap = new HashMap(); 
 		attrmap.put("onchange", "location.href=\"" + url + "?" + href_params + "current_start=" + 
@@ -153,11 +158,6 @@ public class PagerRenderer {
 	private String getCurrentSelect(){
 		return currentCount.toString();
 	}
-	
-//	//Form Submit Methods
-//	private void changePageSize(){
-//		//do nothing
-//	}
 	
 	private String goToFirstPage(){
 		Integer newCurrentStart = 0;

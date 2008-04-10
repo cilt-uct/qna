@@ -87,6 +87,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			qnaCategory.setLocation(locationId);
 			qnaCategory.setQuestions(null);
 			qnaCategory.setSortOrder(new Integer(0));
+			qnaCategory.setHidden(false);
 		} else {
 			throw new RuntimeException("Should only be called on categories not yet persisted");
 		}

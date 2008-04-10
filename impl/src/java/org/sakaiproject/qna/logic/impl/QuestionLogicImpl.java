@@ -216,7 +216,13 @@ public class QuestionLogicImpl implements QuestionLogic {
 				if (question.getNotify() == null) {
 					question.setNotify(true);
 				}
-
+				
+				if (question.getCategory() != null) {
+					question.setHidden(question.getCategory().getHidden());
+				} else {
+					question.setHidden(false);
+				}
+				
 				dao.save(question);
 				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_CREATE, question);
 				

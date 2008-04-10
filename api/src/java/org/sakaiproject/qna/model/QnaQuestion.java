@@ -80,10 +80,11 @@ public class QnaQuestion {
 	 * @param order
 	 * @param anonymous
 	 * @param published
+	 * @param hidden TODO
 	 */
 	public QnaQuestion(QnaCategory category, String ownerId, String location, String questionText,
 			Integer views, Date dateLastModified, Date dateCreated,
-			Integer order, Boolean anonymous, Boolean published) {
+			Integer order, Boolean anonymous, Boolean published, Boolean hidden) {
 		this.category = category;
 		this.ownerId = ownerId;
 		this.lastModifierId = ownerId;
@@ -96,6 +97,8 @@ public class QnaQuestion {
 		this.anonymous = anonymous;
 		this.published = published;
 		this.notify = false;
+		this.hidden = false;
+		
 	}
 
 	/**

@@ -44,12 +44,13 @@ public class QnaCategory {
 	 * @param ownerId
 	 * @param location
 	 * @param categoryText
+	 * @param order
+	 * @param hidden TODO
 	 * @param dateLastModified
 	 * @param dateCreated
-	 * @param order
 	 */
 	public QnaCategory(String ownerId, String location, String categoryText,
-			Integer order) {
+			Integer order, Boolean hidden) {
 		this.ownerId = ownerId;
 		this.location = location;
 		this.categoryText = categoryText;
@@ -57,6 +58,7 @@ public class QnaCategory {
 		Date now = new Date();
 		dateCreated = now;
 		dateLastModified = now;
+		this.hidden = hidden;
 	}
 
 	/**

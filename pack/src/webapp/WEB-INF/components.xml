@@ -25,7 +25,6 @@
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.ExternalEventLogic" class="org.sakaiproject.qna.logic.impl.ExternalEventLogicImpl">
-		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService" />
 	</bean>
 
@@ -90,5 +89,20 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
 		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-	</bean>	
+	</bean>
+	
+	<!-- entity beans -->
+	<bean id="org.sakaiproject.qna.logic.entity.QuestionEntityProvider" 
+			class="org.sakaiproject.qna.logic.impl.entity.QuestionEntityProviderImpl">
+	</bean>
+
+	<bean id="org.sakaiproject.qna.logic.entity.CategoryEntityProvider" 
+			class="org.sakaiproject.qna.logic.impl.entity.CategoryEntityProviderImpl">
+	</bean>
+
+	<bean id="org.sakaiproject.qna.logic.entity.AnswerEntityProvider" 
+			class="org.sakaiproject.qna.logic.impl.entity.AnswerEntityProviderImpl">
+	</bean>
+
+		
 </beans>

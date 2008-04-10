@@ -147,7 +147,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 			} finally {
 				dao.delete(question);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_DELETE, question.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_DELETE, question);
 				log.info("Question deleted: " + question.getId());
 			}
 		
@@ -174,7 +174,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				question.setDateLastModified(new Date());
 				question.setLastModifierId(userId);
 				dao.save(question);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_UPDATE, question.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_UPDATE, question);
 			} else {
 				throw new SecurityException(
 						"Current user cannot save question for "
@@ -218,7 +218,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 
 				dao.save(question);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_CREATE, question.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_CREATE, question);
 				
 				// Notification
 				if (options.getEmailNotification()) {

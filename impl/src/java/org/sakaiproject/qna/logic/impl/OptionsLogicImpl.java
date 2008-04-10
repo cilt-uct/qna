@@ -61,7 +61,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 		newOptions.setDateLastModified(now);
 
 		dao.save(newOptions);
-		externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_CREATE, newOptions.getId());
+		externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_CREATE, newOptions);
 		return newOptions;
 	}
 
@@ -128,7 +128,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 			options.setDateLastModified(new Date());
 			options.setOwnerId(userId);
 			dao.save(options);
-			externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_UPDATE, options.getId());
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_OPTIONS_UPDATE, options);
 		} else {
 			throw new SecurityException("Current user cannot save options for "
 					+ options.getLocation()

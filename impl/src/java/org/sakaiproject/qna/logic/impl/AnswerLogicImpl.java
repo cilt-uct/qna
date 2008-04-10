@@ -103,7 +103,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 					question.addAnswer(answer);
 					dao.save(answer);
 					
-					externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_CREATE, answer.getId());
+					externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_CREATE, answer);
 					
 					// Notification emails
 					if (answer.isPrivateReply()) {
@@ -130,7 +130,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 				answer.setLastModifierId(userId);
 
 				dao.save(answer);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_UPDATE, answer.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_UPDATE, answer);
 			} else {
 				throw new SecurityException(
 						"Current user cannot update answer for "
@@ -167,7 +167,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
 			dao.delete(answer);
-			externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_DELETE, answer.getId());
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_DELETE, answer);
 		} else {
 			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
 		}

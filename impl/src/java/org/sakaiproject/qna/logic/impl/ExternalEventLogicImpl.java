@@ -1,29 +1,72 @@
 package org.sakaiproject.qna.logic.impl;
 
+import java.lang.reflect.Method;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.entitybroker.IdEntityReference;
 import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
-import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.entity.AnswerEntityProvider;
+import org.sakaiproject.qna.logic.entity.CategoryEntityProvider;
+import org.sakaiproject.qna.logic.entity.QuestionEntityProvider;
+import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaCategory;
+import org.sakaiproject.qna.model.QnaOptions;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 public class ExternalEventLogicImpl implements ExternalEventLogic {
 
     private org.sakaiproject.event.api.EventTrackingService eventTrackingService;
-    private ExternalLogic externalLogic;
+    
+    private static Log log = LogFactory.getLog(ExternalEventLogicImpl.class);
     
     public void setEventTrackingService(org.sakaiproject.event.api.EventTrackingService eventTrackingService) {
     	this.eventTrackingService = eventTrackingService;
     }
     
-    public void setExternalLogic(ExternalLogic externalLogic) {
-    	this.externalLogic = externalLogic;
-    }
-    
-    
-	public void postEvent(String message, String objectId) {
-		if (objectId != null && !"".equals(objectId)) {
-			String referenceObject = externalLogic.getCurrentLocationId() + "/" + objectId;
-		
-			Event event = eventTrackingService.newEvent(message, referenceObject, true);
-			eventTrackingService.post(event);
+    public void postEvent(String message, Object entity) {
+		if (entity != null) {
+			String reference = getEntityReference(entity);
+			if (reference != null) {
+				Event event = eventTrackingService.newEvent(message, reference, true, NotificationService.PREF_IMMEDIATE);
+				eventTrackingService.post(event);
+			}
 		}
 	}
+	
+	private String getEntityReference(Object entity) {
+	      String id = null;
+	      try {
+	         Class elementClass = entity.getClass();
+	         Method getIdMethod = elementClass.getMethod("getId", new Class[] {});
+	         id = (String) getIdMethod.invoke(entity, (Object[]) null);
+	                  
+	         return getEntityReference(elementClass, id);
+	      } catch (Exception e) {
+	         log.warn("Failed to get id from entity object", e);
+	         return null;
+	      }
+	}
+	
+	private String getEntityReference(Class refClass, String entityId) {
+		
+		String prefix =  null;
+		if (refClass == QnaQuestion.class) {
+			prefix = QuestionEntityProvider.ENTITY_PREFIX;
+		} else if (refClass == QnaAnswer.class) {
+			prefix = AnswerEntityProvider.ENTITY_PREFIX;
+		} else if (refClass == QnaCategory.class) {
+			prefix = CategoryEntityProvider.ENTITY_PREFIX;
+		} else if (refClass == QnaOptions.class) {
+			prefix = "qna-options";
+		} else {
+			prefix = "qna:" + refClass.getName();
+		}
+		
+		return new IdEntityReference(prefix, entityId).toString();
+	}
+	
+	
 }

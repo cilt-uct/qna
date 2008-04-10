@@ -35,7 +35,6 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 public class SearchResultsProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
 
 	public static final String VIEW_ID = "search_results";
-	private QuestionIteratorRenderer questionIteratorRenderer;
 	private SearchBarRenderer searchBarRenderer;
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
@@ -43,10 +42,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 
 	public String getViewID() {
 		return VIEW_ID;
-	}
-
-	public void setListIteratorRenderer(QuestionIteratorRenderer questionIteratorRenderer) {
-		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 
     public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {

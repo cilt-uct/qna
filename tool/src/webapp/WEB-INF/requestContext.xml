@@ -198,7 +198,6 @@
 	<bean
 		class="org.sakaiproject.qna.tool.producers.SearchResultsProducer">
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-		<property name="questionIteratorRenderer" ref="QuestionIteratorRenderer" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="searchLogic" ref="org.sakaiproject.qna.logic.SearchLogic"/>

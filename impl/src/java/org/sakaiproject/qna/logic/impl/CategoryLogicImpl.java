@@ -49,7 +49,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaCategory category = getCategoryById(categoryId);
 			dao.delete(category);
-			externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_DELETE, category.getId());
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_DELETE, category);
 		} else {
 			throw new SecurityException("Current user cannot remove category for "+locationId+" because they do not have permission");
 		}
@@ -63,7 +63,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 				category.setOwnerId(userId);
 				category.setDateLastModified(new Date());
 				dao.save(category);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_UPDATE, category.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_UPDATE, category);
 			} else {
 				throw new SecurityException("Current user cannot save category for "+locationId+" because they do not have permission");
 			}
@@ -71,7 +71,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			if (permissionLogic.canAddNewCategory(locationId, userId)) {
 				setNewCategoryDefaults(category,locationId, userId);
 				dao.save(category);
-				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_CREATE, category.getId());
+				externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_CREATE, category);
 			} else {
 				throw new SecurityException("Current user cannot create new category for "+locationId+" because they do not have permission");
 			}

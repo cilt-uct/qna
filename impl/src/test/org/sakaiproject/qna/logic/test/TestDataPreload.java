@@ -84,18 +84,18 @@ public class TestDataPreload {
 			new Date());
 	
 	
-	public QnaQuestion question1_location1 = new QnaQuestion(null,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question1", 0,new Date(),new Date(), 0,false,false  );
-	public QnaCategory category1_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category1",0);
-	public QnaCategory category2_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category2",0);
-	public QnaCategory category3_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category3",0);
+	public QnaQuestion question1_location1 = new QnaQuestion(null,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question1", 0,new Date(),new Date(), 0,false,false, false  );
+	public QnaCategory category1_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category1",0, false);
+	public QnaCategory category2_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category2",0, false);
+	public QnaCategory category3_location1 = new QnaCategory(TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Category3",0, false);
 	
-	public QnaQuestion question2_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question2", 0,new Date(),new Date(), 0,false,true);
-	public QnaQuestion question3_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question3", 0,new Date(),new Date(), 0,false,true);
-	public QnaQuestion question4_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question4", 76,new Date(),new Date(), 0,false,true);
-	public QnaQuestion question5_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question5", 0,new Date(),new Date(), 0,false,false);
+	public QnaQuestion question2_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question2", 0,new Date(),new Date(), 0,false,true, false);
+	public QnaQuestion question3_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question3", 0,new Date(),new Date(), 0,false,true, false);
+	public QnaQuestion question4_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question4", 76,new Date(),new Date(), 0,false,true, false);
+	public QnaQuestion question5_location1 = new QnaQuestion(category1_location1,TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION1_ID,"Test Question5", 0,new Date(),new Date(), 0,false,false, false);
 
-	public QnaCategory category1_location3 = new QnaCategory(TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Category location 3",0);
-	public QnaQuestion question1_location3 = new QnaQuestion(category1_location3,TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Question1 location 3", 0,new Date(),new Date(), 0,false,false);
+	public QnaCategory category1_location3 = new QnaCategory(TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Category location 3",0, false);
+	public QnaQuestion question1_location3 = new QnaQuestion(category1_location3,TestDataPreload.USER_LOC_3_UPDATE_1, TestDataPreload.LOCATION3_ID,"Test Question1 location 3", 0,new Date(),new Date(), 0,false,false, false);
 	
 	public QnaAnswer answer1_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an answer", true, false, false);
 	public QnaAnswer answer2_location1 = new QnaAnswer(question2_location1, USER_UPDATE, "This is an another answer", false, true, false);

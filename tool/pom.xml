@@ -36,7 +36,14 @@
          <version>0.1</version>
          <scope>provided</scope>
       </dependency>
-
+	
+	  <dependency>
+		<groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-api</artifactId>
+      	<version>1.2.0</version>
+     	<scope>provided</scope>
+      </dependency>
+		
       <!-- Sakai RSF dependency -->
       <dependency>
          <groupId>uk.org.ponder.sakairsf</groupId>

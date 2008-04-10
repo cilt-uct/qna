@@ -99,8 +99,10 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
-
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);
+		
+		if (!questionParams.direct) {
+			questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);
+		}
 		UIMessage.make(tofill,"page-title","qna.view-question.title");
 		UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
 		UIMessage.make(tofill,"question-title","qna.view-question.question");
@@ -128,8 +130,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		renderAnswers(tofill, question, answerLocator);
 
-		// TODO: Fix pager
-		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:",question);
+		if (!questionParams.direct) {
+			questionIteratorRenderer.makeQuestionIterator(tofill, "iterator2:",question);
+		}
 
 		if (permissionLogic.canAddNewAnswer(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;

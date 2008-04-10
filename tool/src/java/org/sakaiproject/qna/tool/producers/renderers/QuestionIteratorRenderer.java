@@ -1,6 +1,5 @@
 package org.sakaiproject.qna.tool.producers.renderers;
 
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.QuestionIteratorHelper;
 import org.sakaiproject.qna.tool.params.QuestionParams;

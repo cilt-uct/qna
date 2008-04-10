@@ -6,6 +6,8 @@ import java.util.List;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.constants.SortByConstants;
+import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.utils.QuestionsSorter;
 import org.sakaiproject.tool.api.SessionManager;
@@ -66,9 +68,18 @@ public class QuestionIteratorHelper {
 	private List<QnaQuestion> getCurrentList() {
 		checkSetup();
 		ToolSession toolSession = sessionManager.getCurrentToolSession();
-		String viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
-		String sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);;
 		
+		String viewType;
+		String sortBy;
+		
+		if (toolSession == null) {
+			viewType = ViewTypeConstants.ALL_DETAILS;
+			sortBy = SortByConstants.VIEWS;
+		} else {
+			viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
+			sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
+		}
+
 		String location = externalLogic.getCurrentLocationId();
 		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(location, viewType, sortBy, permissionLogic.canUpdate(location, externalLogic.getCurrentUserId()), false);
 		

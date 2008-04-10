@@ -10,7 +10,7 @@ public class CategoryEntityProviderImpl implements CategoryEntityProvider, CoreE
 	private CategoryLogic categoryLogic;
 	
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
-		this.setCategoryLogic(categoryLogic);
+		this.categoryLogic = categoryLogic;
 	}
 	
 	public String getEntityPrefix() {

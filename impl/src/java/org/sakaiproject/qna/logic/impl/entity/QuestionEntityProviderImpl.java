@@ -10,7 +10,7 @@ public class QuestionEntityProviderImpl implements QuestionEntityProvider, CoreE
 	private QuestionLogic questionLogic;
 	
 	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.setQuestionLogic(questionLogic);
+		this.questionLogic = questionLogic;
 	}
 		
 	public String getEntityPrefix() {

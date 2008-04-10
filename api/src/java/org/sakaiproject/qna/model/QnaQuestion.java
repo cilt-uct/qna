@@ -54,6 +54,8 @@ public class QnaQuestion {
 //	If user needs to be notified of answer
 	private Boolean notify;
 
+	private Boolean hidden;
+
 //	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/
 	private String categoryId;
 
@@ -320,7 +322,7 @@ public class QnaQuestion {
 	public void setContentCollection(String contentCollection) {
 		this.contentCollection = contentCollection;
 	}
-	
+
 	// Helper function
 	public boolean hasPrivateReplies() {
 		if (answers == null || answers.size() == 0) {
@@ -334,5 +336,13 @@ public class QnaQuestion {
 		}
 		return false;
 	}
-	
+
+	public Boolean getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
+	}
+
 }

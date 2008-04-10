@@ -20,10 +20,12 @@
       <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />
       <property name="categoryText" type="string" length="255" not-null="true" />
-     
+
       <property name="dateLastModified" type="java.util.Date" not-null="true"/>
       <property name="dateCreated" type="java.util.Date" not-null="true"/>
-      
+
       <property name="sortOrder" type="integer" />
+
+      <property name="hidden" type="boolean" not-null="true"/>
    </class>
 </hibernate-mapping>

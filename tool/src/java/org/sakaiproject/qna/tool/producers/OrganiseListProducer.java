@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
@@ -18,6 +20,8 @@ import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.messageutil.MessageLocator;
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -51,7 +55,13 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
     private SearchBarRenderer searchBarRenderer;
     private ExternalLogic externalLogic;
     private CategoryLogic categoryLogic;
+    private QuestionLogic questionLogic;
+    private PermissionLogic permissionLogic;
+    private TargettedMessageList messages;
 
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
+	}
 	public String getViewID() {
 		return VIEW_ID;
 	}
@@ -70,12 +80,40 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
+	public void setQuestionLogic(QuestionLogic questionLogic) {
+		this.questionLogic = questionLogic;
+	}
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
+	}
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
 
 		OrganiseParams params = (OrganiseParams)viewparams;
+
+		if (params.id != null) {
+			if (params.type.equalsIgnoreCase("cat")) {
+				QnaCategory qnaCategory = categoryLogic.getCategoryById(params.id);
+				qnaCategory.setHidden(new Boolean(!params.visible));
+				categoryLogic.saveCategory(qnaCategory, externalLogic.getCurrentLocationId());
+				if (params.visible) {
+					messages.addMessage(new TargettedMessage("qna.organise.category-visible", null, TargettedMessage.SEVERITY_INFO));
+				} else {
+					messages.addMessage(new TargettedMessage("qna.organise.category-hidden", null, TargettedMessage.SEVERITY_INFO));
+				}
+			} else if (params.type.equalsIgnoreCase("que")) {
+				QnaQuestion qnaQuestion = questionLogic.getQuestionById(params.id);
+				qnaQuestion.setHidden(new Boolean(!params.visible));
+				questionLogic.saveQuestion(qnaQuestion, externalLogic.getCurrentLocationId());
+				if (params.visible) {
+					messages.addMessage(new TargettedMessage("qna.organise.question-visible", null, TargettedMessage.SEVERITY_INFO));
+				} else {
+					messages.addMessage(new TargettedMessage("qna.organise.question-hidden", null, TargettedMessage.SEVERITY_INFO));
+				}
+			}
+		}
 
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 		Collections.sort(categories, new CategoriesSortOrderComparator());
@@ -102,11 +140,21 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 
 				UIOutput.make(categoryContainer, "category-name", qnaCategory.getCategoryText());
 
-				UILink.make(categoryContainer, "edit-category-icon", "/library/image/silk/page_white_edit.png");
-				UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+					UILink.make(categoryContainer, "edit-category-icon", "/library/image/silk/page_white_edit.png");
+					UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
 
-				UILink.make(categoryContainer, "delete-category-icon", "/library/image/silk/delete.png");
-				UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					if (qnaCategory.getHidden()) {
+						UILink.make(categoryContainer, "hide-category-icon", "/library/image/silk/lightbulb_off.png");
+						UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), true));
+					} else {
+						UILink.make(categoryContainer, "hide-category-icon", "/library/image/silk/lightbulb.png");
+						UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), false));
+					}
+
+					UILink.make(categoryContainer, "delete-category-icon", "/library/image/silk/delete.png");
+					UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				}
 
 				UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), catorderlist.size());
 				catorderlist.add(qnaCategory.getId());
@@ -132,11 +180,21 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 
 						UIOutput.make(questionContainer, "question-text", TextUtil.stripTags(qnaQuestion.getQuestionText()));
 
-						UILink.make(questionContainer, "edit-question-icon", "/library/image/silk/page_white_edit.png");
-						UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(ViewQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+							UILink.make(questionContainer, "edit-question-icon", "/library/image/silk/page_white_edit.png");
+							UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(ViewQuestionProducer.VIEW_ID, qnaQuestion.getId()));
 
-						UILink.make(questionContainer, "delete-question-icon", "/library/image/silk/delete.png");
-						UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+							if (qnaQuestion.getHidden()) {
+								UILink.make(questionContainer, "hide-question-icon", "/library/image/silk/lightbulb_off.png");
+								UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), true));
+							} else {
+								UILink.make(questionContainer, "hide-question-icon", "/library/image/silk/lightbulb.png");
+								UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), false));
+							}
+
+							UILink.make(questionContainer, "delete-question-icon", "/library/image/silk/delete.png");
+							UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						}
 
 						UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());
 						queorderlist.add(qnaQuestion.getId());

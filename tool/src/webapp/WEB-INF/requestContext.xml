@@ -230,11 +230,14 @@
 
 	<!-- Organise Producers -->
 	<bean id="OrganiseListProducer" class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
+		<property name="messages" ref="targettedMessageList"/>
 		<property name="messageLocator" ref="messageLocator"/>
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">
@@ -242,7 +245,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
-	
+
 	<!-- Question Sorter -->
 	<bean id="QuestionsSorter" class="org.sakaiproject.qna.tool.utils.QuestionsSorter">
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />

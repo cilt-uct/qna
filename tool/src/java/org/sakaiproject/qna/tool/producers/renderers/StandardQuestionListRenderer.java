@@ -39,7 +39,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-	
+
     public void setPagerRenderer(PagerRenderer pagerRenderer) {
 		this.pagerRenderer = pagerRenderer;
 	}
@@ -62,23 +62,25 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 
 		List<QnaQuestion> questionsAll = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, false);
 		List<QnaQuestion> questions = questionsSorter.filterQuestions(questionsAll, params.current_start, params.current_count);
-		
+
         int total_count = questionsAll != null ? questionsAll.size() : 0;
     	pagerRenderer.makePager(listTable, "pagerDiv:", params.viewID, params, total_count);
-		
+
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
-			UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
-			UIOutput.make(entry,"rank-nr",rank + "");
-			UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
-			if (params.sortBy.equals(SortByConstants.VIEWS)) {
-				UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
-			} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
-				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
-			} else if (params.sortBy.equals(SortByConstants.CREATED)) {
-				UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateCreated()));
+			if (!qnaQuestion.getHidden() && (!qnaQuestion.getCategory().getHidden())) {
+				UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
+				UIOutput.make(entry,"rank-nr",rank + "");
+				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
+				if (params.sortBy.equals(SortByConstants.VIEWS)) {
+					UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
+				} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
+					UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
+				} else if (params.sortBy.equals(SortByConstants.CREATED)) {
+					UIOutput.make(entry,"ordered-by",DateUtil.getSimpleDate(qnaQuestion.getDateCreated()));
+				}
+				rank++;
 			}
-			rank++;
 		}
 	}
 }

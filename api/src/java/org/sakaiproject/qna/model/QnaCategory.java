@@ -35,6 +35,8 @@ public class QnaCategory {
 
 	private Integer sortOrder;
 
+	private Boolean hidden;
+
 	public QnaCategory() {
 	}
 
@@ -183,10 +185,10 @@ public class QnaCategory {
 	public List<QnaQuestion> getQuestions() {
 		return questions;
 	}
-	
+
 	public List<QnaQuestion> getPublishedQuestions() {
 		List<QnaQuestion> published = new ArrayList<QnaQuestion>();
-		
+
 		for (QnaQuestion question : questions) {
 			if (question.isPublished()) {
 				published.add(question);
@@ -205,6 +207,14 @@ public class QnaCategory {
 	public void addQuestion(QnaQuestion qnaQuestion) {
 		qnaQuestion.setCategory(this);
 		questions.add(qnaQuestion);
+	}
+
+	public Boolean getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
 	}
 
 }

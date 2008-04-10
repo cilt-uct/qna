@@ -21,7 +21,7 @@
       		<key column="question_id"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaAnswer" />
       </bag>
-      
+
 	  <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="lastModifierId" type="string" length="255" not-null="true" />
       <property name="location" type="string" length="255" not-null="true" />
@@ -34,5 +34,6 @@
       <property name="published" type="boolean" not-null="true" />
       <property name="notify" type="boolean" not-null="true" />
       <property name="contentCollection" type="string" />
+      <property name="hidden" type="boolean" not-null="true"/>
    </class>
 </hibernate-mapping>

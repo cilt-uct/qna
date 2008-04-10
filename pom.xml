@@ -23,12 +23,14 @@
    </parent>
 -->
 
+<!-- -->
 	<parent>
 		<artifactId>base</artifactId>
 		<groupId>org.sakaiproject</groupId>
 		<version>M2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+<!-- -->
 
    <modules>
       <module>api</module>

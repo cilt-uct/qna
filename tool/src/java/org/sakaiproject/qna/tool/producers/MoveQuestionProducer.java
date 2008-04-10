@@ -12,7 +12,6 @@ import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.CategoryLocator;
-import org.sakaiproject.qna.tool.otp.QuestionLocator;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;

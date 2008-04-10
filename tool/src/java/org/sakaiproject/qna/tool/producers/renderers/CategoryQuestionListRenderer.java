@@ -82,23 +82,25 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		// List of published questions by category
 		for (QnaCategory qnaCategory : categories) {
 			if (qnaCategory.getPublishedQuestions().size() > 0) {
-				UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");
-				UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");
+				if (!qnaCategory.getHidden()) {
+					UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");
+					UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");
 
-				initViewToggle(entry, category);
-				UIOutput.make(category,"category-name",qnaCategory.getCategoryText());
-				UIInternalLink.make(category, "category-edit", UIMessage.make("qna.general.edit"), new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
-				UIOutput.make(category,"modified-date",DateUtil.getSimpleDate(qnaCategory.getDateLastModified()));
+					initViewToggle(entry, category);
+					UIOutput.make(category,"category-name",qnaCategory.getCategoryText());
+					UIInternalLink.make(category, "category-edit", UIMessage.make("qna.general.edit"), new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					UIOutput.make(category,"modified-date",DateUtil.getSimpleDate(qnaCategory.getDateLastModified()));
 
-				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-					//UIOutput.make(category,"remove-category-cell");
-					//UIBoundBoolean.make(category, "remove-checkbox", false);
-					UISelectChoice.make(category, "remove-category-checkbox", categoryDeleteSelect.getFullID(), deletable.size());
-					deletable.add(qnaCategory.getId());
+					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+						//UIOutput.make(category,"remove-category-cell");
+						//UIBoundBoolean.make(category, "remove-checkbox", false);
+						UISelectChoice.make(category, "remove-category-checkbox", categoryDeleteSelect.getFullID(), deletable.size());
+						deletable.add(qnaCategory.getId());
+					}
+
+					List<QnaQuestion> publishedQuestions = qnaCategory.getPublishedQuestions();
+					renderQuestions(entry, publishedQuestions, ViewQuestionProducer.VIEW_ID, questionDeleteSelect);
 				}
-
-				List<QnaQuestion> publishedQuestions = qnaCategory.getPublishedQuestions();
-				renderQuestions(entry, publishedQuestions, ViewQuestionProducer.VIEW_ID, questionDeleteSelect);
 			}
 
 		}
@@ -163,17 +165,19 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
 		for (int k=0; k<questions.size(); k++) {
 			QnaQuestion qnaQuestion = questions.get(k);
-			UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
-			UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId()));
-			UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
-			UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
-			UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
+			if (!qnaQuestion.getHidden()) {
+				UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
+				UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId()));
+				UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
+				UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
+				UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
 
-			if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-				//UIOutput.make(question,"remove-question-cell");
-				//UIBoundBoolean.make(question, "remove-checkbox", false);
-				UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
-				deletable.add(qnaQuestion.getId());
+				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+					//UIOutput.make(question,"remove-question-cell");
+					//UIBoundBoolean.make(question, "remove-checkbox", false);
+					UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
+					deletable.add(qnaQuestion.getId());
+				}
 			}
 		}
 		StringList tmpIds = deletable;

@@ -54,11 +54,11 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 	public void setQuestionsSorter(QuestionsSorter questionsSorter) {
 		this.questionsSorter = questionsSorter;
 	}
-	
+
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
 
 		UIMessage.make(tofill,"sort-message","qna.view-questions.sort-message");
-		
+
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 
 		if (params.sortBy == null) params.sortBy = DEFAULT_SORT_BY;
@@ -93,30 +93,32 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
 
 		//Fill out Table
-        for (QnaQuestion question : questions){
-        	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
+        for (QnaQuestion question : questions) {
+        	if (!question.getHidden() && (!question.getCategory().getHidden())) {
+	        	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
 
-        	if (question.isPublished()) {
-				UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId()));
-			} else {
-				if (question.hasPrivateReplies()) {
-					UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId()));					
+	        	if (question.isPublished()) {
+					UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId()));
 				} else {
-					UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId()));					
+					if (question.hasPrivateReplies()) {
+						UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId()));
+					} else {
+						UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId()));
+					}
 				}
-			}
 
-        	UIOutput.make(row, "question_row_views", question.getViews() + "");
-        	UIOutput.make(row, "question_row_answers", question.getAnswers().size() + "");
-        	UIOutput.make(row, "question_row_created", DateUtil.getSimpleDate(question.getDateCreated()));
-        	UIOutput.make(row, "question_row_modified", DateUtil.getSimpleDate(question.getDateLastModified()));
-        	if (question.getCategory() != null) {
-				UIOutput.make(row,"question_row_category",question.getCategory().getCategoryText());
-			} else {
-				UIOutput.make(row,"question_row_category","");
-			}
-        	UISelectChoice.make(row, "remove-question-checkbox", questionDeleteSelect.getFullID(), deletable.size());
-			deletable.add(question.getId());
+	        	UIOutput.make(row, "question_row_views", question.getViews() + "");
+	        	UIOutput.make(row, "question_row_answers", question.getAnswers().size() + "");
+	        	UIOutput.make(row, "question_row_created", DateUtil.getSimpleDate(question.getDateCreated()));
+	        	UIOutput.make(row, "question_row_modified", DateUtil.getSimpleDate(question.getDateLastModified()));
+	        	if (question.getCategory() != null) {
+					UIOutput.make(row,"question_row_category",question.getCategory().getCategoryText());
+				} else {
+					UIOutput.make(row,"question_row_category","");
+				}
+	        	UISelectChoice.make(row, "remove-question-checkbox", questionDeleteSelect.getFullID(), deletable.size());
+				deletable.add(question.getId());
+        	}
         }
         questionDeleteSelect.optionlist.setValue(deletable.toStringArray());
 	}

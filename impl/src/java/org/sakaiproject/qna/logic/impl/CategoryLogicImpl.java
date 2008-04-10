@@ -21,7 +21,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	private ExternalLogic externalLogic;
 	private QnaDao dao;
 	private ExternalEventLogic externalEventLogic;
-	
+
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
 	}
@@ -37,7 +37,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
 		this.externalEventLogic = externalEventLogic;
 	}
-	
+
 	public QnaCategory getCategoryById(String categoryId) {
 		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
@@ -77,7 +77,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			}
 		}
 	}
-	
+
 	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId) {
 		if (qnaCategory.getId() == null) {
 			Date now = new Date();
@@ -86,14 +86,15 @@ public class CategoryLogicImpl implements CategoryLogic {
 			qnaCategory.setOwnerId(ownerId);
 			qnaCategory.setLocation(locationId);
 			qnaCategory.setQuestions(null);
+			qnaCategory.setHidden(Boolean.FALSE);
 			qnaCategory.setSortOrder(new Integer(0));
 			qnaCategory.setHidden(false);
 		} else {
 			throw new RuntimeException("Should only be called on categories not yet persisted");
 		}
 	}
-	
-	
+
+
 	public boolean existsCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::existsCategory");
 		if (categoryId == null || categoryId.equals("")) {

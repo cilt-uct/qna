@@ -21,8 +21,10 @@
 
 	<bean id="SortHeaderRenderer" class="org.sakaiproject.qna.tool.producers.renderers.SortHeaderRenderer" />
 
-	<bean id="NavbarRenderer"
-		class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer" />
+	<bean id="NavbarRenderer" class="org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer">
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+	</bean>
 
 	<bean
 		id="SearchBarRenderer"

@@ -182,7 +182,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 
 						if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 							UILink.make(questionContainer, "edit-question-icon", "/library/image/silk/page_white_edit.png");
-							UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(ViewQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+							UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId()));
 
 							if (qnaQuestion.getHidden()) {
 								UILink.make(questionContainer, "hide-question-icon", "/library/image/silk/lightbulb_off.png");

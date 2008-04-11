@@ -1,4 +1,4 @@
-CREATE TABLE  `unisa`.`qna_ANSWERS` (
+CREATE TABLE  `qna_ANSWERS` (
   `id` varchar(255) NOT NULL,
   `question_id` varchar(255) NOT NULL,
   `ownerId` varchar(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE  `unisa`.`qna_ANSWERS` (
   KEY `FK63487CFAB9F9349F` (`question_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
-CREATE TABLE  `unisa`.`qna_CATEGORIES` (
+CREATE TABLE  `qna_CATEGORIES` (
   `id` varchar(255) NOT NULL,
   `ownerId` varchar(255) NOT NULL,
   `location` varchar(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE  `unisa`.`qna_CATEGORIES` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
-CREATE TABLE  `unisa`.`qna_CUSTOM_EMAIL_LIST` (
+CREATE TABLE  `qna_CUSTOM_EMAIL_LIST` (
   `id` varchar(255) NOT NULL,
   `options_id` varchar(255) NOT NULL,
   `ownerId` varchar(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE  `unisa`.`qna_CUSTOM_EMAIL_LIST` (
   KEY `FKD08CBF742EDEC7B5` (`options_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
-CREATE TABLE  `unisa`.`qna_OPTIONS` (
+CREATE TABLE  `qna_OPTIONS` (
   `id` varchar(255) NOT NULL,
   `ownerId` varchar(255) NOT NULL,
   `location` varchar(255) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE  `unisa`.`qna_OPTIONS` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
-CREATE TABLE  `unisa`.`qna_QUESTIONS` (
+CREATE TABLE  `qna_QUESTIONS` (
   `id` varchar(255) NOT NULL,
   `category_id` varchar(255) default NULL,
   `ownerId` varchar(255) NOT NULL,

@@ -26,5 +26,4 @@ public class AnswerEntityProviderImpl implements AnswerEntityProvider, CoreEntit
 		
 		return true;
 	}
-
 }

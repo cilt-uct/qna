@@ -60,13 +60,6 @@ public interface CategoryLogic {
 	/**
 	 *
 	 * @param locationId
-	 * @return QnaCategory
-	 */
-	public QnaCategory getCategories(String locationId);
-
-	/**
-	 *
-	 * @param locationId
 	 * @param ownerId
 	 * @param categoryText
 	 * @return QnaCategory

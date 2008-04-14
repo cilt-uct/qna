@@ -122,24 +122,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return qnaCategory;
 	}
 
-	public QnaCategory getCategories(String locationId) {
-		log.debug("CategoryLogicImpl::getCategories");
-		List l = dao.findByProperties(
-			QnaCategory.class,
-			new String[] { "location" },
-			new Object[] { locationId },
-			new int[] { ByPropsFinder.EQUALS },
-			0,
-			1
-		);
-		if (l.size() > 0) {
-			return (QnaCategory) l.get(0);
-		} else {
-			QnaCategory newCategory = createDefaultCategory(locationId, "", "");
-			return newCategory;
-		}
-	}
-
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::getQuestionsForCategory");
 		return getCategoryById(categoryId).getQuestions();

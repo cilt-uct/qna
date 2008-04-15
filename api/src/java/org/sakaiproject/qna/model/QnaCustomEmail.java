@@ -135,7 +135,6 @@ public class QnaCustomEmail {
 		return false;
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

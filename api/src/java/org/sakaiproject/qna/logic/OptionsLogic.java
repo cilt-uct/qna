@@ -24,7 +24,16 @@ public interface OptionsLogic {
 	 *            (entity reference)
 	 * @return {@link QnaOptions} object
 	 */
-	public QnaOptions getOptions(String locationId);
+	public QnaOptions getOptionsForLocation(String locationId);
+	
+	/**
+	 * Get options by ID
+	 * 
+	 * @param id
+	 * 			unique id that represents the options in the database
+	 * @return {@link QnaOptions} object
+	 */
+	public QnaOptions getOptionsById(String id);
 
 	/**
 	 * Save/update options uses current location id

@@ -67,7 +67,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 	@SuppressWarnings("unchecked")
 	public Set<String> getNotificationSet(String locationId) {
-		QnaOptions options = getOptions(locationId);
+		QnaOptions options = getOptionsForLocation(locationId);
 		Set<String> notificationSet = new HashSet<String>();
 
 		if (options.getEmailNotification()) {
@@ -88,7 +88,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 		return notificationSet;
 	}
 
-	public QnaOptions getOptions(String locationId) {
+	public QnaOptions getOptionsForLocation(String locationId) {
 		List l = dao.findByProperties(QnaOptions.class,
 				new String[] { "location" }, new Object[] { locationId },
 				new int[] { ByPropsFinder.EQUALS }, 0, 1);
@@ -140,7 +140,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 	public boolean setCustomMailList(String locationId, String mailList) {
 		String userId = externalLogic.getCurrentUserId();
 
-		QnaOptions options = getOptions(locationId);
+		QnaOptions options = getOptionsForLocation(locationId);
 
 		for (QnaCustomEmail mail : options.getCustomEmails()) {
 			dao.delete(mail);
@@ -166,6 +166,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 		saveOptions(options, locationId);
 		return invalidEmail;
 
+	}
+
+	public QnaOptions getOptionsById(String id) {
+		return (QnaOptions)dao.findById(QnaOptions.class, id);
 	}
 
 }

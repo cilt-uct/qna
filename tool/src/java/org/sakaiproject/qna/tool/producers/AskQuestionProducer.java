@@ -74,7 +74,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 	}
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
-		QnaOptions options = optionsLogic.getOptions(externalLogic.getCurrentLocationId());
+		QnaOptions options = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId());
 
 		String multipleBeanMediator = "MultipleBeanMediator";
 		String questionLocator = "QuestionLocator";

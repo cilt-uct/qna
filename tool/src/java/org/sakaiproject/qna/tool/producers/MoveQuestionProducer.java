@@ -75,7 +75,7 @@ public class MoveQuestionProducer implements ViewComponentProducer, NavigationCa
 		String categoryOTP = categoryLocator + "." + CategoryLocator.NEW_1;
 
 		QnaQuestion question = questionLogic.getQuestionById(params.questionid);
-		QnaOptions qnaOptions = optionsLogic.getOptions(externalLogic.getCurrentLocationId());
+		QnaOptions qnaOptions = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId());
 
 		UIMessage.make(tofill, "page-title", "qna.move-question.title");
 		UIMessage.make(tofill, "question-title", "qna.move-question.question");

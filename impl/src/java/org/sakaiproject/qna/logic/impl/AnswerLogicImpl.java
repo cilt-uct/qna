@@ -75,7 +75,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 				}
 				
 				if (question.getLocation().equals(locationId)) {
-					QnaOptions options = optionsLogic.getOptions(locationId);
+					QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 	
 					if (answer.isAnonymous()) {
 						if (!options.getAnonymousAllowed()) {
@@ -201,7 +201,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 	
 	public QnaAnswer createDefaultAnswer(String locationId) {
 		QnaAnswer answer = new QnaAnswer();
-		QnaOptions options = optionsLogic.getOptions(locationId);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 		answer.setAnonymous(options.getAnonymousAllowed());
 		answer.setPrivateReply(false);
 		return answer;

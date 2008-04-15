@@ -18,10 +18,8 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaCustomEmail;
@@ -128,7 +126,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 			}
 			
 			// Options
-			QnaOptions options = optionsLogic.getOptions(fromLocation);
+			QnaOptions options = optionsLogic.getOptionsForLocation(fromLocation);
 			QnaOptions newOptions = new QnaOptions();
 			newOptions.setAnonymousAllowed(options.getAnonymousAllowed());
 			newOptions.setDateCreated(options.getDateCreated());

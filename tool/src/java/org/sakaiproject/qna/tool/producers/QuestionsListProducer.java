@@ -236,7 +236,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 				view = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
 				sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
 			} else { // default
-				String defaultView = optionsLogic.getOptions(externalLogic.getCurrentLocationId()).getDefaultStudentView();
+				String defaultView = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getDefaultStudentView();
 				if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
 					view = ViewTypeConstants.CATEGORIES;
 				} else if (defaultView.equals(QnaConstants.MOST_POPULAR_VIEW)){

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
@@ -28,29 +29,34 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
 public class OptionsProducer implements ViewComponentProducer, NavigationCaseReporter  {
     
 	public static final String VIEW_ID = "options";
-    public String getViewID() {
+    private NavBarRenderer navBarRenderer;
+    private ExternalLogic externalLogic;
+    private BeanGetter ELEvaluator;
+    private OptionsLogic optionsLogic;
+	
+	public String getViewID() {
         return VIEW_ID;
     }
     
-    private NavBarRenderer navBarRenderer;
     public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
     
-    private ExternalLogic externalLogic;
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
 	
-	private BeanGetter ELEvaluator;
-    public void setELEvaluator(BeanGetter ELEvaluator) {
+	public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
     }
+	
+	public void setOptionsLogic(OptionsLogic optionsLogic) {
+		this.optionsLogic = optionsLogic;
+	}
 
-    
     public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		String optionsLocator = "OptionsLocator";
-		String optionsOTP = optionsLocator + "." + externalLogic.getCurrentLocationId();
+		String optionsOTP = optionsLocator + "." + optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getId();
 		
     	navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
     	UIMessage.make(tofill, "page-title", "qna.options.title");

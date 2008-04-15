@@ -30,7 +30,7 @@ public class OptionsLocator implements BeanLocator {
 	public Object locateBean(String name) {
 		QnaOptions togo = delivered.get(name);
 		if (togo == null) {
-			togo = optionsLogic.getOptions(name);
+			togo = optionsLogic.getOptionsById(name);
 			delivered.put(name, togo);
 		}
 		return togo;

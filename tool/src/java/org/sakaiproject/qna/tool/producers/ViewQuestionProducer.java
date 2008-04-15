@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -12,8 +13,8 @@ import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
-import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
 import uk.org.ponder.rsf.components.ELReference;
@@ -51,6 +52,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     private ExternalLogic externalLogic;
     private QuestionLogic questionLogic;
     private AttachmentsViewRenderer attachmentsViewRenderer;
+    private OptionsLogic optionsLogic;
     
 	public String getViewID() {
 		return VIEW_ID;
@@ -87,12 +89,17 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
 		this.attachmentsViewRenderer = attachmentsViewRenderer;
 	}
-
+	
+	public void setOptionsLogic(OptionsLogic optionsLogic) {
+		this.optionsLogic = optionsLogic;
+	}
+	
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		String answerLocator = "AnswerLocator";
 		String questionLocator = "QuestionLocator";
 		String optionsLocator = "OptionsLocator";
+		String optionsOTP = optionsLocator + "." + optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getId();
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
@@ -158,7 +165,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	        }
 
 	        form.addParameter(new UIELBinding(answerOTP + ".privateReply", false));
-	        form.addParameter(new UIELBinding(answerOTP + ".anonymous", new ELReference(optionsLocator + "." + externalLogic.getCurrentLocationId() + ".anonymousAllowed")));
+	        form.addParameter(new UIELBinding(answerOTP + ".anonymous", new ELReference(optionsOTP + ".anonymousAllowed")));
 
 	        UICommand saveButton = UICommand.make(form,"add-answer-button",UIMessage.make("qna.view-question.add-answer"), answerLocator + ".saveAll");
 	        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
@@ -180,7 +187,6 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:");
 
 				// Heading of answer
-				// TODO: How will the system know it is lecturer? At the moment only look at update permission
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 					UIOutput.make(answer, "answer-detail");
 					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");

@@ -164,7 +164,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 			if (permissionLogic.canUpdate(locationId, userId)) {
 				if (question.isAnonymous()) {
-					if (!optionsLogic.getOptions(locationId)
+					if (!optionsLogic.getOptionsForLocation(locationId)
 							.getAnonymousAllowed()) {
 						throw new QnaConfigurationException("Location: "
 								+ locationId
@@ -183,7 +183,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 			}
 		} else {
 			if (permissionLogic.canAddNewQuestion(locationId, userId)) {
-				QnaOptions options = optionsLogic.getOptions(locationId);
+				QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 
 				if (question.isAnonymous() == null) {
 					question.setAnonymous(options.getAnonymousAllowed()); // default for location

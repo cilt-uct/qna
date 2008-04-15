@@ -18,8 +18,11 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaCustomEmail;
@@ -31,7 +34,7 @@ import org.w3c.dom.Element;
 
 public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 {
-	public static final String QNA_TOOL_ID = "sakai.qna";
+	
 	public static final String REFERENCE_ROOT = Entity.SEPARATOR + "qna";
 	
 	private static Log log = LogFactory.getLog(QnaEntityProducer.class);
@@ -40,6 +43,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	private QnaDao dao;
 	private CategoryLogic categoryLogic;
 	private OptionsLogic optionsLogic;
+	private AttachmentLogic attachmentLogic;
 	
 	public void setEntityManager(EntityManager em) {
 		entityManager = em;
@@ -50,17 +54,15 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	}
 	
 	public void init() {
-		try{
+		try {
 			entityManager.registerEntityProducer(this, REFERENCE_ROOT);
-		}
-		catch (Throwable t)
-		{
+		} catch (Throwable t) {
 			log.warn("init(): ", t);
 		}
 	}
 	
 	public String[] myToolIds() {
-		String[] toolIds = { QNA_TOOL_ID };
+		String[] toolIds = { ExternalLogic.QNA_TOOL_ID };
 		return toolIds;
 	}
 
@@ -106,6 +108,13 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 					
 					dao.save(newQuestion);
 					
+					// Coping of attachments
+					try {
+						attachmentLogic.copyAttachments(question.getContentCollection(), newQuestion.getId(), toLocation);
+					} catch (AttachmentException e) {
+						log.warn("Error copying attachments", e);
+					}
+					
 					List<QnaAnswer> answers = question.getAnswers();
 					// Answers
 					for (QnaAnswer answer : answers) {
@@ -147,73 +156,17 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 				newOptions.addCustomEmail(email);
 			}
 			dao.save(newOptions);
-			
-			
-			
 		} catch (IdUnusedException e) {
 			log.warn("Error importing entities", e);
 		}
-	}
-
-	public String archive(String siteId, Document doc, Stack stack,
-			String archivePath, List attachments) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Entity getEntity(Reference ref) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getEntityAuthzGroups(Reference ref, String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getEntityDescription(Reference ref) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ResourceProperties getEntityResourceProperties(Reference ref) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getEntityUrl(Reference ref) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public HttpAccess getHttpAccess() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public String getLabel() {
 		return "qna";
 	}
 
-	public String merge(String siteId, Element root, String archivePath,
-			String fromSiteId, Map attachmentNames, Map userIdTrans,
-			Set userListAllowImport) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean parseEntityReference(String reference, Reference ref) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean willArchiveMerge() {
 		return false;
-	}
-
-	public String getEntityPrefix() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void setDao(QnaDao dao) {
@@ -226,6 +179,55 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	
 	public void setOptionsLogic(OptionsLogic optionsLogic) {
 		this.optionsLogic = optionsLogic;
+	}
+	
+	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
+		this.attachmentLogic = attachmentLogic;
+	}
+	
+	// NOT IMPLEMENTED
+	
+	public String getEntityPrefix() {
+		return null;
+	}
+	
+	public String merge(String siteId, Element root, String archivePath,
+			String fromSiteId, Map attachmentNames, Map userIdTrans,
+			Set userListAllowImport) {
+		return null;
+	}
+
+	public boolean parseEntityReference(String reference, Reference ref) {
+		return false;
+	}
+	
+	public String archive(String siteId, Document doc, Stack stack,
+			String archivePath, List attachments) {
+		return null;
+	}
+
+	public Entity getEntity(Reference ref) {
+		return null;
+	}
+
+	public Collection getEntityAuthzGroups(Reference ref, String userId) {
+		return null;
+	}
+
+	public String getEntityDescription(Reference ref) {
+		return null;
+	}
+
+	public ResourceProperties getEntityResourceProperties(Reference ref) {
+		return null;
+	}
+
+	public String getEntityUrl(Reference ref) {
+		return null;
+	}
+
+	public HttpAccess getHttpAccess() {
+		return null;
 	}
 
 }

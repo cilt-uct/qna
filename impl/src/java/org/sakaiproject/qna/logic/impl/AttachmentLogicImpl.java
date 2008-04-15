@@ -1,22 +1,23 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.util.Validator;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public class AttachmentLogicImpl implements AttachmentLogic {
@@ -24,9 +25,7 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 	private static Log log = LogFactory.getLog(AttachmentLogicImpl.class);
 
 	private ContentHostingService chs;
-
 	private QuestionLogic questionLogic;
-
 	private ExternalLogic externalLogic;
 
 	public Map<String, CommonsMultipartFile> parseMultipart(Map<String, CommonsMultipartFile> files) {
@@ -45,7 +44,7 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 		//files = parseMultipart(files);
 
 		if (containsValidFiles(files)) {
-			String collectionId = buildQuestionCollectionId(questionId);
+			String collectionId = buildQuestionCollectionId(questionId, externalLogic.getCurrentLocationId());
 
 			try {
 				try {
@@ -73,21 +72,55 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 					questionLogic.linkCollectionToQuestion(questionId, collectionId);
 				}
 			} catch (Exception e) {
-				log.error("Error uploading attachments: " +collectionId + " : " + e.toString());
+				log.error("Error uploading attachments: " + collectionId + " : " + e.toString());
 				throw new AttachmentException(e);
 			}
 		}
 	}
 
-	private String buildQuestionCollectionId(String questionId) {
+	@SuppressWarnings("unchecked")
+	public void copyAttachments(String fromCollectionId, String toQuestionId, String toLocation) throws AttachmentException {
+		String toCollectionId = buildQuestionCollectionId(toQuestionId, toLocation);
+		try {
+			ContentCollectionEdit collection = chs.addCollection(toCollectionId);
+			collection.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, toQuestionId);
+			chs.commitCollection(collection);
+			
+			ContentCollection fromCollection = chs.getCollection(fromCollectionId);
+			List<ContentResource> members = fromCollection.getMemberResources();
+			for (ContentResource contentResource : members) {
+				String fileName = contentResource.getProperties().get(ResourceProperties.PROP_DISPLAY_NAME).toString();
+				ResourceProperties properties = chs.newResourceProperties();
+				properties.addProperty(ResourceProperties.PROP_DISPLAY_NAME, fileName);
+				properties.addProperty(ResourceProperties.PROP_CONTENT_TYPE,  contentResource.getProperties().get(ResourceProperties.PROP_CONTENT_TYPE).toString());
+				
+				ContentResourceEdit resource = chs.addResource(toCollectionId, fileName, null, ContentHostingService.MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
+				resource.setContent(contentResource.getContent());
+				resource.getPropertiesEdit().addAll(properties);
+						
+				chs.commitResource(resource);
+			}
+
+			if (toCollectionId != null) {
+				questionLogic.linkCollectionToQuestion(toQuestionId, toCollectionId);
+			}
+			
+		} catch (Exception e) {
+			log.error("Error coping attachments: " + toCollectionId + " : " + e.toString());
+			throw new AttachmentException(e);
+		}
+		
+	}
+	
+	private String buildQuestionCollectionId(String questionId, String locationId) {
 		QnaQuestion qnaQuestion = questionLogic.getQuestionById(questionId);
 
-		String currentLocation = externalLogic.getCurrentLocationId();
+		String currentLocation = locationId;
 		currentLocation = currentLocation.substring(currentLocation.lastIndexOf("/")+1, currentLocation.length());
 		String path = "/group/";
-		path += currentLocation+"/"+Validator.escapeResourceName(externalLogic.getCurrentToolDisplayName())+"/"+qnaQuestion.getCategory().getCategoryText()+"/";
-
-		return path;//ContentHostingService.ATTACHMENTS_COLLECTION + Validator.escapeResourceName(externalLogic.getCurrentLocationId()) + "/" +Validator.escapeResourceName(externalLogic.getCurrentToolDisplayName()) + "/" + questionId + "/";
+		path += currentLocation+"/"+ExternalLogic.QNA_TOOL_ID+"/"+qnaQuestion.getCategory().getCategoryText()+"/";
+		path += questionId + "/";
+		return path;
 	}
 
 	private boolean containsValidFiles(Map<String,CommonsMultipartFile> files) {

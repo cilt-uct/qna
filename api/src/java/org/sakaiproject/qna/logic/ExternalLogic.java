@@ -5,6 +5,7 @@ import java.util.Set;
 public interface ExternalLogic {
 
 	public final static String NO_LOCATION = "noLocationAvailable";
+	public static final String QNA_TOOL_ID = "sakai.qna";
 	
     // permissions for QNA
 	

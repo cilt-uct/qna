@@ -116,6 +116,7 @@
       <property name="dao"  ref="org.sakaiproject.qna.dao.QnaDao" />
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
       <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+      <property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic" />
     </bean>
 		
 </beans>

@@ -275,7 +275,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 		
 		if (question != null) {
 			question.setContentCollection(collectionId);
-			saveQuestion(question, externalLogic.getCurrentLocationId());
+			saveQuestion(question, question.getLocation());
 		}
 	}
 	

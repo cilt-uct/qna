@@ -115,6 +115,7 @@
       <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
       <property name="dao"  ref="org.sakaiproject.qna.dao.QnaDao" />
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+      <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
     </bean>
 		
 </beans>

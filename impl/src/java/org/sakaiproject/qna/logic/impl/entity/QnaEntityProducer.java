@@ -1,6 +1,7 @@
 package org.sakaiproject.qna.logic.impl.entity;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,7 @@ import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
+import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
@@ -39,7 +41,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	private SiteService siteService;
 	private QnaDao dao;
 	private CategoryLogic categoryLogic;
-//	private OptionsLogic optionsLogic;
+	private OptionsLogic optionsLogic;
 	
 	public void setEntityManager(EntityManager em) {
 		entityManager = em;
@@ -106,7 +108,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 					
 					dao.save(newQuestion);
 					
-					List<QnaAnswer> answers = newQuestion.getAnswers();
+					List<QnaAnswer> answers = question.getAnswers();
 					// Answers
 					for (QnaAnswer answer : answers) {
 						QnaAnswer newAnswer = new QnaAnswer();
@@ -120,17 +122,34 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 						newAnswer.setPrivateReply(answer.isPrivateReply());
 						newAnswer.setQuestion(newQuestion);
 						
-						dao.save(answer);
+						dao.save(newAnswer);
 					}
 				}
 			}
 			
-//			// Options
-//			QnaOptions options = optionsLogic.getOptions(fromLocation);
-//			QnaOptions newOptions = new QnaOptions();
-//			newOptions.setAnonymousAllowed(options.getAnonymousAllowed());
-//			newOptions.setDateCreated(options.getDateCreated());
-//			
+			// Options
+			QnaOptions options = optionsLogic.getOptions(fromLocation);
+			QnaOptions newOptions = new QnaOptions();
+			newOptions.setAnonymousAllowed(options.getAnonymousAllowed());
+			newOptions.setDateCreated(options.getDateCreated());
+			newOptions.setDateLastModified(options.getDateLastModified());
+			newOptions.setDefaultStudentView(options.getDefaultStudentView());
+			newOptions.setEmailNotification(options.getEmailNotification());
+			newOptions.setEmailNotificationType(options.getEmailNotificationType());
+			newOptions.setLocation(toLocation);
+			newOptions.setModerated(options.isModerated());
+			newOptions.setOwnerId(options.getOwnerId());
+			
+			// Custom emails
+			Set<QnaCustomEmail> customMailsOld = options.getCustomEmails();
+			Set<QnaCustomEmail> customMailsNew = new HashSet<QnaCustomEmail>();
+			
+			for (QnaCustomEmail qnaCustomEmail : customMailsOld) {
+				QnaCustomEmail email = new QnaCustomEmail(qnaCustomEmail.getOwnerId(),qnaCustomEmail.getEmail(),qnaCustomEmail.getDateCreated());
+				newOptions.addCustomEmail(email);
+			}
+			dao.save(newOptions);
+			
 			
 			
 		} catch (IdUnusedException e) {
@@ -207,6 +226,8 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		this.categoryLogic = categoryLogic;
 	}
 	
-	
+	public void setOptionsLogic(OptionsLogic optionsLogic) {
+		this.optionsLogic = optionsLogic;
+	}
 
 }

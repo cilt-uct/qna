@@ -98,6 +98,7 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		UICommand.make(form, "queued-question-delete", UIMessage.make("qna.general.delete")).setReturn("delete");
 		UICommand.make(form, "queued-question-cancel",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 		
+		questionLogic.incrementView(question.getId());
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

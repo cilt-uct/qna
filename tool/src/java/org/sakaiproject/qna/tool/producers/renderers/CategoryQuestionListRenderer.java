@@ -32,6 +32,7 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.components.decorators.UIAlternativeTextDecorator;
 import uk.org.ponder.stringutil.StringList;
 
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
@@ -117,7 +118,8 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");
 
 				if (showFlagIcon(newQuestions)) {
-					UILink.make(category,"new-question-icon","/library/image/silk/flag_yellow.png");
+					UILink ul = UILink.make(category,"new-question-icon","/library/image/silk/flag_yellow.png");
+					ul.decorate(new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.unread-questions")));
 				}
 
 				initViewToggle(entry, category);

@@ -65,6 +65,41 @@ public class QuestionIteratorHelper {
 		return false;
 	}
 	
+	public String getListTypeMessageKey() {
+		checkSetup();
+		ToolSession toolSession = sessionManager.getCurrentToolSession();
+		
+		String viewType;
+		String sortBy;
+		
+		if (toolSession == null) {
+			viewType = ViewTypeConstants.ALL_DETAILS;
+			sortBy = SortByConstants.VIEWS;
+		} else {
+			viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
+			sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
+		}
+		
+		if (ViewTypeConstants.CATEGORIES.equals(viewType)) {
+			return "qna.question-iterator.category";
+		} else {
+			if (SortByConstants.VIEWS.equals(sortBy)) {
+				return "qna.question-iterator.most-popular";
+			} else if (SortByConstants.ANSWERS.equals(sortBy)) {
+				return "qna.question-iterator.answers";
+			} else if (SortByConstants.CATEGORY.equals(sortBy)) {
+				return "qna.question-iterator.alphabetic-category";
+			} else if (SortByConstants.CREATED.equals(sortBy)) {
+				return "qna.question-iterator.recent-questions";
+			} else if (SortByConstants.MODIFIED.equals(sortBy)) {
+				return "qna.question-iterator.recent-changes";
+			} else if (SortByConstants.QUESTIONS.equals(sortBy)) {
+				return "qna.question-iterator.alphabetic-questions";
+			}
+		}
+		return "qna.general.blank";
+	}
+	
 	private List<QnaQuestion> getCurrentList() {
 		checkSetup();
 		ToolSession toolSession = sessionManager.getCurrentToolSession();

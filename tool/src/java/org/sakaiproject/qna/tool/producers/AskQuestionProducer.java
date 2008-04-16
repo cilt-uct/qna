@@ -137,7 +137,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         }
 
-        UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
+        UICommand command = UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 

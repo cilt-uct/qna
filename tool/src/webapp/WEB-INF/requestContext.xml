@@ -33,6 +33,7 @@
 	<bean id="QuestionIteratorRenderer"
 		class="org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer">
 		<property name="questionIteratorHelper" ref="QuestionIteratorHelper"/>
+		<property name="messageLocator" ref="messageLocator" />
 	</bean>
 
 	<!-- Question Iterator Helper -->

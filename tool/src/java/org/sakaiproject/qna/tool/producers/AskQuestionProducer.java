@@ -102,7 +102,9 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         UIBoundBoolean.make(form,"answer-notify",questionOTP + ".notify",true);
         UIMessage.make(form,"answer-notify-label","qna.ask-question.notify-on-answer");
 
-        if (!options.isModerated() || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        if (!options.isModerated() || 
+        	permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || 
+        	permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	        UIMessage.make(form, "category-title", "qna.ask-question.category");
 	        UIMessage.make(form, "category-text", "qna.ask-question-select-category");
         }
@@ -117,12 +119,16 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	categoriesIds[i] = category.getId();
         	categoriesText[i] = category.getCategoryText();
         }
-
+        
+        boolean displayOr = false;
         if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) {
-        	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); }
+        	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
+        	displayOr = true;
+        }
 
         if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-        	UIMessage.make(form,"or","qna.general.or");
+        	if (displayOr) {
+        		UIMessage.make(form,"or","qna.general.or"); }
         	UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
         	UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
         }

@@ -1,6 +1,7 @@
 package org.sakaiproject.qna.tool.producers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -9,6 +10,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.comparators.AnswersListComparator;
 import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
@@ -177,9 +179,8 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 	// Renders answers
 	private void renderAnswers(UIContainer tofill, QnaQuestion question, String answerLocator) {
-		// TODO: Finish answer sorting
 		List<QnaAnswer> answers = question.getAnswers();
-
+		Collections.sort(answers,new AnswersListComparator(permissionLogic,externalLogic));
 		if (answers.size() == 0) {
 			UIMessage.make(tofill,"no-anwers", "qna.view-question.no-answers");
 		} else {

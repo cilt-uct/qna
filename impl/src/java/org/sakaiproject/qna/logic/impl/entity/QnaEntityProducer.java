@@ -92,8 +92,6 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 					QnaQuestion newQuestion = new QnaQuestion();
 					newQuestion.setAnonymous(question.isAnonymous());
 					newQuestion.setCategory(newCategory);
-					// TODO: copy over resources
-					//newQuestion.setContentCollection(contentCollection)
 					newQuestion.setDateCreated(question.getDateCreated());
 					newQuestion.setDateLastModified(question.getDateLastModified());
 					newQuestion.setHidden(question.getHidden());
@@ -109,10 +107,12 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 					dao.save(newQuestion);
 					
 					// Coping of attachments
-					try {
-						attachmentLogic.copyAttachments(question.getContentCollection(), newQuestion.getId(), toLocation);
-					} catch (AttachmentException e) {
-						log.warn("Error copying attachments", e);
+					if (question.getContentCollection() != null) {
+						try {
+							attachmentLogic.copyAttachments(question.getContentCollection(), newQuestion.getId(), toLocation);
+						} catch (AttachmentException e) {
+							log.warn("Error copying attachments", e);
+						}
 					}
 					
 					List<QnaAnswer> answers = question.getAnswers();
@@ -136,7 +136,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 			
 			// Options
 			QnaOptions options = optionsLogic.getOptionsForLocation(fromLocation);
-			QnaOptions newOptions = new QnaOptions();
+			QnaOptions newOptions =optionsLogic.getOptionsForLocation(toLocation);
 			newOptions.setAnonymousAllowed(options.getAnonymousAllowed());
 			newOptions.setDateCreated(options.getDateCreated());
 			newOptions.setDateLastModified(options.getDateLastModified());

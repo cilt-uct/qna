@@ -73,9 +73,10 @@ public interface QuestionLogic {
 	public List<QnaQuestion> getNewQuestions(String locationId);
 
 	/**
+	 * Publishes question
 	 *
-	 * @param questionId
-	 * @param locationId TODO
+	 * @param questionId unique id of {@link QnaQuestion}
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
 	 */
 	public void publishQuestion(String questionId, String locationId) ;
 
@@ -101,11 +102,17 @@ public interface QuestionLogic {
 	 *            {@link QnaQuestion}
 	 * @param categoryId
 	 *            {@link QnaCategory}
-	 * @param locationId TODO
+	 * @param locationId 
 	 */
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
 	
+	/**
+	 * Links content collection to question
+	 *  
+	 * @param questionId  {@link QnaQuestion}
+	 * @param collectionId Content collection to link to
+	 */
 	public void linkCollectionToQuestion(String questionId, String collectionId);
 	
 }

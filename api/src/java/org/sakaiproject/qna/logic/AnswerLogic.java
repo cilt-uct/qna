@@ -1,7 +1,6 @@
 package org.sakaiproject.qna.logic;
 
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.model.QnaQuestion;
 
 public interface AnswerLogic {
 
@@ -15,46 +14,51 @@ public interface AnswerLogic {
 	public QnaAnswer getAnswerById(String answerId);
 
 	/**
+	 * Removes answer from question
 	 *
-	 * @param answerId
-	 * @param locationId TODO
+	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param locationId unique if for location
 	 */
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId);
 	
 	/**
-	 * 
-	 * @param answerId
-	 * @param locationId
+	 *  Removes answer 
+	 *  
+	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param locationId unique if for location
 	 */
 	public void removeAnswer(String answerId, String locationId);
 
 	/**
+	 * Approves answer	
 	 *
-	 * @param answerId
-	 * @param locationId TODO
+	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param locationId unique if for location
 	 */
 	public void approveAnswer(String answerId, String locationId);
 
 	/**
+	 * Withdraw approval for answer
 	 *
-	 * @param answerId
-	 * @param locationId TODO
+	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param locationId unique if for location
 	 */
 	public void withdrawApprovalAnswer(String answerId, String locationId);
 	
 	/**
 	 * Save an answer
 	 * 
-	 * @param answer
-	 * @param locationId
+	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param locationId unique if for location
 	 */
 	public void saveAnswer(QnaAnswer answer, String locationId);
 	
 	/**
+	 * Createds default QnaAnswer object
 	 * 
 	 * @param locationId
 	 * @param ownerId
-	 * @return
+	 * @return {QnaAnswer} default QnaAnswer object
 	 */
 	public QnaAnswer createDefaultAnswer(String locationId);
 

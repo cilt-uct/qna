@@ -22,9 +22,22 @@ import org.sakaiproject.qna.model.QnaAnswer;
 */
 
 public interface QnaDao extends CompleteGenericDao {
-
+	
+	/**
+	 * Searches for new questions in location
+	 * 
+	 * @param locationId Id of location
+	 * @return List of new Question
+	 */
 	public List<QnaQuestion> getNewQuestions(String locationId);
 
+	/**
+	 * Searches answers for search string
+	 * 
+	 * @param search Search string
+	 * @param location location to search in
+	 * @return list of answers containing search string
+	 */
 	public List<QnaAnswer> getSearchAnswers(String search, String location);
 
 }

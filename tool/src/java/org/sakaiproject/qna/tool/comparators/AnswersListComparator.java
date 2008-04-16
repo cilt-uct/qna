@@ -20,6 +20,12 @@ public class AnswersListComparator implements Comparator<QnaAnswer> {
 		this.externalLogic = externalLogic;
 	}
 	
+	/**
+	 * List:
+	 * 	- Answers added by lecturer (user with update rights) chronologically
+	 *  - Answers approved chronologically
+	 *  - Answers not approved chronologically
+	 */
 	public int compare(QnaAnswer a1, QnaAnswer a2) {
 		if (a1.isApproved() && a2.isApproved()) {
 			String currentLocation = externalLogic.getCurrentLocationId();

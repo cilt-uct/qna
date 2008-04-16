@@ -27,10 +27,10 @@ public interface PermissionLogic {
 	public boolean canAddNewCategory(String locationId, String userId);
 	
 	/**
-	 * 
-	 * @param locationId
-	 * @param userId
-	 * @return
+	 * Check if a specified user can add new answer in specific location
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
+	 * @param userId the internal user id (not username)
+	 * @return true if user can add new answer, false if not
 	 */
 	public boolean canAddNewAnswer(String locationId, String userId);
 }

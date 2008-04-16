@@ -39,18 +39,20 @@ public interface CategoryLogic {
 	 *
 	 * @param categoryId
 	 *            {@link QnaCategory} object
-	 * @param locationId TODO
+	 * @param locationId 
 	 */
 	public void removeCategory(String categoryId, String locationId);
 
 	/**
+	 * Get questions for as specific category
 	 *
-	 * @param categoryId
+	 * @param categoryId {@link QnaCategory} object
 	 * @return
 	 */
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId);
 
 	/**
+	 * Get a list of categories for a location
 	 *
 	 * @param locationId
 	 * @return
@@ -58,6 +60,7 @@ public interface CategoryLogic {
 	public List<QnaCategory> getCategoriesForLocation(String locationId);
 
 	/**
+	 * Creates a default category
 	 *
 	 * @param locationId
 	 * @param ownerId

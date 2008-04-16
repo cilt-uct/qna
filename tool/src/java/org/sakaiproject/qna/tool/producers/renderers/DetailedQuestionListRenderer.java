@@ -92,9 +92,19 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         StringList deletable = new StringList();
         UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
 
-		//Fill out Table
+        //Fill out Table
         for (QnaQuestion question : questions) {
-        	if (!question.getHidden() && (!question.getCategory().getHidden())) {
+        	
+        	// Determine if question must be displayed
+        	boolean displayQuestion = true;
+        	if (question.getHidden()) { displayQuestion = false;};
+        	if (question.getCategory() != null) {
+        		if (question.getCategory().getHidden()) {
+        			displayQuestion = false;
+        		}
+        	}
+        	
+        	if (displayQuestion) {
 	        	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
 
 	        	if (question.isPublished()) {

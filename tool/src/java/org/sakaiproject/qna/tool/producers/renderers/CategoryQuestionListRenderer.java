@@ -89,7 +89,12 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
 					initViewToggle(entry, category);
 					UIOutput.make(category,"category-name",qnaCategory.getCategoryText());
-					UIInternalLink.make(category, "category-edit", UIMessage.make("qna.general.edit"), new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					
+					// Only users with update permission can edit category
+					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+						UIInternalLink.make(category, "category-edit", UIMessage.make("qna.general.edit"), new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					}
+					
 					UIOutput.make(category,"modified-date",DateUtil.getSimpleDate(qnaCategory.getDateLastModified()));
 
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {

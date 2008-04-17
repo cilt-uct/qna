@@ -53,7 +53,7 @@ public class QuestionsSorter {
 					questions.addAll(publishedQuestion);
 				}
 			}
-			
+			filterHiddenQuestions(questions, false);
 			if (includeAll) {
 				questions.addAll(questionLogic.getNewQuestions(location));
 				questions.addAll(questionLogic.getQuestionsWithPrivateReplies(location));
@@ -66,13 +66,51 @@ public class QuestionsSorter {
 			}
 			Comparator<QnaQuestion> comparator = ComparatorUtil.getComparator(viewType, sortBy);
 			Collections.sort(questions, comparator);
+			filterHiddenQuestions(questions, true);
 		}
 		
 		if (reverse) {
 			Collections.reverse(questions);
 		}
-		
+
 		return questions;
+	}
+	
+	/**
+	 * Filters out hidden questions or questions with hidden category from list of questions
+	 * @param questions List of questions to filter out
+	 * @param includeNewAndPrivate boolean if new and questions with private replies must not be filtered
+	 */
+	public void filterHiddenQuestions(List<QnaQuestion> questions, boolean includeNewAndPrivate) {
+		List<QnaQuestion> questionsToRemove = new ArrayList<QnaQuestion>();
+		
+		for (int i=0;i<questions.size();i++) {
+			QnaQuestion question = questions.get(i);
+						
+			if (question.getHidden()) {
+					if (includeNewAndPrivate) {
+						if (question.isPublished() && !question.hasPrivateReplies()) {
+							questionsToRemove.add(question);
+						}
+					} else {
+						questionsToRemove.add(question);
+					}
+			} else if (question.getCategory() != null) {
+				if (question.getCategory().getHidden()) {
+					if (includeNewAndPrivate) {
+						if (question.isPublished() && !question.hasPrivateReplies()) {
+							questionsToRemove.add(question);
+						}
+					} else {
+						questionsToRemove.add(question);
+					}					
+				}
+			}
+		}
+		
+		for (QnaQuestion questionToRemove : questionsToRemove) {
+			questions.remove(questionToRemove);
+		}
 	}
 	
 	public List<QnaQuestion> filterQuestions(List<QnaQuestion> questions,int fromIndex, int amount) {

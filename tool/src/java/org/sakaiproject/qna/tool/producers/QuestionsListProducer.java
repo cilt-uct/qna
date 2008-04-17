@@ -144,9 +144,16 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			//UICommand.make(form, "update-button", "#{QuestionLocator.deleteQuestions}");
 
 		} else {
-			UIOutput.make(tofill,"ask-question");
-			UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
-			UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+			if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+				UIOutput.make(tofill,"ask-question");
+				UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
+				
+				if (optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getAnonymousAllowed()) {
+					UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+				} else {
+					UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+				}
+			}
 
 			options = new String[] {ViewTypeConstants.CATEGORIES,
 									SortByConstants.VIEWS,

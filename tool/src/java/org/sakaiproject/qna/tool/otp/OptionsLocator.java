@@ -2,6 +2,8 @@ package org.sakaiproject.qna.tool.otp;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.QnaOptions;
 
@@ -11,14 +13,19 @@ import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class OptionsLocator implements BeanLocator {
 
-	OptionsLogic optionsLogic;
+	private OptionsLogic optionsLogic;
 	private TargettedMessageList messages;
+	private ExternalLogic externalLogic;
 	
 	/**
 	 * @param optionsLogic the optionsLogic to set
 	 */
 	public void setOptionsLogic(OptionsLogic optionsLogic) {
 		this.optionsLogic = optionsLogic;
+	}
+	
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
 	}
 	
 	public void setMessages(TargettedMessageList messages) {
@@ -40,7 +47,7 @@ public class OptionsLocator implements BeanLocator {
 		for (QnaOptions options : delivered.values()) {
 			optionsLogic.saveOptions(options, options.getLocation());
 	        messages.addMessage(new TargettedMessage("qna.options.save-success",
-	                new Object[] { options.getLocation() }, 
+	                new Object[] { externalLogic.getLocationTitle(options.getLocation()) }, 
 	                TargettedMessage.SEVERITY_INFO));
 			
 			// Only persist if it has changed

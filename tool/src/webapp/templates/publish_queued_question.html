@@ -8,6 +8,7 @@
    <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
    <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
 </head>
 
 <body>
@@ -17,13 +18,20 @@
   <form rsf:id="publish-queued-question-form" method="post">
   <h4 rsf:id="question-title">Question</h4>
   <br/>
-  	<div rsf:id="unpublished-question">
+  	<div rsf:id="unpublished-question" id="unpublished-question">
   		How is the year mark composed?
   	</div>
-  	<br/>
+	<span rsf:id="edit-span" id="edit-span" style="display:none;">
+    	<div rsf:id="unpublished-question-edit:">
+       		<textarea rows="10" cols="80" name="question">This should be the FCK editor. </textarea>
+       	</div>
+	</span>
+	
+	<br/>
   	<div>
-  		<a href="#" rsf:id="question-link">Edit Question?</a>
+  		<a href="#" rsf:id="edit-question-link" id="edit-question-link">Edit Question?</a>
   	</div>
+
   	<h4 rsf:id="category-title">Category</h4>
   	<br/>
   	<span rsf:id="category-note">Please choose a category for this question</span>
@@ -52,6 +60,10 @@
   	<input rsf:id="published-button" type="submit" value="Publish"  />
   	<input rsf:id="cancel-button" type="submit" value="Cancel"/>
   </form>
-  
+
+  <script rsf:id="onclick-init" type="text/javascript">
+	init_edit_question_toggle(link_id,unpublished-question, edit-span)
+  </script>
+	 
 </body>
 </html>

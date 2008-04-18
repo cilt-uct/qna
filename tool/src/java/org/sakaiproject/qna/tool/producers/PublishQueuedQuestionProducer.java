@@ -18,9 +18,12 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
+import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIInternalLink;
+import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
+import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
@@ -97,11 +100,15 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the question title
 		UIMessage.make(form, "question-title", "qna.publish-queued-question.question-title");
 				
-		UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
+		UIVerbatim viewQuestionText = UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
 		
-		// TODO: Make edit work
-		UIInternalLink.make(form,"question-link",UIMessage.make("qna.publish-queued-question.question-link"),new SimpleViewParameters(EditPublishedQuestionProducer.VIEW_ID));
+		UIOutput span = UIOutput.make(form,"edit-span");
+		
+		UIInput editQuestionText = UIInput.make(form, "unpublished-question-edit:", questionOTP  +".questionText");
+		richTextEvolver.evolveTextInput(editQuestionText);
 				
+		UILink link = UIInternalLink.make(tofill, "edit-question-link", UIMessage.make("qna.publish-queued-question.question-link"), "");
+		UIInitBlock.make(tofill, "onclick-init", "init_edit_question_toggle", new Object[]{link,viewQuestionText,span});			
 		// Generate the category title
 		UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
 		
@@ -146,6 +153,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the different buttons
 		UICommand.make(form, "published-button", UIMessage.make("qna.general.publish"), multipleBeanMediator +".publish");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
+
 
 	}
 

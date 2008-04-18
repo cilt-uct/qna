@@ -106,17 +106,24 @@ public class QuestionIteratorHelper {
 		
 		String viewType;
 		String sortBy;
+		String sortDir;
 		
 		if (toolSession == null) {
 			viewType = ViewTypeConstants.ALL_DETAILS;
 			sortBy = SortByConstants.VIEWS;
+			sortDir = SortByConstants.SORT_DIR_ASC;
 		} else {
 			viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
 			sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
+			if (toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR) != null) {
+				sortDir = (String)toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR);		
+			} else {
+				sortDir =  SortByConstants.SORT_DIR_ASC;
+			}
 		}
 
 		String location = externalLogic.getCurrentLocationId();
-		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(location, viewType, sortBy, permissionLogic.canUpdate(location, externalLogic.getCurrentUserId()), false);
+		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(location, viewType, sortBy, permissionLogic.canUpdate(location, externalLogic.getCurrentUserId()),SortByConstants.SORT_DIR_DESC.equals(sortDir));
 		
 		return questions;
 	}

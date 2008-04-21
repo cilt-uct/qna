@@ -190,11 +190,13 @@ public class QnaCategory {
 
 	public List<QnaQuestion> getPublishedQuestions() {
 		List<QnaQuestion> published = new ArrayList<QnaQuestion>();
-
-		for (QnaQuestion question : questions) {
-			if (question.isPublished()) {
-				published.add(question);
-			}
+		
+		if (questions != null) {
+			for (QnaQuestion question : questions) {
+				if (question.isPublished()) {
+					published.add(question);
+				}
+			}			
 		}
 		return published;
 	}

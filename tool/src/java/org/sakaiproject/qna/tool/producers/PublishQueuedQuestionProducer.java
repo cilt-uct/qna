@@ -42,12 +42,11 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		return VIEW_ID;
 	}
 	
-	
 	private TextInputEvolver richTextEvolver;
 	public void setRichTextEvolver(TextInputEvolver richTextEvolver) {
         this.richTextEvolver = richTextEvolver;
     }
-
+	
 	private NavBarRenderer navBarRenderer;
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
@@ -148,7 +147,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 	
 		form.addParameter(new UIELBinding(answerOTP + ".question",new ELReference(questionLocator + "." + question.getId())));
 		form.addParameter(new UIELBinding(answerOTP + ".privateReply",false)); // make it public if it isn't
-        richTextEvolver.evolveTextInput(answertext);
+		richTextEvolver.evolveTextInput(answertext);
         
 		// Generate the different buttons
 		UICommand.make(form, "published-button", UIMessage.make("qna.general.publish"), multipleBeanMediator +".publish");

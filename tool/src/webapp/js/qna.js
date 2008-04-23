@@ -55,12 +55,6 @@
     	toggle_visibility(div_id);
     }
     
-    function toggle_edit_question(link_id,view_question_id,edit_span_id) {
-    	toggle_visibility(link_id);
-    	toggle_visibility(view_question_id);
-    	toggle_visibility(edit_span_id);
-    }
-
     // Add an answer in answers screen
     function init_add_answer_toggle(link_id,icon_id,div_id) {
     	var link = document.getElementById(link_id);
@@ -71,13 +65,6 @@
     	icon.style.cursor="pointer";
     }
     
-    // Edit question on publish question screen
-    function init_edit_question_toggle(link_id,view_question_id,edit_span_id) {
-    	var link = document.getElementById(link_id);
-    	link.href= "#";
-    	link.onclick = function() { toggle_edit_question(link_id,view_question_id,edit_span_id);};
-    }
-
     function toggle_disabled(element) {
     	if (element.disabled) {
     		element.disabled = false;

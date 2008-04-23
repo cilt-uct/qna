@@ -18,10 +18,7 @@ import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
-import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInput;
-import uk.org.ponder.rsf.components.UIInternalLink;
-import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
@@ -106,8 +103,6 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		UIInput editQuestionText = UIInput.make(form, "unpublished-question-edit:", questionOTP  +".questionText");
 		richTextEvolver.evolveTextInput(editQuestionText);
 				
-		UILink link = UIInternalLink.make(tofill, "edit-question-link", UIMessage.make("qna.publish-queued-question.question-link"), "");
-		UIInitBlock.make(tofill, "onclick-init", "init_edit_question_toggle", new Object[]{link,viewQuestionText,span});			
 		// Generate the category title
 		UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
 		

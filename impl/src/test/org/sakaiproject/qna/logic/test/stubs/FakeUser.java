@@ -79,6 +79,11 @@ public class FakeUser implements User {
 		return null;
 	}
 
+	//needed for UCT build please don't remove
+	public String getDisplayName(String context) {
+	    return null;
+	}
+
 	public String getDisplayName() {
 		return this.displayName;
 	}

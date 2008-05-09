@@ -7,6 +7,7 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.tool.producers.AskQuestionProducer;
 import org.sakaiproject.qna.tool.producers.CategoryProducer;
+import org.sakaiproject.qna.tool.producers.OrganiseListProducer;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
 import org.sakaiproject.qna.tool.producers.OrganiseListProducer;
 import org.sakaiproject.qna.tool.producers.PermissionsProducer;

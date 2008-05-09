@@ -217,6 +217,16 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
+	
+	<bean class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="searchBarRenderer" ref="SearchBarRenderer" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="messages" ref="targettedMessageList"/>
+	</bean>
 
 	<bean
 		class="org.sakaiproject.qna.tool.producers.QuestionsListProducer">
@@ -231,18 +241,6 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="ELEvaluator" ref="ELEvaluator"/>
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
-	</bean>
-
-	<!-- Organise Producers -->
-	<bean id="OrganiseListProducer" class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
-		<property name="messages" ref="targettedMessageList"/>
-		<property name="messageLocator" ref="messageLocator"/>
-		<property name="navBarRenderer" ref="NavbarRenderer" />
-		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
-		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
-		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
-		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
 
 	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">

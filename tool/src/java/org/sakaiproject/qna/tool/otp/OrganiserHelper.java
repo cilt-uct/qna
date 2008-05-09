@@ -10,6 +10,9 @@ public class OrganiserHelper {
 
 	public String[] catorder;
 	public String[] queorder;
+	public String[] questionCategoryOrder;
+	
+	
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;
 	private QuestionLogic questionLogic;
@@ -26,7 +29,15 @@ public class OrganiserHelper {
 	public void setCatorder(String[] catorder) {
 		this.catorder = catorder;
 	}
-
+	
+	public String[] getQuestionCategoryOrder() {
+		return questionCategoryOrder;
+	}
+	
+	public void setQuestionCategoryOrder(String[] questionCategoryOrder) {
+		this.questionCategoryOrder = questionCategoryOrder;
+	}
+	
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
 		this.categoryLogic = categoryLogic;
 	}
@@ -51,7 +62,7 @@ public class OrganiserHelper {
 			String id = queorder[k];
 			QnaQuestion question = questionLogic.getQuestionById(id);
 
-			String catid = question.getCategory().getId();
+			String catid = questionCategoryOrder[k];
 			if (tmpcatid.equals(catid)) {
 				nr++;
 			} else {
@@ -60,7 +71,13 @@ public class OrganiserHelper {
 			tmpcatid = catid;
 
 			question.setSortOrder(new Integer(nr));
+						
+			if (!question.getCategory().getId().equals(questionCategoryOrder[k])) {
+				question.setCategory(categoryLogic.getCategoryById(questionCategoryOrder[k]));
+			}
+			
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+			
 		}
 
 		return "saved";

@@ -118,48 +118,43 @@
     	div.appendChild(document.createElement('br'));
     }
 
-    function makeCategoriesSortable(content_id) {
-    	$(document).ready(function() {
-	    	var content = document.getElementById(content_id);
-	    	var category = ".sortable_item";
 
-			$(content).sortable(
-				{
-					items: $(category),
-					revert: true,
-					opacity: 0.6,
-					containment: content
-				}
-			);
-		});
-    }
+	function initOrganiser() {
+		 jQuery( function($) {
+            $('#nested-sortable').NestedSortable(
+              {
+                accept: 'sortable-element-class',
+				noNestingClass: 'no-nesting-class',
+				autoScroll : true,
+				fx:400,
+				revert: true,
+				onChange : function(serialized) {
+				 			var expr = new RegExp("category-entry:([0-9]*):$");
+							
+							$('div.sortable-element-class').each(
+								function() {
+									if (this.id.match(expr)) {
+										var categoryId = $(this).children('input:checkbox[@name=category-sort-order-selection]')[0].value;
+											
+										$(this).children('span.page-list').children('div.sortable-element-class').children('input:checkbox[@name=question-category-order-selection]').each ( 
+											function() {
+												this.value = categoryId;
+											}
+										)
+									}
+								}
+							)
+				 }
 
-    function makeQuestionsSortable(question_content, question_entry_nr) {
-    	$(document).ready(function() {
-
-    		$('input:checkbox').each( function() {
+              }
+            );
+        });
+		
+		$(document).ready(function() {
+			$('input:checkbox').each( function() {
 				if (this.checked == false) {
 					this.checked = true;
 				}
 			});
-
-			var quecontent = document.getElementById(question_content);
-			var queentries = new Array();
-
-			for (var k=0; k<=question_entry_nr; k++) {
-				if (k==0) var nr = ""
-				if (k>0) var nr = k;
-				var entry = quecontent.id+"question-entry:"+nr+":";
-				queentries[k] = document.getElementById(entry);
-			}
-
-    		$(quecontent).sortable(
-    			{
-    				items: $(queentries),
-    				revert: true,
-    				opacity: 0.6,
-    				containment: quecontent
-   				}
- 			);
-    	});
-    }
+		});
+	}

@@ -144,6 +144,14 @@
 									}
 								}
 							)
+							
+							// For some insane reason IE decides to uncheck a checkbox if you move it.
+							// This is to make sure all checkboxes are ticked on the organise page
+							$('input:checkbox').each( function() {
+								if (this.checked == false) {
+									this.checked = true;
+								}
+							});
 				 }
 
               }

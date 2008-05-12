@@ -8,14 +8,14 @@
    <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
    <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
-   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
+   
    <script type="text/javascript" src="/library/js/jquery.js"></script>
    <script type="text/javascript" src="../js/interface/iutil.js"></script>
    <script type="text/javascript" src="../js/interface/idrag.js"></script>
    <script type="text/javascript" src="../js/interface/idrop.js"></script>
    <script type="text/javascript" src="../js/interface/isortables.js"></script>
    <script type="text/javascript" src="../js/inestedsortable_qna.js"></script>
-	
+   <script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
 </head>
 
 <body>
@@ -47,7 +47,7 @@
 	<div class="wrap">
 		<span id="nested-sortable" class="page-list">
 			<div rsf:id="category-entry:" id="category-entry" class="sortable-element-class">
-				<input rsf:id="category-sort-order-checkbox" id="category-sort-order-checkbox" type="checkbox" style="display:none"/>
+				<input rsf:id="category-sort-order-checkbox" id="category-sort-order-checkbox" type="checkbox" style="display:none" />
 				<table style="width:100%;">
 					<tr>
 						<td>
@@ -71,8 +71,8 @@
 				
 				<span class="page-list">
 					<div rsf:id="question-entry:" id="question-entry" class="sortable-element-class no-nesting-class">
-						<input rsf:id="question-sort-order-checkbox" id="question-sort-order-checkbox" type="checkbox" style="display:none"/>
-						<input rsf:id="question-category-order-checkbox" id="question-category-order-checkbox" type="checkbox" style="display:none"/>
+						<input rsf:id="question-sort-order-checkbox" id="question-sort-order-checkbox" type="checkbox" style="display:none" />
+						<input rsf:id="question-category-order-checkbox" id="question-category-order-checkbox" type="checkbox" style="display:none" />
 						<table style="width:100%;">
 							<tr>
 								<td>
@@ -104,29 +104,6 @@
 		<input rsf:id="cancel-button" type="submit" value="Cancel"/>
 	</p>
 	</form>
-<!--	
-	<div class="wrap">
-    	<span id="nested-sortable" class="page-list">
-    		<div id="category-1-div" class="sortable-element-class">
-    			<div>Category 1</div>
-    		</div>
-    		<div id="category-2-div" class="sortable-element-class">
-    			<div>Category 2</div>
-    		</div>
-    		<div id="category-3-div" class="sortable-element-class">
-    			<div>Category 3</div>
-				<span class="page-list">
-					<div id="question-1-div" class="sortable-element-class no-nesting-class">
-						<div>Question 1</div>
-					</div>
-					<div id="question-2-div" class="sortable-element-class no-nesting-class">
-						<div>Question 2</div>
-					</div>
-				</span>
-    		</div>
-    	</span>
-	</div>
--->
 	
 </body>
 </html>

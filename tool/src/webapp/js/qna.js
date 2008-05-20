@@ -87,7 +87,7 @@
 		var update_option = document.getElementById(update_option_id);
 		var custom_mail_input = document.getElementById(custom_mail_input_id);
 
-		notification.onchange = function() {toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input)};
+		notification.onclick = function() {toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input)};
     	if (!notification.checked) {
     		site_option.disabled = true;
     		custom_option.disabled = true;

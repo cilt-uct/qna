@@ -13,10 +13,27 @@
 <body>
 <!-- everything outside this div is thrown away -->
 <div rsf:id="question-iterator:" class="navItem itemNav" style="text-align: right;">
-	   <a rsf:id="previous-item" id="previous-item"><input accesskey="p" type="button" rsf:id="previous-item-btn" id="previous-item-btn" name="Previous" /></a>
-	   <a rsf:id="return-to-list" id="return-to-list"><input accesskey="l" type="button" rsf:id="return-to-list-btn" id="return-to-list-btn" name="Return to List"/></a>
-	   <a rsf:id="next-item" id="next-item"><input accesskey="n" type="button" rsf:id="next-item-btn" id="next-item-btn" name="Next" /></a>
+	   <a rsf:id="previous-item" id="previous-item" style="display:none;"></a><input accesskey="p" type="button" rsf:id="previous-item-btn" id="previous-item-btn" value="Previous" />
+	   <script rsf:id="init-previous" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
+	   
+	   <a rsf:id="return-to-list" id="return-to-list" style="display:none;"></a><input accesskey="l" type="button" rsf:id="return-to-list-btn" id="return-to-list-btn" value="Return to List"/>
+	   <script rsf:id="init-return-to-list" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
+	   
+	   <a rsf:id="next-item" id="next-item" style="display:none;"></a><input accesskey="n" type="button" rsf:id="next-item-btn" id="next-item-btn" value="Next" />
+	   <script rsf:id="init-next" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
 </div>
+
+<div rsf:id="question-iterator-secondary:" class="navItem itemNav" style="text-align: right;">
+	   <a rsf:id="previous-item-secondary" id="previous-item-secondary" style="display:none;"></a><input accesskey="p" type="button" rsf:id="previous-item-btn-secondary" id="previous-item-btn-secondary" value="Previous" />
+	   <script rsf:id="init-previous-secondary" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
+	   
+	   <a rsf:id="return-to-list-secondary" id="return-to-list-secondary" style="display:none;"></a><input accesskey="l" type="button" rsf:id="return-to-list-btn-secondary" id="return-to-list-btn-secondary" value="Return to List"/>
+	   <script rsf:id="init-return-to-list-secondary" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
+	   
+	   <a rsf:id="next-item-secondary" id="next-item-secondary" style="display:none;"></a><input accesskey="n" type="button" rsf:id="next-item-btn-secondary" id="next-item-btn-secondary" value="Next" />
+	   <script rsf:id="init-next-secondary" type="text/javascript">make_button_call_link("button_id", "link_id");</script>
+</div>
+
 
 </body>
 </html>

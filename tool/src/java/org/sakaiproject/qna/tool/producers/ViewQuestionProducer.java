@@ -218,7 +218,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				}
 
 				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());
-				UIOutput.make(answer, "answer-timestamp", qnaAnswer.getDateLastModified() + "");
+				UIMessage.make(answer, "answer-timestamp","qna.general.one-parameter",new Object[]{ qnaAnswer.getDateLastModified() });
 			}
 		}
 	}

@@ -59,8 +59,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	}
 
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams, UIForm form) {
-    	// Front-end customization regarding permissions/options will come here
-    	UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
+		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
 		UIMessage.make(listTable, "answers-title", "qna.view-questions.answers");
 		UIMessage.make(listTable,"views-title","qna.view-questions.views");

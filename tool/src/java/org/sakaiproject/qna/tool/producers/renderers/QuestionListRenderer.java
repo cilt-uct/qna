@@ -10,6 +10,5 @@ public interface QuestionListRenderer {
 	public static final String SORT_BY_ATTR =  "sort-by-attr";
 	public static final String SORT_DIR_ATTR= "sort-dir-attr";
 	
-	
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams, UIForm form);
 }

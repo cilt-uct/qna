@@ -166,10 +166,22 @@
 			});
 		});
 	}
-
+	
+	// Makes a button call a link
 	function make_button_call_link(button_id, link_id) {
 		var button = document.getElementById(button_id);
 		var link = document.getElementById(link_id);
 		button.onclick = function() { window.location.href = link.href;};
-	}	
-	
+	}
+
+	// This is done because sakai iframe doesn't count hidden tags
+	// Made to fix small iframe with category view	
+	function makeWhitespace(div_id) {
+		$(document).ready(function() {
+			var div = document.getElementById(div_id);
+			$('tr').each(function() {
+					div.appendChild(document.createElement('br'));
+				}
+			);
+		});
+	}

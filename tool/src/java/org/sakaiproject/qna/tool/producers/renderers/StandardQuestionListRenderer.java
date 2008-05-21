@@ -45,7 +45,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 	}
 
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
-
+		
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");

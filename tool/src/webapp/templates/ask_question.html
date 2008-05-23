@@ -43,11 +43,11 @@
 	  <span class="tier2"><input rsf:id="new-category-name" size="60" name="new-category-name" type="text"/></span>
 
 	  <h4 rsf:id="attachments-title">Attachments</h4><br/>
-	  <div rsf:id="no-attachments-msg">No attachments yet</div>
-	  
+  
 	  <input type="hidden" value="0" id="uploadIndex" />
 	  <div id="attachments">
-		<input rsf:id="add-attachment-button" type="button" name="add_attachment" value="Add Attachment" onclick="javascript:addFileInput('attachments','uploadIndex','fileupload');"/><br/><br/>
+		<input rsf:id="add-attachment-button" type="button" name="add_attachment" value="Add Attachment" onclick="javascript:addFileInput('attachments','uploadIndex','fileupload','no-attachments-msg');"/><br/><br/>
+		<div rsf:id="no-attachments-msg" id="no-attachments-msg">No attachments yet</div>
 	  </div>
 	  
 <!--	  <input type="file" name="fileupload1"/><br/> -->

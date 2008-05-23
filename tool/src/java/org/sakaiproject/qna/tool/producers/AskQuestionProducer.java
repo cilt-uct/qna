@@ -134,9 +134,8 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         }
 
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
-       // UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
         UIMessage.make(form,"add-attachment-button","qna.ask-question.add-attachment");
-
+        UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
 
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {

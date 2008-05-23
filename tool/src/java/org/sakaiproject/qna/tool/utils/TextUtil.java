@@ -13,7 +13,7 @@ public class TextUtil {
 	 * @return String without tags
 	 */
 	public static String stripTags(String html) {
-		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ");
 	}
 	
 	/**

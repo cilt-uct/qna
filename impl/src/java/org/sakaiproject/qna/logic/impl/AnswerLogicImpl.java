@@ -98,7 +98,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 							answer.setApproved(false);
 						}
 					} else {
-						answer.setApproved(true);
+						answer.setApproved(false);
 					}
 					question.addAnswer(answer);
 					dao.save(answer);

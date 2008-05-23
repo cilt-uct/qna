@@ -201,13 +201,13 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					if  (qnaAnswer.getOwnerId().equals(externalLogic.getCurrentUserId())) {
 						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
-					} else if (qnaAnswer.isApproved()) {
+					} else if (qnaAnswer.isApproved() && !permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 						UILink link = UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
 						UIForm form = UIForm.make(answer,"withdraw-approval-form");
 						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", false));
 						UICommand command = UICommand.make(form,"withdraw-approval-command",answerLocator + ".withdrawApproval");
 						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
-					} else {
+					} else if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 						UILink link = UILink.make(answer,"mark-correct-link",UIMessage.make("qna.view-question.mark-as-correct"),null);
 						UIForm form = UIForm.make(answer,"mark-correct-form");
 						form.addParameter(new UIELBinding(answerLocator + "." + qnaAnswer.getId() + ".approved", true));

@@ -8,14 +8,7 @@
 	<link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
 	<script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
 	<script type="text/javascript" language="JavaScript" src="../js/qna.js"></script>
-	<script type="text/javascript" language="JavaScript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
-	<script type="text/javascript">
-		$(document).ready(function() {
-			addCategory();
-			changeCategory();
-		});
-	</script>
 </head>
 
 
@@ -35,12 +28,14 @@
 
 	<form rsf:id="category-form" id="category-form" method="post">
 		<div rsf:id="fileInputDiv:" id="fileInputDiv">
-			<div rsf:id="contentDiv:" id="contentDiv" class="actionitem highlightPanel">
-				<label rsf:id="category-label" for="category-name"/>
-				<input rsf:id="category-name" size="60" id="category-name" type="text"/>
-				<a class="small" rsf:id="category-remove-another" id="category-remove-another" href="#">
-					<img src="/library/image/silk/cross.png"/>
-				</a>
+			<div rsf:id="contentDiv:" id="contentDiv"class="actionitem highlightPanel">
+				<p class="shorttext"> 
+					<label rsf:id="category-label" for="category-name"/>
+					<input rsf:id="category-name" size="60" id="category-name" type="text"/>
+					<a class="small" rsf:id="category-remove-another" id="category-remove-another" href="#">
+						<img src="/library/image/silk/cross.png"/>
+					</a>
+				</p>
 			</div>
 			<p class="act">
 				<a class="small" rsf:id="category-add-another" id="category-add-another" href="#">add another category</a>

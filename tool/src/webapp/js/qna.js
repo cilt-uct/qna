@@ -114,7 +114,8 @@
     	var index = document.getElementById(index_value_id);
     	var newInput = document.createElement('input');
     	newInput.type = 'file';
-    	newInput.name= 'id_name' + index.value;
+    	newInput.name = 'id_name' + index.value;
+    	newInput.class= 'upload';
     	index.value = index.value + 1;
     	div.appendChild(newInput);
     	div.appendChild(document.createElement('br'));

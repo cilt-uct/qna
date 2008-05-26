@@ -68,7 +68,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
-			if (!qnaQuestion.getHidden() && (!qnaQuestion.getCategory().getHidden())) {
+			if ((qnaQuestion.getHidden() != null && !qnaQuestion.getHidden()) && (qnaQuestion.getCategory() != null && !qnaQuestion.getCategory().getHidden())) {
 				UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 				UIOutput.make(entry,"rank-nr",rank + "");
 				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));

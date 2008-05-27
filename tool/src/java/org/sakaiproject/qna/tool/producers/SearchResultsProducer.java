@@ -1,3 +1,21 @@
+/***********************************************************************************
+ * SearchResultsProducer.java
+ * Copyright (c) 2008 Sakai Project/Sakai Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.osedu.org/licenses/ECL-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ *
+ **********************************************************************************/
+
 package org.sakaiproject.qna.tool.producers;
 
 import java.util.ArrayList;
@@ -13,7 +31,6 @@ import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
-import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
@@ -122,12 +139,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 			UIOutput.make(question, "question-timestamp", questions[i][1]);
 		}
 
-		/*String[][] answers = {
-			{"This is an answer that has been given by the lecturer","2008-01-04"},
-			{"This answer was given by a student but approved by the lecturer","2008-01-19"},
-			{"This is answer submitted by a student. If moderation is on lecturer must first approved","2008-02-05"},
-			{"Another new answer. In student view this will not be visible","2008-02-06"}
-		};*/
 		List<QnaAnswer> answersList = searchLogic.getAnswers(params.search);
 		String[][] answers = new String[answersList.size()][4];
 

@@ -32,6 +32,10 @@
     	var collapse_icon = document.getElementById(collapse_icon_id);
     	expand_icon.onclick = function() { toggle_questions(entry_id,expand_icon,collapse_icon);};
     	collapse_icon.onclick = function() { toggle_questions(entry_id,expand_icon,collapse_icon);};
+
+		
+    	var mySpan = document.getElementById(entry_id + "category-entry::category-name");
+    	mySpan.onclick = function() { toggle_questions(entry_id,expand_icon,collapse_icon);};
     }
 
     function change_view(select,form,current_selected) {

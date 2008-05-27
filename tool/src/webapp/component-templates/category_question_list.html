@@ -31,14 +31,14 @@
 	         	<td>
 	         		<img src="/library/image/sakai/expand.gif" id="expand-icon" rsf:id="expand-icon" />
 	         		<img src="/library/image/sakai/collapse.gif" id="collapse-icon" rsf:id="collapse-icon" style="display:none;"/>
-	         		 <script rsf:id="onclick-init" type="text/javascript">
-   						init_questions_toggle("icon","entry","expandIconSrc","ExpandIconSrc");
-	         		 </script>
 	         	</td>
 	            <td style="font-weight:bold;">
 	            	<img rsf:id="new-question-icon" src="/library/image/silk/flag_yellow.png"/>
-	            	<span rsf:id="category-name" style="white-space: pre">Assignments</span>
+	            	<span rsf:id="category-name" style="white-space: pre" id="category-name">Assignments</span>
 	            	<a rsf:id="category-edit" id="category-edit" class="small">edit</a>
+					<script rsf:id="onclick-init" type="text/javascript">
+   						init_questions_toggle("icon","entry","expandIconSrc","ExpandIconSrc");
+	         		</script>
             	</td>
 	            <td></td>
 	            <td></td>

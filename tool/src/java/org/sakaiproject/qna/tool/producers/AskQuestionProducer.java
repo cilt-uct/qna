@@ -120,14 +120,14 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         UIBoundBoolean.make(form,"answer-notify",questionOTP + ".notify",true);
         UIMessage.make(form,"answer-notify-label","qna.ask-question.notify-on-answer");
 
-        if (!options.isModerated() || 
-        	permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || 
+        List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
+        
+        if ((!options.isModerated() && categories.size() > 0) || 
+        	(permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) && categories.size() > 0) || 
         	permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	        UIMessage.make(form, "category-title", "qna.ask-question.category");
 	        UIMessage.make(form, "category-text", "qna.ask-question-select-category");
         }
-
-        List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 
         String[] categoriesIds = new String[categories.size()];
         String[] categoriesText = new String[categories.size()];
@@ -139,7 +139,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         }
         
         boolean displayOr = false;
-        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) {
+        if ((permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) && (categories.size() > 0)) {
         	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
         	displayOr = true;
         }

@@ -124,8 +124,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the category title
 		UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
 		
-		// Generate the category note
-		UIMessage.make(form, "category-note", "qna.publish-queued-question.category-note");
+
 		
 	    List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 
@@ -138,14 +137,23 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 			categoriesText[i] = category.getCategoryText();
 		}
 		
-		if (question.getCategory() == null) {
-			UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" );	
-		} else {
-			UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".category.id");
+		boolean displayOr = false;
+		if (categories.size() > 0) {
+			// Generate the category note
+			UIMessage.make(form, "category-note", "qna.publish-queued-question.category-note");
+			
+			if (question.getCategory() == null) {
+				UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" );	
+			} else {
+				UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".category.id");
+			}
+			displayOr = true;
 		}
-        
-     // if (user permission to create categories)
-        UIMessage.make(form,"or","qna.general.or");
+		
+        if (displayOr) {
+        	UIMessage.make(form,"or","qna.general.or");
+        }
+		
         UIMessage.make(form,"new-category-label","qna.publish-queued-question.category-label");
         UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
         

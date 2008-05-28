@@ -248,4 +248,10 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		return null;
 	}
 
+	public void transferCopyEntities(String fromContext, String toContext,
+			List ids, boolean cleanup) {
+		transferCopyEntities(fromContext, toContext, ids);
+		
+	}
+
 }

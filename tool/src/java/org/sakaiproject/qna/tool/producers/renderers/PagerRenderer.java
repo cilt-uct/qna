@@ -53,11 +53,6 @@ public class PagerRenderer {
     	
 		SortPagerViewParams pagerparams = (SortPagerViewParams) viewparams;
 
-    	if (totalCount <= PagerRenderer.DEFAULT_START_COUNT){
-    		//Do not show
-    		return;
-    	}
-    	
     	//set vars
     	this.currentCount = pagerparams.current_count;
     	this.currentStart = pagerparams.current_start;

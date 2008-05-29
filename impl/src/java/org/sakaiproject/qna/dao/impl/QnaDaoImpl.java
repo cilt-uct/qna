@@ -25,7 +25,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
-import org.sakaiproject.genericdao.hibernate.HibernateCompleteGenericDao;
+import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -36,7 +36,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
  *
  * @author Sakai App Builder -AZ
  */
-public class QnaDaoImpl extends HibernateCompleteGenericDao implements QnaDao {
+public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
 
     private static Log log = LogFactory.getLog(QnaDaoImpl.class);
 

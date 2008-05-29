@@ -46,10 +46,10 @@
       <dependency>
          <groupId>org.sakaiproject</groupId>
          <artifactId>generic-dao</artifactId>
-         <version>0.9.1</version>
+         <version>0.9.8</version>
          <url>http://source.sakaiproject.org/maven2/org/sakaiproject/generic-dao</url>
          <properties>
-            <deploy.target>shared</deploy.target>
+            <war.bundle>true</war.bundle>
          </properties>
       </dependency>
 

@@ -35,14 +35,6 @@
          <scope>runtime</scope>
       </dependency>
 
-      <!-- list any other needed runtime dependencies here -->
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>generic-dao</artifactId>
-         <version>0.9.1</version>
-         <scope>runtime</scope>
-      </dependency>
-
    </dependencies>
 
    <build />

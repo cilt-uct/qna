@@ -20,16 +20,15 @@
 package org.sakaiproject.qna.dao;
 
 import java.util.List;
-import org.sakaiproject.genericdao.api.CompleteGenericDao;
+
+import org.sakaiproject.genericdao.api.GeneralGenericDao;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.model.QnaAnswer;
-
 
 /**
  * This is a specialized DAO that allows the developer to extend the functionality of the generic dao package
 */
-
-public interface QnaDao extends CompleteGenericDao {
+public interface QnaDao extends GeneralGenericDao {
 	
 	/**
 	 * Searches for new questions in location

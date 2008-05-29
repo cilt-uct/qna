@@ -37,7 +37,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	private static Log log = LogFactory.getLog(CategoryLogicImpl.class);
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
-	private QnaDao dao;
+	private org.sakaiproject.qna.dao.QnaDao dao;
 	private ExternalEventLogic externalEventLogic;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {

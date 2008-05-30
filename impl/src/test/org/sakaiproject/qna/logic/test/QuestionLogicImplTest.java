@@ -246,6 +246,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		}
 		question = questionLogic.getQuestionById(tdp.question1_location3.getId());
 		assertFalse(question.isPublished());
+		assertNotNull(question.getCategory());
 		
 		// try publish with valid user (update rights)
 		externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
@@ -254,7 +255,28 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			question = questionLogic.getQuestionById(tdp.question1_location3.getId());
 			assertTrue(question.isPublished());
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("Should not have thrown Exception");
+		}
+	}
+	
+	/**
+	 * Test publishing a question with no category
+	 */
+	public void testPublishQuestionWithNoCategory() {
+		externalLogicStub.currentUserId = USER_LOC_3_UPDATE_1;
+		
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question1_location3.getId());
+		question.setCategory(null);
+		questionLogic.saveQuestion(question, LOCATION3_ID);
+		assertFalse(question.isPublished());
+		assertNull(question.getCategory());
+
+		try {
+			questionLogic.publishQuestion(question.getId(), LOCATION3_ID);
+			fail("Should have thrown QnaConfigurationException");
+		} catch (QnaConfigurationException qne) {
+			assertNotNull(qne);
 		}
 	}
 

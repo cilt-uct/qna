@@ -133,6 +133,11 @@ public class QuestionLogicImpl implements QuestionLogic {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = getQuestionById(questionId);
+			
+			if (question.getCategory() == null) {
+				throw new QnaConfigurationException("A question can not be published without a category");
+			}
+			
 			question.setPublished(true);
 			saveQuestion(question, locationId);
 		} else {

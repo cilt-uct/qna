@@ -21,10 +21,13 @@ package org.sakaiproject.qna.tool.otp;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -56,6 +59,8 @@ public class MultipleBeanMediator {
 
 	private TargettedMessageList messages;
 
+	private static Log log = LogFactory.getLog(MultipleBeanMediator.class);
+	
 	public String moveQuestionSave() {
 		QnaCategory categoryToLink = null;
 		Set<String> keys = questionLocator.getDeliveredBeans().keySet();
@@ -161,10 +166,18 @@ public class MultipleBeanMediator {
 	public String publish() {
 		saveAll();
 		for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
-			questionLogic.publishQuestion(question.getId(), externalLogic.getCurrentLocationId());
-			 messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-success",
-		                new Object[] { TextUtil.stripTags(question.getQuestionText()) },
+			try
+			{
+				questionLogic.publishQuestion(question.getId(), externalLogic.getCurrentLocationId());
+				messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-success",
+			                new Object[] { TextUtil.stripTags(question.getQuestionText()) },
+			                TargettedMessage.SEVERITY_INFO));
+			} catch (QnaConfigurationException qne) {
+				log.info("Error received when publishing question: " + qne.getMessage());
+				messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-failure",
+		                new Object[] {},
 		                TargettedMessage.SEVERITY_INFO));
+			}
 		}
 		return "saved-published";
 	}

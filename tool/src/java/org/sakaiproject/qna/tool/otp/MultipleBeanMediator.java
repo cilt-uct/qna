@@ -176,7 +176,7 @@ public class MultipleBeanMediator {
 				log.info("Error received when publishing question: " + qne.getMessage());
 				messages.addMessage(new TargettedMessage("qna.publish-queued-question.publish-failure",
 		                new Object[] {},
-		                TargettedMessage.SEVERITY_INFO));
+		                TargettedMessage.SEVERITY_ERROR));
 			}
 		}
 		return "saved-published";

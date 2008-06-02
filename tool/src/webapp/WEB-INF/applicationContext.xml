@@ -3,6 +3,15 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean id="messageRenderer"
+     class="org.sakaiproject.qna.tool.utils.SeverityMessageRenderer">
+     <property name="messageLocator">
+       <ref bean="messageLocator" />
+     </property>
+      <property name="infoStyleClass" value="messageSuccess success" />
+      <property name="errorStyleClass" value="messageValidationErrorGlobal alertMessage" />
+   </bean>
+
 
    <!-- handles configuration of internationalization messages -->
    <bean id="messageLocator" class="uk.org.ponder.springutil.SpringMessageLocator">

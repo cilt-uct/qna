@@ -60,7 +60,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 			);
 			return true;
 		} catch (AttachmentException ae) {
-			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_INFO));
+			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
 			return false;
 		}
 	}
@@ -100,7 +100,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 			try {
 				questionLogic.removeQuestion(question.getId(), externalLogic.getCurrentLocationId());
 			} catch (AttachmentException ae) {
-				messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_INFO));
+				messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_ERROR));
 
 			} finally {
 

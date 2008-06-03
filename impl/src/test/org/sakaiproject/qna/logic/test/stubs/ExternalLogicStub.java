@@ -134,4 +134,9 @@ public class ExternalLogicStub implements ExternalLogic {
 	public String getUserEmail(String userId) {
 		return (new FakeUser(userId)).getEmail();
 	}
+
+	public boolean hasMaintainRole(String userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

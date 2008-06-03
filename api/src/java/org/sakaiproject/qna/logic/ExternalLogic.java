@@ -73,7 +73,14 @@ public interface ExternalLogic {
 	 * @return true if the user has admin access, false otherwise
 	 */
 	public boolean isUserAdmin(String userId);
-
+	
+	/**
+	 * Check if user has maintain role
+	 * @param userId
+	 * @return
+	 */
+	public boolean hasMaintainRole(String userId); 
+	
 	/**
 	 * Check if a user has a specified permission within a context, primarily
 	 * a convenience method and passthrough

@@ -152,6 +152,22 @@ public class ExternalLogicImpl implements ExternalLogic {
 	public boolean isUserAdmin(String userId) {
 		return securityService.isSuperUser(userId);
 	}
+	
+	public boolean hasMaintainRole(String userId) {
+		try {
+			
+			if (toolManager.getCurrentPlacement() == null)
+			{
+				return false;
+			}
+
+			Site site = siteService.getSite(toolManager.getCurrentPlacement().getContext());
+			return site.getMaintainRole().equals(site.getMember(userId).getRole().getId()); 
+		} catch (IdUnusedException e) {
+			return false;
+		}
+	}
+	
 
 	public boolean isUserAllowedInLocation(String userId, String permission, String locationId) {
 		if ( securityService.unlock(userId, permission, locationId) ) {

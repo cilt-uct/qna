@@ -15,7 +15,6 @@
  * limitations under the License.
  *
  **********************************************************************************/
-
 	// Toggle visibility of an element
     function toggle_visibility(id) {
        if (document.getElementById(id).style.display == '')
@@ -43,7 +42,7 @@
 		toggle_visibility(expand_icon.id);
 		toggle_visibility(collapse_icon.id);
 		
-		RSF.getDOMModifyFirer().fireEvent();
+		resizeToolFrame();
     }
 
     // Used in questions list
@@ -78,7 +77,7 @@
     	toggle_visibility(icon_id);
     	toggle_visibility(div_id);
     	
-    	RSF.getDOMModifyFirer().fireEvent();
+    	resizeToolFrame();
     }
     
     // Add an answer in answers screen
@@ -113,7 +112,7 @@
 		var update_option = document.getElementById(update_option_id);
 		var custom_mail_input = document.getElementById(custom_mail_input_id);
 
-		notification.onclick = function() {toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input)};
+		notification.onclick = function() {toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input);};
     	if (!notification.checked) {
     		site_option.disabled = true;
     		custom_option.disabled = true;
@@ -141,7 +140,7 @@
     	var newInput = document.createElement('input');
     	newInput.type = 'file';
     	newInput.name = 'id_name' + index.value;
-    	newInput.class= 'upload';
+    	newInput.className = 'upload';
     	index.value = index.value + 1;
     	div.appendChild(newInput);
     	div.appendChild(document.createElement('br'));
@@ -202,3 +201,8 @@
 		var link = document.getElementById(link_id);
 		button.onclick = function() { window.location.href = link.href;};
 	}
+
+	function resizeToolFrame() {
+		setMainFrameHeight(window.frameElement.id);
+	}	
+	

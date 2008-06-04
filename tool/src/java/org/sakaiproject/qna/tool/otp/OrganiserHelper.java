@@ -24,17 +24,20 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
+
 public class OrganiserHelper {
 
 	public String[] catorder;
 	public String[] queorder;
 	public String[] questionCategoryOrder;
 	
-	
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;
 	private QuestionLogic questionLogic;
-
+	private TargettedMessageList messages;
+	 
 	public String[] getQueorder() {
 		return queorder;
 	}
@@ -59,12 +62,19 @@ public class OrganiserHelper {
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
 		this.categoryLogic = categoryLogic;
 	}
+	
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
+	
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
+
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
+	}
+	
 
 	public String saveOrder() {
 		for (int k=0; k<catorder.length; k++) {
@@ -97,7 +107,7 @@ public class OrganiserHelper {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 			
 		}
-
+		messages.addMessage(new TargettedMessage("qna.organise.successful-save",null,TargettedMessage.SEVERITY_INFO));
 		return "saved";
 	}
 }

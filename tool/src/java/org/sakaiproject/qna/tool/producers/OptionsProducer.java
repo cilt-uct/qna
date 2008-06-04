@@ -130,6 +130,7 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> l = new ArrayList<NavigationCase>();
 		l.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		l.add(new NavigationCase("saved",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return l;
 	}
 }

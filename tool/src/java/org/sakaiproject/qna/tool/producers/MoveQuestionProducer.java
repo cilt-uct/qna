@@ -41,6 +41,8 @@ import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -49,7 +51,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class MoveQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
+public class MoveQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
 	public static final String VIEW_ID = "move_question";
 	private QuestionLogic questionLogic;
@@ -133,12 +135,20 @@ public class MoveQuestionProducer implements ViewComponentProducer, NavigationCa
 
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("cancel",new SimpleViewParameters(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
 
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
+	}
+	
+	public void interceptActionResult(ARIResult result,
+			ViewParameters incoming, Object actionReturn) {
+		if (result.resultingView instanceof QuestionParams) {
+			QuestionParams params = (QuestionParams)result.resultingView;
+			params.questionid = ((QuestionParams)incoming).questionid;
+		}
 	}
 }

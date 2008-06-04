@@ -227,6 +227,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	public List reportNavigationCases() {
 		List<NavigationCase> togo = new ArrayList<NavigationCase>();
 		togo.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		togo.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return togo;
 	}
 

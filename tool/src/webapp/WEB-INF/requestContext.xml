@@ -93,10 +93,6 @@
 	<bean class="org.sakaiproject.qna.tool.producers.CategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
-<!--		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
-		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
-		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
-		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" /> -->
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">
@@ -247,6 +243,7 @@
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="messages" ref="targettedMessageList"/>
 	</bean>
 
 	<!-- Question Sorter -->

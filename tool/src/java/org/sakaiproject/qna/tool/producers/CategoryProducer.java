@@ -119,6 +119,7 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
 				UIMessage.make("qna.category.add-another"),
 				new CategoryParams(CategoryProducer.VIEW_ID, new Integer(number+1).toString())
 			);
+			
 			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".save");
 		} else {
 			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".edit");
@@ -131,7 +132,7 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
 	public List reportNavigationCases() {
 		  List<NavigationCase> l = new ArrayList<NavigationCase>();
 		  l.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
-		  l.add(new NavigationCase("saved", new SimpleViewParameters(CategoryProducer.VIEW_ID)));
+		  l.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		  l.add(new NavigationCase("edited", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		  l.add(new NavigationCase("removed", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		  return l;

@@ -168,6 +168,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel", new SimpleViewParameters(
 				QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;
 	}
 }

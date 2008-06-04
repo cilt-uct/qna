@@ -37,6 +37,7 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -97,7 +98,15 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	String notificationRadioSelectID = notificationRadios.getFullID();
     	
     	UISelectChoice siteContact = UISelectChoice.make(form, "site-contact", notificationRadioSelectID, 0);
-    	UIOutput.make(form,"site-contact-label",externalLogic.getSiteContactEmail(externalLogic.getCurrentLocationId()));
+    	
+    	if (!"".equals(externalLogic.getSiteContactEmail(externalLogic.getCurrentLocationId()))) {
+    		UIOutput.make(form,"site-contact-label",externalLogic.getSiteContactEmail(externalLogic.getCurrentLocationId()));
+    	} else {
+    		UIMessage.make(form,"site-contact-label","qna.options.no-site-contact");
+    		siteContact.decorate(new UIFreeAttributeDecorator("disabled","true"));
+    		UIOutput.make(form, "site-contact-stay-disabled", "true");
+    	}
+    	
     	
     	UISelectChoice customMail = UISelectChoice.make(form, "custom-mail", notificationRadioSelectID, 1);
     	UIMessage.make(form,"custom-mail-label","qna.options.custom-mail-addresses");

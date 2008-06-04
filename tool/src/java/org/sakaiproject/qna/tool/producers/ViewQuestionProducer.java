@@ -132,7 +132,11 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 			questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);
 		}
 		UIMessage.make(tofill,"page-title","qna.view-question.title");
-		UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
+		
+		if (question.getCategory() != null) {
+			UIOutput.make(tofill,"category-title",question.getCategory().getCategoryText());
+		}
+		
 		UIMessage.make(tofill,"question-title","qna.view-question.question");
 
 		UIVerbatim.make(tofill,"question",question.getQuestionText());

@@ -17,7 +17,7 @@
       </many-to-one>
 
       <!--  linkage to answers -->
-      <bag name="answers" lazy="false" inverse="true" cascade="all">
+      <bag name="answers" lazy="false" inverse="true" cascade="delete">
       		<key column="question_id"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaAnswer" />
       </bag>

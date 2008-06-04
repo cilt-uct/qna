@@ -147,6 +147,8 @@ public class TestDataPreload {
 		question2_location1.addAnswer(answer2_location1);
 		category1_location1.addQuestion(question2_location1);
 		dao.save(question2_location1);
+		dao.save(answer1_location1);
+		dao.save(answer2_location1);
 		
 		category1_location1.addQuestion(question3_location1);
 		dao.save(question3_location1);
@@ -164,6 +166,7 @@ public class TestDataPreload {
 		
 		question1_location3.addAnswer(answer1_location3);
 		dao.save(question1_location3);
+		dao.save(answer1_location3);
 		
 		
 		

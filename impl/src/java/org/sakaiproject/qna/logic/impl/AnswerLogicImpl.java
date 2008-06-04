@@ -181,14 +181,8 @@ public class AnswerLogicImpl implements AnswerLogic {
 	}
 
 	public void removeAnswer(String answerId, String locationId) {
-		String userId = externalLogic.getCurrentUserId();
-		if (permissionLogic.canUpdate(locationId, userId)) {
-			QnaAnswer answer = getAnswerById(answerId);
-			dao.delete(answer);
-			externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_DELETE, answer);
-		} else {
-			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
-		}
+		QnaAnswer answer = getAnswerById(answerId);
+		removeAnswerFromQuestion(answerId,answer.getQuestion().getId(), locationId);
 	}
 	
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId) {
@@ -199,6 +193,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 			QnaAnswer answer = getAnswerById(answerId);
 			question.getAnswers().remove(answer);
 			dao.delete(answer);
+			externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_DELETE, answer);
 		} else {
 			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
 		}

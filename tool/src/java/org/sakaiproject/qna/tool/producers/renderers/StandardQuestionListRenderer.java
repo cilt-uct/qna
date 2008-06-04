@@ -86,7 +86,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
-			if ((qnaQuestion.getHidden() != null && !qnaQuestion.getHidden()) && (qnaQuestion.getCategory() != null && !qnaQuestion.getCategory().getHidden())) {
+			if (displayQuestion(qnaQuestion)) {
 				UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 				UIOutput.make(entry,"rank-nr",rank + "");
 				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
@@ -100,5 +100,17 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 				rank++;
 			}
 		}
+	}
+	
+	private boolean displayQuestion(QnaQuestion question) {
+		if (question.getHidden() != null && question.getHidden()) {
+			return false;
+		}
+		if (question.getCategory() != null) {
+			if (question.getCategory().getHidden()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

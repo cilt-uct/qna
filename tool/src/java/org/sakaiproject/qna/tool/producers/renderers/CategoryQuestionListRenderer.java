@@ -113,7 +113,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 					}
 					
 					UIOutput.make(category,"modified-date",DateUtil.getSimpleDate(qnaCategory.getDateLastModified()));
-
+					
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 						//UIOutput.make(category,"remove-category-cell");
 						//UIBoundBoolean.make(category, "remove-checkbox", false);
@@ -195,7 +195,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
 				UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
 				UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
-
+				
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					//UIOutput.make(question,"remove-question-cell");
 					//UIBoundBoolean.make(question, "remove-checkbox", false);

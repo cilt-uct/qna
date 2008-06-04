@@ -87,11 +87,13 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		UIMessage.make(tofill, "sub-title", "qna.view-private-reply.subtitle");
 
 		UIVerbatim.make(tofill, "unpublished-question",question.getQuestionText());
+		
 		// If anonymous remove name
+		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());
 		if (question.isAnonymous()) {
-			UIMessage.make(tofill,"unpublished-question-submitter","qna.view-private-reply.submitter-detail-anonymous", new Object[] {question.getDateLastModified()});
+			UIMessage.make(tofill,"unpublished-question-submitter","qna.view-private-reply.submitter-detail-anonymous", new Object[] {dateToDisplay});
 		} else {
-			UIMessage.make(tofill,"unpublished-question-submitter","qna.view-private-reply.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),});
+			UIMessage.make(tofill,"unpublished-question-submitter","qna.view-private-reply.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),dateToDisplay,});
 		}
 
 		UIMessage.make(tofill,"answer-title","qna.view-private-reply.answer");
@@ -102,7 +104,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 			if (qnaAnswer.isPrivateReply()) {
 				UIBranchContainer privateReply = UIBranchContainer.make(tofill, "private-reply:");
 				UIVerbatim.make(privateReply,"private-reply-text", qnaAnswer.getAnswerText());
-				UIOutput.make(privateReply,"private-reply-timestamp", DateUtil.getSimpleDate(qnaAnswer.getDateLastModified()));
+				UIOutput.make(privateReply,"private-reply-timestamp", DateUtil.getSimpleDateTime(qnaAnswer.getDateLastModified()));
 			}
 		}
 

@@ -18,7 +18,6 @@
 
 package org.sakaiproject.qna.tool.producers;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UICommand;
@@ -117,7 +117,7 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 		UIOutput.make(form, "name", TextUtil.stripTags(question.getQuestionText()));
 		UIOutput.make(form, "category", question.getCategory().getCategoryText());
 		UIOutput.make(form, "answers", answerList.size()+"");
-		UIOutput.make(form, "modified", new SimpleDateFormat("yyyy-MM-dd").format(question.getDateLastModified()));
+		UIOutput.make(form, "modified", DateUtil.getSimpleDate(question.getDateLastModified()));
 
 		// Generate the different buttons
 		UICommand delete = UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete"), questionLocator+".delete");

@@ -32,6 +32,7 @@ import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -102,7 +103,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		for (int k=0; k<categoriesList.size(); k++) {
 			QnaCategory category = categoriesList.get(k);
 			categories[k][0] = category.getCategoryText();
-			categories[k][1] = category.getDateLastModified().toString();
+			categories[k][1] = DateUtil.getSimpleDateTime(category.getDateLastModified());
 			categories[k][2] = category.getId();
 		}
 
@@ -113,18 +114,13 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 			UIOutput.make(category, "category-timestamp", categories[i][1]);
 		}
 
-		/*String[][] questions = {
-			{"How many assignments must be done?","2008-01-04"},
-			{"Is RSF a good technology?","2008-02-06"}
-		};*/
-
 		List<QnaQuestion> questionsList = searchLogic.getQuestions(params.search);
 		String[][] questions = new String[questionsList.size()][3];
 
 		for (int k=0; k<questionsList.size(); k++) {
 			QnaQuestion question = questionsList.get(k);
 			questions[k][0] = question.getQuestionText();
-			questions[k][1] = question.getDateLastModified().toString();
+			questions[k][1] =  DateUtil.getSimpleDateTime(question.getDateLastModified());
 			questions[k][2] = question.getId();
 		}
 
@@ -145,7 +141,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		for (int k=0; k<answersList.size(); k++) {
 			QnaAnswer answer = answersList.get(k);
 			answers[k][0] = answer.getAnswerText();
-			answers[k][1] = answer.getDateLastModified().toString();
+			answers[k][1] = DateUtil.getSimpleDateTime(answer.getDateLastModified());
 			answers[k][2] = answer.getId();
 			answers[k][3] = answer.getQuestion().getId();
 		}

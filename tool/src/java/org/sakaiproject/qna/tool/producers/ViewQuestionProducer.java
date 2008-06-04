@@ -36,6 +36,7 @@ import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
 
 import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -140,11 +141,12 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		if (question.getContentCollection() != null) {
 			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question.getContentCollection()); }
 
+		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());	
 		// If anonymous remove name
 		if (question.isAnonymous()) {
-			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail-anonymous", new Object[] {dateToDisplay,question.getViews()});
 		} else {
-			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),dateToDisplay,question.getViews()});
 		}
 
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
@@ -236,7 +238,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				}
 
 				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());
-				UIMessage.make(answer, "answer-timestamp","qna.general.one-parameter",new Object[]{ qnaAnswer.getDateLastModified() });
+				UIMessage.make(answer, "answer-timestamp","qna.general.one-parameter",new Object[]{  DateUtil.getSimpleDateTime(qnaAnswer.getDateLastModified())});
 			}
 		}
 	}

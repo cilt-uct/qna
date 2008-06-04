@@ -29,6 +29,7 @@ import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
 
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -105,9 +106,9 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		
 		// If anonymous remove name
 		if (question.isAnonymous()) {
-			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {DateUtil.getSimpleDateTime(question.getDateLastModified()),question.getViews()});
 		} else {
-			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),DateUtil.getSimpleDateTime(question.getDateLastModified()),question.getViews()});
 		}
 		
 		// Generate the different buttons

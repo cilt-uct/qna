@@ -27,6 +27,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.utils.DateUtil;
 
 import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UICommand;
@@ -92,11 +93,12 @@ public class ReplyPrivatelyProducer implements ViewComponentProducer, Navigation
 		UIForm form = UIForm.make(tofill,"reply-privately-form");
 
 		UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
-
+		
+		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());
 		if (question.isAnonymous()) {
-			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {dateToDisplay,question.getViews()});
 		} else {
-			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),question.getDateLastModified(),question.getViews()});
+			UIMessage.make(tofill,"unpublished-question-submitter","qna.queued-question.submitter-detail", new Object[] {externalLogic.getUserDisplayName(question.getOwnerId()),dateToDisplay,question.getViews()});
 		}
 
 		UIMessage.make(form,"answer-title","qna.reply-privately.answer");

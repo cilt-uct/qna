@@ -27,4 +27,9 @@ public class DateUtil {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date);
 	}
+	
+	public static String getSimpleDateTime(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return dateFormat.format(date);
+	}
 }

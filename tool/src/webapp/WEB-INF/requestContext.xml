@@ -118,6 +118,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
 	</bean>
 
 	<bean

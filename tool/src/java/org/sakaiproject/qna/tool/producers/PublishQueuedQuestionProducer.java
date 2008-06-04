@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -81,7 +82,12 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-
+	
+	private PermissionLogic permissionLogic;
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
+	}
+	
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 		
@@ -121,13 +127,13 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		UIInput editQuestionText = UIInput.make(form, "unpublished-question-edit:", questionOTP  +".questionText");
 		richTextEvolver.evolveTextInput(editQuestionText);
 				
-		// Generate the category title
-		UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
-		
-
-		
 	    List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(externalLogic.getCurrentLocationId());
 
+		// Generate the category title
+	    if (categories.size() > 0 || permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+	    	UIMessage.make(form, "category-title", "qna.publish-queued-question.category-title");
+	    }
+	    
 		String[] categoriesIds = new String[categories.size()];
 		String[] categoriesText = new String[categories.size()];
 
@@ -150,12 +156,14 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 			displayOr = true;
 		}
 		
-        if (displayOr) {
-        	UIMessage.make(form,"or","qna.general.or");
-        }
-		
-        UIMessage.make(form,"new-category-label","qna.publish-queued-question.category-label");
-        UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
+		if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+	        if (displayOr) {
+	        	UIMessage.make(form,"or","qna.general.or");
+	        }
+			
+	        UIMessage.make(form,"new-category-label","qna.publish-queued-question.category-label");
+	        UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
+		}
         
      // Generate the answer title
 		UIMessage.make(form, "answer-title", "qna.publish-queued-question.answer-title");

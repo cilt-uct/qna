@@ -9,7 +9,7 @@
        <ref bean="messageLocator" />
      </property>
       <property name="infoStyleClass" value="messageSuccess success" />
-      <property name="errorStyleClass" value="messageValidationErrorGlobal alertMessage" />
+      <property name="errorStyleClass" value="alertMessage" />
    </bean>
 
 

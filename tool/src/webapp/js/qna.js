@@ -99,8 +99,10 @@
     }
 
     function toggle_mail_notifications_view(site_option,custom_option,update_option,custom_mail_input) {
-    	if (document.getElementById("site-contact-stay-disabled").value != "true") {
-    		toggle_disabled(site_option);
+    	var stay_disabled = document.getElementById("site-contact-stay-disabled");
+    	
+    	if (!stay_disabled) {
+			toggle_disabled(site_option);
     	}
 		toggle_disabled(custom_option);
 		toggle_disabled(update_option);

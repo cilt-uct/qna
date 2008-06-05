@@ -21,6 +21,8 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.tool.otp.CategoryLocator;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
@@ -47,6 +49,8 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
     public static final String VIEW_ID = "categories";
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;
+    private PermissionLogic permissionLogic;
+    private ExternalLogic externalLogic;
 
 	public String getViewID() {
         return VIEW_ID;
@@ -58,6 +62,14 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
 
     public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {
     	this.searchBarRenderer = searchBarRenderer;
+    }
+    
+    public void setPermissionLogic(PermissionLogic permissionLogic) {
+    	this.permissionLogic = permissionLogic;
+    }
+    
+    public void setExternalLogic(ExternalLogic externalLogic) {
+    	this.externalLogic = externalLogic;
     }
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
@@ -121,7 +133,7 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
 			);
 			
 			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".save");
-		} else {
+		} else if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".edit");
 			UICommand.make(form, "remove-button", UIMessage.make("qna.general.delete"), categoryLocator+".remove");
 		}

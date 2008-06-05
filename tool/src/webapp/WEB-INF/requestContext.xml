@@ -93,6 +93,8 @@
 	<bean class="org.sakaiproject.qna.tool.producers.CategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">

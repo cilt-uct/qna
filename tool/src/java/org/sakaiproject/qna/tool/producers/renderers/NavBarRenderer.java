@@ -28,6 +28,7 @@ import org.sakaiproject.qna.tool.producers.CategoryProducer;
 import org.sakaiproject.qna.tool.producers.OptionsProducer;
 import org.sakaiproject.qna.tool.producers.OrganiseListProducer;
 import org.sakaiproject.qna.tool.producers.PermissionsProducer;
+import org.sakaiproject.site.api.SiteService;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -103,7 +104,7 @@ public class NavBarRenderer {
 	    	UIOutput.make(cell5, "item-separator");
     	}
 
-    	if (externalLogic.hasMaintainRole(externalLogic.getCurrentUserId())) {
+    	if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, externalLogic.getCurrentLocationId())) {
 	    	UIBranchContainer cell6 = UIBranchContainer.make(joint, "navigation-cell:", "6");
 	    	if (currentViewID.equals(PermissionsProducer.VIEW_ID)) {
 	    		UIMessage.make(cell6, "item-text", "qna.navbar.permissions");

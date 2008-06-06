@@ -99,10 +99,12 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		int results = categoriesList.size();
 		
 		for (QnaCategory category : categoriesList) {
-			UIBranchContainer categoryBranch = UIBranchContainer.make(tofill, "category:");
-			UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
-			UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
-			UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
+			if (display(category)) {
+				UIBranchContainer categoryBranch = UIBranchContainer.make(tofill, "category:");
+				UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
+				UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
+				UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
+			}
 		}
 		
 		List<QnaQuestion> questionsList = searchLogic.getQuestions(params.search);
@@ -125,11 +127,14 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
         	} 
 			
         	if (allViewable || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-        		UIBranchContainer questionBranch = UIBranchContainer.make(tofill, "question:");
-        		UIInternalLink.make(questionBranch, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID, qnaQuestion.getId()));
-    			UIOutput.make(questionBranch, "question-text", questionText);
-    			UIOutput.make(questionBranch, "question-timestamp", DateUtil.getSimpleDateTime(qnaQuestion.getDateLastModified()));
-    			results++;
+        		
+        		if (display(qnaQuestion)) {
+            		UIBranchContainer questionBranch = UIBranchContainer.make(tofill, "question:");
+            		UIInternalLink.make(questionBranch, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID, qnaQuestion.getId()));
+        			UIOutput.make(questionBranch, "question-text", questionText);
+        			UIOutput.make(questionBranch, "question-timestamp", DateUtil.getSimpleDateTime(qnaQuestion.getDateLastModified()));
+        			results++;
+        		}
         	}
 		}
 
@@ -149,13 +154,15 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
         		} 
         		allViewable = false;
         	} 
-			
+        	
         	if (allViewable || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-        		UIBranchContainer answerBranch = UIBranchContainer.make(tofill, "answer:");
-    			UIInternalLink.make(answerBranch, "view-answer-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID,answer.getQuestion().getId()));
-    			UIOutput.make(answerBranch, "answer-text", answerText);
-    			UIOutput.make(answerBranch, "answer-timestamp",  DateUtil.getSimpleDateTime(answer.getDateLastModified()));
-    			results++;
+        		if (display(answer)) {
+            		UIBranchContainer answerBranch = UIBranchContainer.make(tofill, "answer:");
+        			UIInternalLink.make(answerBranch, "view-answer-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID,answer.getQuestion().getId()));
+        			UIOutput.make(answerBranch, "answer-text", answerText);
+        			UIOutput.make(answerBranch, "answer-timestamp",  DateUtil.getSimpleDateTime(answer.getDateLastModified()));
+        			results++;
+        		}
         	}
 		}
 
@@ -175,4 +182,31 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		return new SearchParams();
 	}
 	
+	private boolean display(QnaCategory category) {
+		return category.getHidden();
+	}
+	
+	private boolean display(QnaQuestion question) {
+    	if (question.getHidden()) {
+    		return false;
+    	}
+    	if (question.getCategory() != null) {
+    		if (question.getCategory().getHidden()) {
+    			return false;
+    		}
+    	}
+    	return true;
+	}
+	
+	private boolean display(QnaAnswer answer) {
+       	if (answer.getQuestion().getHidden()) {
+    		return false;
+    	}
+    	if (answer.getQuestion().getCategory() != null) {
+    		if (answer.getQuestion().getCategory().getHidden()) {
+    			return false;
+    		}
+    	}
+    	return true;
+	}
 }

@@ -80,7 +80,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
-		// TODO Lots of customisation regarding permissions, get dynamic content etc.
 		SearchParams params = (SearchParams)viewparams;
 
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
@@ -96,62 +95,68 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		String[][] categories = new String[categoriesList.size()][3];
 
 		UIMessage.make(tofill, "results", "qna.searchresults.results", new Integer[]{categoriesList.size()});
-
-		for (int k=0; k<categoriesList.size(); k++) {
-			QnaCategory category = categoriesList.get(k);
-			categories[k][0] = category.getCategoryText();
-			categories[k][1] = DateUtil.getSimpleDateTime(category.getDateLastModified());
-			categories[k][2] = category.getId();
+		
+		int results = categoriesList.size();
+		
+		for (QnaCategory category : categoriesList) {
+			UIBranchContainer categoryBranch = UIBranchContainer.make(tofill, "category:");
+			UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
+			UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
+			UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
 		}
-
-		for (int i=0;i<categories.length;i++) {
-			UIBranchContainer category = UIBranchContainer.make(tofill, "category:",Integer.toString(i));
-			UIInternalLink.make(category, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", categories[i][0], categories[i][2]));
-			UIOutput.make(category, "category-text", categories[i][0]);
-			UIOutput.make(category, "category-timestamp", categories[i][1]);
-		}
-
+		
 		List<QnaQuestion> questionsList = searchLogic.getQuestions(params.search);
-		String[][] questions = new String[questionsList.size()][3];
-
-		for (int k=0; k<questionsList.size(); k++) {
-			QnaQuestion question = questionsList.get(k);
-			questions[k][0] = question.getQuestionText();
-			questions[k][1] =  DateUtil.getSimpleDateTime(question.getDateLastModified());
-			questions[k][2] = question.getId();
-		}
-
-		for (int i=0;i<questions.length;i++) {
-			String questionText = TextUtil.stripTags(questions[i][0]);
+		
+		for (QnaQuestion qnaQuestion : questionsList) {
+			String questionText = TextUtil.stripTags(qnaQuestion.getQuestionText());
 			if (questionText.length() > 100) {
 				questionText = questionText.substring(0, 100);
 			}
-			UIBranchContainer question = UIBranchContainer.make(tofill, "question:",Integer.toString(i));
-			UIInternalLink.make(question, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(ViewQuestionProducer.VIEW_ID, questions[i][2]));
-			UIOutput.make(question, "question-text", questionText);
-			UIOutput.make(question, "question-timestamp", questions[i][1]);
+			
+			String viewID = ViewQuestionProducer.VIEW_ID;
+			boolean allViewable = true;
+        	if (!qnaQuestion.isPublished()) {
+        		if (qnaQuestion.hasPrivateReplies()) {
+        			viewID = ViewPrivateReplyProducer.VIEW_ID;
+        		} else {
+        			viewID = QueuedQuestionProducer.VIEW_ID;
+        		}
+        		allViewable = false;
+        	} 
+			
+        	if (allViewable || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        		UIBranchContainer questionBranch = UIBranchContainer.make(tofill, "question:");
+        		UIInternalLink.make(questionBranch, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID, qnaQuestion.getId()));
+    			UIOutput.make(questionBranch, "question-text", questionText);
+    			UIOutput.make(questionBranch, "question-timestamp", DateUtil.getSimpleDateTime(qnaQuestion.getDateLastModified()));
+    			results++;
+        	}
 		}
 
 		List<QnaAnswer> answersList = searchLogic.getAnswers(params.search);
 		String[][] answers = new String[answersList.size()][4];
-
-		for (int k=0; k<answersList.size(); k++) {
-			QnaAnswer answer = answersList.get(k);
-			answers[k][0] = answer.getAnswerText();
-			answers[k][1] = DateUtil.getSimpleDateTime(answer.getDateLastModified());
-			answers[k][2] = answer.getId();
-			answers[k][3] = answer.getQuestion().getId();
-		}
-
-		for (int i=0;i<answers.length;i++) {
-			String answerText = TextUtil.stripTags(answers[i][0]);
+		for (QnaAnswer answer : answersList) {
+			String answerText = TextUtil.stripTags(answer.getAnswerText());
 			if (answerText.length() > 100) {
 				answerText = answerText.substring(0, 100);
 			}
-			UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:",Integer.toString(i));
-			UIInternalLink.make(answer, "view-answer-link", UIMessage.make("qna.searchresults.view"), new AnswerParams(ViewQuestionProducer.VIEW_ID, answers[i][2], answers[i][3]));
-			UIOutput.make(answer, "answer-text", answerText);
-			UIOutput.make(answer, "answer-timestamp", answers[i][1]);
+			
+			String viewID = ViewQuestionProducer.VIEW_ID;
+			boolean allViewable = true;
+        	if (!answer.getQuestion().isPublished()) {
+        		if (answer.isPrivateReply()) {
+        			viewID = ViewPrivateReplyProducer.VIEW_ID;
+        		} 
+        		allViewable = false;
+        	} 
+			
+        	if (allViewable || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        		UIBranchContainer answerBranch = UIBranchContainer.make(tofill, "answer:");
+    			UIInternalLink.make(answerBranch, "view-answer-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID,answer.getQuestion().getId()));
+    			UIOutput.make(answerBranch, "answer-text", answerText);
+    			UIOutput.make(answerBranch, "answer-timestamp",  DateUtil.getSimpleDateTime(answer.getDateLastModified()));
+    			results++;
+        	}
 		}
 
 		UIForm form = UIForm.make(tofill,"search-form");
@@ -169,4 +174,5 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 	public ViewParameters getViewParameters() {
 		return new SearchParams();
 	}
+	
 }

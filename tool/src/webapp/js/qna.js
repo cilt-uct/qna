@@ -150,6 +150,15 @@
     	div.appendChild(document.createElement('br'));
     }
 
+    function cancelDelete(formid, bindings) {
+    	var form = document.getElementById(formid);
+    	var bindings = document.getElementsByName(bindings);
+
+    	for (var k=0; k<bindings.length; k++) {
+    		form.removeChild(bindings[k]);
+    	}
+    }
+
 	function addCategoryInput(div_id, index_value_id, div_to_copy) {
 		document.getElementById('remove-cat').style.display='';
 		var div = document.getElementById(div_id);

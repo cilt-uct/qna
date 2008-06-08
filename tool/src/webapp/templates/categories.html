@@ -21,25 +21,27 @@
 	<div rsf:id="category-note"/>
 
 	<form rsf:id="category-form" id="category-form" method="post">
-		<div rsf:id="fileInputDiv:" id="fileInputDiv">
-			<div rsf:id="contentDiv:" id="contentDiv"class="actionitem highlightPanel">
-				<p class="shorttext" style="border:none;"> 
+		<input type="hidden" value="0" id="catIndex" />
+		<!--  div rsf:id="fileInputDiv:" id="fileInputDiv">
+			<div rsf:id="contentDiv:" id="contentDiv" class="actionitem highlightPanel" -->
+		<div id="catContainer">
+			<div id="categoryInput" class="actionitem highlightPanel">
+				<!-- p class="shorttext" style="border:none;" -->
 					<label rsf:id="category-label" for="category-name"/>
 					<input rsf:id="category-name" size="60" id="category-name" type="text"/>
-					<a class="small" rsf:id="category-remove-another" id="category-remove-another" href="#">
+					<a class="small" href="#" id="remove-cat" onclick="javascript:removeCategoryInput('catContainer', 'catIndex', this);" style="display:none">
 						<img src="/library/image/silk/cross.png"/>
 					</a>
-				</p>
+				<!-- /p -->
 			</div>
-			<p class="act">
-				<a class="small" rsf:id="category-add-another" id="category-add-another" href="#">add another category</a>
-			</p>
-			<p>
-				<input rsf:id="save-button" type="submit" value="Save"/>
-<!--			<input rsf:id="remove-button" type="submit" value="Delete"/> -->
-				<input rsf:id="cancel-button" type="submit" value="Cancel"/>
-			</p>
 		</div>
+		<p class="act">
+			<a class="small" href="#" onclick="javascript:addCategoryInput('catContainer','catIndex','categoryInput');">add another category</a>
+		</p>
+		<p>
+			<input rsf:id="save-button" type="submit" value="Save"/>
+			<input rsf:id="cancel-button" type="submit" value="Cancel"/>
+		</p>
 	</form>
 </body>
 </html>

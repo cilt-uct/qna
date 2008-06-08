@@ -151,13 +151,19 @@
     }
 
     function cancelDelete(formid, bindings) {
-    	var form = document.getElementById(formid);
-    	var bindings = document.getElementsByName(bindings);
+		var form = document.getElementById(formid);
+		var bindings = document.getElementsByName(bindings);
 
-    	for (var k=0; k<bindings.length; k++) {
-    		form.removeChild(bindings[k]);
-    	}
-    }
+		var cLength = form.childNodes.length;
+
+		for (var k=0; k<cLength; k++) {
+			if (form.childNodes[k].name == 'deletion-binding') {
+				var cNode = form.childNodes[k];
+				cNode.value = '';
+				form.removeChild(cNode);
+			}
+		}
+	}
 
 	function addCategoryInput(div_id, index_value_id, div_to_copy) {
 		document.getElementById('remove-cat').style.display='';

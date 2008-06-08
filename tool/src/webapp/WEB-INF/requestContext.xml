@@ -146,6 +146,15 @@
 	</bean>
 
 	<bean
+		class="org.sakaiproject.qna.tool.producers.MultipleDeletesProducer">
+		<property name="navBarRenderer" ref="NavbarRenderer" />
+		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+	</bean>
+
+	<bean
 		class="org.sakaiproject.qna.tool.producers.DeleteCategoryProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
@@ -216,7 +225,7 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 	</bean>
-	
+
 	<bean class="org.sakaiproject.qna.tool.producers.OrganiseListProducer">
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="searchBarRenderer" ref="SearchBarRenderer" />

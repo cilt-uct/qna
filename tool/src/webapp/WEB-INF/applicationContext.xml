@@ -36,7 +36,7 @@
 	<!-- For security purposes, only beans listed in the comma separated value list
       may be the target of EL operations coming in over the request -->
    <bean parent="requestAddressibleParent">
-      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper" />
+      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper"/>
    </bean>
 
    <!-- Control the location of the html templates (default: content/templates/) -->
@@ -55,14 +55,14 @@
 
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
   </bean>
-  
+
   <!-- Inferrers -->
   <bean class="org.sakaiproject.qna.tool.inferrers.QuestionVPInferrer"></bean>
-  
+
   <bean class="org.sakaiproject.qna.tool.inferrers.CategoryVPInferrer"></bean>
-  
+
   <bean class="org.sakaiproject.qna.tool.inferrers.AnswerVPInferrer">
   	<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
   </bean>
-  
+
 </beans>

@@ -30,8 +30,8 @@ public class ExternalLogicStub implements ExternalLogic {
 	public String currentUserId;
 	
 	public String getCurrentLocationId() {
-		// TODO Auto-generated method stub
-		return null;
+		// default is LOCATION1
+		return LOCATION1_ID;
 	}
 
 	public String getCurrentUserId() {

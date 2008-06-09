@@ -124,9 +124,11 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	public void incrementView(String questionId) {
-		QnaQuestion question = getQuestionById(questionId);
-		question.setViews(question.getViews() + 1);
-		dao.save(question);
+		if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			QnaQuestion question = getQuestionById(questionId);
+			question.setViews(question.getViews() + 1);
+			dao.save(question);
+		}
 	}
 
 	public void publishQuestion(String questionId, String locationId) {

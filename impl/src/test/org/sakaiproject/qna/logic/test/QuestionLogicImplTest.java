@@ -313,8 +313,13 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	 * Test view increment of question
 	 */
 	public void testViewsIncrement() {
+		externalLogicStub.currentUserId = USER_NO_UPDATE;
 		QnaQuestion question = questionLogic.getQuestionById(tdp.question4_location1.getId());
 		assertEquals(question.getViews(), new Integer(76));
+		questionLogic.incrementView(tdp.question4_location1.getId());
+		assertEquals(question.getViews(), new Integer(77));
+		
+		externalLogicStub.currentUserId = USER_UPDATE;
 		questionLogic.incrementView(tdp.question4_location1.getId());
 		assertEquals(question.getViews(), new Integer(77));
 	}

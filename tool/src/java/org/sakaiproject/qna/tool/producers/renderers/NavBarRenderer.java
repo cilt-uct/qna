@@ -53,64 +53,71 @@ public class NavBarRenderer {
 
 	public void makeNavBar(UIContainer tofill, String divID, String currentViewID) {
     	// Front-end customization for navigation bar regarding permissions will come here
+		
+		// Only display navbar for users with update rights
+		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+	    	UIJointContainer joint = new UIJointContainer(tofill,divID,"qna-navigation:");
 
-    	UIJointContainer joint = new UIJointContainer(tofill,divID,"qna-navigation:");
-
-//    	UIBranchContainer cell1 = UIBranchContainer.make(joint, "navigation-cell:", "1");
-//    	if (currentViewID.equals(QuestionsListProducer.VIEW_ID)) {
-//    		UIMessage.make(cell1,"item-text", "qna.navbar.view-questions");
-//    	} else {
-//    		UIInternalLink.make(cell1, "item-link", UIMessage.make("qna.navbar.view-questions"), new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
-//    	}
-//    	UIOutput.make(cell1, "item-separator");
-
-    	if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-	    	UIBranchContainer cell2 = UIBranchContainer.make(joint, "navigation-cell:", "2");
-	    	if (currentViewID.equals(AskQuestionProducer.VIEW_ID)) {
-	    		UIMessage.make(cell2, "item-text", "qna.navbar.add-question");
-	    	} else {
-	    		UIInternalLink.make(cell2, "item-link", UIMessage.make("qna.navbar.add-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
-	    	}
-	    	UIOutput.make(cell2, "item-separator");
-    	}
-
-    	if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-	    	UIBranchContainer cell3 = UIBranchContainer.make(joint, "navigation-cell:", "3");
-	    	if (currentViewID.equals(CategoryProducer.VIEW_ID)) {
-	    		UIMessage.make(cell3, "item-text", "qna.navbar.create-categories");
-	    	} else {
-	    		UIInternalLink.make(cell3, "item-link", UIMessage.make("qna.navbar.create-categories"), new SimpleViewParameters(CategoryProducer.VIEW_ID));
+//	    	UIBranchContainer cell1 = UIBranchContainer.make(joint, "navigation-cell:", "1");
+//	    	if (currentViewID.equals(QuestionsListProducer.VIEW_ID)) {
+//	    		UIMessage.make(cell1,"item-text", "qna.navbar.view-questions");
+//	    	} else {
+//	    		UIInternalLink.make(cell1, "item-link", UIMessage.make("qna.navbar.view-questions"), new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
+//	    	}
+//	    	UIOutput.make(cell1, "item-separator");
+	    	
+	    	if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		    	UIBranchContainer cell2 = UIBranchContainer.make(joint, "navigation-cell:", "2");
+		    	if (currentViewID.equals(AskQuestionProducer.VIEW_ID)) {
+		    		UIMessage.make(cell2, "item-text", "qna.navbar.add-question");
+		    	} else {
+		    		UIInternalLink.make(cell2, "item-link", UIMessage.make("qna.navbar.add-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+		    	}
+		    	UIOutput.make(cell2, "item-separator");
 	    	}
 
-	    	UIOutput.make(cell3, "item-separator");
+	    	if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		    	UIBranchContainer cell3 = UIBranchContainer.make(joint, "navigation-cell:", "3");
+		    	if (currentViewID.equals(CategoryProducer.VIEW_ID)) {
+		    		UIMessage.make(cell3, "item-text", "qna.navbar.create-categories");
+		    	} else {
+		    		UIInternalLink.make(cell3, "item-link", UIMessage.make("qna.navbar.create-categories"), new SimpleViewParameters(CategoryProducer.VIEW_ID));
+		    	}
+
+		    	UIOutput.make(cell3, "item-separator");
+			}
+
+	    	if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+		    	UIBranchContainer cell4 = UIBranchContainer.make(joint, "navigation-cell:", "4");
+		    	if (currentViewID.equals(OrganiseListProducer.VIEW_ID)) {
+		    		UIMessage.make(cell4, "item-text", "qna.navbar.organise");
+		    	} else {
+		    		UIInternalLink.make(cell4, "item-link", UIMessage.make("qna.navbar.organise"), new SimpleViewParameters(OrganiseListProducer.VIEW_ID));
+		    	}
+		    	UIOutput.make(cell4, "item-separator");
+
+
+		    	UIBranchContainer cell5 = UIBranchContainer.make(joint, "navigation-cell:", "5");
+		    	if (currentViewID.equals(OptionsProducer.VIEW_ID)) {
+		    		UIMessage.make(cell5, "item-text", "qna.navbar.options");
+		    	} else {
+		    		UIInternalLink.make(cell5, "item-link", UIMessage.make("qna.navbar.options"), new SimpleViewParameters(OptionsProducer.VIEW_ID));
+		    	}
+		    	UIOutput.make(cell5, "item-separator");
+	    	}
+
+	    	if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, externalLogic.getCurrentLocationId())) {
+		    	UIBranchContainer cell6 = UIBranchContainer.make(joint, "navigation-cell:", "6");
+		    	if (currentViewID.equals(PermissionsProducer.VIEW_ID)) {
+		    		UIMessage.make(cell6, "item-text", "qna.navbar.permissions");
+		    	} else {
+		    		UIInternalLink.make(cell6, "item-link", UIMessage.make("qna.navbar.permissions"), new SimpleViewParameters(PermissionsProducer.VIEW_ID));
+		    	}
+	    	}
+			
+			
 		}
+		
 
-    	if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-	    	UIBranchContainer cell4 = UIBranchContainer.make(joint, "navigation-cell:", "4");
-	    	if (currentViewID.equals(OrganiseListProducer.VIEW_ID)) {
-	    		UIMessage.make(cell4, "item-text", "qna.navbar.organise");
-	    	} else {
-	    		UIInternalLink.make(cell4, "item-link", UIMessage.make("qna.navbar.organise"), new SimpleViewParameters(OrganiseListProducer.VIEW_ID));
-	    	}
-	    	UIOutput.make(cell4, "item-separator");
-
-
-	    	UIBranchContainer cell5 = UIBranchContainer.make(joint, "navigation-cell:", "5");
-	    	if (currentViewID.equals(OptionsProducer.VIEW_ID)) {
-	    		UIMessage.make(cell5, "item-text", "qna.navbar.options");
-	    	} else {
-	    		UIInternalLink.make(cell5, "item-link", UIMessage.make("qna.navbar.options"), new SimpleViewParameters(OptionsProducer.VIEW_ID));
-	    	}
-	    	UIOutput.make(cell5, "item-separator");
-    	}
-
-    	if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, externalLogic.getCurrentLocationId())) {
-	    	UIBranchContainer cell6 = UIBranchContainer.make(joint, "navigation-cell:", "6");
-	    	if (currentViewID.equals(PermissionsProducer.VIEW_ID)) {
-	    		UIMessage.make(cell6, "item-text", "qna.navbar.permissions");
-	    	} else {
-	    		UIInternalLink.make(cell6, "item-link", UIMessage.make("qna.navbar.permissions"), new SimpleViewParameters(PermissionsProducer.VIEW_ID));
-	    	}
-    	}
     }
 }

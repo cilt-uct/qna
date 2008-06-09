@@ -16,7 +16,7 @@
 	<br/>
 	<div rsf:id="sort-message">Sort questions by clicking on the appropriate column headings.</div>
 	<div rsf:id="pagerDiv:" class="listNav"></div>
-	<table class="listHier lines">
+	<table class="listHier lines" style="table-layout:fixed;">
 		<thead>
 			<!--  <th class="attach">&nbsp;</th> -->
 			<th rsf:id="tableheader.question:">Question
@@ -36,12 +36,12 @@
 		</thead>
 		<tbody>
 			<tr rsf:id="question-entry:">
-			<td><a rsf:id="question-link" href="view_question.html" style="white-space: pre">How are you doing?</a></td>
+			<td style="overflow:hidden;"><a rsf:id="question-link" href="view_question.html" style="white-space: pre;">How are you doing?</a></td>
 			<td rsf:id="question_row_views">83</td>
 			<td rsf:id="question_row_answers">2</td>
 			<td rsf:id="question_row_created">2008-02-08</td>
 			<td rsf:id="question_row_modified">2008-02-08</td>
-			<td rsf:id="question_row_category">Misc</td>
+			<td rsf:id="question_row_category" style="overflow:hidden;">Misc</td>
 			<td><input rsf:id="remove-question-checkbox" name="remove-question-checkbox" value="false" type="checkbox"/></td>
 			</tr>
 		</tbody>

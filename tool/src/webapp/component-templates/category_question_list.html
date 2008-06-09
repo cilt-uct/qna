@@ -13,7 +13,7 @@
 <body>
 <!-- everything outside this div is thrown away -->
 <div rsf:id="question-list-table:" class="layoutViewContainer">
-   <table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Questions table">
+   <table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Questions table" style="table-layout:fixed;">
       <thead>
          <tr id="table-head">
          	<th class="title" width="5%"></th>
@@ -34,7 +34,7 @@
 	         	</td>
 	            <td style="font-weight:bold;">
 	            	<img rsf:id="new-question-icon" src="/library/image/silk/flag_yellow.png"/>
-	            	<span rsf:id="category-name" style="white-space: pre" id="category-name">Assignments</span>
+	            	<span rsf:id="category-name" style="white-space: pre;overflow:hidden;" id="category-name">Assignments</span>
 	            	<a rsf:id="category-edit" id="category-edit" class="small">edit</a>
 					<script rsf:id="onclick-init" type="text/javascript">
    						init_questions_toggle("icon","entry","expandIconSrc","ExpandIconSrc");
@@ -47,7 +47,7 @@
 	         </tr>
 		     <tr id="question-entry" rsf:id="question-entry:" style="display:none;">
 				<td></td>
-				<td><a href="#" rsf:id="question-link" style="white-space: pre">Vraag?</a></td>
+				<td style="overflow:hidden;"><a href="#" rsf:id="question-link" style="white-space: pre">Vraag?</a></td>
 				<td rsf:id="answers-nr">3</td>
 				<td rsf:id="views-nr">88</td>
 				<td rsf:id="question-modified-date">2008-02-01</td>

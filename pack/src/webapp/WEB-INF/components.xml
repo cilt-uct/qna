@@ -77,8 +77,6 @@
 
 	<bean id="org.sakaiproject.qna.logic.AttachmentLogic" class="org.sakaiproject.qna.logic.impl.AttachmentLogicImpl">
 		<property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService" />
-		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
-		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.QnaBundleLogic" class="org.sakaiproject.qna.logic.impl.QnaBundleLogicImpl" init-method="init" />

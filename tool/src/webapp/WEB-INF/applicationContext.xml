@@ -12,7 +12,6 @@
       <property name="errorStyleClass" value="alertMessage" />
    </bean>
 
-
    <!-- handles configuration of internationalization messages -->
    <bean id="messageLocator" class="uk.org.ponder.springutil.SpringMessageLocator">
       <property name="messageSource">
@@ -36,7 +35,7 @@
 	<!-- For security purposes, only beans listed in the comma separated value list
       may be the target of EL operations coming in over the request -->
    <bean parent="requestAddressibleParent">
-      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper"/>
+      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper,fileAttachments"/>
    </bean>
 
    <!-- Control the location of the html templates (default: content/templates/) -->
@@ -51,9 +50,8 @@
    	<constructor-arg value="/" />
    </bean>
 
-   <!-- Enable file uploads for this application by declaring a Spring MultipartResolver -->
-
-  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  <bean id="questionScope" parent="beanScopeParent">
+  	<property name="copyPreservingBeans" value="QuestionLocator,fileAttachments" />
   </bean>
 
   <!-- Inferrers -->

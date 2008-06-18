@@ -69,6 +69,14 @@
 
 	<bean id="AttachmentsViewRenderer" class="org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer">
 		<property name="chs" ref="org.sakaiproject.content.api.ContentHostingService" />
+		<property name="ctis" ref="org.sakaiproject.content.api.ContentTypeImageService" />
+	</bean>
+	
+	<bean class="org.sakaiproject.qna.tool.producers.AttachmentsHelperProducer" />
+
+	<bean id="fileAttachments" class="org.sakaiproject.qna.tool.otp.ProcessFileAttachments">
+	  <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+	  <property name="questionLocator" ref="QuestionLocator" />
 	</bean>
 
 	<!-- list the producer beans here -->
@@ -81,6 +89,9 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="ELEvaluator" ref="ELEvaluator" />
+		<property name="chs" ref="org.sakaiproject.content.api.ContentHostingService" />
+		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">
@@ -278,6 +289,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="messages" ref="targettedMessageList"/>
+		<property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic" />
 	</bean>
 
 	<bean id="OptionsLocator" class="org.sakaiproject.qna.tool.otp.OptionsLocator">
@@ -298,8 +310,6 @@
    		<property name="answerLocator" ref="AnswerLocator" />
    		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
-		<property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic" />
 		<property name="messages" ref="targettedMessageList"/>
-		<property name="multipartMap" ref="multipartMap"/>
    	</bean>
 </beans>

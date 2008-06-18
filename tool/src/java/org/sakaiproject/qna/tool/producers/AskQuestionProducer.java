@@ -21,17 +21,26 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
+import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.CategoryLocator;
 import org.sakaiproject.qna.tool.otp.QuestionLocator;
+import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
+import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
+import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -50,7 +59,8 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
 public class AskQuestionProducer implements ViewComponentProducer, NavigationCaseReporter {
 
 	public static final String VIEW_ID = "ask_question";
-
+	private static Log log = LogFactory.getLog(AskQuestionProducer.class);
+	
 	public String getViewID() {
 		return VIEW_ID;
 	}
@@ -62,7 +72,10 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
 	private CategoryLogic categoryLogic;
-
+	private BeanGetter ELEvaluator;
+	private ContentHostingService chs;
+	private AttachmentsViewRenderer attachmentsViewRenderer;
+	
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
 	}
@@ -90,6 +103,19 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 	public void setCategoryLogic(CategoryLogic categoryLogic) {
 		this.categoryLogic = categoryLogic;
 	}
+	
+	public void setELEvaluator(BeanGetter ELEvaluator) {
+        this.ELEvaluator = ELEvaluator;
+    }
+	
+	public void setChs(ContentHostingService chs) {
+		this.chs = chs;
+	}
+	
+	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
+		this.attachmentsViewRenderer = attachmentsViewRenderer;
+	}
+	
 
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QnaOptions options = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId());
@@ -150,25 +176,33 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
         	UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
         }
-
+        
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
-        UIMessage.make(form,"add-attachment-button","qna.ask-question.add-attachment");
-        UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
+        
+        QnaQuestion question = (QnaQuestion)ELEvaluator.getBean(questionOTP);
+        
+        if (question.getAttachments().size() > 0) {
+        	attachmentsViewRenderer.makeAttachmentsView(form, "attachmentsViewTool:", question, false);
+        } else {
+        	UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
+        }
 
+        UICommand.make(form, "add-attachment-button", "qna.ask-question.add-attachment").setReturn("attach");
+        
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         }
 
         UICommand command = UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
-        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
+        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel"), questionLocator + ".cancel");
 	}
 
 	public List reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("cancel", new SimpleViewParameters(
-				QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
+		list.add(new NavigationCase("attach",new AttachmentsHelperParams()));
 		return list;
 	}
 }

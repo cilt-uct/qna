@@ -52,10 +52,6 @@ public class MultipleBeanMediator {
 
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
-    private AttachmentLogic attachmentLogic;
-
-    // Used for uploaded files
-    public Map<String,CommonsMultipartFile> multipartMap;
 
 	private TargettedMessageList messages;
 
@@ -116,15 +112,6 @@ public class MultipleBeanMediator {
 
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
-
-		if (multipartMap != null) {
-			try {
-				attachmentLogic.uploadAll(newQuestion.getId(), multipartMap);
-			} catch (AttachmentException e) {
-				messages.addMessage(new  TargettedMessage("qna.ask-question.error-uploading-files", new Object[]{e.getMessage()}, TargettedMessage.SEVERITY_ERROR));
-			}
-		}
-
     	return "saved";
     }
 
@@ -209,9 +196,5 @@ public class MultipleBeanMediator {
 
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
-	}
-
-	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
-		this.attachmentLogic = attachmentLogic;
 	}
 }

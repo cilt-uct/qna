@@ -13,6 +13,7 @@
                 <value>org/sakaiproject/qna/hbm/QnaAnswer.hbm.xml</value>
                 <value>org/sakaiproject/qna/hbm/QnaCategory.hbm.xml</value>
                 <value>org/sakaiproject/qna/hbm/QnaCustomEmail.hbm.xml</value>
+                <value>org/sakaiproject/qna/hbm/QnaAttachment.hbm.xml</value>
             </list>
         </constructor-arg>
     </bean>
@@ -27,6 +28,7 @@
             <value>org.sakaiproject.qna.model.QnaCategory</value>
             <value>org.sakaiproject.qna.model.QnaOptions</value>
             <value>org.sakaiproject.qna.model.QnaCustomEmail</value>
+            <value>org.sakaiproject.qna.model.QnaAttachment</value>
          </list>
       </property>
    </bean>

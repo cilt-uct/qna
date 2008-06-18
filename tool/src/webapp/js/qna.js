@@ -132,24 +132,6 @@
     	link.onclick = function() {command.click(); return false;};
     }
 
-    // Used to add new file upload inputs
-    // Parameters: div_id = The div to append to
-    //			   index_value_id = Index of file input
-    //			   id_name = Id to give file input
-    //			   msg_id = Id of no attachments message
-    function addFileInput(div_id, index_value_id,id_name,no_attach_msg_id) {
-    	document.getElementById(no_attach_msg_id).style.display='none';
-    	var div = document.getElementById(div_id);
-    	var index = document.getElementById(index_value_id);
-    	var newInput = document.createElement('input');
-    	newInput.type = 'file';
-    	newInput.name = 'id_name' + index.value;
-    	newInput.className = 'upload';
-    	index.value = index.value + 1;
-    	div.appendChild(newInput);
-    	div.appendChild(document.createElement('br'));
-    }
-
     function cancelDelete(formid, bindings) {
 		var form = document.getElementById(formid);
 		var bindings = document.getElementsByName(bindings);

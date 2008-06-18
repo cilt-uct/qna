@@ -142,8 +142,8 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		UIVerbatim.make(tofill,"question",question.getQuestionText());
 
 		// Render attachments
-		if (question.getContentCollection() != null) {
-			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question.getContentCollection()); }
+		if (question.getAttachments().size() > 0) {
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question, true); }
 
 		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());	
 		// If anonymous remove name

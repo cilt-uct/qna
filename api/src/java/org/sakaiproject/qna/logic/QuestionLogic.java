@@ -125,12 +125,4 @@ public interface QuestionLogic {
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
 	
-	/**
-	 * Links content collection to question
-	 *  
-	 * @param questionId  {@link QnaQuestion}
-	 * @param collectionId Content collection to link to
-	 */
-	public void linkCollectionToQuestion(String questionId, String collectionId);
-	
 }

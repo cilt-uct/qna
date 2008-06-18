@@ -36,6 +36,7 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -167,9 +168,10 @@ public class QuestionLogicImpl implements QuestionLogic {
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			try {
 				// delete attachments
-				if (question.getContentCollection() != null) {
-					attachmentLogic.deleteCollection(question.getContentCollection());
+				for (QnaAttachment attachment : question.getAttachments()) {
+					attachmentLogic.deleteAttachment(attachment.getAttachmentId());
 				}
+				
 			} finally {
 				dao.delete(question);
 				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_DELETE, question);
@@ -295,15 +297,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 		categoryLogic.saveCategory(category, locationId);
 	}
 
-	public void linkCollectionToQuestion(String questionId, String collectionId) {
-		QnaQuestion question = getQuestionById(questionId);
-		
-		if (question != null) {
-			question.setContentCollection(collectionId);
-			saveQuestion(question, question.getLocation());
-		}
-	}
-	
 	public List filterListForPaging(List myList, int begIndex, int numItemsToDisplay) {
         if (myList == null || myList.isEmpty())
         	return myList;

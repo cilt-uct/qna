@@ -21,15 +21,18 @@ package org.sakaiproject.qna.tool.otp;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+import uk.org.ponder.rsf.state.scope.ScopedBeanManager;
 
 public class QuestionLocator implements EntityBeanLocator  {
     public static final String NEW_PREFIX = "new ";
@@ -37,6 +40,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
+    private AttachmentLogic attachmentLogic;
 
 	private Map<String, QnaQuestion> delivered = new HashMap<String,QnaQuestion>();
 
@@ -62,12 +66,13 @@ public class QuestionLocator implements EntityBeanLocator  {
 		} catch (AttachmentException ae) {
 			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
 			return false;
+		} finally {
+			delivered.remove(beanname);
 		}
 	}
 
 	public void set(String beanname, Object toset) {
 		throw new UnsupportedOperationException("Not implemented");
-
 	}
 
 	public Object locateBean(String name) {
@@ -92,6 +97,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 				TargettedMessage.SEVERITY_INFO)
 			);
 		}
+		delivered.remove(NEW_1);
 		return "saved";
 	}
 
@@ -108,7 +114,24 @@ public class QuestionLocator implements EntityBeanLocator  {
 					TargettedMessage.SEVERITY_INFO));
 			}
 		}
+		delivered.clear();
 		return "delete";
+	}
+	
+	public String cancel() {
+		QnaQuestion question = (QnaQuestion)locateBean(NEW_1); // can only cancel new
+		if (question != null) {
+			for (QnaAttachment attachment : question.getAttachments()) {
+				try {
+					attachmentLogic.deleteAttachment(attachment.getAttachmentId());
+				} catch (AttachmentException ae) {
+					messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
+				}
+			}
+			delivered.clear();
+		}
+		
+		return "cancel";
 	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
@@ -117,6 +140,10 @@ public class QuestionLocator implements EntityBeanLocator  {
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
+	}
+	
+	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
+		this.attachmentLogic = attachmentLogic;
 	}
 
 	public Map<String, QnaQuestion> getDeliveredBeans() {

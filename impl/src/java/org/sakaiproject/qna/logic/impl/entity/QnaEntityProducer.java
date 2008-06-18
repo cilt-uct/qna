@@ -40,8 +40,8 @@ import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
-import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
@@ -122,16 +122,14 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 					newQuestion.setSortOrder(question.getSortOrder());
 					newQuestion.setViews(question.getViews());
 					
-					dao.save(newQuestion);
-					
-					// Coping of attachments
-					if (question.getContentCollection() != null) {
-						try {
-							attachmentLogic.copyAttachments(question.getContentCollection(), newQuestion.getId(), toLocation);
-						} catch (AttachmentException e) {
-							log.warn("Error copying attachments", e);
-						}
+					// copy attachments
+					for (QnaAttachment attachment : question.getAttachments()) {
+						QnaAttachment newAttachment = new QnaAttachment();
+						newAttachment.setAttachmentId(attachment.getAttachmentId());
+						newQuestion.addAttachment(newAttachment);
 					}
+					
+					dao.save(newQuestion);
 					
 					List<QnaAnswer> answers = question.getAnswers();
 					// Answers

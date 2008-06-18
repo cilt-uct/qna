@@ -21,6 +21,12 @@
       		<key column="question_id"/>
       		<one-to-many class="org.sakaiproject.qna.model.QnaAnswer" />
       </bag>
+      
+      <!-- linkage to attachments -->
+      <bag name="attachments" lazy="false" cascade="all">
+      		<key column="question_id"/>
+      		<one-to-many class="org.sakaiproject.qna.model.QnaAttachment" />
+      </bag>
 
 	  <property name="ownerId" type="string" length="255" not-null="true" />
       <property name="lastModifierId" type="string" length="255" not-null="true" />
@@ -33,7 +39,6 @@
       <property name="anonymous" type="boolean" not-null="true" />
       <property name="published" type="boolean" not-null="true" />
       <property name="notify" type="boolean" not-null="true" />
-      <property name="contentCollection" type="string" />
       <property name="hidden" type="boolean" not-null="true"/>
    </class>
 </hibernate-mapping>

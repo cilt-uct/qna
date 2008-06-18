@@ -41,17 +41,11 @@
 
 	  <h4 rsf:id="attachments-title">Attachments</h4><br/>
   
-	  <input type="hidden" value="0" id="uploadIndex" />
-	  <div id="attachments">
-		<div rsf:id="no-attachments-msg" id="no-attachments-msg">No attachments yet</div>
-	  </div>
-	  <br/>
-	  <input rsf:id="add-attachment-button" type="button" name="add_attachment" value="Add Attachment" onclick="javascript:addFileInput('attachments','uploadIndex','fileupload','no-attachments-msg');"/>
+	  <p class="instruction" rsf:id="no-attachments-msg" id="no-attachments-msg">No attachments yet</p>
+	  <div rsf:id="attachmentsViewTool:"></div>
 	  
-<!--	  <input type="file" name="fileupload1"/><br/> -->
-<!--	  <input type="file" name="fileupload2"/><br/> -->
-<!--	  <input type="file" name="fileupload3"/><br/> -->
-	
+	  <br/>
+	  <input rsf:id="add-attachment-button" type="submit" value="Add Attachment"/><br/>
 	  <p>
 	  	<div rsf:id="moderated-note">Note: All questions are moderated. Your questions will not be published immediately on the site.</div>
 	  </p>

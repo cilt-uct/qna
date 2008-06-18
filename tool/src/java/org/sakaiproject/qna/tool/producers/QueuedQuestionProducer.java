@@ -101,8 +101,8 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		UIForm form = UIForm.make(tofill, "queued-question-form");
 
 		UIVerbatim.make(form,"queued-question", question.getQuestionText());
-		if (question.getContentCollection() != null) {
-			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question.getContentCollection()); }
+		if (question.getAttachments().size() > 0) {
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question, true); }
 		
 		// If anonymous remove name
 		if (question.isAnonymous()) {

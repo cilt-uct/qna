@@ -18,14 +18,20 @@
 
 package org.sakaiproject.qna.tool.producers.renderers;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.ContentTypeImageService;
+import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.content.api.ContentTypeImageService;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolSession;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -37,6 +43,8 @@ public class AttachmentsViewRenderer {
 
 	private ContentHostingService chs;
 	private ContentTypeImageService ctis;
+	private SessionManager sessionManager;
+	
 	private static Log log = LogFactory.getLog(AttachmentsViewRenderer.class);
 	
 	public void setChs(ContentHostingService chs) {
@@ -47,6 +55,35 @@ public class AttachmentsViewRenderer {
 		this.ctis = ctis;
 	}
 	
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+	
+	// From session
+	public void makeAttachmentsView(UIContainer tofill, String divId) {
+		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
+		
+		ToolSession session = sessionManager.getCurrentToolSession();
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
+				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		{
+			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+			for (int i = 0; i < refs.size(); i++) {
+				Reference ref = (Reference) refs.get(i);
+				try {
+					ContentResource resource = chs.getResource(ref.getId());
+					UIBranchContainer branch = UIBranchContainer.make(joint, "attachment:");
+					UILink.make(branch, "attachment-icon", "/library/image/" + ctis.getContentTypeImage(resource.getContentType()));
+					UILink.make(branch, "attachment-link", resource.getProperties().get(ResourceProperties.PROP_DISPLAY_NAME).toString(), resource.getUrl());
+					UILink.make(branch, "attachment-size", resource.getProperties().get(ResourceProperties.PROP_CONTENT_LENGTH).toString());
+				} catch (Exception e) {
+					log.error("Error getting attachment: " + ref.getId(),e);
+				}
+			}
+		}
+	}
+		
+	// From database
 	public void makeAttachmentsView(UIContainer tofill, String divId, QnaQuestion question, boolean renderTitle) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		

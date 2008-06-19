@@ -35,7 +35,7 @@
 	<!-- For security purposes, only beans listed in the comma separated value list
       may be the target of EL operations coming in over the request -->
    <bean parent="requestAddressibleParent">
-      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper,fileAttachments"/>
+      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper"/>
    </bean>
 
    <!-- Control the location of the html templates (default: content/templates/) -->
@@ -50,9 +50,9 @@
    	<constructor-arg value="/" />
    </bean>
 
-  <bean id="questionScope" parent="beanScopeParent">
-  	<property name="copyPreservingBeans" value="QuestionLocator,fileAttachments" />
-  </bean>
+<!--  <bean id="questionScope" parent="beanScopeParent">-->
+<!--  	<property name="copyPreservingBeans" value="QuestionLocator,fileAttachments" />-->
+<!--  </bean>-->
 
   <!-- Inferrers -->
   <bean class="org.sakaiproject.qna.tool.inferrers.QuestionVPInferrer"></bean>

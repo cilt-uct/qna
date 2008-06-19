@@ -18,21 +18,23 @@
 
 package org.sakaiproject.qna.tool.otp;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.qna.logic.AttachmentLogic;
+import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
-import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolSession;
 
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
@@ -54,8 +56,13 @@ public class MultipleBeanMediator {
     private ExternalLogic externalLogic;
 
 	private TargettedMessageList messages;
+	private SessionManager sessionManager;
 
 	private static Log log = LogFactory.getLog(MultipleBeanMediator.class);
+		
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
 	
 	public String moveQuestionSave() {
 		QnaCategory categoryToLink = null;
@@ -95,11 +102,12 @@ public class MultipleBeanMediator {
     	QnaCategory categoryToLink=null;
 
 		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
+		addAttachments(newQuestion);
+		
 		if (TextUtil.isEmptyWithoutTags(newQuestion.getQuestionText())) {
 			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", null, TargettedMessage.SEVERITY_ERROR));
 			return "error";
 		}
-
 
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			if (newQuestion.getCategoryId() != null) {
@@ -112,7 +120,29 @@ public class MultipleBeanMediator {
 
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
+		
     	return "saved";
+    }
+    
+    private void addAttachments(QnaQuestion question) {
+		ToolSession session = sessionManager.getCurrentToolSession();
+		
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
+				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		{
+			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+			for (int i = 0; i < refs.size(); i++) {
+				Reference ref = (Reference) refs.get(i);
+				if (question != null) {
+					QnaAttachment attachment = new QnaAttachment();
+					attachment.setAttachmentId(ref.getId());
+					question.addAttachment(attachment);
+				}
+			}
+		}
+
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
     }
 
     public String saveAll() {

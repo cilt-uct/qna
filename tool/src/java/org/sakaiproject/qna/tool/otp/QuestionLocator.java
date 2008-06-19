@@ -21,6 +21,7 @@ package org.sakaiproject.qna.tool.otp;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -28,11 +29,12 @@ import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolSession;
 
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
-import uk.org.ponder.rsf.state.scope.ScopedBeanManager;
 
 public class QuestionLocator implements EntityBeanLocator  {
     public static final String NEW_PREFIX = "new ";
@@ -46,6 +48,12 @@ public class QuestionLocator implements EntityBeanLocator  {
 
 	private TargettedMessageList messages;
 
+	private SessionManager sessionManager;
+	
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+	
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
 	}
@@ -66,8 +74,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 		} catch (AttachmentException ae) {
 			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
 			return false;
-		} finally {
-			delivered.remove(beanname);
 		}
 	}
 
@@ -97,7 +103,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 				TargettedMessage.SEVERITY_INFO)
 			);
 		}
-		delivered.remove(NEW_1);
 		return "saved";
 	}
 
@@ -114,7 +119,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 					TargettedMessage.SEVERITY_INFO));
 			}
 		}
-		delivered.clear();
 		return "delete";
 	}
 	
@@ -130,6 +134,10 @@ public class QuestionLocator implements EntityBeanLocator  {
 			}
 			delivered.clear();
 		}
+		
+		ToolSession session = sessionManager.getCurrentToolSession();
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
 		
 		return "cancel";
 	}

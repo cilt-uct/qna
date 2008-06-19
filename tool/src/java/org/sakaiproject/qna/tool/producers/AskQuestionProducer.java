@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -39,6 +40,8 @@ import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
 import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolSession;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
@@ -72,8 +75,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
 	private CategoryLogic categoryLogic;
-	private BeanGetter ELEvaluator;
-	private ContentHostingService chs;
+	private SessionManager sessionManager;
 	private AttachmentsViewRenderer attachmentsViewRenderer;
 	
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
@@ -104,16 +106,12 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 		this.categoryLogic = categoryLogic;
 	}
 	
-	public void setELEvaluator(BeanGetter ELEvaluator) {
-        this.ELEvaluator = ELEvaluator;
-    }
-	
-	public void setChs(ContentHostingService chs) {
-		this.chs = chs;
-	}
-	
 	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
 		this.attachmentsViewRenderer = attachmentsViewRenderer;
+	}
+	
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
 	}
 	
 
@@ -179,10 +177,11 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
         
-        QnaQuestion question = (QnaQuestion)ELEvaluator.getBean(questionOTP);
-        
-        if (question.getAttachments().size() > 0) {
-        	attachmentsViewRenderer.makeAttachmentsView(form, "attachmentsViewTool:", question, false);
+        ToolSession session = sessionManager.getCurrentToolSession();
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
+				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		{
+        	attachmentsViewRenderer.makeAttachmentsView(form, "attachmentsViewTool:");
         } else {
         	UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
         }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
+import org.sakaiproject.qna.tool.params.QuestionTextParams;
 import org.springframework.web.multipart.MultipartResolver;
 
 import uk.ac.cam.caret.sakai.rsf.helper.HelperViewParameters;
@@ -16,7 +17,6 @@ import uk.org.ponder.rsf.flow.jsfnav.DynamicNavigationCaseReporter;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
@@ -45,14 +45,15 @@ public class AttachmentsHelperProducer implements ViewComponentProducer, ViewPar
 	@SuppressWarnings("unchecked")
 	public List reportNavigationCases() {
 	    List l = new ArrayList();
-	    l.add(new NavigationCase("processed", new SimpleViewParameters(AskQuestionProducer.VIEW_ID)));
+	    l.add(new NavigationCase("processed", new QuestionTextParams(AskQuestionProducer.VIEW_ID, null)));
 	    return l;
 	}
 
 	public void interceptActionResult(ARIResult result,
 			ViewParameters incoming, Object actionReturn) {
-		// TODO Auto-generated method stub
-
+		if (result.resultingView instanceof QuestionTextParams) {
+			((QuestionTextParams)result.resultingView).questionText = ((AttachmentsHelperParams)incoming).questionText;
+		}
 	}
 
 }

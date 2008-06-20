@@ -87,6 +87,7 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
 		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+		<property name="ELEvaluator" ref="ELEvaluator" />
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.OptionsProducer">

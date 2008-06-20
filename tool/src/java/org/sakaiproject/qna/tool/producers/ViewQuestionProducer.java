@@ -143,7 +143,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		// Render attachments
 		if (question.getAttachments().size() > 0) {
-			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question, true); }
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question); }
 
 		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());	
 		// If anonymous remove name

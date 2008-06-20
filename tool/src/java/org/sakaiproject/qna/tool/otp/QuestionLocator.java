@@ -123,18 +123,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	}
 	
 	public String cancel() {
-		QnaQuestion question = (QnaQuestion)locateBean(NEW_1); // can only cancel new
-		if (question != null) {
-			for (QnaAttachment attachment : question.getAttachments()) {
-				try {
-					attachmentLogic.deleteAttachment(attachment.getAttachmentId());
-				} catch (AttachmentException ae) {
-					messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
-				}
-			}
-			delivered.clear();
-		}
-		
+		// Clears file attachments from tool session
 		ToolSession session = sessionManager.getCurrentToolSession();
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);

@@ -64,8 +64,7 @@ public class AttachmentsViewRenderer {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		
 		ToolSession session = sessionManager.getCurrentToolSession();
-		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
-				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
 			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 			for (int i = 0; i < refs.size(); i++) {
@@ -84,13 +83,11 @@ public class AttachmentsViewRenderer {
 	}
 		
 	// From database
-	public void makeAttachmentsView(UIContainer tofill, String divId, QnaQuestion question, boolean renderTitle) {
+	public void makeAttachmentsView(UIContainer tofill, String divId, QnaQuestion question) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		
-		if (renderTitle) {
-			UIMessage.make(joint, "attachments-view-title", "qna.attachments.title");
-		}
-		
+		UIMessage.make(joint, "attachments-view-title", "qna.attachments.title");
+	
 		for (QnaAttachment attachment : question.getAttachments()) {
 			try {
 				ContentResource resource = chs.getResource(attachment.getAttachmentId());

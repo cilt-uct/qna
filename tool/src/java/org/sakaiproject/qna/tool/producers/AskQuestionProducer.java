@@ -178,16 +178,15 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
         
         ToolSession session = sessionManager.getCurrentToolSession();
-		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
-				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
         	attachmentsViewRenderer.makeAttachmentsView(form, "attachmentsViewTool:");
+        	UICommand.make(form, "add-attachment-button", UIMessage.make("qna.ask-question.add-remove-attachment")).setReturn("attach");
         } else {
         	UIMessage.make(form,"no-attachments-msg","qna.ask-question.no-attachments");
+        	UICommand.make(form, "add-attachment-button", UIMessage.make("qna.ask-question.add-attachment")).setReturn("attach");
         }
-
-        UICommand.make(form, "add-attachment-button", "qna.ask-question.add-attachment").setReturn("attach");
-        
+		
         if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
         	options.isModerated()) {
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");

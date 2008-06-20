@@ -127,8 +127,7 @@ public class MultipleBeanMediator {
     private void addAttachments(QnaQuestion question) {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		
-		if (session.getAttribute(FilePickerHelper.FILE_PICKER_CANCEL) == null &&
-				session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
 			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 			for (int i = 0; i < refs.size(); i++) {

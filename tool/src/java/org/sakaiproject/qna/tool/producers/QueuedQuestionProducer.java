@@ -102,7 +102,7 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 
 		UIVerbatim.make(form,"queued-question", question.getQuestionText());
 		if (question.getAttachments().size() > 0) {
-			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question, true); }
+			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question); }
 		
 		// If anonymous remove name
 		if (question.isAnonymous()) {

@@ -19,9 +19,11 @@
 package org.sakaiproject.qna.tool.otp;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -125,6 +127,20 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public String cancel() {
 		// Clears file attachments from tool session
 		ToolSession session = sessionManager.getCurrentToolSession();
+		
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
+		{
+			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+			for (int i = 0; i < refs.size(); i++) {
+				Reference ref = (Reference) refs.get(i);
+				try {
+					attachmentLogic.deleteAttachment(ref.getId());
+				} catch (AttachmentException ae) {
+					messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_ERROR));
+				}
+			}
+		}
+		
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
 		

@@ -44,6 +44,7 @@ import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
@@ -143,8 +144,13 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 
 		UIForm form = UIForm.make(tofill, "ask-question-form");
 
-		UIInput questiontext = UIInput.make(form, "question-input:",questionOTP +".questionText",((QuestionTextParams)viewparams).questionText);
-        richTextEvolver.evolveTextInput(questiontext);
+		UIInput questiontext = UIInput.make(form, "question-input:",questionOTP +".questionText");
+        
+		if (((QuestionTextParams)viewparams).questionText != null) {
+			form.addParameter(new UIELBinding(questionOTP +".questionText",((QuestionTextParams)viewparams).questionText));
+			questiontext.setValue(((QuestionTextParams)viewparams).questionText);
+		}
+		richTextEvolver.evolveTextInput(questiontext);
 
         UIBoundBoolean.make(form,"answer-notify",questionOTP + ".notify",true);
         UIMessage.make(form,"answer-notify-label","qna.ask-question.notify-on-answer");

@@ -4,7 +4,7 @@
 <beans>
 	<bean id="qnaOverview" class="org.sakaiproject.component.app.help.model.ResourceBean">
 	     <property name="docId"><value>qnaOverview</value></property>
-	     <property name="name"><value>Q&A 	Overview</value></property>
+	     <property name="name"><value>Q&amp;A Overview</value></property>
 	     <property name="location"><value>/sakai_qna/QNA_Overview.html</value></property>
 	     <property name="defaultForTool"><value>sakai.qna</value></property>
 	</bean>
@@ -69,7 +69,7 @@
       <property name="categories">
          <list>
             <bean id="announcementCategory" class="org.sakaiproject.component.app.help.model.CategoryBean">
-               <property name="name"><value>Q&A</value></property>
+               <property name="name"><value>Questions and Answers</value></property>
                <property name="resources">
                   <list>
                         <ref bean="qnaOverview" />

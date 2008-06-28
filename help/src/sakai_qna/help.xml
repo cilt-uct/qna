@@ -4,7 +4,7 @@
 <beans>
 	<bean id="qnaOverview" class="org.sakaiproject.component.app.help.model.ResourceBean">
 	     <property name="docId"><value>qnaOverview</value></property>
-	     <property name="name"><value>Questions and Answers Overview</value></property>
+	     <property name="name"><value>Q&A 	Overview</value></property>
 	     <property name="location"><value>/sakai_qna/QNA_Overview.html</value></property>
 	     <property name="defaultForTool"><value>sakai.qna</value></property>
 	</bean>
@@ -36,7 +36,7 @@
 	<bean id="qnaPublishQuestion" class="org.sakaiproject.component.app.help.model.ResourceBean">
 	     <property name="docId"><value>qnaPublishQuestion</value></property>
 	     <property name="name"><value>Publish Question</value></property>
-	     <property name="location"><value>/sakai_qna/QNA_PblishQuestion.html</value></property>
+	     <property name="location"><value>/sakai_qna/QNA_PublishQuestion.html</value></property>
 	</bean>
 	
 	<bean id="qnaCategory" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -53,7 +53,7 @@
 	
 	<bean id="qnaPermissions" class="org.sakaiproject.component.app.help.model.ResourceBean">
 	     <property name="docId"><value>qnaPermissions</value></property>
-	     <property name="name"><value>Ajust Permissions</value></property>
+	     <property name="name"><value>Adjust Permissions</value></property>
 	     <property name="location"><value>/sakai_qna/QNA_AdjustPermissions.html</value></property>
 	</bean>
 	
@@ -69,7 +69,7 @@
       <property name="categories">
          <list>
             <bean id="announcementCategory" class="org.sakaiproject.component.app.help.model.CategoryBean">
-               <property name="name"><value>QNA</value></property>
+               <property name="name"><value>Q&A</value></property>
                <property name="resources">
                   <list>
                         <ref bean="qnaOverview" />

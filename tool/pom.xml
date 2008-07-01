@@ -11,7 +11,6 @@
    </organization>
    <inceptionYear>2007</inceptionYear>
    <description>Qna webapp (tool)</description>
-   <version>0.9-SNAPSHOT</version>
    <packaging>war</packaging>
 
    <!-- the base is the parent pom -->

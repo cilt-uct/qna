@@ -55,10 +55,10 @@
 		</dependencies>
 	</dependencyManagement>
 
-
+    <!-- define source code repository location -->
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</developerConnection>
-    <url>https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</url>
+    <connection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/contrib/qna/trunk</url>
   </scm>
 </project>

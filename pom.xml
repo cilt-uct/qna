@@ -45,12 +45,17 @@
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-api</artifactId>
-				<version>0.9</version>
+				<version>0.9-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-impl</artifactId>
-				<version>0.9</version>
+				<version>0.9-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.sakaiproject</groupId>
+				<artifactId>sakai-util</artifactId>
+				<version>2.5.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

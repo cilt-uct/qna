@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<name>Sakai Qna</name>
 	<groupId>org.sakaiproject</groupId>
@@ -13,7 +9,7 @@
 	</organization>
 	<inceptionYear>2007</inceptionYear>
 	<packaging>pom</packaging>
-	<version>0.9-SNAPSHOT</version>
+	<version>0.9</version>
 
 
 	<parent>
@@ -49,14 +45,20 @@
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-api</artifactId>
-				<version>0.9-SNAPSHOT</version>
+				<version>0.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-impl</artifactId>
-				<version>0.9-SNAPSHOT</version>
+				<version>0.9</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
+
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</developerConnection>
+    <url>https://source.sakaiproject.org/svn/sakai/tags/qna-0.9</url>
+  </scm>
 </project>

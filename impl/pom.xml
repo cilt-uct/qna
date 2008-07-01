@@ -11,7 +11,7 @@
    </organization>
    <inceptionYear>2007</inceptionYear>
    <description>Qna implementation</description>
-   <version>0.1</version>
+   <version>0.9-SNAPSHOT</version>
    <packaging>jar</packaging>
    <properties>
       <deploy.target />
@@ -21,7 +21,7 @@
    <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>qna</artifactId>
-      <version>0.1</version>
+      <version>0.9-SNAPSHOT</version>
    </parent>
 
    <dependencies>
@@ -30,7 +30,6 @@
       <dependency>
          <groupId>org.sakaiproject.qna</groupId>
          <artifactId>qna-api</artifactId>
-         <version>0.1</version>
          <scope>provided</scope>
       </dependency>
 

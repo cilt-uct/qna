@@ -1,43 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <name>Sakai Qna</name>
-   <groupId>org.sakaiproject</groupId>
-   <artifactId>qna</artifactId>
-   <organization>
-      <name>Sakai Project</name>
-      <url>http://sakaiproject.org/</url>
-   </organization>
-   <inceptionYear>2007</inceptionYear>
-   <packaging>pom</packaging>
-   <version>0.1</version>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Sakai Qna</name>
+	<groupId>org.sakaiproject</groupId>
+	<artifactId>qna</artifactId>
+	<organization>
+		<name>Sakai Project</name>
+		<url>http://sakaiproject.org/</url>
+	</organization>
+	<inceptionYear>2007</inceptionYear>
+	<packaging>pom</packaging>
+	<version>0.9-SNAPSHOT</version>
 
-   <!-- Sakai master pom is the parent -->
-<!--
-   <parent>
-      <artifactId>master</artifactId>
-      <groupId>org.sakaiproject</groupId>
-      <version>SNAPSHOT</version>
-   </parent>
--->
 
-<!-- -->
 	<parent>
 		<artifactId>base</artifactId>
 		<groupId>org.sakaiproject</groupId>
-		<version>M2</version>
+		<version>2.5.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-<!-- -->
 
-   <modules>
-      <module>api</module>
-      <module>impl</module>
-      <module>pack</module>
-      <module>tool</module>
-      <module>help</module>
-   </modules>
+
+	<modules>
+		<module>api</module>
+		<module>impl</module>
+		<module>pack</module>
+		<module>tool</module>
+		<module>help</module>
+	</modules>
+	<repositories>
+		<repository>
+			<id>sakai-maven</id>
+			<name>Sakai Maven Repo</name>
+			<layout>default</layout>
+			<url>http://source.sakaiproject.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<!-- handles the management of entitybroker related dependencies -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.sakaiproject.qna</groupId>
+				<artifactId>qna-api</artifactId>
+				<version>0.9-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.sakaiproject.qna</groupId>
+				<artifactId>qna-impl</artifactId>
+				<version>0.9-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

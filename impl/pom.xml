@@ -46,16 +46,16 @@
 
       <!-- spring and hibernate -->
       <dependency>
-         <groupId>${sakai.spring.groupId}</groupId>
-         <artifactId>${sakai.spring.artifactId}</artifactId>
-         <version>${sakai.spring.version}</version>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring</artifactId>
+         <!-- <version>${sakai.spring.version}</version> -->
          <scope>provided</scope>
       </dependency>
 
       <dependency>
-         <groupId>${sakai.hibernate.groupId}</groupId>
-         <artifactId>${sakai.hibernate.artifactId}</artifactId>
-         <version>${sakai.hibernate.version}</version>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate</artifactId>
+         <!-- <version>${sakai.hibernate.version}</version> -->
          <scope>provided</scope>
       </dependency>
 
@@ -137,9 +137,9 @@
 
       <!-- testing dependencies -->
       <dependency>
-         <groupId>${sakai.spring.groupId}</groupId>
-         <artifactId>${sakai.spring.mock.artifactId}</artifactId>
-         <version>${sakai.spring.mock.version}</version>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-mock</artifactId>
+        <version>2.0.6</version> 
          <scope>provided</scope>
       </dependency>
 
@@ -185,7 +185,7 @@
       <dependency>
          <groupId>net.sf.ehcache</groupId>
          <artifactId>ehcache</artifactId>
-         <version>${sakai.ehcache.version}</version>
+         <!-- <version>${sakai.ehcache.version}</version> -->
          <scope>provided</scope>
       </dependency>
 

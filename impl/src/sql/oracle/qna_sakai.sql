@@ -63,8 +63,14 @@ CREATE TABLE  qna_QUESTIONS (
    anonymous            char(1)         NOT NULL,
    published            char(1)         NOT NULL,
    notify               char(1)         NOT NULL,
-   contentCollection    varchar2(255)   default NULL,
    hidden               char(1)         default NULL,
   PRIMARY KEY  ( id )
 ) ;
 create index FKE3F0F49224A87D9F on qna_questions ( category_id );
+
+CREATE TABLE qna_ATTACHMENT (
+  id                    	varchar2(255)   NOT NULL,
+  question_id       	  	varchar2(255)   NOT NULL,
+  attachment_id				varchar2(255)   NOT NULL,
+  PRIMARY KEY ( id )
+);

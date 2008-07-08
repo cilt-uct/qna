@@ -62,8 +62,15 @@ CREATE TABLE  `qna_QUESTIONS` (
   `anonymous` bit(1) NOT NULL,
   `published` bit(1) NOT NULL,
   `notify` bit(1) NOT NULL,
-  `contentCollection` varchar(255) default NULL,
   `hidden` bit(1) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FKE3F0F49224A87D9F` (`category_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
+CREATE TABLE `qna_ATTACHMENT` (
+  `id` varchar(255) NOT NULL,
+  `question_id` varchar(255) NOT NULL,
+  `attachmentId` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK2420E5EB9F9349F` (`question_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8

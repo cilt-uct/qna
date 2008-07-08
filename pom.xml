@@ -57,6 +57,11 @@
 				<artifactId>sakai-util</artifactId>
 				<version>2.5.0</version>
 			</dependency>
+            <dependency>
+                <groupId>org.sakaiproject.entitybroker</groupId>
+                <artifactId>entitybroker-api</artifactId>
+                <version>[1.2.0,1.4.0)</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

@@ -59,9 +59,9 @@ public class NotificationLogicImpl implements NotificationLogic {
 	}
 		
 	private String buildFrom() {
-		return "From: " + "\""
+		return "\""	
 				+ serverConfigurationService.getString("ui.service", "Sakai")
-				+ "\"<no-reply@" + serverConfigurationService.getServerName() + ">";
+				+ "\" <no-reply@" + serverConfigurationService.getServerName() + ">";
 	}
 	
 	private String buildPrivateReplySubject() {

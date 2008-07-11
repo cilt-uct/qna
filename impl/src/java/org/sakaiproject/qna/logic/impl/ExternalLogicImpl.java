@@ -301,7 +301,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 
 	      replyTo[0] = fromAddress;
 	      InternetAddress[] toAddresses = listAddresses.toArray(new InternetAddress[listAddresses.size()]);
-	      emailService.sendMail(fromAddress, toAddresses, subject, message, null, replyTo, null);
+	      emailService.sendMail(fromAddress, toAddresses, subject, message, null, null, null);
 
 	      // now we send back the list of people who the email was sent to
 	      String[] addresses = new String[toAddresses.length];

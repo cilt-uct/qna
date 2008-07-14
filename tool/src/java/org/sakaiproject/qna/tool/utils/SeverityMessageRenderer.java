@@ -25,10 +25,9 @@ import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.decorators.UIStyleDecorator;
-import uk.org.ponder.rsf.renderer.message.MessageRenderer;
 import uk.org.ponder.stringutil.StringList;
 
-public class SeverityMessageRenderer extends MessageRenderer
+public class SeverityMessageRenderer extends uk.org.ponder.rsf.renderer.MessageRenderer
 {
 	private String infoStyleClass;
 	public void setInfoStyleClass(String styleClass) {

@@ -96,7 +96,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return togo;
 	}
 
-	public void saveAll() {
+	public String saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 			messages.addMessage(
@@ -105,7 +105,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 				TargettedMessage.SEVERITY_INFO)
 			);
 		}
-		return;
+		return "saved";
 	}
 
 	public String delete() {

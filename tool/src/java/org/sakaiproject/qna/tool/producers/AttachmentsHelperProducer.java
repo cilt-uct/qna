@@ -13,7 +13,7 @@ import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
-//import uk.org.ponder.rsf.flow.jsfnav.DynamicNavigationCaseReporter;
+import uk.org.ponder.rsf.flow.jsfnav.DynamicNavigationCaseReporter;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
@@ -21,7 +21,7 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
 public class AttachmentsHelperProducer implements ViewComponentProducer, ViewParamsReporter, 
-													ActionResultInterceptor {
+													DynamicNavigationCaseReporter,ActionResultInterceptor {
 
 	public static final String VIEW_ID = "add_attachment";
 	public MultipartResolver multipartResolver;

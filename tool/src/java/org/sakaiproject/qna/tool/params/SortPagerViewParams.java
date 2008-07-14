@@ -24,8 +24,7 @@ public class SortPagerViewParams extends PagerViewParams {
 	public String sortBy;
 	public String sortDir;
 	public String viewtype; // View type must correspond with ListViewType option
-	public String currentStart;
-	public String currentCount;
+	
 	
 	public SortPagerViewParams() {}
 

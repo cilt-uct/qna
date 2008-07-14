@@ -63,26 +63,4 @@
   	<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
   </bean>
 
-
-<!-- Allow fatal errors be escalated to the portal -->
-	<!-- <bean id="redirectOnLevel1Error"
-		class="uk.org.ponder.springutil.BooleanFactory">
-		<property name="value" value="false" />
-	</bean>
-
-	<bean id="fatalErrorHandler"
-		class="uk.org.ponder.rsf.processor.support.DefaultFatalErrorHandler">
-		<property name="propagatedExceptions"
-			value="java.lang.Throwable" />
-	</bean>
-
-	<bean parent="alterationWrapperParent">
-		<property name="value">
-			<bean parent="RSACBridgeProxy">
-				<property name="targetBeanName"
-					value="explodingWrapper" />
-			</bean>
-		</property>
-	</bean> -->
-
 </beans>

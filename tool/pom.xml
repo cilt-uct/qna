@@ -19,7 +19,7 @@
    </parent>
 
    <properties>
-      <rsfutil.version>0.7.3RC1</rsfutil.version>
+      <rsfutil.version>0.7.2</rsfutil.version>
       <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
       <deploy.webappname>Qna</deploy.webappname>
       <appserver.id>${sakai.appserver.id}</appserver.id>
@@ -172,7 +172,5 @@
          <url>http://www2.caret.cam.ac.uk/maven2</url>
       </pluginRepository>
    </pluginRepositories>
-
-
 
 </project>

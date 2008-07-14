@@ -69,7 +69,7 @@ public class CategoryLocator implements EntityBeanLocator {
         return "edited";
 	}
 
-    public String save() {
+    public void save() {
         for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
 	        messages.addMessage(
@@ -78,9 +78,17 @@ public class CategoryLocator implements EntityBeanLocator {
                 TargettedMessage.SEVERITY_INFO)
     		);
         }
-        return "saved";
+        return;
     }
 
+    /**
+     * This is the correct OTP idion required by RSF 7.3
+     *
+     */
+    public void saveAll() {
+    	save();
+    }
+    
 	public boolean remove(String beanname) {
 		try {
 			QnaCategory qnaCategory = categoryLogic.getCategoryById(beanname);

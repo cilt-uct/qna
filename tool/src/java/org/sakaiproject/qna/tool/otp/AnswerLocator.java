@@ -68,7 +68,7 @@ public class AnswerLocator implements EntityBeanLocator {
 		return togo;
 	}
 
-    public String saveAll() {
+    public void saveAll() {
         for (QnaAnswer answer : delivered.values()) {
         	answerLogic.saveAnswer(answer, externalLogic.getCurrentLocationId());
         	
@@ -83,7 +83,7 @@ public class AnswerLocator implements EntityBeanLocator {
 		                TargettedMessage.SEVERITY_INFO));
         	}
         }
-        return "saved";
+        return;
     }
 	
     public String approve() {

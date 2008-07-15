@@ -95,13 +95,11 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 
 		UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{DeleteMultiplesHelper.questionids}", null);
 		UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{DeleteMultiplesHelper.categoryids}", null);
-		//UISelect questionDeleteSelect = UISelect.makeMultiple(form, "remove-question-cell", null, "#{MultipleDeletesParams.questionids}", null);
-		//UISelect categoryDeleteSelect = UISelect.makeMultiple(form, "remove-category-cell", null, "#{MultipleDeletesParams.categoryids}", null);
 
 		StringList deletable = new StringList();
 		// List of published questions by category
 		for (QnaCategory qnaCategory : categories) {
-			if (qnaCategory.getPublishedQuestions().size() > 0) {
+			if (qnaCategory.getPublishedQuestions().size() > 0 || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 				if (!qnaCategory.getHidden()) {
 					UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");
 					UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");

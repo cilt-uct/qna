@@ -39,10 +39,21 @@ public interface NotificationLogic {
 	public void sendPrivateReplyNotification(String[] userids, String questionText, String privateReplyText);
 	
 	/**
-	 * Send notification for a new question
+	 * Send notification for a new question (uses no-reply as from address)
 	 * 
 	 * @param emails
 	 * @param questionText
 	 */
 	public void sendNewQuestionNotification(String[] emails, String questionText);
+	
+	/**
+	 * Send notification for a new question
+	 * 
+	 * @param emails
+	 * @param questionText
+	 * @param fromUserId The Sakai user id of user that will be placed in from address (if valid)
+	 */
+	public void sendNewQuestionNotification(String[] emails, String questionText, String fromUserId);
+	
+	
 }

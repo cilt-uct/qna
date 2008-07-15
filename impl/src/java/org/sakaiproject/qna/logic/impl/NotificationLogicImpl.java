@@ -18,6 +18,7 @@
 
 package org.sakaiproject.qna.logic.impl;
 
+import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
@@ -57,11 +58,35 @@ public class NotificationLogicImpl implements NotificationLogic {
 		externalLogic.sendEmails(buildFrom(), emails, buildNewQuestionSubject(), buildNewQuestionMessage(questionText));
 		
 	}
-		
+	
+	public void sendNewQuestionNotification(String[] emails, String questionText, String fromUserId) {
+		EmailValidator emailValidator = EmailValidator.getInstance();
+		String fromEmail = externalLogic.getUserEmail(fromUserId);
+		if (emailValidator.isValid(fromEmail)) {
+			externalLogic.sendEmails(buildFrom(externalLogic.getUserDisplayName(fromUserId),fromEmail), emails, buildNewQuestionSubject(), buildNewQuestionMessage(questionText));
+		} else {
+			sendNewQuestionNotification(emails, questionText);
+		}
+	}
+	
+	/**
+	 * Builds from address without reply	  
+	 * @return from address for e-mail
+	 */
 	private String buildFrom() {
 		return "\""	
 				+ serverConfigurationService.getString("ui.service", "Sakai")
 				+ "\" <no-reply@" + serverConfigurationService.getServerName() + ">";
+	}
+	
+	/**
+	 * Builds from address with specific reply address 
+	 * @param fromDisplayName display name for email
+	 * @param fromEmail from address for e-mail 
+	 * @return fromAddress for e-mail
+	 */
+	private String buildFrom(String fromDisplayName, String fromEmail) {
+		return "\"" + fromDisplayName + "\" <" + fromEmail + ">";
 	}
 	
 	private String buildPrivateReplySubject() {

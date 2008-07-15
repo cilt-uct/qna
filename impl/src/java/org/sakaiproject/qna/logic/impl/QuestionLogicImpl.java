@@ -256,7 +256,11 @@ public class QuestionLogicImpl implements QuestionLogic {
 				// Notification
 				if (options.getEmailNotification()) {
 					String[] emails = (String[])optionsLogic.getNotificationSet(locationId).toArray(new String[]{});
-					notificationLogic.sendNewQuestionNotification(emails, question.getQuestionText());
+					if (options.getAnonymousAllowed()) {
+						notificationLogic.sendNewQuestionNotification(emails, question.getQuestionText());
+					} else {
+						notificationLogic.sendNewQuestionNotification(emails, question.getQuestionText(), question.getOwnerId());
+					}
 				}
 			} else {
 				throw new SecurityException(

@@ -27,7 +27,6 @@ import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
@@ -92,11 +91,8 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		UIMessage.make(tofill, "answers", "qna.searchresults.answers");
 
 		List<QnaCategory> categoriesList = searchLogic.getCategories(params.search);
-		String[][] categories = new String[categoriesList.size()][3];
 
-		UIMessage.make(tofill, "results", "qna.searchresults.results", new Integer[]{categoriesList.size()});
-		
-		int results = categoriesList.size();
+		int results = 0;
 		
 		for (QnaCategory category : categoriesList) {
 			if (display(category)) {
@@ -104,6 +100,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 				UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
 				UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
 				UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
+				results++;
 			}
 		}
 		
@@ -165,7 +162,8 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
         		}
         	}
 		}
-
+		
+		UIMessage.make(tofill, "results", "qna.searchresults.results", new Integer[]{results});
 		UIForm form = UIForm.make(tofill,"search-form");
 
         UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
@@ -182,10 +180,20 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		return new SearchParams();
 	}
 	
+	/**
+	 * Determines if a category should be displayed in search results
+	 * @param {@link QnaCategory}
+	 * @return boolean
+	 */
 	private boolean display(QnaCategory category) {
-		return category.getHidden();
+		return !category.getHidden();
 	}
-	
+
+	/**
+	 * Determines if a question should be displayed in search results
+	 * @param {@link QnaQuestion}
+	 * @return boolean
+	 */
 	private boolean display(QnaQuestion question) {
     	if (question.getHidden()) {
     		return false;
@@ -198,6 +206,11 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
     	return true;
 	}
 	
+	/**
+	 * Determines if an answer should be displayed in search results
+	 * @param {@link QnaAnswer}
+	 * @return boolean
+	 */	
 	private boolean display(QnaAnswer answer) {
        	if (answer.getQuestion().getHidden()) {
     		return false;

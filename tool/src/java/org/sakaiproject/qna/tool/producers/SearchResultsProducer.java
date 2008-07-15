@@ -136,7 +136,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		}
 
 		List<QnaAnswer> answersList = searchLogic.getAnswers(params.search);
-		String[][] answers = new String[answersList.size()][4];
 		for (QnaAnswer answer : answersList) {
 			String answerText = TextUtil.stripTags(answer.getAnswerText());
 			if (answerText.length() > 100) {

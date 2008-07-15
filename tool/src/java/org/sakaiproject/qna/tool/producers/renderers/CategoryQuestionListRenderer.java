@@ -103,8 +103,11 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				if (!qnaCategory.getHidden()) {
 					UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");
 					UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");
-
-					initViewToggle(entry, category);
+					
+					if (qnaCategory.getPublishedQuestions().size() > 0) {
+						initViewToggle(entry, category);
+					}
+						
 					UIOutput.make(category,"category-name",qnaCategory.getCategoryText());
 
 					// Only users with update permission can edit category

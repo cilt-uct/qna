@@ -501,6 +501,8 @@ public class OptionsLogicImplTest extends
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 		assertTrue(options.getEmailNotification());
 		
+		assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
+		
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
 		assertEquals(customEmails.size(), 3);
 		
@@ -531,6 +533,7 @@ public class OptionsLogicImplTest extends
 		serverConfigurationServiceStub.setProperty("qna.default.notification",USER_CUSTOM_EMAIL_INVALID);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 		assertTrue(options.getEmailNotification());
+		assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
 		
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
 		assertEquals(customEmails.size(), 1);

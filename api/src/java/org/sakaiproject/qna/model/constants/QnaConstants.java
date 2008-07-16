@@ -44,5 +44,14 @@ public class QnaConstants {
 	 * Notification type: everyone with update rights
 	 */
 	public static final String UPDATE_RIGHTS = "update";
+	
+	
+	public static boolean isValidView(String viewType) {
+		if (viewType.equalsIgnoreCase(CATEGORY_VIEW) || viewType.equalsIgnoreCase(MOST_POPULAR_VIEW)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 

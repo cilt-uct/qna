@@ -28,6 +28,7 @@ import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
+import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
@@ -43,9 +44,9 @@ public class OptionsLogicImplTest extends
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
-	
 	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
-
+	private ServerConfigurationServiceStub serverConfigurationServiceStub = new ServerConfigurationServiceStub();	
+	
 	private TestDataPreload tdp = new TestDataPreload();
 
 	protected String[] getConfigLocations() {
@@ -77,6 +78,7 @@ public class OptionsLogicImplTest extends
 		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 		optionsLogic.setExternalEventLogic(externalEventLogicStub);
+		optionsLogic.setServerConfigurationService(serverConfigurationServiceStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);
@@ -163,7 +165,7 @@ public class OptionsLogicImplTest extends
 
 		assertNotNull(options);
 	}
-
+	
 	/**
 	 * Test that default view can only be set as valid values
 	 */
@@ -362,5 +364,182 @@ public class OptionsLogicImplTest extends
 		assertEquals(optionsByLoc.getId(), optionsById.getId());
 		assertEquals(LOCATION1_ID, optionsById.getLocation());
 	}
+	
+	/**
+	 * Test default options with no properties set
+	 */
+	public void testDefaultNoProperties() {
+		String locationId = LOCATION2_ID;
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.getAnonymousAllowed());
+		assertTrue(options.isModerated());
+		assertEquals(QnaConstants.SITE_CONTACT,options.getEmailNotificationType());
+		assertFalse(options.getEmailNotification());
+		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+	}
+	
+	/**
+	 * Test default options with moderated property set to false 
+	 */
+	public void testDefaultNotModerated() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.moderated", false);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.isModerated());
+	}
 
+	/**
+	 * Test default options with moderated property set to true 
+	 */
+	public void testDefaultModerated() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.moderated", true);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.isModerated());
+	}
+	
+	/**
+	 * Test default options with anonymous property set to true 
+	 */
+	public void testDefaultAnonymousAllowed() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.anonymous", true);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getAnonymousAllowed());
+	}
+
+	/**
+	 * Test default options with anonymous property set to false 
+	 */
+	public void testDefaultAnonymousNotAllowed() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.anonymous", false);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.getAnonymousAllowed());
+	}
+
+	/**
+	 * Test default options with student view property set to most_popular 
+	 */
+	public void testDefaultMostPopularView() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.view", QnaConstants.MOST_POPULAR_VIEW);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertEquals(QnaConstants.MOST_POPULAR_VIEW, options.getDefaultStudentView());
+	}
+
+	/**
+	 * Test default options with student view property set to category 
+	 */
+	public void testDefaultCategoryView() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.view", QnaConstants.CATEGORY_VIEW);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+	}
+	
+	/**
+	 * Test default options with student view property set to invalid
+	 */
+	public void testDefaultInvalidView() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.view", "invalid");
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+	}
+	
+	/**
+	 * Test default options with notification property set to none 
+	 */
+	public void testDefaultNoNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification", "none");
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.getEmailNotification());
+		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+	}
+
+	/**
+	 * Test default options with notification property set to invalid 
+	 */
+	public void testDefaultInvalidNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification", "invalid");
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.getEmailNotification());
+		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+	}
+	
+	/**
+	 * Test default options with notification property set to site_contact 
+	 */
+	public void testDefaultSiteContactNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification", QnaConstants.SITE_CONTACT);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getEmailNotification());
+		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+	}
+	
+	/**
+	 * Test default options with notification property set to update 
+	 */
+	public void testDefaultUpdateNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification", QnaConstants.UPDATE_RIGHTS);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getEmailNotification());
+		assertEquals(QnaConstants.UPDATE_RIGHTS, options.getEmailNotificationType());		
+	}
+	
+	/**
+	 * Test default options with notification property set to valid custom mail list 
+	 */
+	public void testDefaultValidCustomNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification",USER_CUSTOM_EMAIL_VALID);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getEmailNotification());
+		
+		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
+		assertEquals(customEmails.size(), 3);
+		
+		boolean foundEmail1 = false;
+		boolean foundEmail2 = false;
+		boolean foundEmail3 = false;
+		
+		for (QnaCustomEmail qnaCustomEmail : customEmails) {
+			assertNotNull(qnaCustomEmail.getId());
+			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
+				foundEmail1 = true;
+			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL2)) {
+				foundEmail2 = true;
+			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL3)) {
+				foundEmail3 = true;
+			}
+		}
+		assertTrue(foundEmail1);
+		assertTrue(foundEmail2);
+		assertTrue(foundEmail3);
+	}
+	
+	/**
+	 * Test default options with notification property set to custom mail list with some valid emails 
+	 */
+	public void testDefaultSomeValidCustomNotification() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.notification",USER_CUSTOM_EMAIL_INVALID);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getEmailNotification());
+		
+		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
+		assertEquals(customEmails.size(), 1);
+		boolean contains = false;
+		for (QnaCustomEmail qnaCustomEmail : customEmails) {
+			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL3)){
+				contains = true;
+			}
+		}
+		assertTrue(contains);
+	}
 }

@@ -51,6 +51,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.QuestionLogic"

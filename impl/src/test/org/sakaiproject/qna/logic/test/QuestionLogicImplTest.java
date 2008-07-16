@@ -50,6 +50,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
 	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
 	
+	
 	private TestDataPreload tdp = new TestDataPreload();
 
 	protected String[] getConfigLocations() {
@@ -81,6 +82,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		optionsLogic.setPermissionLogic(permissionLogic);
 		optionsLogic.setExternalLogic(externalLogicStub);
 		optionsLogic.setExternalEventLogic(externalEventLogicStub);
+		
 		
 		// create and setup CategoryLogic
 		categoryLogic = new CategoryLogicImpl();

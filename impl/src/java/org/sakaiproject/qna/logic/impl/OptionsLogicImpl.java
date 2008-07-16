@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
@@ -44,6 +45,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 	private QnaDao dao;
 	private ExternalLogic externalLogic;
 	private ExternalEventLogic externalEventLogic;
+	private ServerConfigurationService serverConfigurationService;
 	
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
@@ -61,18 +63,51 @@ public class OptionsLogicImpl implements OptionsLogic {
 		this.externalEventLogic = externalEventLogic;
 	}
 	
+	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+		this.serverConfigurationService = serverConfigurationService;
+	}
+	
 	public QnaOptions createDefaultOptions(String locationId) {
+
 		QnaOptions newOptions = new QnaOptions();
 
 		newOptions.setLocation(locationId);
 		newOptions.setOwnerId("default");
 
-		newOptions.setAnonymousAllowed(false);
-		newOptions.setEmailNotification(false);
-		newOptions.setModerated(true);
-		newOptions.setDefaultStudentView(QnaConstants.CATEGORY_VIEW);
-		// Make Site contact the default to notify but set notification false as default
-		newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT);
+		newOptions.setAnonymousAllowed(serverConfigurationService.getBoolean("qna.default.anonymous", false));
+		
+		newOptions.setModerated(serverConfigurationService.getBoolean("qna.default.moderated", true));
+		
+		String notificationProperty = serverConfigurationService.getString("qna.default.notification", "none");
+		
+		if (notificationProperty.equalsIgnoreCase(QnaConstants.SITE_CONTACT)) {
+			newOptions.setEmailNotification(true);
+			newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT);
+		} else if (notificationProperty.equalsIgnoreCase(QnaConstants.UPDATE_RIGHTS)) {
+			newOptions.setEmailNotification(true);
+			newOptions.setEmailNotificationType(QnaConstants.UPDATE_RIGHTS);
+		} else if (notificationProperty.equalsIgnoreCase("none")) {
+			newOptions.setEmailNotification(false);
+			// Make site contact the default to notify but set notification false as default
+			newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT);
+		} else { // If custom mail list or invalid option given
+			processCustomMailList(notificationProperty,newOptions,newOptions.getOwnerId());
+			if (newOptions.getCustomEmails().size() > 0) {
+				newOptions.setEmailNotification(true);
+				newOptions.setEmailNotificationType(QnaConstants.CUSTOM_LIST);
+			} else {
+				newOptions.setEmailNotification(false);
+				newOptions.setEmailNotificationType(QnaConstants.SITE_CONTACT);
+			}
+		}
+		
+		String defaultViewProperty = serverConfigurationService.getString("qna.default.view",QnaConstants.CATEGORY_VIEW);
+		
+		if (QnaConstants.isValidView(defaultViewProperty)) {
+			newOptions.setDefaultStudentView(defaultViewProperty);
+		} else {
+			newOptions.setDefaultStudentView(QnaConstants.CATEGORY_VIEW);
+		}
 
 		Date now = new Date();
 		newOptions.setDateCreated(now);
@@ -167,10 +202,27 @@ public class OptionsLogicImpl implements OptionsLogic {
 
 		EmailValidator emailValidator = EmailValidator.getInstance();
 
+		boolean invalidEmail = processCustomMailList(mailList, options, userId);
+		saveOptions(options, locationId);
+
+		return invalidEmail;
+
+	}
+	
+	/**
+	 * Processes a comma separated list of emails and adds it to a {@link QnaOptions} object
+	 * 
+	 * @param mailList String of comma separated values of emails
+	 * @param options The {@link QnaOptions} object custom mails must be added to
+	 * @param userId Sakai user id to use
+	 * @return boolean if there were any invalid mails
+	 */
+	private boolean processCustomMailList(String mailList, QnaOptions options, String userId) {
+		EmailValidator emailValidator = EmailValidator.getInstance();
 		boolean invalidEmail = false;
+		
 		if (mailList != null && !mailList.trim().equals("")) {
 			String[] emails = mailList.split(",");
-
 			for (int i = 0; i < emails.length; i++) {
 				if (!emailValidator.isValid(emails[i].trim())) {
 					invalidEmail = true;
@@ -180,10 +232,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 				}
 			}
 		}
-
-		saveOptions(options, locationId);
 		return invalidEmail;
-
 	}
 
 	public QnaOptions getOptionsById(String id) {

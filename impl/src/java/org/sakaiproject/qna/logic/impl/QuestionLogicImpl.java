@@ -52,6 +52,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	private AttachmentLogic attachmentLogic;
 	private NotificationLogic notificationLogic;
 	private ExternalEventLogic externalEventLogic;
+	
 	private QnaDao dao;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
@@ -81,7 +82,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
 		this.externalEventLogic = externalEventLogic;
 	}
-		
+	
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}

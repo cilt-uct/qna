@@ -25,6 +25,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
+import org.sakaiproject.genericdao.api.search.Restriction;
+import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -108,7 +110,11 @@ public class QuestionLogicImpl implements QuestionLogic {
 						locationId}, new int[] { ByPropsFinder.EQUALS});
 		return l;
 	}
-
+	
+	public List<QnaQuestion> getPublishedQuestionsWithoutCategory(String locationId) {
+		return dao.findBySearch(QnaQuestion.class, new Search(new String[] {"location", "category", "published"},new Object[]{locationId, "",true}, new int[] {Restriction.EQUALS,Restriction.NULL,Restriction.EQUALS}));
+	}
+	
 	public QnaQuestion getQuestionById(String questionId) {
 		return (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
 	}
@@ -314,5 +320,4 @@ public class QuestionLogicImpl implements QuestionLogic {
 		return myList.subList(begIndex, endIndex);
 	}
 	
-
 }

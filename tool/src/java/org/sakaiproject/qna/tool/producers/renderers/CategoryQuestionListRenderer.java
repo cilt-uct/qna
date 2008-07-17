@@ -130,6 +130,18 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 			}
 
 		}
+		// For QNA-63:Create new "general" category for questions without categories
+		List <QnaQuestion> generalQuestions = questionLogic.getPublishedQuestionsWithoutCategory(externalLogic.getCurrentLocationId());
+		if (generalQuestions.size() > 0) {
+			UIBranchContainer entry = UIBranchContainer.make(listTable, "table-entry:");
+			UIBranchContainer category = UIBranchContainer.make(entry,"category-entry:");
+			initViewToggle(entry, category);
+			
+			UIMessage.make(category,"category-name","qna.view-questions.general-questions");
+			UIOutput.make(category,"modified-date","");
+			renderQuestions(entry, generalQuestions, ViewQuestionProducer.VIEW_ID, questionDeleteSelect);
+		}
+
 		categoryDeleteSelect.optionlist.setValue(deletable.toStringArray());
 
 		// Only users with update permissions can view new questions + private replies

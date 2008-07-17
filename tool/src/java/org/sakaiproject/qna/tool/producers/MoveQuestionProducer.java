@@ -36,6 +36,7 @@ import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
+import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
@@ -116,13 +117,21 @@ public class MoveQuestionProducer implements ViewComponentProducer, NavigationCa
         	options[k] = categories.get(k).getId();
         	labels[k] = TextUtil.stripTags(categories.get(k).getCategoryText());
         }
-
-        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !qnaOptions.isModerated()) {
+        
+        boolean displayOr = false;
+        if ((permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !qnaOptions.isModerated()) && options.length > 0){
         	UISelect.make(form, "category-select", options, labels, questionOTP+".categoryId");
+        	displayOr = true;
+        } else {
+        	// to make sure it is binded even when no categories present to select
+        	form.addParameter(new UIELBinding(questionOTP+".categoryId", null));
         }
-
-        if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        
+        if (displayOr) {
         	UIMessage.make(form,"or","qna.general.or");
+        }
+        
+        if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
         	UIMessage.make(form,"new-category-label","qna.move-question.create-new-category");
         	UIInput.make(form, "new-category-name", categoryOTP+".categoryText");
         }

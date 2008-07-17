@@ -134,7 +134,7 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
 
 			UIOutput.make(questionContainer, "name", TextUtil.stripTags(question.getQuestionText()));
-			UIOutput.make(questionContainer, "category", question.getCategory().getCategoryText());
+			UIOutput.make(questionContainer, "category", (question.getCategory() != null) ? question.getCategory().getCategoryText() : "");
 			UIOutput.make(questionContainer, "answers", answerList.size()+"");
 			UIOutput.make(questionContainer, "views", question.getViews()+"");
 			UIOutput.make(questionContainer, "modified", DateUtil.getSimpleDate(question.getDateLastModified()));

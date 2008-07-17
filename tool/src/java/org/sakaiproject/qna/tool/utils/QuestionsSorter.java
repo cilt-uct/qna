@@ -71,6 +71,8 @@ public class QuestionsSorter {
 					questions.addAll(publishedQuestion);
 				}
 			}
+			questions.addAll(questionLogic.getPublishedQuestionsWithoutCategory(location));
+			
 			filterHiddenQuestions(questions, false);
 			if (includeAll) {
 				questions.addAll(questionLogic.getNewQuestions(location));

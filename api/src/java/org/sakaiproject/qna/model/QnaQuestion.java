@@ -97,7 +97,7 @@ public class QnaQuestion {
 	 * @param order
 	 * @param anonymous
 	 * @param published
-	 * @param hidden TODO
+	 * @param hidden
 	 */
 	public QnaQuestion(QnaCategory category, String ownerId, String location, String questionText,
 			Integer views, Date dateLastModified, Date dateCreated,

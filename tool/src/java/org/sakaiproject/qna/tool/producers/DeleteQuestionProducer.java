@@ -115,7 +115,7 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 		UIMessage.make(form, "modified-title", "qna.delete-question.modified-title");
 
 		UIOutput.make(form, "name", TextUtil.stripTags(question.getQuestionText()));
-		UIOutput.make(form, "category", question.getCategory().getCategoryText());
+		UIOutput.make(form, "category", (question.getCategory() != null) ? question.getCategory().getCategoryText() : "");
 		UIOutput.make(form, "answers", answerList.size()+"");
 		UIOutput.make(form, "modified", DateUtil.getSimpleDate(question.getDateLastModified()));
 

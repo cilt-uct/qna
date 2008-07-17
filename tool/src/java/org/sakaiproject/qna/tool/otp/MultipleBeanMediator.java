@@ -80,17 +80,26 @@ public class MultipleBeanMediator {
 			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);
 		}
 
-		String oldCategory = TextUtil.stripTags(question.getCategory().getCategoryText());
+		String oldCategory = question.getCategory() != null ? TextUtil.stripTags(question.getCategory().getCategoryText()) : null;
 
 		question.setCategory(categoryToLink);
 		question.setSortOrder(new Integer(categoryToLink.getPublishedQuestions().size()));
 		questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+		
+		if (oldCategory != null) {
+			messages.addMessage(
+					new TargettedMessage("qna.move-question.moved-successfully",
+					new Object[] { oldCategory, TextUtil.stripTags(categoryToLink.getCategoryText()) },
+					TargettedMessage.SEVERITY_INFO)
+				);
+		} else {
+			messages.addMessage(
+					new TargettedMessage("qna.move-question.moved-successfully-no-previous",
+					new Object[] {TextUtil.stripTags(categoryToLink.getCategoryText()) },
+					TargettedMessage.SEVERITY_INFO)
+				);
+		}
 
-		messages.addMessage(
-			new TargettedMessage("qna.move-question.moved-successfully",
-			new Object[] { oldCategory, TextUtil.stripTags(categoryToLink.getCategoryText()) },
-			TargettedMessage.SEVERITY_INFO)
-		);
 
 		return "saved";
 	}

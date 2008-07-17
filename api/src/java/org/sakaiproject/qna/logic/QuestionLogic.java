@@ -91,6 +91,15 @@ public interface QuestionLogic {
 	public List<QnaQuestion> getNewQuestions(String locationId);
 
 	/**
+	 * Get all published questions without categories for location
+	 * 
+	 * @param locationId
+	 * 				a unique id which represents the current location of the user (entity reference)
+	 * @return	a list of {@link QnaQuestion}
+	 */
+	public List<QnaQuestion> getPublishedQuestionsWithoutCategory(String locationId);
+	
+	/**
 	 * Publishes question
 	 *
 	 * @param questionId unique id of {@link QnaQuestion}

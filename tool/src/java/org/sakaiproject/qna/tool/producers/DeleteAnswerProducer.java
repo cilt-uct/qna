@@ -91,7 +91,7 @@ public class DeleteAnswerProducer implements ViewComponentProducer, NavigationCa
 		QnaQuestion question = (QnaQuestion)ELEvaluator.getBean(questionOTP);
 
 		UIOutput.make(form, "answer-text", TextUtil.stripTags(answer.getAnswerText()));
-		UIOutput.make(form, "category", question.getCategory().getCategoryText());
+		UIOutput.make(form, "category", question.getCategory() != null ? question.getCategory().getCategoryText() : "");
 		UIOutput.make(form, "question-text", TextUtil.stripTags(question.getQuestionText()));
 		UIOutput.make(form, "modified-date", DateUtil.getSimpleDate(answer.getDateLastModified()));
 

@@ -121,6 +121,19 @@ public class MultipleBeanMediator {
 		newQuestion.setCategory(categoryToLink);
 		questionLocator.saveAll();
 		
+		if (newQuestion.isPublished()) {
+			messages.addMessage(
+					new TargettedMessage("qna.ask-question.save-success",
+					new Object[] { TextUtil.stripTags(newQuestion.getQuestionText()) },
+					TargettedMessage.SEVERITY_INFO)
+				);
+		} else {
+			messages.addMessage(
+					new TargettedMessage("qna.ask-question.save-success-unpublished",
+					new Object[] { TextUtil.stripTags(newQuestion.getQuestionText()) },
+					TargettedMessage.SEVERITY_INFO)
+				);
+		}
     	return "saved";
     }
     

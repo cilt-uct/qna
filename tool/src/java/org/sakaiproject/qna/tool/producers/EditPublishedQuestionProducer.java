@@ -91,7 +91,7 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
         richTextEvolver.evolveTextInput(questiontext);
 
 		// Generate the different buttons
-		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),questionLocator + ".saveAll");
+		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),questionLocator + ".edit");
 		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
 
 	}

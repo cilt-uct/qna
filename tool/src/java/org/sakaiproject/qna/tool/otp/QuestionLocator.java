@@ -41,6 +41,10 @@ public class QuestionLocator implements EntityBeanLocator  {
     public static final String NEW_PREFIX = "new ";
     public static String NEW_1 = NEW_PREFIX + "1";
 
+    public static final String SAVED = "saved";
+    public static final String CANCEL = "cancel";
+    public static final String DELETE = "delete";
+    
     private QuestionLogic questionLogic;
     private ExternalLogic externalLogic;
     private AttachmentLogic attachmentLogic;
@@ -98,13 +102,23 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public String saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
-			messages.addMessage(
-				new TargettedMessage("qna.ask-question.save-success",
-				new Object[] { TextUtil.stripTags(question.getQuestionText()) },
-				TargettedMessage.SEVERITY_INFO)
-			);
 		}
-		return "saved";
+		return SAVED;
+	}
+	
+	public String edit() {
+		for (String key : delivered.keySet()) {
+			if (!key.startsWith(NEW_PREFIX)) {
+				QnaQuestion toEdit = delivered.get(key);
+				questionLogic.saveQuestion(toEdit, externalLogic.getCurrentLocationId());
+				messages.addMessage(
+						new TargettedMessage("qna.ask-question.save-success",
+						new Object[] { TextUtil.stripTags(toEdit.getQuestionText()) },
+						TargettedMessage.SEVERITY_INFO)
+					);
+			}
+		}
+		return SAVED;
 	}
 
 	public String delete() {
@@ -120,7 +134,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 					TargettedMessage.SEVERITY_INFO));
 			}
 		}
-		return "delete";
+		return DELETE;
 	}
 	
 	public String cancel() {
@@ -143,7 +157,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
 		
-		return "cancel";
+		return CANCEL;
 	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {

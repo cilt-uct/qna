@@ -66,7 +66,9 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
     public static final String VIEW_ID = "questions_list";
-
+    
+    private static final String ADD_ICON_URL = "/library/image/silk/add.png";
+    
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;
     private CategoryQuestionListRenderer categoryQuestionListRenderer;
@@ -162,17 +164,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			//UICommand.make(form, "update-button", "#{QuestionLocator.deleteQuestions}");
 
 		} else {
-			if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-				UIOutput.make(tofill,"ask-question");
-				UILink.make(tofill, "ask-question-icon", "/library/image/silk/add.png");
-
-				if (optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getAnonymousAllowed()) {
-					UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
-				} else {
-					UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
-				}
-			}
-
 			options = new String[] {ViewTypeConstants.CATEGORIES,
 									SortByConstants.VIEWS,
 									SortByConstants.MODIFIED,
@@ -181,6 +172,32 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 									messageLocator.getMessage("qna.view-questions.most-popular"),
 						 		   	messageLocator.getMessage("qna.view-questions.recent-changes"),
 						 		   	messageLocator.getMessage("qna.view-questions.recent-questions")};
+		}
+		
+		
+		boolean addSpacing = false;
+		if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			UIOutput.make(tofill,"ask-question");
+			UILink.make(tofill, "ask-question-icon", ADD_ICON_URL);
+
+			if (optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getAnonymousAllowed()) {
+				UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question-anonymously"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+			} else {
+				UIInternalLink.make(tofill, "ask-question-link", UIMessage.make("qna.view-questions.ask-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
+			}
+			addSpacing = true;
+		}
+		
+		if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) &&
+			permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+			UIOutput.make(tofill,"add-category");
+			UILink.make(tofill, "add-category-icon", ADD_ICON_URL);
+			UIInternalLink.make(tofill, "add-category-link", UIMessage.make("qna.view-questions.add-category"), new SimpleViewParameters(CategoryProducer.VIEW_ID));
+			addSpacing = true;
+		}
+		
+		if (addSpacing) {
+			UIOutput.make(tofill,"spacing");
 		}
 
 		// Init value must be either default or specified

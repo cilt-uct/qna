@@ -58,35 +58,6 @@ public class NavBarRenderer {
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 	    	UIJointContainer joint = new UIJointContainer(tofill,divID,"qna-navigation:");
 
-//	    	UIBranchContainer cell1 = UIBranchContainer.make(joint, "navigation-cell:", "1");
-//	    	if (currentViewID.equals(QuestionsListProducer.VIEW_ID)) {
-//	    		UIMessage.make(cell1,"item-text", "qna.navbar.view-questions");
-//	    	} else {
-//	    		UIInternalLink.make(cell1, "item-link", UIMessage.make("qna.navbar.view-questions"), new SimpleViewParameters(QuestionsListProducer.VIEW_ID));
-//	    	}
-//	    	UIOutput.make(cell1, "item-separator");
-	    	
-	    	if (permissionLogic.canAddNewQuestion(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-		    	UIBranchContainer cell2 = UIBranchContainer.make(joint, "navigation-cell:", "2");
-		    	if (currentViewID.equals(AskQuestionProducer.VIEW_ID)) {
-		    		UIMessage.make(cell2, "item-text", "qna.navbar.add-question");
-		    	} else {
-		    		UIInternalLink.make(cell2, "item-link", UIMessage.make("qna.navbar.add-question"), new SimpleViewParameters(AskQuestionProducer.VIEW_ID));
-		    	}
-		    	UIOutput.make(cell2, "item-separator");
-	    	}
-
-	    	if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-		    	UIBranchContainer cell3 = UIBranchContainer.make(joint, "navigation-cell:", "3");
-		    	if (currentViewID.equals(CategoryProducer.VIEW_ID)) {
-		    		UIMessage.make(cell3, "item-text", "qna.navbar.create-categories");
-		    	} else {
-		    		UIInternalLink.make(cell3, "item-link", UIMessage.make("qna.navbar.create-categories"), new SimpleViewParameters(CategoryProducer.VIEW_ID));
-		    	}
-
-		    	UIOutput.make(cell3, "item-separator");
-			}
-
 	    	if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 		    	UIBranchContainer cell4 = UIBranchContainer.make(joint, "navigation-cell:", "4");
 		    	if (currentViewID.equals(OrganiseListProducer.VIEW_ID)) {

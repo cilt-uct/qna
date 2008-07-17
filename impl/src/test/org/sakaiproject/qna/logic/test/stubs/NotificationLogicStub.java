@@ -19,28 +19,29 @@
 package org.sakaiproject.qna.logic.test.stubs;
 
 import org.sakaiproject.qna.logic.NotificationLogic;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 public class NotificationLogicStub implements NotificationLogic {
 
 	public void sendNewAnswerNotification(String[] userids,
-			String questionText, String answerText) {
+			QnaQuestion question, String answerText) {
 		// TODO Auto-generated method stub
 
 	}
 
 	public void sendPrivateReplyNotification(String[] userids,
-			String questionText, String privateReplyText) {
+			QnaQuestion question, String privateReplyText) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void sendNewQuestionNotification(String[] emails, String questionText) {
+	public void sendNewQuestionNotification(String[] emails, QnaQuestion question) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void sendNewQuestionNotification(String[] emails,
-			String questionText, String fromUserId) {
+			QnaQuestion question, String fromUserId) {
 		// TODO Auto-generated method stub
 		
 	}

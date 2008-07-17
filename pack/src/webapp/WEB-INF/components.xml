@@ -86,6 +86,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
 		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+		<property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"></property>
 	</bean>
 	
 	<!-- entity beans -->

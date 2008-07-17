@@ -18,19 +18,28 @@
 
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 public class NotificationLogicImpl implements NotificationLogic {
 	
 	private ExternalLogic externalLogic;
 	private QnaBundleLogic qnaBundleLogic;
 	private ServerConfigurationService serverConfigurationService;
-
+	private DeveloperHelperService developerHelperService;
+	
 	public static final String NEW_LINE = "\n";
+	public static final String VIEW_QUESTION = "/view_question";
+	public static final String PUBLISH_QUESTION = "/queued_question";
+	public static final String QUESTION_ID= "questionid";
 	
 	public void setServerConfigurationService(
 			ServerConfigurationService serverConfigurationService)
@@ -46,26 +55,30 @@ public class NotificationLogicImpl implements NotificationLogic {
 		this.qnaBundleLogic = qnaBundleLogic;
 	}
 	
-	public void sendPrivateReplyNotification(String[] userids, String questionText, String privateReplyText) {
-		externalLogic.sendEmailsToUsers(buildFrom(), userids, buildPrivateReplySubject(), buildPrivateReplyMessage(userids[0],questionText,privateReplyText));
-	}
-
-	public void sendNewAnswerNotification(String[] userids,	String questionText, String answerText) {
-		externalLogic.sendEmailsToUsers(buildFrom(), userids,buildNewAnswerSubject(), buildNewAnswerMessage(userids[0],questionText,answerText));
+	public void setDeveloperHelperService(DeveloperHelperService developerHelperService) {
+		this.developerHelperService = developerHelperService;
 	}
 	
-	public void sendNewQuestionNotification(String[] emails, String questionText) {
-		externalLogic.sendEmails(buildFrom(), emails, buildNewQuestionSubject(), buildNewQuestionMessage(questionText));
+	public void sendPrivateReplyNotification(String[] userids, QnaQuestion question, String privateReplyText) {
+		externalLogic.sendEmailsToUsers(buildFrom(), userids, buildPrivateReplySubject(), buildPrivateReplyMessage(userids[0],question,privateReplyText));
+	}
+
+	public void sendNewAnswerNotification(String[] userids,	QnaQuestion question, String answerText) {
+		externalLogic.sendEmailsToUsers(buildFrom(), userids,buildNewAnswerSubject(), buildNewAnswerMessage(userids[0],question,answerText));
+	}
+	
+	public void sendNewQuestionNotification(String[] emails, QnaQuestion question) {
+		externalLogic.sendEmails(buildFrom(), emails, buildNewQuestionSubject(), buildNewQuestionMessage(question));
 		
 	}
 	
-	public void sendNewQuestionNotification(String[] emails, String questionText, String fromUserId) {
+	public void sendNewQuestionNotification(String[] emails, QnaQuestion question, String fromUserId) {
 		EmailValidator emailValidator = EmailValidator.getInstance();
 		String fromEmail = externalLogic.getUserEmail(fromUserId);
 		if (emailValidator.isValid(fromEmail)) {
-			externalLogic.sendEmails(buildFrom(externalLogic.getUserDisplayName(fromUserId),fromEmail), emails, buildNewQuestionSubject(), buildNewQuestionMessage(questionText));
+			externalLogic.sendEmails(buildFrom(externalLogic.getUserDisplayName(fromUserId),fromEmail), emails, buildNewQuestionSubject(), buildNewQuestionMessage(question));
 		} else {
-			sendNewQuestionNotification(emails, questionText);
+			sendNewQuestionNotification(emails, question);
 		}
 	}
 	
@@ -101,7 +114,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return qnaBundleLogic.getString("qna.notification.new-question-subject");
 	}
 	
-	private String buildPrivateReplyMessage(String userId, String questionText, String privateReplyText) {
+	private String buildPrivateReplyMessage(String userId, QnaQuestion question, String privateReplyText) {
 		StringBuilder privateReply = new StringBuilder();
 		privateReply.append(externalLogic.getUserDisplayName(userId));
 		privateReply.append(NEW_LINE);
@@ -112,7 +125,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		privateReply.append(qnaBundleLogic.getString("qna.notification.private-reply-body2"));
 		privateReply.append(NEW_LINE);
 		privateReply.append(NEW_LINE);
-		privateReply.append(stripTags(questionText));
+		privateReply.append(stripTags(question.getQuestionText()));
 		privateReply.append(NEW_LINE);
 		privateReply.append(NEW_LINE);
 		privateReply.append(qnaBundleLogic.getString("qna.notification.private-reply-body3"));
@@ -123,7 +136,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return privateReply.toString();
 	}
 	
-	private String buildNewAnswerMessage(String userId, String questionText, String answerText) {
+	private String buildNewAnswerMessage(String userId, QnaQuestion question, String answerText) {
 		StringBuilder newAnswerNotification = new StringBuilder();
 		newAnswerNotification.append(externalLogic.getUserDisplayName(userId));
 		newAnswerNotification.append(NEW_LINE);
@@ -134,7 +147,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newAnswerNotification.append(qnaBundleLogic.getString("qna.notification.new-answer-body2"));
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(NEW_LINE);
-		newAnswerNotification.append(stripTags(questionText));
+		newAnswerNotification.append(stripTags(question.getQuestionText()));
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(qnaBundleLogic.getString("qna.notification.new-answer-body3"));
@@ -142,10 +155,16 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(stripTags(answerText));
 		newAnswerNotification.append(NEW_LINE);
+		newAnswerNotification.append(NEW_LINE);
+		newAnswerNotification.append(qnaBundleLogic.getString("qna.notification.new-answer-body4"));
+		newAnswerNotification.append(NEW_LINE);
+		newAnswerNotification.append(NEW_LINE);
+		newAnswerNotification.append(retrieveURL(question,VIEW_QUESTION));
+	
 		return newAnswerNotification.toString();
 	}
 	
-	private String buildNewQuestionMessage(String questionText) {
+	private String buildNewQuestionMessage(QnaQuestion question) {
 		StringBuilder newQuestionNotification = new StringBuilder();
 		newQuestionNotification.append(qnaBundleLogic.getFormattedMessage("qna.notification.new-question-body1", new String[]{getLocationTitle()}));
 		newQuestionNotification.append(NEW_LINE);
@@ -153,18 +172,34 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newQuestionNotification.append(qnaBundleLogic.getString("qna.notification.new-question-body2"));
 		newQuestionNotification.append(NEW_LINE);
 		newQuestionNotification.append(NEW_LINE);
-		newQuestionNotification.append(stripTags(questionText));
+		newQuestionNotification.append(stripTags(question.getQuestionText()));
 		newQuestionNotification.append(NEW_LINE);
+		newQuestionNotification.append(NEW_LINE);
+		newQuestionNotification.append(qnaBundleLogic.getString("qna.notification.new-question-body3"));
+		newQuestionNotification.append(NEW_LINE);
+		newQuestionNotification.append(NEW_LINE);	
+		newQuestionNotification.append(retrieveURL(question, question.isPublished() ? VIEW_QUESTION : PUBLISH_QUESTION));
 		return newQuestionNotification.toString();
 	}
 	
 	// Copy of TextUtil method in tool
 	private String stripTags(String html) {
-		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
 	}
 
 	private String getLocationTitle() {
 		return externalLogic.getLocationTitle(externalLogic.getCurrentLocationId());
+	}
+	
+	/**
+	 * Retrieves URL for Question to put in notification
+	 * @param question
+	 * @return
+	 */
+	private String retrieveURL(QnaQuestion question, String view) {
+		Map<String,String> params = new HashMap<String, String>();
+		params.put(QUESTION_ID,question.getId());
+		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, null);
 	}
 
 }

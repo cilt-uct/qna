@@ -18,42 +18,44 @@
 
 package org.sakaiproject.qna.logic;
 
+import org.sakaiproject.qna.model.QnaQuestion;
+
 public interface NotificationLogic {
 	
 	/**
 	 * Send notification for new answers
 	 * 
 	 * @param userids
-	 * @param questionText
+	 * @param question
 	 * @param answerText
 	 */
-	public void sendNewAnswerNotification(String[] userids, String questionText, String answerText);
+	public void sendNewAnswerNotification(String[] userids, QnaQuestion question, String answerText);
 	
 	/**
 	 * Send a private reply
 	 * 
 	 * @param userids
-	 * @param questionText
+	 * @param question
 	 * @param privateReplyText
 	 */
-	public void sendPrivateReplyNotification(String[] userids, String questionText, String privateReplyText);
+	public void sendPrivateReplyNotification(String[] userids, QnaQuestion question, String privateReplyText);
 	
 	/**
 	 * Send notification for a new question (uses no-reply as from address)
 	 * 
 	 * @param emails
-	 * @param questionText
+	 * @param question
 	 */
-	public void sendNewQuestionNotification(String[] emails, String questionText);
+	public void sendNewQuestionNotification(String[] emails, QnaQuestion question);
 	
 	/**
 	 * Send notification for a new question
 	 * 
 	 * @param emails
-	 * @param questionText
+	 * @param question
 	 * @param fromUserId The Sakai user id of user that will be placed in from address (if valid)
 	 */
-	public void sendNewQuestionNotification(String[] emails, String questionText, String fromUserId);
+	public void sendNewQuestionNotification(String[] emails, QnaQuestion question, String fromUserId);
 	
 	
 }

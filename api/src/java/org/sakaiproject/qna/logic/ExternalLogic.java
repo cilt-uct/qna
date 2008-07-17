@@ -145,9 +145,15 @@ public interface ExternalLogic {
 	public String[] sendEmails(String from, String[] emails, String subject, String message);
 	
 	/**
-	 * Return tool id
+	 * Return current tool display name
 	 * @return
 	 */
 	public String getCurrentToolDisplayName();
+	
+	/**
+	 * Return current tool id
+	 * @return
+	 */
+	public String getCurrentToolId();
 	
 }

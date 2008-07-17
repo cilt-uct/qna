@@ -220,7 +220,11 @@ public class ExternalLogicImpl implements ExternalLogic {
 	public String getCurrentToolDisplayName() {
 		return toolManager.getCurrentPlacement().getTool().getTitle();
 	}
-
+	
+	public String getCurrentToolId() {
+		return toolManager.getCurrentTool().getId();
+	}
+	
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message) {
 	      InternetAddress fromAddress;
 	      try {

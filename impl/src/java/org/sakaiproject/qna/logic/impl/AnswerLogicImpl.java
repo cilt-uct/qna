@@ -125,10 +125,10 @@ public class AnswerLogicImpl implements AnswerLogic {
 					
 					// Notification emails
 					if (answer.isPrivateReply()) {
-						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());
+						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());
 					} else if (question.getNotify()) {
 						if (answer.isApproved()) {
-							notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question.getQuestionText(), answer.getAnswerText());}
+							notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());}
 					}
 					
 				} else {
@@ -168,7 +168,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 			dao.save(answer);
 			
 			if (answer.getQuestion().getNotify()) {
-				notificationLogic.sendNewAnswerNotification(new String[]{answer.getQuestion().getOwnerId()}, answer.getQuestion().getQuestionText(), answer.getAnswerText());
+				notificationLogic.sendNewAnswerNotification(new String[]{answer.getQuestion().getOwnerId()}, answer.getQuestion(), answer.getAnswerText());
 			}
 			
 		} else {

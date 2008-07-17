@@ -139,4 +139,9 @@ public class ExternalLogicStub implements ExternalLogic {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public String getCurrentToolId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

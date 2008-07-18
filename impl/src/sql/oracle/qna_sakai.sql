@@ -1,76 +1,214 @@
-CREATE TABLE   qna_ANSWERS  (
-   id                  varchar2(255)   NOT NULL,
-   question_id         varchar2(255)   NOT NULL,
-   ownerId             varchar2(255)   NOT NULL,
-   answerText          long            NOT NULL,
-   lastModifierId      varchar2(255)   NOT NULL,
-   dateLastModified    timestamp(6)    default NULL,
-   dateCreated         timestamp(6)    NOT NULL,
-   approved            char(1)         NOT NULL,
-   privateReply        char(1)         NOT NULL,
-   anonymous           char(1)         NOT NULL,
-  PRIMARY KEY  ( id )
-);
+ALTER TABLE SAKAIDBA.QNA_ANSWERS DROP PRIMARY KEY CASCADE;
+DROP TABLE SAKAIDBA.QNA_ANSWERS CASCADE CONSTRAINTS;
 
-Create index FK63487CFAB9F9349F on qna_ANSWERS ( question_id );
+CREATE TABLE SAKAIDBA.QNA_ANSWERS
+(
+  ID                VARCHAR2(255)          NOT NULL,
+  QUESTION_ID       VARCHAR2(255)          NOT NULL,
+  OWNERID           VARCHAR2(255)          NOT NULL,
+  ANSWERTEXT        LONG                        NOT NULL,
+  LASTMODIFIERID    VARCHAR2(255)          NOT NULL,
+  DATELASTMODIFIED  TIMESTAMP(6)                DEFAULT NULL,
+  DATECREATED       TIMESTAMP(6)                NOT NULL,
+  APPROVED          CHAR(1)                NOT NULL,
+  PRIVATEREPLY      CHAR(1)                NOT NULL,
+  ANONYMOUS         CHAR(1)                NOT NULL
+)
 
-CREATE TABLE   qna_CATEGORIES  (
-   id                  varchar2(255)   NOT NULL,
-   ownerId             varchar2(255)   NOT NULL,
-   location            varchar2(255)   NOT NULL,
-   categoryText        varchar2(255)   NOT NULL,
-   dateLastModified    timestamp(6)    NOT NULL,
-   dateCreated         timestamp(6)    NOT NULL,
-   sortOrder           integer         default NULL,
-   hidden              char(1)         default NULL,
-  PRIMARY KEY  ( id )
-);
+TABLESPACE SAKAIDATA;
 
-CREATE TABLE   qna_CUSTOM_EMAIL_LIST  (
-   id                  varchar2(255)   NOT NULL,
-   options_id          varchar2(255)   NOT NULL,
-   ownerId             varchar2(255)   NOT NULL,
-   email               varchar2(255)   NOT NULL,
-   dateCreated         timestamp(6)    default NULL,
-  PRIMARY KEY  ( id )
-) ;
-create index FKD08CBF742EDEC7B5 on qna_CUSTOM_EMAIL_LIST  ( options_id );
+ALTER TABLE SAKAIDBA.QNA_CATEGORIES DROP PRIMARY KEY CASCADE;
+DROP TABLE SAKAIDBA.QNA_CATEGORIES CASCADE CONSTRAINTS;
 
-CREATE TABLE   qna_OPTIONS  (
-   id                     varchar2(255) NOT NULL,
-   ownerId                varchar2(255) NOT NULL,
-   location               varchar2(255) NOT NULL,
-   dateLastModified       timestamp(6)  default NULL,
-   anonymousAllowed       char(1)       default NULL,
-   moderated              char(1)       default NULL,
-   emailNotification      char(1)       default NULL,
-   emailNotificationType  varchar2(255) default NULL,
-   defaultStudentView     varchar2(255) default NULL,
-  PRIMARY KEY  ( id )
-);
+CREATE TABLE SAKAIDBA.QNA_CATEGORIES
+(
+  ID                VARCHAR2(255)          NOT NULL,
+  OWNERID           VARCHAR2(255)          NOT NULL,
+  LOCATION          VARCHAR2(255)          NOT NULL,
+  CATEGORYTEXT      VARCHAR2(255)          NOT NULL,
+  DATELASTMODIFIED  TIMESTAMP(6)                NOT NULL,
+  DATECREATED       TIMESTAMP(6)                NOT NULL,
+  SORTORDER         INTEGER                     DEFAULT NULL,
+  HIDDEN            CHAR(1)                DEFAULT NULL
+)
 
-CREATE TABLE  qna_QUESTIONS (
-  id                    varchar2(255)   NOT NULL,
-  category_id           varchar2(255)   default NULL,
-  ownerId               varchar2(255)   NOT NULL,
-   lastModifierId       varchar2(255)   NOT NULL,
-   location             varchar2(255)   NOT NULL,
-   questionText         long            NOT NULL,
-   views                number(11)      NOT NULL,
-   dateLastModified     timestamp(6)    NOT NULL,
-   dateCreated          timestamp(6)    NOT NULL,
-   sortOrder            number(11)      NOT NULL,
-   anonymous            char(1)         NOT NULL,
-   published            char(1)         NOT NULL,
-   notify               char(1)         NOT NULL,
-   hidden               char(1)         default NULL,
-  PRIMARY KEY  ( id )
-) ;
-create index FKE3F0F49224A87D9F on qna_questions ( category_id );
+TABLESPACE SAKAIDATA;
 
-CREATE TABLE qna_ATTACHMENT (
-  id                    	varchar2(255)   NOT NULL,
-  question_id       	  	varchar2(255)   NOT NULL,
-  attachment_id				varchar2(255)   NOT NULL,
-  PRIMARY KEY ( id )
-);
+ALTER TABLE SAKAIDBA.QNA_CUSTOM_EMAIL_LIST DROP PRIMARY KEY CASCADE;
+
+DROP TABLE SAKAIDBA.QNA_CUSTOM_EMAIL_LIST CASCADE CONSTRAINTS;
+
+CREATE TABLE SAKAIDBA.QNA_CUSTOM_EMAIL_LIST
+(
+  ID           VARCHAR2(255)               NOT NULL,
+  OPTIONS_ID   VARCHAR2(255)               NOT NULL,
+  OWNERID      VARCHAR2(255)               NOT NULL,
+  EMAIL        VARCHAR2(255)               NOT NULL,
+  DATECREATED  TIMESTAMP(6)                     DEFAULT NULL
+)
+
+TABLESPACE SAKAIDATA;
+
+ALTER TABLE SAKAIDBA.QNA_OPTIONS DROP PRIMARY KEY CASCADE;
+
+DROP TABLE SAKAIDBA.QNA_OPTIONS CASCADE CONSTRAINTS;
+
+CREATE TABLE SAKAIDBA.QNA_OPTIONS
+(
+  ID                     VARCHAR2(255)     NOT NULL,
+  OWNERID                VARCHAR2(255)     NOT NULL,
+  LOCATION               VARCHAR2(255)     NOT NULL,
+  DATELASTMODIFIED       TIMESTAMP(6)           DEFAULT NULL,
+  ANONYMOUSALLOWED       CHAR(1)           DEFAULT NULL,
+  MODERATED              CHAR(1)           DEFAULT NULL,
+  EMAILNOTIFICATION      CHAR(1)           DEFAULT NULL,
+  EMAILNOTIFICATIONTYPE  VARCHAR2(255)     DEFAULT NULL,
+  DEFAULTSTUDENTVIEW     VARCHAR2(255)     DEFAULT NULL
+)
+
+TABLESPACE SAKAIDATA;
+
+ALTER TABLE SAKAIDBA.QNA_QUESTIONS DROP PRIMARY KEY CASCADE;
+
+DROP TABLE SAKAIDBA.QNA_QUESTIONS CASCADE CONSTRAINTS;
+
+CREATE TABLE SAKAIDBA.QNA_QUESTIONS
+(
+  ID                 VARCHAR2(255)         NOT NULL,
+  CATEGORY_ID        VARCHAR2(255)         DEFAULT NULL,
+  OWNERID            VARCHAR2(255)         NOT NULL,
+  LASTMODIFIERID     VARCHAR2(255)         NOT NULL,
+  LOCATION           VARCHAR2(255)         NOT NULL,
+  QUESTIONTEXT       LONG                       NOT NULL,
+  VIEWS              NUMBER(11)                 NOT NULL,
+  DATELASTMODIFIED   TIMESTAMP(6)               NOT NULL,
+  DATECREATED        TIMESTAMP(6)               NOT NULL,
+  SORTORDER          NUMBER(11)                 NOT NULL,
+  ANONYMOUS          CHAR(1)               NOT NULL,
+  PUBLISHED          CHAR(1)               NOT NULL,
+  NOTIFY             CHAR(1)               NOT NULL,
+  HIDDEN             CHAR(1)               DEFAULT NULL
+)
+
+TABLESPACE SAKAIDATA;
+
+ALTER TABLE SAKAIDBA.QNA_ATTACHMENT DROP PRIMARY KEY CASCADE;
+
+DROP TABLE SAKAIDBA.QNA_ATTACHMENT CASCADE CONSTRAINTS;
+
+CREATE TABLE SAKAIDBA.QNA_ATTACHMENT
+(
+  ID                 VARCHAR2(255)         NOT NULL,
+  QUESTION_ID        VARCHAR2(255)         NOT NULL,
+  ATTACHMENTID       VARCHAR2(255)         NOT NULL
+)
+
+TABLESPACE SAKAIDATA;
+
+CREATE INDEX SAKAIDBA.FK63487CFAB9F9349F ON SAKAIDBA.QNA_ANSWERS
+
+(QUESTION_ID)
+
+TABLESPACE SAKAIDATA;
+
+CREATE INDEX SAKAIDBA.FKD08CBF742EDEC7B5 ON SAKAIDBA.QNA_CUSTOM_EMAIL_LIST
+
+(OPTIONS_ID)
+
+TABLESPACE SAKAIDATA;
+
+CREATE INDEX SAKAIDBA.FKE3F0F49224A87D9F ON SAKAIDBA.QNA_QUESTIONS
+
+(CATEGORY_ID)
+
+TABLESPACE SAKAIDATA;
+
+CREATE INDEX SAKAIDBA.FK2420E5EB9F9349F ON SAKAIDBA.QNA_ATTACHMENT
+
+(QUESTION_ID)
+
+TABLESPACE SAKAIDATA;
+
+DROP PUBLIC SYNONYM QNA_ANSWERS;
+
+CREATE PUBLIC SYNONYM QNA_ANSWERS FOR SAKAIDBA.QNA_ANSWERS;
+
+DROP PUBLIC SYNONYM QNA_CATEGORIES;
+
+CREATE PUBLIC SYNONYM QNA_CATEGORIES FOR SAKAIDBA.QNA_CATEGORIES;
+
+DROP PUBLIC SYNONYM QNA_CUSTOM_EMAIL_LIST;
+
+CREATE PUBLIC SYNONYM QNA_CUSTOM_EMAIL_LIST FOR SAKAIDBA.QNA_CUSTOM_EMAIL_LIST;
+
+DROP PUBLIC SYNONYM QNA_OPTIONS;
+
+CREATE PUBLIC SYNONYM QNA_OPTIONS FOR SAKAIDBA.QNA_OPTIONS;
+
+DROP PUBLIC SYNONYM QNA_QUESTIONS;
+
+CREATE PUBLIC SYNONYM QNA_QUESTIONS FOR SAKAIDBA.QNA_QUESTIONS;
+
+DROP PUBLIC SYNONYM QNA_ATTACHMENT;
+
+CREATE PUBLIC SYNONYM QNA_ATTACHMENT FOR SAKAIDBA.QNA_ATTACHMENT;
+
+ALTER TABLE SAKAIDBA.QNA_ANSWERS ADD (
+
+ PRIMARY KEY (ID)
+
+   USING INDEX
+
+   TABLESPACE SAKAIDATA);
+
+ALTER TABLE SAKAIDBA.QNA_CATEGORIES ADD (
+
+  PRIMARY KEY (ID)
+
+    USING INDEX
+
+    TABLESPACE SAKAIDATA);
+
+ALTER TABLE SAKAIDBA.QNA_CUSTOM_EMAIL_LIST ADD (
+
+  PRIMARY KEY (ID)
+
+    USING INDEX
+
+    TABLESPACE SAKAIDATA);
+
+ALTER TABLE SAKAIDBA.QNA_OPTIONS ADD (
+
+  PRIMARY KEY (ID)
+
+    USING INDEX
+
+    TABLESPACE SAKAIDATA);
+
+ALTER TABLE SAKAIDBA.QNA_QUESTIONS ADD (
+
+  PRIMARY KEY (ID)
+
+    USING INDEX
+
+    TABLESPACE SAKAIDATA);
+
+ALTER TABLE SAKAIDBA.QNA_ATTACHMENT ADD (
+
+  PRIMARY KEY (ID)
+
+    USING INDEX
+
+    TABLESPACE SAKAIDATA);
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_QUESTIONS TO SAKAI;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_OPTIONS TO SAKAI;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_CUSTOM_EMAIL_LIST TO SAKAI;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_CATEGORIES TO SAKAI;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_ANSWERS TO SAKAI;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON  SAKAIDBA.QNA_ATTACHMENT TO SAKAI;

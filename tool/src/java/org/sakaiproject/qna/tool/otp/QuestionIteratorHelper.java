@@ -26,19 +26,17 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
-import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.utils.QuestionsSorter;
-import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.qna.tool.utils.ViewHelper;
 
 public class QuestionIteratorHelper {
 	
 	private ExternalLogic externalLogic;
 	private PermissionLogic permissionLogic;
 	private QuestionsSorter questionsSorter; 
-	private SessionManager sessionManager;
 	private QnaQuestion current;
 	private List<QnaQuestion> questionList;
+    private ViewHelper viewHelper;
 	
 	public void setCurrentQuestion(QnaQuestion current) {
 		if (current == null || current.getId() == null) {
@@ -85,18 +83,9 @@ public class QuestionIteratorHelper {
 	
 	public String getListTypeMessageKey() {
 		checkSetup();
-		ToolSession toolSession = sessionManager.getCurrentToolSession();
 		
-		String viewType;
-		String sortBy;
-		
-		if (toolSession == null) {
-			viewType = ViewTypeConstants.ALL_DETAILS;
-			sortBy = SortByConstants.VIEWS;
-		} else {
-			viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
-			sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
-		}
+		String viewType = viewHelper.getViewType();
+		String sortBy = viewHelper.getSortBy();
 		
 		if (ViewTypeConstants.CATEGORIES.equals(viewType)) {
 			return "qna.question-iterator.category";
@@ -120,37 +109,17 @@ public class QuestionIteratorHelper {
 	
 	private List<QnaQuestion> getCurrentList() {
 		checkSetup();
-		ToolSession toolSession = sessionManager.getCurrentToolSession();
 		
-		String viewType;
-		String sortBy;
-		String sortDir;
+		String viewType = viewHelper.getViewType();
+		String sortBy = viewHelper.getSortBy();
+		String sortDir = viewHelper.getSortDir();
 		
-		if (toolSession == null) {
-			viewType = ViewTypeConstants.ALL_DETAILS;
-			sortBy = SortByConstants.VIEWS;
-			sortDir = SortByConstants.SORT_DIR_ASC;
-		} else {
-			viewType = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
-			sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
-			if (toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR) != null) {
-				sortDir = (String)toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR);		
-			} else {
-				sortDir =  SortByConstants.SORT_DIR_ASC;
-			}
-		}
-
 		String location = externalLogic.getCurrentLocationId();
 		List<QnaQuestion> questions = questionsSorter.getSortedQuestionList(location, viewType, sortBy, permissionLogic.canUpdate(location, externalLogic.getCurrentUserId()),SortByConstants.SORT_DIR_DESC.equals(sortDir));
 		
 		return questions;
 	}
 	
-    public void setSessionManager(SessionManager sessionManager) {
-    	  this.sessionManager = sessionManager;
-     }
-
-
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
@@ -162,6 +131,10 @@ public class QuestionIteratorHelper {
 	public void setQuestionsSorter(QuestionsSorter questionsSorter) {
 		this.questionsSorter = questionsSorter;
 	}
+	
+    public void setViewHelper(ViewHelper viewHelper) {
+    	this.viewHelper = viewHelper;
+    }
 	
 	public void checkSetup() {
 		if (current == null) {

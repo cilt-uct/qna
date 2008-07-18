@@ -24,7 +24,6 @@ import java.util.List;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
-import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 import org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper;
@@ -38,8 +37,7 @@ import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
-import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.qna.tool.utils.ViewHelper;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
@@ -79,7 +77,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private PermissionLogic permissionLogic;
     private OptionsLogic optionsLogic;
     private BeanGetter ELEvaluator;
-    private SessionManager sessionManager;
+    private ViewHelper viewHelper;
 
     public String getViewID() {
         return VIEW_ID;
@@ -126,10 +124,10 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
         this.ELEvaluator = ELEvaluator;
     }
 
-    public void setSessionManager(SessionManager sessionManager) {
-  	  this.sessionManager = sessionManager;
+    public void setViewHelper(ViewHelper viewHelper) {
+    	this.viewHelper = viewHelper;
     }
-
+    
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
@@ -137,8 +135,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		// Depending on default or one selected view type, send through parameter
 
 		SortPagerViewParams params = (SortPagerViewParams) viewparams;
-
-		setupSession(params.viewtype, params.sortBy, params.sortDir);
 		QuestionListRenderer renderer = getRenderer(params);
 
 		UIMessage.make(tofill, "page-title", "qna.view-questions.title");
@@ -260,7 +256,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	 */
 	private QuestionListRenderer getRenderer(SortPagerViewParams params) {
 		QuestionListRenderer renderer = null;
-		ToolSession toolSession = sessionManager.getCurrentToolSession();
 
 		if (params.viewtype != null) { // Type has been selected
 			if (params.viewtype.equals(ViewTypeConstants.CATEGORIES)) {
@@ -276,40 +271,16 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			} else {
 				renderer = standardQuestionListRenderer; // Just make default standard list for now
 			}
-			setupSession(params.viewtype,params.sortBy, params.sortDir);
+			viewHelper.setupSession(params.viewtype,params.sortBy, params.sortDir);
 		} else {
-			String view = null;
-			String sortBy = null;
-			String sortDir = null;
-
-			if (toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR) != null) {
-				view = (String)toolSession.getAttribute(QuestionListRenderer.VIEW_TYPE_ATTR);
-				sortBy = (String)toolSession.getAttribute(QuestionListRenderer.SORT_BY_ATTR);
-				if (toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR) != null) {
-					sortDir = (String)toolSession.getAttribute(QuestionListRenderer.SORT_DIR_ATTR);
-				}
-
-			} else { // default
-				String defaultView = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getDefaultStudentView();
-				if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
-					view = ViewTypeConstants.CATEGORIES;
-				} else if (defaultView.equals(QnaConstants.MOST_POPULAR_VIEW)){
-					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-						view = ViewTypeConstants.ALL_DETAILS; // Admin users see all details
-					} else {
-						view = ViewTypeConstants.STANDARD;
-					}
-					sortBy = SortByConstants.VIEWS;
-				} else { // Shouldn't happen
-					view = ViewTypeConstants.CATEGORIES;
-				}
-			}
+			String view = viewHelper.getViewType();
+			String sortBy = viewHelper.getSortBy();
+			String sortDir = viewHelper.getSortDir();
 
 			renderer = getRendererForViewType(view);
 			params.viewtype = view;
 			params.sortBy = sortBy;
 			params.sortDir = sortDir;
-			setupSession(view,sortBy, sortDir);
 		}
 
 		return renderer;
@@ -326,21 +297,6 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 			}
 		}
 		return null;
-	}
-
-	private void setupSession(String viewType, String sortBy, String sortDir) {
-		ToolSession toolSession = sessionManager.getCurrentToolSession();
-		if (viewType != null) {
-			toolSession.setAttribute(QuestionListRenderer.VIEW_TYPE_ATTR, viewType);
-		}
-
-		if (sortBy != null) {
-			toolSession.setAttribute(QuestionListRenderer.SORT_BY_ATTR, sortBy);
-		}
-
-		if (sortDir != null) {
-			toolSession.setAttribute(QuestionListRenderer.SORT_DIR_ATTR, sortDir);
-		}
 	}
 
 }

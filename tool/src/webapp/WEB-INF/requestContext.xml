@@ -40,8 +40,8 @@
 	<bean id="QuestionIteratorHelper" class="org.sakaiproject.qna.tool.otp.QuestionIteratorHelper">
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic"/>
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
-		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
 		<property name="questionsSorter" ref="QuestionsSorter"/>
+		<property name="viewHelper" ref ="ViewHelper" />
 	</bean>
 
 	<bean id="CategoryQuestionListRenderer"
@@ -255,7 +255,7 @@
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="ELEvaluator" ref="ELEvaluator"/>
-		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+		<property name="viewHelper" ref="ViewHelper"/> 
 	</bean>
 
 	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">
@@ -270,7 +270,14 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 	</bean>
-
+	
+	<bean id="ViewHelper" class="org.sakaiproject.qna.tool.utils.ViewHelper"> 
+		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
+		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+	</bean>
+	
 	<!-- OTP -->
 	<bean id="DeleteMultiplesHelper" class="org.sakaiproject.qna.tool.otp.DeleteMultiplesHelper">
 	</bean>

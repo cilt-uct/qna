@@ -37,6 +37,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
+		<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.SearchLogic" class="org.sakaiproject.qna.logic.impl.SearchLogicImpl">

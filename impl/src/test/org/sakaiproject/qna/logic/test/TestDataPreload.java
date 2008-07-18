@@ -120,8 +120,6 @@ public class TestDataPreload {
 	
 	public QnaAnswer answer1_location3 = new QnaAnswer(question1_location3, USER_LOC_3_UPDATE_1, "ANSWER", false, false, false);
 	
-	public QnaQuestion question1_location4 = new QnaQuestion(null, TestDataPreload.USER_UPDATE, TestDataPreload.LOCATION4_ID,"Test Question 6", 0, new Date(), new Date(),0,false,true,false);
-	
 	/**
 	 * Preload a bunch of test data into the database
 	 * 
@@ -170,10 +168,6 @@ public class TestDataPreload {
 		question1_location3.addAnswer(answer1_location3);
 		dao.save(question1_location3);
 		dao.save(answer1_location3);
-		
-		dao.save(question1_location4);
-		
-		
 	}
 
 }

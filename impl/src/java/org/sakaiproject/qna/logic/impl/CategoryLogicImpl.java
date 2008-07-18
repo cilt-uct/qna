@@ -24,11 +24,14 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
+import org.sakaiproject.genericdao.api.search.Restriction;
+import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
+import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -39,6 +42,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	private ExternalLogic externalLogic;
 	private org.sakaiproject.qna.dao.QnaDao dao;
 	private ExternalEventLogic externalEventLogic;
+	private QnaBundleLogic qnaBundleLogic;
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
@@ -55,7 +59,11 @@ public class CategoryLogicImpl implements CategoryLogic {
 	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
 		this.externalEventLogic = externalEventLogic;
 	}
-
+	
+	public void setQnaBundleLogic(QnaBundleLogic qnaBundleLogic) {
+		this.qnaBundleLogic = qnaBundleLogic;
+	}
+	
 	public QnaCategory getCategoryById(String categoryId) {
 		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
@@ -148,6 +156,24 @@ public class CategoryLogicImpl implements CategoryLogic {
 	@SuppressWarnings("unchecked")
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
 		log.debug("CategoryLogicImpl::getCategoriesForLocation");
-		return dao.findByProperties(QnaCategory.class, new String[] {"location"}, new Object[] {locationId}, new int[] { ByPropsFinder.EQUALS});
+		List<QnaCategory> toReturn = dao.findBySearch(QnaCategory.class, new Search( new String[] {"location"}, new Object[] {locationId}, new int[] { Restriction.EQUALS}));
+		
+		if (toReturn.size() == 0) { // If location has no categories yet create default "general category"
+			toReturn.add(createGeneralCategory(locationId));
+		}
+		return toReturn;
 	}
+	
+	/**
+	 * Creates "general category"
+	 * @param locationId
+	 * @return
+	 */
+	private QnaCategory createGeneralCategory(String locationId) {
+		QnaCategory category = createDefaultCategory(locationId, "default",qnaBundleLogic.getString("qna.default-category.text"));
+		dao.save(category);
+		externalEventLogic.postEvent(ExternalEventLogic.EVENT_CATEGORY_CREATE, category);
+		return category;
+	}
+	
 }

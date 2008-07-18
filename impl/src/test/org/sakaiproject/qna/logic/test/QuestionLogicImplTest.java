@@ -396,9 +396,4 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(questions.contains(tdp.question5_location1));
 	}
 	
-	public void testGetQuestionsWithoutCategories() {
-		List<QnaQuestion> questions = questionLogic.getPublishedQuestionsWithoutCategory(LOCATION4_ID);
-		assertEquals(1, questions.size());
-		assertTrue(questions.contains(tdp.question1_location4));
-	}
 }

@@ -111,10 +111,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 		return l;
 	}
 	
-	public List<QnaQuestion> getPublishedQuestionsWithoutCategory(String locationId) {
-		return dao.findBySearch(QnaQuestion.class, new Search(new String[] {"location", "category", "published"},new Object[]{locationId, "",true}, new int[] {Restriction.EQUALS,Restriction.NULL,Restriction.EQUALS}));
-	}
-	
 	public QnaQuestion getQuestionById(String questionId) {
 		return (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
 	}

@@ -25,12 +25,14 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
+import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
+import org.sakaiproject.qna.logic.test.stubs.QnaBundleLogicStub;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
@@ -46,7 +48,8 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 	
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
 	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
-
+	private QnaBundleLogic bundleLogicStub = new QnaBundleLogicStub();
+	
 	private TestDataPreload tdp = new TestDataPreload();
 
 	protected String[] getConfigLocations() {
@@ -93,6 +96,7 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		categoryLogic.setPermissionLogic(permissionLogic);
 		categoryLogic.setExternalLogic(externalLogicStub);
 		categoryLogic.setExternalEventLogic(externalEventLogicStub);
+		categoryLogic.setQnaBundleLogic(bundleLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);
@@ -230,6 +234,16 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		categoryLogic.setNewCategoryDefaults(category, LOCATION1_ID, USER_UPDATE);
 		assertEquals(category.getLocation(),LOCATION1_ID);
 		assertEquals(category.getOwnerId(),USER_UPDATE);
+	}
+	
+	public void testCreateGeneralCategory() {
+		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(LOCATION4_ID);
+		assertEquals(1, categories.size());
+		assertEquals(bundleLogicStub.getString("qna.default-category.text"), categories.get(0).getCategoryText());
+		
+		// Confire it doesn't get created more than once
+		categories = categoryLogic.getCategoriesForLocation(LOCATION4_ID);
+		assertEquals(1, categories.size());
 	}
 
 }

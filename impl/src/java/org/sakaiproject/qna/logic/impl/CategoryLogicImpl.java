@@ -111,7 +111,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 			qnaCategory.setDateLastModified(now);
 			qnaCategory.setOwnerId(ownerId);
 			qnaCategory.setLocation(locationId);
-			qnaCategory.setQuestions(null);
 			qnaCategory.setHidden(Boolean.FALSE);
 			qnaCategory.setSortOrder(new Integer(0));
 			qnaCategory.setHidden(false);

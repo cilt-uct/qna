@@ -66,7 +66,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	private static final String EDIT_ICON_URL = "/library/image/silk/page_white_edit.png";
 	private static final String LIGHTBULB_ON_ICON_URL = "/library/image/silk/lightbulb.png";
 	private static final String LIGHTBULB_OFF_ICON_URL = "/library/image/silk/lightbulb_off.png";
-	private static final String DELETE_ICON_URL = "/library/image/silk/delete.png";
+	private static final String DELETE_ICON_URL = "/library/image/silk/cross.png";
 	
 	private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;

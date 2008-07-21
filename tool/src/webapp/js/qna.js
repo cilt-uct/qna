@@ -176,6 +176,7 @@
 			}
 	    }
 		div.appendChild(newInput);
+		resizeToolFrame();
 	}
 
 	function removeCategoryInput(div_id, index_value_id, div_to_remove) {
@@ -249,6 +250,7 @@
 				}
 			}
 		}
+		resizeToolFrame();
 	}
 
 	function initOrganiser() {

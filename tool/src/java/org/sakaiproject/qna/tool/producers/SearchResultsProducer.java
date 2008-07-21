@@ -86,24 +86,24 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		UIMessage.make(tofill, "page-title", "qna.searchresults.title");
 		UIMessage.make(tofill, "search", "qna.searchresults.search", new String[]{params.search});
 
-		UIMessage.make(tofill, "categories", "qna.searchresults.categories");
+//		UIMessage.make(tofill, "categories", "qna.searchresults.categories");
 		UIMessage.make(tofill, "questions", "qna.searchresults.questions");
 		UIMessage.make(tofill, "answers", "qna.searchresults.answers");
 
-		List<QnaCategory> categoriesList = searchLogic.getCategories(params.search);
+//		List<QnaCategory> categoriesList = searchLogic.getCategories(params.search);
 
 		int results = 0;
 		
-		for (QnaCategory category : categoriesList) {
-			if (display(category)) {
-				UIBranchContainer categoryBranch = UIBranchContainer.make(tofill, "category:");
-				UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
-				UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
-				UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
-				results++;
-			}
-		}
-		
+//		for (QnaCategory category : categoriesList) {
+//			if (display(category)) {
+//				UIBranchContainer categoryBranch = UIBranchContainer.make(tofill, "category:");
+//				UIInternalLink.make(categoryBranch, "view-category-link", UIMessage.make("qna.searchresults.view"), new CategoryParams(CategoryProducer.VIEW_ID, "1", category.getCategoryText(),category.getId()));
+//				UIOutput.make(categoryBranch, "category-text", category.getCategoryText());
+//				UIOutput.make(categoryBranch, "category-timestamp",  DateUtil.getSimpleDateTime(category.getDateLastModified()));
+//				results++;
+//			}
+//		}
+//		
 		List<QnaQuestion> questionsList = searchLogic.getQuestions(params.search);
 		
 		for (QnaQuestion qnaQuestion : questionsList) {

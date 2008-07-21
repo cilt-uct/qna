@@ -29,9 +29,10 @@ import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class OrganiserHelper {
 
-	public String[] catorder;
-	public String[] queorder;
-	public String[] questionCategoryOrder;
+	// Instansiate to empty arrays
+	public String[] catorder = new String[0];
+	public String[] queorder = new String[0];
+	public String[] questionCategoryOrder = new String[0];
 	
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;

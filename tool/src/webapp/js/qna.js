@@ -148,7 +148,6 @@
 	}
 
 	function addCategoryInput(div_id, index_value_id, div_to_copy) {
-		document.getElementById('remove-cat').style.display='';
 		var div = document.getElementById(div_id);
 		var index = document.getElementById(index_value_id);
 		var newInput = document.getElementById(div_to_copy).cloneNode(true);
@@ -173,6 +172,7 @@
 			if (newInput.childNodes[i].id == 'remove-cat') {
 				var cNode = newInput.childNodes[i];
 				cNode.id = ':'+(indexInt+1)+':remove-cat';
+				cNode.style.display = '';
 			}
 	    }
 		div.appendChild(newInput);

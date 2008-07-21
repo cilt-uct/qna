@@ -175,8 +175,10 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 					UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), false));
 				}
 				
-				UILink.make(categoryContainer, "delete-category-icon", DELETE_ICON_URL);
-				UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				if (categoryCount != 1) { // First category should not be deletable
+					UILink.make(categoryContainer, "delete-category-icon", DELETE_ICON_URL);
+					UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				}
 			}
 			
 			UISelectChoice.make(categoryContainer, "category-sort-order-checkbox", catorder.getFullID(), catorderlist.size());

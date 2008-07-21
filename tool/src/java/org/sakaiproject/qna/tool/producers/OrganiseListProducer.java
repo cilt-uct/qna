@@ -175,7 +175,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 					UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), false));
 				}
 				
-				if (categoryCount != 1) { // First category should not be deletable
+				if (categories.size() != 1) { // If there is only one category it should not be deletable
 					UILink.make(categoryContainer, "delete-category-icon", DELETE_ICON_URL);
 					UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
 				}

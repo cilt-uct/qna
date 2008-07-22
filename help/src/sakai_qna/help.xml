@@ -15,12 +15,6 @@
 	     <property name="location"><value>/sakai_qna/QNA_AskQuestion.html</value></property>
 	</bean>
 	
-	<bean id="qnaAddQuestion" class="org.sakaiproject.component.app.help.model.ResourceBean">
-	     <property name="docId"><value>qnaAddQuestion</value></property>
-	     <property name="name"><value>Add a question</value></property>
-	     <property name="location"><value>/sakai_qna/QNA_AddQuestion.html</value></property>
-	</bean>
-	
 	<bean id="qnaAnswerQuestion" class="org.sakaiproject.component.app.help.model.ResourceBean">
 	     <property name="docId"><value>qnaAnswerQuestion</value></property>
 	     <property name="name"><value>Answer a question</value></property>
@@ -74,7 +68,6 @@
                   <list>
                         <ref bean="qnaOverview" />
 						<ref bean="qnaAskQuestion" />
-						<ref bean="qnaAddQuestion" />
 						<ref bean="qnaAnswerQuestion" />
 						<ref bean="qnaEditQuestion" />
 						<ref bean="qnaPublishQuestion" />

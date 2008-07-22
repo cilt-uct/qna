@@ -241,6 +241,7 @@
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="messages" ref="targettedMessageList"/>
+		<property name="messageLocator" ref="messageLocator" />
 	</bean>
 
 	<bean

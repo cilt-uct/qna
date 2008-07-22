@@ -37,6 +37,7 @@ import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
+import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.UIBranchContainer;
@@ -50,6 +51,8 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.components.decorators.DecoratorList;
+import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -75,6 +78,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	private PermissionLogic permissionLogic;
 	private QuestionLogic questionLogic;
     private TargettedMessageList messages;
+	private MessageLocator messageLocator;
     
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
@@ -107,6 +111,10 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 		this.messages = messages;
 	}
 	
+	public void setMessageLocator(MessageLocator messageLocator) {
+        this.messageLocator = messageLocator;
+    }
+	
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
@@ -137,7 +145,6 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 			}
 		}
 		
-		
 		UIMessage.make(tofill, "page-title", "qna.organise.page-title");
 		UIMessage.make(tofill, "page-message1", "qna.organise.page-message1");
 		UIMessage.make(tofill, "page-message2", "qna.organise.page-message2");
@@ -165,19 +172,23 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 			
 			if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 				UILink.make(categoryContainer, "edit-category-icon", EDIT_ICON_URL);
-				UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				UIInternalLink editCategory = UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				editCategory.decorators =  new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.edit-category-tooltip")));
 				
 				if (qnaCategory.getHidden()) {
 					UILink.make(categoryContainer, "hide-category-icon", LIGHTBULB_OFF_ICON_URL);
-					UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), true));
+					UIInternalLink showCategory = UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), true));
+					showCategory.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.show-category-tooltip")));
 				} else {
 					UILink.make(categoryContainer, "hide-category-icon", LIGHTBULB_ON_ICON_URL);
-					UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), false));
+					UIInternalLink hideCategory = UIInternalLink.make(categoryContainer, "hide-category-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "cat", qnaCategory.getId(), false));
+					hideCategory.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.hide-category-tooltip")));
 				}
 				
 				if (categories.size() != 1) { // If there is only one category it should not be deletable
 					UILink.make(categoryContainer, "delete-category-icon", DELETE_ICON_URL);
-					UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					UIInternalLink deleteCategory = UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					deleteCategory.decorators =	new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.delete-category-tooltip")));
 				}
 			}
 			
@@ -195,18 +206,22 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 				
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 						UILink.make(questionContainer, "edit-question-icon", EDIT_ICON_URL);
-						UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId()));
-
+						UIInternalLink editQuestion = UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						editQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.edit-question-tooltip")));
+							
 						if (qnaQuestion.getHidden()) {
 							UILink.make(questionContainer, "hide-question-icon", LIGHTBULB_OFF_ICON_URL);
-							UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), true));
+							UIInternalLink showQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), true));
+							showQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.show-question-tooltip")));
 						} else {
 							UILink.make(questionContainer, "hide-question-icon", LIGHTBULB_ON_ICON_URL);
-							UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), false));
+							UIInternalLink hideQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), false));
+							hideQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.hide-question-tooltip")));
 						}
 
 						UILink.make(questionContainer, "delete-question-icon", DELETE_ICON_URL);
-						UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						UIInternalLink deleteQuestion = UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						deleteQuestion.decorators =  new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.delete-question-tooltip")));
 					}
 					
 					UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());

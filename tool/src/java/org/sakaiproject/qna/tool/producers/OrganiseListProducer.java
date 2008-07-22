@@ -117,7 +117,6 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
 		
 		UIInitBlock.make(tofill, "init-organiser", "initOrganiser", new Object[]{});
 		

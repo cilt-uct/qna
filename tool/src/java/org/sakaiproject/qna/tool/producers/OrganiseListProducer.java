@@ -72,7 +72,6 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 	private static final String DELETE_ICON_URL = "/library/image/silk/cross.png";
 	
 	private NavBarRenderer navBarRenderer;
-    private SearchBarRenderer searchBarRenderer;
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;
 	private PermissionLogic permissionLogic;
@@ -82,9 +81,6 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
     
 	public void setNavBarRenderer(NavBarRenderer navBarRenderer) {
 		this.navBarRenderer = navBarRenderer;
-	}
-	public void setSearchBarRenderer(SearchBarRenderer searchBarRenderer) {
-		this.searchBarRenderer = searchBarRenderer;
 	}
     	
 	public String getViewID() {

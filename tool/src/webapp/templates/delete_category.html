@@ -18,8 +18,8 @@
 		<h2 rsf:id="page-title">Delete Confirmation</h2>
 
 
-		<form rsf:id="delete-categories-form" id="delete-categories-form" method="post">
-			<div rsf:id="category-list-table:" class="layoutViewContainer">
+		<form rsf:id="delete-categories-form" id="delete-categories-form" method="post" style="display:inline;margin:0;padding:0;">
+			<div rsf:id="category-list-table:" class="layoutViewContainer" style="display:inline;">
 			<table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Delete Categories Table">
 			<thead>
 				<tr id="category-headings" rsf:id="category-headings:">
@@ -38,11 +38,13 @@
 				</tr>
 			</tbody>
 			</table>
-			<input rsf:id="delete-button" type="submit" value="Delete"/>
+				<p class="act" style="display:inline;">
+					<input rsf:id="delete-button" class="active" type="submit" value="Delete"/>
+				</p>	
 			</div>
 		</form>
-		<form rsf:id="cancel-delete-categories-form" id="cancel-delete-categories-form" method="post">
-			<input rsf:id="cancel-button" type="submit" value="Cancel"/>
+		<form rsf:id="cancel-delete-categories-form" id="cancel-delete-categories-form" method="post" style="margin:0;padding:0;display:inline;">
+			<input rsf:id="cancel-button" type="submit" value="Cancel" style="display:inline;"/>
 		</form>
 	</body>
 </html>

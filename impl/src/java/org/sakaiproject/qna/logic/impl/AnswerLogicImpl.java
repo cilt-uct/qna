@@ -127,8 +127,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 					if (answer.isPrivateReply()) {
 						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());
 					} else if (question.getNotify()) {
-						if (answer.isApproved()) {
-							notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());}
+						notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());
 					}
 					
 				} else {

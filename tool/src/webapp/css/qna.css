@@ -98,3 +98,11 @@ div.wrap {
 	border: 1px solid #BBBBBB;
 }
 
+.question{
+margin: 10px 300px 0 0;
+font-weight: bold;
+}
+
+.answers{
+margin-left: 40px;
+}

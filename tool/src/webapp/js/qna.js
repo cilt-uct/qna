@@ -311,3 +311,4 @@
 	function resizeToolFrame() {
 		setMainFrameHeight(window.frameElement.id);
 	}
+

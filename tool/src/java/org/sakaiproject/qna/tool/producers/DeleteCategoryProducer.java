@@ -33,6 +33,7 @@ import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIDeletionBinding;
+import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
@@ -70,7 +71,6 @@ public class DeleteCategoryProducer implements ViewComponentProducer, Navigation
 		String categoryLocator = "CategoryLocator";
 
 		UIForm form = UIForm.make(tofill, "delete-categories-form");
-		UIForm cancelForm = UIForm.make(tofill, "cancel-delete-categories-form");
 
 		UIJointContainer listTable = new UIJointContainer(form, "category-list-table", "category-list-table:");
 
@@ -85,7 +85,7 @@ public class DeleteCategoryProducer implements ViewComponentProducer, Navigation
 
 		String categoryOTP = categoryLocator+"."+params.id;
 
-		form.parameters.add(new UIDeletionBinding(categoryOTP));
+//		form.parameters.add(new UIDeletionBinding(categoryOTP));
 
 		QnaCategory category = categoryLogic.getCategoryById(params.id);
 		List<QnaQuestion> questionList = category.getQuestions();
@@ -113,8 +113,9 @@ public class DeleteCategoryProducer implements ViewComponentProducer, Navigation
 		UIOutput.make(categoryContainer, "answers", answerTotal+"");
 		UIOutput.make(categoryContainer, "modified", DateUtil.getSimpleDate(category.getDateLastModified()));
 
-		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
-		UICommand.make(cancelForm, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
+		UICommand delete = UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete"), categoryLocator + ".delete");
+		delete.addParameter(new UIELBinding(categoryOTP+".id", category.getId()));
+		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
 	public List<NavigationCase> reportNavigationCases() {

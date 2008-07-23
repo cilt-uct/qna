@@ -98,7 +98,7 @@ public class CategoryLocator implements EntityBeanLocator {
 		}
 	}
 
-	public String remove() {
+	public String delete() {
 		for (QnaCategory category : delivered.values()) {
             categoryLogic.removeCategory(category.getId(), externalLogic.getCurrentLocationId());
 	        messages.addMessage(
@@ -107,7 +107,7 @@ public class CategoryLocator implements EntityBeanLocator {
                 TargettedMessage.SEVERITY_INFO)
     		);
         }
-		return "removed";
+		return "delete";
 	}
 
 	public void set(String beanname, Object toset) {

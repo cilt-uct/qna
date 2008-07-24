@@ -203,6 +203,7 @@ public class MultipleBeanMediator {
 	// Used when publishing questions
 	public String publish() {
 		saveAll();
+		messages.clear();
 		for (QnaQuestion question : questionLocator.getDeliveredBeans().values()) {
 			try
 			{

@@ -70,17 +70,26 @@ public class AnswerLocator implements EntityBeanLocator {
 
     public String saveAll() {
         for (QnaAnswer answer : delivered.values()) {
-        	answerLogic.saveAnswer(answer, externalLogic.getCurrentLocationId());
-        	
-        	if (answer.isPrivateReply()) {
-		        messages.addMessage(new TargettedMessage("qna.reply-privately.save-success",
-		                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
-		                TargettedMessage.SEVERITY_INFO));
-        		
+        	if (TextUtil.isEmptyWithoutTags(answer.getAnswerText())) {
+        		if (answer.isPrivateReply()) {
+        			messages.addMessage(new TargettedMessage("qna.add-answer.private-reply-empty",null,TargettedMessage.SEVERITY_ERROR));
+        		} else {
+        			messages.addMessage(new TargettedMessage("qna.add-answer.answer-empty",null,TargettedMessage.SEVERITY_ERROR));
+        		}
+        		return "empty-answer";
         	} else {
-		        messages.addMessage(new TargettedMessage("qna.add-answer.save-success",
-		                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
-		                TargettedMessage.SEVERITY_INFO));
+        		answerLogic.saveAnswer(answer, externalLogic.getCurrentLocationId());
+	        	
+	        	if (answer.isPrivateReply()) {
+			        messages.addMessage(new TargettedMessage("qna.reply-privately.save-success",
+			                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
+			                TargettedMessage.SEVERITY_INFO));
+	        		
+	        	} else {
+			        messages.addMessage(new TargettedMessage("qna.add-answer.save-success",
+			                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
+			                TargettedMessage.SEVERITY_INFO));
+	        	}
         	}
         }
         return "saved";

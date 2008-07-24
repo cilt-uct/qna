@@ -37,7 +37,6 @@ public class SortHeaderRenderer {
     	SortPagerViewParams params = (SortPagerViewParams) viewparams;
     	UIJointContainer joint = new UIJointContainer(tofill, divID, "sortHeader:", ""+1);
 
-    	
     	//Link Text
     	UIMessage.make(joint, "text", link_text);
     	if (params.sortBy.equals(sort_by)){

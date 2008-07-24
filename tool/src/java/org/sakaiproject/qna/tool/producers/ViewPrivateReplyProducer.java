@@ -120,7 +120,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("publish",new QuestionParams(PublishQueuedQuestionProducer.VIEW_ID)));
-		list.add(new NavigationCase("delete",new SimpleViewParameters(DeleteAnswerProducer.VIEW_ID)));
+		list.add(new NavigationCase("delete",new QuestionParams(DeleteQuestionProducer.VIEW_ID)));
 		return list;
 	}
 

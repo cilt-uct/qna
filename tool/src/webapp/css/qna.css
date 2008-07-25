@@ -99,10 +99,31 @@ div.wrap {
 }
 
 .question{
-margin: 10px 300px 0 0;
+margin: 10px 300px 5px 0;
 font-weight: bold;
 }
 
-.answers{
-margin-left: 40px;
+.answer{
+margin-bottom:10px
+}
+
+.detail{
+margin-bottom:10px;
+color:#666666;
+}
+
+.tableviews{
+width: 4em;
+}
+.tableanswers{
+width: 5em;
+}
+.tablecreated{
+width: 6em;
+}
+.tablemodified{
+width: 6em;
+}
+.tableremove{
+width: 5em;
 }

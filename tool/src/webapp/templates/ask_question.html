@@ -26,18 +26,13 @@
  
   <form rsf:id="ask-question-form" method="post" enctype="multipart/form-data">
 	  <div rsf:id="question-input:">
-	          <textarea rows="10" cols="80" name="question">This should be the FCK editor. </textarea>
+	          <textarea rows="10" cols="50" name="question">This should be the FCK editor. </textarea>
 	  </div>
 
 	  <input rsf:id="answer-notify" id="answer-notify" name="answer-notify" type="checkbox" value="anonymous" />
 	  <label rsf:id="answer-notify-label" for="answer-notify">Notify me of answers to this question</label>
-	  <h4 rsf:id="category-title">Category</h4>
-	  <!--<div rsf:id="category-text">Please select...</div><br/>-->
-	  <p><select rsf:id="category-select" name="category-select"><option value="1">Will be replaced</option></select> or <label rsf:id="new-category-label" for="new-category-name"></label> <span class="tier2"><input rsf:id="new-category-name" size="60" name="new-category-name" type="text"/></span></p>
+	  <p rsf:id="category-title">Category <select rsf:id="category-select" name="category-select"><option value="1">Will be replaced</option></select> or <label rsf:id="new-category-label" for="new-category-name"></label> <span class="tier2"><input rsf:id="new-category-name" size="60" name="new-category-name" type="text"/></span></p>
 
-	  <!--<h4 rsf:id="attachments-title">Attachments</h4>
-  
-	  <p class="instruction" rsf:id="no-attachments-msg" id="no-attachments-msg">No attachments yet</p>-->
 	  <div rsf:id="attachmentsViewTool:"></div>
 	  
 	  <p>

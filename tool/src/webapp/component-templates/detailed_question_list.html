@@ -4,10 +4,10 @@
 <head>
    <title rsf:id="page-title"></title>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-   <link href="/library/skin/tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
-   <link href="/library/skin/default/tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="tool_base.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
+   <link href="tool.css" rsf:id="scr=portal-matter" type="text/css" rel="stylesheet" media="all" />
    <script type="text/javascript" rsf:id="scr=portal-matter" language="JavaScript" src="/library/js/headscripts.js"></script>
-   <link href="../css/qna.css" type="text/css" rel="stylesheet" media="all" />
+   <link href="qna.css" type="text/css" rel="stylesheet" media="all" />
 </head>
 
 <body>
@@ -19,12 +19,12 @@
 	<table class="listHier lines" style="table-layout:fixed;">
 		<thead>
 			<th><a href="" rsf:id="tableheader.question:">Question</a></th>
-			<th width="7%"><a rsf:id="tableheader.views:" >Views</a></th>
-			<th width="9%"><a rsf:id="tableheader.answers:" >Answers</a></th>
-			<th width="10%"><a rsf:id="tableheader.created:" >Created</a></th>
-			<th width="10%"><a rsf:id="tableheader.modified:">Modified</a></th>
+			<th class="tableviews"><a rsf:id="tableheader.views:" >Views</a></th>
+			<th class="tableanswers"><a rsf:id="tableheader.answers:" >Answers</a></th>
+			<th class="tablecreated"><a rsf:id="tableheader.created:" >Created</a></th>
+			<th class="tablemodified"><a rsf:id="tableheader.modified:">Modified</a></th>
 			<th><a rsf:id="tableheader.category:" >Category</a></th>
-			<th rsf:id="tableheader.remove:" width="8%">Remove?</th>
+			<th class="tableremove" rsf:id="tableheader.remove:">Remove?</th>
 		</thead>
 		<tbody>
 			<tr rsf:id="question-entry:">

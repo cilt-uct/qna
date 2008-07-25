@@ -34,7 +34,6 @@ import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.OrganiseParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
-import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.TextUtil;
 
 import uk.org.ponder.messageutil.MessageLocator;

@@ -104,7 +104,16 @@ font-weight: bold;
 }
 
 .answer{
+margin-top:10px;
 margin-bottom:10px
+}
+
+.answerText{
+margin-bottom:4px
+}
+
+.attachments{
+margin-bottom:4px
 }
 
 .detail{

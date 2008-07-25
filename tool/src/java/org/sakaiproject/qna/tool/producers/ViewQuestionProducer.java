@@ -38,6 +38,7 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 
+import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
@@ -51,6 +52,9 @@ import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UIVerbatim;
+import uk.org.ponder.rsf.components.decorators.DecoratorList;
+import uk.org.ponder.rsf.components.decorators.UIAlternativeTextDecorator;
+import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
@@ -74,6 +78,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
     private QuestionLogic questionLogic;
     private AttachmentsViewRenderer attachmentsViewRenderer;
     private OptionsLogic optionsLogic;
+   
     
 	public String getViewID() {
 		return VIEW_ID;
@@ -115,6 +120,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		this.optionsLogic = optionsLogic;
 	}
 	
+
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		String answerLocator = "AnswerLocator";
@@ -154,9 +160,14 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		}
 
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-			UIInternalLink.make(tofill, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
-			UIInternalLink.make(tofill, "move-category-link", new QuestionParams(MoveQuestionProducer.VIEW_ID, question.getId()));
-			UIInternalLink.make(tofill, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, question.getId()));
+			UIInternalLink editLink = UIInternalLink.make(tofill, "edit-question-link", UIMessage.make("qna.view-question.edit"), new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
+			editLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.edit.tip")));
+			
+			UIInternalLink moveLink = UIInternalLink.make(tofill, "move-category-link", UIMessage.make("qna.view-question.move-category"), new QuestionParams(MoveQuestionProducer.VIEW_ID, question.getId()));
+			moveLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.move-category.tip")));
+			
+			UIInternalLink deleteLink = UIInternalLink.make(tofill, "delete-question-link", UIMessage.make("qna.general.delete"), new QuestionParams(DeleteQuestionProducer.VIEW_ID, question.getId()));
+			deleteLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.delete.tip")));
 		}
 
 		UIMessage.make(tofill,"answers-title","qna.view-question.answers-title",new Object[] {question.getAnswers().size()});
@@ -206,7 +217,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		List<QnaAnswer> answers = question.getAnswers();
 		Collections.sort(answers,new AnswersListComparator(permissionLogic,externalLogic));
 		if (answers.size() == 0) {
-			UIMessage.make(tofill,"no-anwers", "qna.view-question.no-answers");
+			UIMessage.make(tofill,"no-answers", "qna.view-question.no-answers");
 		} else {
 			for (QnaAnswer qnaAnswer : answers) {
 				UIBranchContainer answer = UIBranchContainer.make(tofill, "answer:");
@@ -214,17 +225,22 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				// Heading of answer
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 					UIOutput.make(answer, "answer-detail");
-					UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
+					UILink answerIcon = UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
+					answerIcon.decorators = new DecoratorList(
+							new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.officialpic.alt")));
 					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-given-answer");
 				} else if (qnaAnswer.isApproved()) {
 					UIOutput.make(answer, "answer-detail");
-					UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
+					UILink answericon = UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
+					answericon.decorators = new DecoratorList(new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.aprovedpic.alt")));
+					
 					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-approved-answer");
 				}
 
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					if  (qnaAnswer.getOwnerId().equals(externalLogic.getCurrentUserId())) {
-						UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
+						UIInternalLink editLink = UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
+						editLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.edit-answer.tip")));
 					} else if (qnaAnswer.isApproved() && !permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 						UILink link = UIInternalLink.make(answer,"withdraw-approval-link",UIMessage.make("qna.view-question.withdraw-approval"),new SimpleViewParameters(ViewQuestionProducer.VIEW_ID));
 						UIForm form = UIForm.make(answer,"withdraw-approval-form");
@@ -238,7 +254,8 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 						UICommand command = UICommand.make(form,"mark-correct-command",answerLocator + ".approve");
 						UIInitBlock.make(answer, "make-link-submit", "make_link_call_command", new Object[]{link,command});
 					}
-					UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new AnswerParams(DeleteAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
+					UIInternalLink deleteLink = UIInternalLink.make(answer,"delete-answer-link",UIMessage.make("qna.general.delete"),new AnswerParams(DeleteAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
+					deleteLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.delete-answer.tip")));
 				}
 
 				UIVerbatim.make(answer, "answer-text", qnaAnswer.getAnswerText());

@@ -213,6 +213,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+
 	</bean>
 
 	<bean

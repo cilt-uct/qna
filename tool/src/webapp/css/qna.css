@@ -122,10 +122,10 @@ color:#666666;
 }
 
 .tableviews{
-width: 4em;
+width: 5em;
 }
 .tableanswers{
-width: 5em;
+width: 6em;
 }
 .tablecreated{
 width: 6em;
@@ -133,6 +133,13 @@ width: 6em;
 .tablemodified{
 width: 6em;
 }
+.tablecategory{
+width: 14em;
+}
 .tableremove{
 width: 5em;
+}
+
+.questionBox{
+width: 80%;
 }

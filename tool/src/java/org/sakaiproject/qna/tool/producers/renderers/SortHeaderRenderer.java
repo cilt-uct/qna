@@ -26,6 +26,8 @@ import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UILink;
 import uk.org.ponder.rsf.components.UIMessage;
+import uk.org.ponder.rsf.components.decorators.DecoratorList;
+import uk.org.ponder.rsf.components.decorators.UITooltipDecorator;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
 public class SortHeaderRenderer {
@@ -52,7 +54,8 @@ public class SortHeaderRenderer {
     	((SortPagerViewParams)new_params).sortBy = sort_by;
     	((SortPagerViewParams)new_params).sortDir = newSortDir;
 
-    	UIInternalLink.make(joint, "link", new_params);
+    	UIInternalLink link = UIInternalLink.make(joint, "link", new_params);
+    	link.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make(link_text + "-tooltip")));
     }
 
 }

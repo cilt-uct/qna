@@ -38,7 +38,6 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 
-import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;

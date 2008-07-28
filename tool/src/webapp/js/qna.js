@@ -175,6 +175,11 @@
 				cNode.style.display = '';
 			}
 	    }
+
+	    if (index.value > 0) {
+	    	document.getElementById('remove-cat').style.display = '';
+	    }
+	    
 		div.appendChild(newInput);
 		resizeToolFrame();
 	}
@@ -192,10 +197,6 @@
 		var indexInt = parseInt(index.value) - 1;
 		index.value = indexInt;
 		div.removeChild(cat2Remove);
-
-		if (indexInt == 0) {
-			document.getElementById('remove-cat').style.display='none';
-		}
 
 		var cLength  = div.childNodes.length-1;
 		var catNr = 0;
@@ -250,6 +251,11 @@
 				}
 			}
 		}
+		
+		if (index.value == 0) {
+	    	document.getElementById('remove-cat').style.display = 'none';
+	    }
+		
 		resizeToolFrame();
 	}
 

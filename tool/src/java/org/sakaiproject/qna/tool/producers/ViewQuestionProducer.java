@@ -226,13 +226,17 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {
 					UIOutput.make(answer, "answer-detail");
 					UILink answerIcon = UILink.make(answer, "answer-icon","/library/image/silk/user_suit.png");
-					answerIcon.decorators = new DecoratorList(
+					DecoratorList dec = new DecoratorList(
 							new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.officialpic.alt")));
+					dec.add(new UITooltipDecorator(UIMessage.make("qna.view-questions.officialpic.alt")));
+					answerIcon.decorators = dec;
 					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-given-answer");
 				} else if (qnaAnswer.isApproved()) {
 					UIOutput.make(answer, "answer-detail");
 					UILink answericon = UILink.make(answer, "answer-icon","/library/image/silk/accept.png");
-					answericon.decorators = new DecoratorList(new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.aprovedpic.alt")));
+					DecoratorList dec = new DecoratorList(new UIAlternativeTextDecorator(UIMessage.make("qna.view-questions.aprovedpic.alt")));
+					dec.add(new UITooltipDecorator(UIMessage.make("qna.view-questions.aprovedpic.alt")));
+					answericon.decorators = dec;
 					
 					UIMessage.make(answer,"answer-heading","qna.view-question.lecturer-approved-answer");
 				}

@@ -90,23 +90,24 @@ public class OrganiserHelper {
 		for (int k=0; k<queorder.length; k++) {
 			String id = queorder[k];
 			QnaQuestion question = questionLogic.getQuestionById(id);
-
-			String catid = questionCategoryOrder[k];
-			if (tmpcatid.equals(catid)) {
-				nr++;
-			} else {
-				nr = 0;
-			}
-			tmpcatid = catid;
-
-			question.setSortOrder(new Integer(nr));
-						
-			if (!question.getCategory().getId().equals(questionCategoryOrder[k])) {
-				question.setCategory(categoryLogic.getCategoryById(questionCategoryOrder[k]));
-			}
 			
-			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
-			
+			if (question != null) {
+				String catid = questionCategoryOrder[k];
+				if (tmpcatid.equals(catid)) {
+					nr++;
+				} else {
+					nr = 0;
+				}
+				tmpcatid = catid;
+	
+				question.setSortOrder(new Integer(nr));
+							
+				if (!question.getCategory().getId().equals(questionCategoryOrder[k])) {
+					question.setCategory(categoryLogic.getCategoryById(questionCategoryOrder[k]));
+				}
+				
+				questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
+			}
 		}
 		messages.addMessage(new TargettedMessage("qna.organise.successful-save",null,TargettedMessage.SEVERITY_INFO));
 		return "saved";

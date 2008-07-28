@@ -81,8 +81,11 @@ public class OrganiserHelper {
 		for (int k=0; k<catorder.length; k++) {
 			String id = catorder[k];
 			QnaCategory category = categoryLogic.getCategoryById(id);
-			category.setSortOrder(new Integer(k));
-			categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
+			
+			if (category != null) {
+				category.setSortOrder(new Integer(k));
+				categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
+			}
 		}
 
 		int nr = 0;

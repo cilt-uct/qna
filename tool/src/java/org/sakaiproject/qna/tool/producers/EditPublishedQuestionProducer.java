@@ -112,6 +112,9 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 		if (result.resultingView instanceof QuestionParams) {
 			QuestionParams params = (QuestionParams)result.resultingView;
 			params.questionid = ((QuestionParams)incoming).questionid;
+			if (((QuestionParams)incoming).returnToViewID != null) {
+				params.viewID = ((QuestionParams)incoming).returnToViewID;
+			}
 		}
 	}
 }

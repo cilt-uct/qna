@@ -18,9 +18,8 @@
 
 package org.sakaiproject.qna.tool.params;
 
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
-public class CategoryParams extends SimpleViewParameters {
+public class CategoryParams extends SimpleReturnToParams {
 
 	public String id;
 	public String number;
@@ -51,5 +50,10 @@ public class CategoryParams extends SimpleViewParameters {
 		this.number = number;
 		this.categoryText = categoryText;
 		this.id = id;
+	}
+	
+	public CategoryParams(String viewID, String number, String categoryText, String id, String returnToViewID) {
+		this(viewID,number,categoryText,id);
+		this.returnToViewID = returnToViewID;
 	}
 }

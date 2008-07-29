@@ -27,6 +27,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
+import org.sakaiproject.qna.tool.params.SimpleReturnToParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
@@ -37,6 +38,8 @@ import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -45,7 +48,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class DeleteQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
+public class DeleteQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter,ActionResultInterceptor {
 
 	public static final String VIEW_ID = "delete_question";
 	private NavBarRenderer navBarRenderer;
@@ -135,5 +138,15 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 
 	public ViewParameters getViewParameters() {
 		return new QuestionParams();
+	}
+
+	public void interceptActionResult(ARIResult result,
+			ViewParameters incoming, Object actionReturn) {
+		if (incoming instanceof SimpleReturnToParams) {
+			if (((SimpleReturnToParams)incoming).returnToViewID != null) {
+				((SimpleViewParameters)result.resultingView).viewID = ((SimpleReturnToParams)incoming).returnToViewID;
+			}
+		}
+
 	}
 }

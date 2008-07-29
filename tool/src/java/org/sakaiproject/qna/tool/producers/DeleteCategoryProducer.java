@@ -25,6 +25,7 @@ import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.CategoryParams;
+import org.sakaiproject.qna.tool.params.SimpleReturnToParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.TextUtil;
@@ -32,12 +33,13 @@ import org.sakaiproject.qna.tool.utils.TextUtil;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
-import uk.org.ponder.rsf.components.UIDeletionBinding;
 import uk.org.ponder.rsf.components.UIELBinding;
 import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.flow.ARIResult;
+import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
@@ -46,7 +48,7 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
-public class DeleteCategoryProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter {
+public class DeleteCategoryProducer implements ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
 	public static final String VIEW_ID = "delete_category";
 	private NavBarRenderer navBarRenderer;
@@ -128,4 +130,14 @@ public class DeleteCategoryProducer implements ViewComponentProducer, Navigation
 	public ViewParameters getViewParameters() {
 		return new CategoryParams();
 	}
+	
+	public void interceptActionResult(ARIResult result,
+			ViewParameters incoming, Object actionReturn) {
+		if (incoming instanceof SimpleReturnToParams) {
+			if (((SimpleReturnToParams)incoming).returnToViewID != null) {
+				((SimpleViewParameters)result.resultingView).viewID = ((SimpleReturnToParams)incoming).returnToViewID;
+			}
+		}
+	}
+	
 }

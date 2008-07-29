@@ -18,9 +18,8 @@
 
 package org.sakaiproject.qna.tool.params;
 
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
-public class QuestionParams extends SimpleViewParameters {
+public class QuestionParams extends SimpleReturnToParams {
 
 	public String questionid;
 	public String[] questionids;
@@ -35,6 +34,11 @@ public class QuestionParams extends SimpleViewParameters {
 	public QuestionParams(String viewid, String questionid) {
 		this.viewID = viewid;
 		this.questionid = questionid;
+	}
+	
+	public QuestionParams(String viewid, String questionid, String returnToViewID) {
+		this(viewid,questionid);
+		this.returnToViewID = returnToViewID;
 	}
 	
 	public QuestionParams(String viewid, String questionid, boolean direct) {

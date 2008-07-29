@@ -166,7 +166,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 			
 			if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 				UILink.make(categoryContainer, "edit-category-icon", EDIT_ICON_URL);
-				UIInternalLink editCategory = UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+				UIInternalLink editCategory = UIInternalLink.make(categoryContainer, "edit-category-link", new CategoryParams(CategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId(),VIEW_ID));
 				editCategory.decorators =  new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.edit-category-tooltip")));
 				
 				if (qnaCategory.getHidden()) {
@@ -181,7 +181,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 				
 				if (categories.size() != 1) { // If there is only one category it should not be deletable
 					UILink.make(categoryContainer, "delete-category-icon", DELETE_ICON_URL);
-					UIInternalLink deleteCategory = UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId()));
+					UIInternalLink deleteCategory = UIInternalLink.make(categoryContainer, "delete-category-link", new CategoryParams(DeleteCategoryProducer.VIEW_ID, "1", qnaCategory.getCategoryText(), qnaCategory.getId(),VIEW_ID));
 					deleteCategory.decorators =	new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.delete-category-tooltip")));
 				}
 			}
@@ -200,7 +200,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 				
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 						UILink.make(questionContainer, "edit-question-icon", EDIT_ICON_URL);
-						UIInternalLink editQuestion = UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						UIInternalLink editQuestion = UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId(),VIEW_ID));
 						editQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.edit-question-tooltip")));
 							
 						if (qnaQuestion.getHidden()) {
@@ -214,7 +214,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 						}
 
 						UILink.make(questionContainer, "delete-question-icon", DELETE_ICON_URL);
-						UIInternalLink deleteQuestion = UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId()));
+						UIInternalLink deleteQuestion = UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId(),VIEW_ID));
 						deleteQuestion.decorators =  new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.delete-question-tooltip")));
 					}
 					

@@ -54,12 +54,14 @@ import uk.org.ponder.rsf.components.decorators.UIAlternativeTextDecorator;
 import uk.org.ponder.stringutil.StringList;
 
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
-
-	ExternalLogic externalLogic;
-	PermissionLogic permissionLogic;
-	CategoryLogic categoryLogic;
-	QuestionLogic questionLogic;
-
+	private static final String EXPAND_ICON_URL = "/library/image/sakai/expand.gif";
+	private static final String COLLAPSE_ICON_URL = "/library/image/sakai/collapse.gif";
+	
+	private ExternalLogic externalLogic;
+	private PermissionLogic permissionLogic;
+	private CategoryLogic categoryLogic;
+	private QuestionLogic questionLogic;
+	
     public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
@@ -173,11 +175,8 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	 *	Initiate javascript to show/hide by category
 	 */
 	private void initViewToggle(UIBranchContainer entry, UIBranchContainer category) {
-		String expandIconSrc = "/library/image/sakai/expand.gif";
-		String collapseIconSrc = "/library/image/sakai/collapse.gif";
-
-		UILink expandIcon = UILink.make(category, "expand-icon", expandIconSrc);
-		UILink collapseIcon = UILink.make(category, "collapse-icon", collapseIconSrc);
+		UILink expandIcon = UILink.make(category, "expand-icon", EXPAND_ICON_URL);
+		UILink collapseIcon = UILink.make(category, "collapse-icon", COLLAPSE_ICON_URL);
 
 		UIInitBlock.make(category,"onclick-init","init_questions_toggle", new Object[]{expandIcon,collapseIcon,entry});
 	}

@@ -125,4 +125,11 @@ public interface QuestionLogic {
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
 	
+	/**
+	 * Retrieves URL for a question based on a link
+	 * @param question Question to retrieve URL for
+	 * @param view Specific view for Question
+	 * @return String with URL
+	 */
+	public String retrieveURL(QnaQuestion question, String view);
 }

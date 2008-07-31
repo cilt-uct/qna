@@ -20,10 +20,13 @@ package org.sakaiproject.qna.logic.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
@@ -46,6 +49,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 public class QuestionLogicImpl implements QuestionLogic {
 
 	private static Log log = LogFactory.getLog(QuestionLogicImpl.class);
+	public static final String QUESTION_ID= "questionid";
 	
 	private PermissionLogic permissionLogic;
 	private OptionsLogic optionsLogic;
@@ -54,6 +58,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	private AttachmentLogic attachmentLogic;
 	private NotificationLogic notificationLogic;
 	private ExternalEventLogic externalEventLogic;
+	private DeveloperHelperService developerHelperService;
 	
 	private QnaDao dao;
 
@@ -83,6 +88,10 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
 		this.externalEventLogic = externalEventLogic;
+	}
+	
+	public void setDeveloperHelperService(DeveloperHelperService developerHelperService) {
+		this.developerHelperService = developerHelperService;
 	}
 	
 	public void setDao(QnaDao dao) {
@@ -318,6 +327,12 @@ public class QuestionLogicImpl implements QuestionLogic {
         }
 
 		return myList.subList(begIndex, endIndex);
+	}
+	
+	public String retrieveURL(QnaQuestion question, String view) {
+		Map<String,String> params = new HashMap<String, String>();
+		params.put(QUESTION_ID,question.getId());
+		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, null);
 	}
 	
 }

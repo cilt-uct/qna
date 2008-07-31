@@ -65,6 +65,7 @@
 		<property name="notificationLogic" ref="org.sakaiproject.qna.logic.NotificationLogic" />
 		<property name="externalEventLogic" ref="org.sakaiproject.qna.logic.ExternalEventLogic" />	
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
+		<property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"></property>
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.AnswerLogic" class="org.sakaiproject.qna.logic.impl.AnswerLogicImpl">
@@ -87,7 +88,7 @@
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
 		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
-		<property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService"></property>
+		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
 	
 	<!-- entity beans -->

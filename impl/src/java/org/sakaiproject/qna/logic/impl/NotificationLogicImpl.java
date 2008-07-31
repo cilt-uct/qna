@@ -18,15 +18,12 @@
 
 package org.sakaiproject.qna.logic.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 
 public class NotificationLogicImpl implements NotificationLogic {
@@ -34,12 +31,11 @@ public class NotificationLogicImpl implements NotificationLogic {
 	private ExternalLogic externalLogic;
 	private QnaBundleLogic qnaBundleLogic;
 	private ServerConfigurationService serverConfigurationService;
-	private DeveloperHelperService developerHelperService;
+	private QuestionLogic questionLogic;
 	
 	public static final String NEW_LINE = "\n";
 	public static final String VIEW_QUESTION = "/view_question";
 	public static final String PUBLISH_QUESTION = "/queued_question";
-	public static final String QUESTION_ID= "questionid";
 	
 	public void setServerConfigurationService(
 			ServerConfigurationService serverConfigurationService)
@@ -55,8 +51,8 @@ public class NotificationLogicImpl implements NotificationLogic {
 		this.qnaBundleLogic = qnaBundleLogic;
 	}
 	
-	public void setDeveloperHelperService(DeveloperHelperService developerHelperService) {
-		this.developerHelperService = developerHelperService;
+	public void setQuestionLogic(QuestionLogic questionLogic) {
+		this.questionLogic = questionLogic;
 	}
 	
 	public void sendPrivateReplyNotification(String[] userids, QnaQuestion question, String privateReplyText) {
@@ -159,7 +155,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newAnswerNotification.append(qnaBundleLogic.getString("qna.notification.new-answer-body4"));
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(NEW_LINE);
-		newAnswerNotification.append(retrieveURL(question,VIEW_QUESTION));
+		newAnswerNotification.append(questionLogic.retrieveURL(question,VIEW_QUESTION));
 	
 		return newAnswerNotification.toString();
 	}
@@ -178,7 +174,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newQuestionNotification.append(qnaBundleLogic.getString("qna.notification.new-question-body3"));
 		newQuestionNotification.append(NEW_LINE);
 		newQuestionNotification.append(NEW_LINE);	
-		newQuestionNotification.append(retrieveURL(question, question.isPublished() ? VIEW_QUESTION : PUBLISH_QUESTION));
+		newQuestionNotification.append(questionLogic.retrieveURL(question, question.isPublished() ? VIEW_QUESTION : PUBLISH_QUESTION));
 		return newQuestionNotification.toString();
 	}
 	
@@ -191,15 +187,4 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return externalLogic.getLocationTitle(externalLogic.getCurrentLocationId());
 	}
 	
-	/**
-	 * Retrieves URL for Question to put in notification
-	 * @param question
-	 * @return
-	 */
-	private String retrieveURL(QnaQuestion question, String view) {
-		Map<String,String> params = new HashMap<String, String>();
-		params.put(QUESTION_ID,question.getId());
-		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, null);
-	}
-
 }

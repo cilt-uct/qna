@@ -9,7 +9,7 @@
 	</organization>
 	<inceptionYear>2007</inceptionYear>
 	<packaging>pom</packaging>
-	<version>0.9.5</version>
+	<version>1.0</version>
 
 
 	<parent>
@@ -45,12 +45,12 @@
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-api</artifactId>
-				<version>0.9.5</version>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sakaiproject.qna</groupId>
 				<artifactId>qna-impl</artifactId>
-				<version>0.9.5</version>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.sakaiproject</groupId>
@@ -67,8 +67,8 @@
 
     <!-- define source code repository location -->
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/contrib/qna/tags/qna-0.9.5</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/contrib/qna/tags/qna-0.9.5</developerConnection>
-    <url>https://source.sakaiproject.org/contrib/qna/tags/qna-0.9.5</url>
+    <connection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/contrib/qna/trunk</url>
   </scm>
 </project>

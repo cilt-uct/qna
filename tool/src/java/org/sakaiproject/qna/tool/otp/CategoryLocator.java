@@ -58,26 +58,41 @@ public class CategoryLocator implements EntityBeanLocator {
 	}
 
 	public String edit() {
+		String categoryName = null;
 		for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-//	        messages.addMessage(
-//        		new TargettedMessage("qna.category.save-success",
-//				new Object[] { category.getCategoryText() },
-//                TargettedMessage.SEVERITY_INFO)
-//    		);
+	        categoryName = category.getCategoryText();
+
         }
+		if (delivered.size() > 1) {
+			messages.addMessage(new TargettedMessage("qna.category.update-multiple",null,TargettedMessage.SEVERITY_INFO));
+		} else {
+            messages.addMessage(
+            		new TargettedMessage("qna.category.edit-success",
+    				new Object[] { categoryName },
+                    TargettedMessage.SEVERITY_INFO)
+        		);
+		}
+		
         return "edited";
 	}
 
     public String save() {
+    	String categoryName = null;
         for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-//	        messages.addMessage(
-//        		new TargettedMessage("qna.category.save-success",
-//				new Object[] { category.getCategoryText() },
-//                TargettedMessage.SEVERITY_INFO)
-//    		);
+            categoryName = category.getCategoryText();
         }
+        if (delivered.size() > 1) {
+        	messages.addMessage(new TargettedMessage("qna.category.saved-multiple",null,TargettedMessage.SEVERITY_INFO));
+        } else {
+	        messages.addMessage(
+    		new TargettedMessage("qna.category.save-success",
+			new Object[] {categoryName },
+            TargettedMessage.SEVERITY_INFO)
+		);
+        }
+        
         return "saved";
     }
 
@@ -87,11 +102,21 @@ public class CategoryLocator implements EntityBeanLocator {
 			String categoryText = qnaCategory.getCategoryText();
 			categoryLogic.removeCategory(beanname, externalLogic.getCurrentLocationId());
 			delivered.remove(beanname);
-			messages.addMessage(
-        		new TargettedMessage("qna.category.delete-success",
-				new Object[] { categoryText },
-                TargettedMessage.SEVERITY_INFO)
-    		);
+			if (messages.size() == 0) {
+				if (delivered.size() > 0) {
+		            messages.addMessage(
+		            		new TargettedMessage("qna.category.delete-multiple-success",
+		    				null,
+		                    TargettedMessage.SEVERITY_INFO)
+		        		);
+				} else {
+					messages.addMessage(
+			        		new TargettedMessage("qna.category.delete-success",
+							new Object[] { categoryText },
+			                TargettedMessage.SEVERITY_INFO)
+			    		);
+				}
+			}
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -101,12 +126,22 @@ public class CategoryLocator implements EntityBeanLocator {
 	public String delete() {
 		for (QnaCategory category : delivered.values()) {
             categoryLogic.removeCategory(category.getId(), externalLogic.getCurrentLocationId());
-	        messages.addMessage(
-        		new TargettedMessage("qna.category.delete-success",
-				new Object[] { category.getCategoryText() },
-                TargettedMessage.SEVERITY_INFO)
-    		);
+	        if (delivered.size() == 1) {
+	            messages.addMessage(
+	            		new TargettedMessage("qna.category.delete-success",
+	    				new Object[] { category.getCategoryText() },
+	                    TargettedMessage.SEVERITY_INFO)
+	        		);
+	        }
         }
+		if (delivered.size() > 1) {
+            messages.addMessage(
+            		new TargettedMessage("qna.category.delete-multiple-success",
+    				null,
+                    TargettedMessage.SEVERITY_INFO)
+        		);
+		}
+		
 		return "delete";
 	}
 

@@ -117,13 +117,10 @@ public class QuestionLocator implements EntityBeanLocator  {
 			if (!key.startsWith(NEW_PREFIX)) {
 				QnaQuestion toEdit = delivered.get(key);
 				questionLogic.saveQuestion(toEdit, externalLogic.getCurrentLocationId());
-				messages.addMessage(
-						new TargettedMessage("qna.ask-question.save-success",
-						new Object[] { TextUtil.stripTags(toEdit.getQuestionText()) },
-						TargettedMessage.SEVERITY_INFO)
-					);
 			}
 		}
+		messages.addMessage(new TargettedMessage("qna.ask-question.updated-success",null,TargettedMessage.SEVERITY_INFO)
+	);
 		return SAVED;
 	}
 

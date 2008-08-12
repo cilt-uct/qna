@@ -89,13 +89,11 @@ public class AnswerLocator implements EntityBeanLocator {
         		answerLogic.saveAnswer(answer, externalLogic.getCurrentLocationId());
 	        	
 	        	if (answer.isPrivateReply()) {
-			        messages.addMessage(new TargettedMessage("qna.reply-privately.save-success",
-			                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
+			        messages.addMessage(new TargettedMessage("qna.reply-privately.save-success",null, 
 			                TargettedMessage.SEVERITY_INFO));
 	        		
 	        	} else {
-			        messages.addMessage(new TargettedMessage("qna.add-answer.save-success",
-			                new Object[] { TextUtil.stripTags(answer.getAnswerText()) }, 
+			        messages.addMessage(new TargettedMessage("qna.add-answer.save-success",null, 
 			                TargettedMessage.SEVERITY_INFO));
 	        	}
         	}

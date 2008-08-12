@@ -101,10 +101,10 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 		// Generate warning for associated answers
 		if ((question.isPublished()) && (answerList.size() > 0)) {
 			UIMessage.make(tofill, "error-message2", "qna.warning.answer-associated");
+		} else {
+			// Generate confirmation warning for the delete action
+			UIMessage.make(tofill, "error-message3", "qna.warning.delete-confirmation-note");
 		}
-
-		// Generate confirmation warning for the delete action
-		UIMessage.make(tofill, "error-message3", "qna.warning.delete-confirmation-note");
 
 		// Generate the page title
 		UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");

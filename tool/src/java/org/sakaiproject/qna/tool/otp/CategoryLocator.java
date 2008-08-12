@@ -60,11 +60,11 @@ public class CategoryLocator implements EntityBeanLocator {
 	public String edit() {
 		for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-	        messages.addMessage(
-        		new TargettedMessage("qna.category.save-success",
-				new Object[] { category.getCategoryText() },
-                TargettedMessage.SEVERITY_INFO)
-    		);
+//	        messages.addMessage(
+//        		new TargettedMessage("qna.category.save-success",
+//				new Object[] { category.getCategoryText() },
+//                TargettedMessage.SEVERITY_INFO)
+//    		);
         }
         return "edited";
 	}
@@ -72,11 +72,11 @@ public class CategoryLocator implements EntityBeanLocator {
     public String save() {
         for (QnaCategory category : delivered.values()) {
             categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-	        messages.addMessage(
-        		new TargettedMessage("qna.category.save-success",
-				new Object[] { category.getCategoryText() },
-                TargettedMessage.SEVERITY_INFO)
-    		);
+//	        messages.addMessage(
+//        		new TargettedMessage("qna.category.save-success",
+//				new Object[] { category.getCategoryText() },
+//                TargettedMessage.SEVERITY_INFO)
+//    		);
         }
         return "saved";
     }

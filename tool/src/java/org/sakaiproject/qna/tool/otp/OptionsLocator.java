@@ -64,8 +64,7 @@ public class OptionsLocator implements BeanLocator {
 	public String saveAll() {
 		for (QnaOptions options : delivered.values()) {
 			optionsLogic.saveOptions(options, options.getLocation());
-	        messages.addMessage(new TargettedMessage("qna.options.save-success",
-	                new Object[] { externalLogic.getLocationTitle(options.getLocation()) }, 
+	        messages.addMessage(new TargettedMessage("qna.options.save-success",null, 
 	                TargettedMessage.SEVERITY_INFO));
 			
 			// Only persist if it has changed

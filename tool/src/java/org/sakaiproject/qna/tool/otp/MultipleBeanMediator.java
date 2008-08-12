@@ -133,14 +133,12 @@ public class MultipleBeanMediator {
 		if (newQuestion.isPublished()) {
 			messages.addMessage(
 					new TargettedMessage("qna.ask-question.save-success",
-					new Object[] { TextUtil.stripTags(newQuestion.getQuestionText()) },
+					new Object[] { TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) },
 					TargettedMessage.SEVERITY_INFO)
 				);
 		} else {
 			messages.addMessage(
-					new TargettedMessage("qna.ask-question.save-success-unpublished",
-					new Object[] { TextUtil.stripTags(newQuestion.getQuestionText()) },
-					TargettedMessage.SEVERITY_INFO)
+					new TargettedMessage("qna.ask-question.save-success-unpublished",null,TargettedMessage.SEVERITY_INFO)
 				);
 		}
     	return "saved";

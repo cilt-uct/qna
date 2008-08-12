@@ -49,6 +49,8 @@ import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UISelect;
+import uk.org.ponder.rsf.components.decorators.DecoratorList;
+import uk.org.ponder.rsf.components.decorators.UIDisabledDecorator;
 import uk.org.ponder.rsf.evolvers.TextInputEvolver;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
@@ -163,7 +165,8 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
 	        UIMessage.make(form, "category-title", "qna.ask-question.category");
 	        UIMessage.make(form, "category-text", "qna.ask-question-select-category");
         }
-
+     
+        
         String[] categoriesIds = new String[categories.size()];
         String[] categoriesText = new String[categories.size()];
 
@@ -175,8 +178,12 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         
         boolean displayOr = false;
         if ((permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) && (categories.size() > 0)) {
-        	UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
+        	UISelect dropDown = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
         	displayOr = true;
+        	   //if thee is only 1 category disable the select
+            if (categories.size() ==1 ) {
+            	dropDown.decorators = new DecoratorList(new UIDisabledDecorator(true));
+            }
         }
 
         if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {

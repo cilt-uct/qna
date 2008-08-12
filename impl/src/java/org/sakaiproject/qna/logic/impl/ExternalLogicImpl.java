@@ -296,8 +296,10 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      for (Iterator<String> it=toEmails.iterator();it.hasNext();) {
 	    	  String email = it.next();
 		      try {
-		    	  InternetAddress toAddress = new InternetAddress(email);
-		    	  listAddresses.add(toAddress);
+		    	  if (isValidEmail(email)) {
+		    		  InternetAddress toAddress = new InternetAddress(email);
+		    		  listAddresses.add(toAddress);
+		    	  }
 		      } catch (AddressException e) {
 		    	  log.error("Invalid to address: " + email + ", cannot send email",e);
 		      }
@@ -315,6 +317,27 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      return addresses;
 	}
 
-
+	private boolean isValidEmail(String email) {
+		// TODO: Use a generic Sakai utility class (when a suitable one exists)
+		
+		if (email == null || email.equals(""))
+			return false;
+		
+		email = email.trim();
+		//must contain @
+		if (email.indexOf("@") == -1)
+			return false;
+		
+		//an email can't contain spaces
+		if (email.indexOf(" ") > 0)
+			return false;
+		
+		//"^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$" 
+		if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$")) 
+			return true;
+	
+		log.warn(email + " is not a valid eamil address");
+		return false;
+	}
 	
 }

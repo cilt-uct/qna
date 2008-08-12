@@ -162,7 +162,6 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         if ((!options.isModerated() && categories.size() > 0) || 
         	(permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) && categories.size() > 0) || 
         	permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-	        UIMessage.make(form, "category-title", "qna.ask-question.category");
 	        UIMessage.make(form, "category-text", "qna.ask-question-select-category");
         }
      
@@ -178,6 +177,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         
         boolean displayOr = false;
         if ((permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) || !options.isModerated()) && (categories.size() > 0)) {
+        	UIMessage.make(form, "category-title", "qna.ask-question.category");
         	UISelect dropDown = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
         	displayOr = true;
         	   //if thee is only 1 category disable the select
@@ -186,13 +186,15 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
             }
         }
 
-        if (permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) ||
+        	(permissionLogic.canAddNewCategory(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId()) 
+        		&& !options.isModerated())) {
         	if (displayOr) {
         		UIMessage.make(form,"or","qna.general.or"); }
         	UIMessage.make(form,"new-category-label","qna.ask-question.create-category");
         	UIInput.make(form, "new-category-name", categoryOTP + ".categoryText");
         }
-        
+
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
         
         ToolSession session = sessionManager.getCurrentToolSession();

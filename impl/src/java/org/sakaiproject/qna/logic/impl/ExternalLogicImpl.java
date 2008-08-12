@@ -39,6 +39,7 @@ import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.utils.QNAUtils;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
@@ -296,7 +297,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      for (Iterator<String> it=toEmails.iterator();it.hasNext();) {
 	    	  String email = it.next();
 		      try {
-		    	  if (isValidEmail(email)) {
+		    	  if (QNAUtils.isValidEmail(email)) {
 		    		  InternetAddress toAddress = new InternetAddress(email);
 		    		  listAddresses.add(toAddress);
 		    	  }
@@ -317,27 +318,6 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      return addresses;
 	}
 
-	private boolean isValidEmail(String email) {
-		// TODO: Use a generic Sakai utility class (when a suitable one exists)
-		
-		if (email == null || email.equals(""))
-			return false;
-		
-		email = email.trim();
-		//must contain @
-		if (email.indexOf("@") == -1)
-			return false;
-		
-		//an email can't contain spaces
-		if (email.indexOf(" ") > 0)
-			return false;
-		
-		//"^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$" 
-		if (email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$")) 
-			return true;
-	
-		log.warn(email + " is not a valid eamil address");
-		return false;
-	}
+
 	
 }

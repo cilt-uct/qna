@@ -30,6 +30,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.QNAUtils;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.util.FormattedText;
@@ -104,6 +105,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 		for (QnaQuestion question : delivered.values()) {
 			//question text needs to be escaped
 			String escapedQ = FormattedText.processFormattedText(question.getQuestionText(), new StringBuilder());
+			escapedQ = QNAUtils.cleanupHtmlPtags(escapedQ);
 			question.setQuestionText(escapedQ);
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 		}

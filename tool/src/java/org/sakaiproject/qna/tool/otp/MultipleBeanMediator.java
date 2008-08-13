@@ -86,6 +86,7 @@ public class MultipleBeanMediator {
 		question.setSortOrder(new Integer(categoryToLink.getPublishedQuestions().size()));
 		questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 		
+		messages.clear();
 		if (oldCategory != null) {
 			messages.addMessage(
 					new TargettedMessage("qna.move-question.moved-successfully",
@@ -128,6 +129,7 @@ public class MultipleBeanMediator {
 		}
 
 		newQuestion.setCategory(categoryToLink);
+		messages.clear();
 		questionLocator.saveAll();
 		
 		if (newQuestion.isPublished()) {
@@ -220,10 +222,22 @@ public class MultipleBeanMediator {
 	}
 
 	public String deleteQuestions() {
-
 		return "deletedQuestions";
 	}
-
+	
+	/**
+	 * Special method binding when questions and categories are deleted
+	 * Used for giving correct message
+	 * @return
+	 */
+	public String deleteMultiple() {
+		messages.clear();
+		messages.addMessage(new TargettedMessage("qna.multiple-delete.delete-success",
+               null,
+               TargettedMessage.SEVERITY_INFO));
+		return "delete";
+	}
+	
 	public void setQuestionLocator(QuestionLocator questionLocator) {
 		this.questionLocator = questionLocator;
 	}

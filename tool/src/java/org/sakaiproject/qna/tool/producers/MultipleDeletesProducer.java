@@ -144,8 +144,12 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 
 		//	Generate confirmation warning for the delete action
 		UIMessage.make(tofill, "error-message3", "qna.warning.delete-confirmation-note");
-
-		UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
+		
+		if (params.questionids != null && params.categoryids != null) {
+			UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete"),"MultipleBeanMediator.deleteMultiple");
+		} else {
+			UICommand.make(form, "delete-button", UIMessage.make("qna.general.delete")).setReturn("delete");
+		}
 		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 

@@ -71,15 +71,27 @@ public class QuestionLocator implements EntityBeanLocator  {
 			String questionText = question.getQuestionText();
 
 			questionLogic.removeQuestion(beanname, externalLogic.getCurrentLocationId());
+			delivered.remove(beanname);
 
-			messages.addMessage(
-				new TargettedMessage("qna.delete-question.delete-successful",
-				new Object[] { TextUtil.stripTags(questionText) },
-				TargettedMessage.SEVERITY_INFO)
-			);
+			if (messages.size() == 0) {
+				if (delivered.size() > 0) {
+		            messages.addMessage(
+		            		new TargettedMessage("qna.delete-question.delete-multiple-successful",
+		    				null,
+		                    TargettedMessage.SEVERITY_INFO)
+		        		);
+				} else {
+					messages.addMessage(
+							new TargettedMessage("qna.delete-question.delete-successful",
+							new Object[] {TextUtil.stripTags(question.getQuestionText())},
+							TargettedMessage.SEVERITY_INFO));
+				}
+			}
 			return true;
 		} catch (AttachmentException ae) {
 			messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error", null, TargettedMessage.SEVERITY_ERROR));
+			return true;
+		} catch (Exception e) {
 			return false;
 		}
 	}
@@ -131,12 +143,22 @@ public class QuestionLocator implements EntityBeanLocator  {
 			} catch (AttachmentException ae) {
 				messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_ERROR));
 			} finally {
-				messages.addMessage(
-					new TargettedMessage("qna.delete-question.delete-successful",
-					new Object[] {TextUtil.stripTags(question.getQuestionText())},
-					TargettedMessage.SEVERITY_INFO));
+				if (delivered.size() == 1) {
+					messages.addMessage(
+							new TargettedMessage("qna.delete-question.delete-successful",
+							new Object[] {TextUtil.stripTags(question.getQuestionText())},
+							TargettedMessage.SEVERITY_INFO));
+				}
 			}
 		}
+		
+		if (delivered.size() > 1) {
+			messages.addMessage(
+					new TargettedMessage("qna.delete-question.delete-multiple-successful",
+					null,
+					TargettedMessage.SEVERITY_INFO));
+		}
+		
 		return DELETE;
 	}
 	

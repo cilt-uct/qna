@@ -30,6 +30,11 @@
 	  	<scope>provided</scope>
 	  </dependency>
 
+      <dependency>
+        <groupId>org.sakaiproject</groupId>
+        <artifactId>sakai-entity-api</artifactId>
+        <scope>provided</scope>
+      </dependency>
 
    </dependencies>
 

@@ -18,6 +18,7 @@
 
 package org.sakaiproject.qna.tool.producers.renderers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -26,6 +27,7 @@ import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentTypeImageService;
 import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.model.QnaAttachment;
@@ -44,6 +46,7 @@ public class AttachmentsViewRenderer {
 	private ContentHostingService chs;
 	private ContentTypeImageService ctis;
 	private SessionManager sessionManager;
+	private EntityManager entityManager;
 	
 	private static Log log = LogFactory.getLog(AttachmentsViewRenderer.class);
 	
@@ -59,6 +62,10 @@ public class AttachmentsViewRenderer {
 		this.sessionManager = sessionManager;
 	}
 	
+	public void setEntityManager(EntityManager em) {
+		entityManager = em;
+	}
+	
 	// From session
 	public void makeAttachmentsView(UIContainer tofill, String divId) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
@@ -70,6 +77,7 @@ public class AttachmentsViewRenderer {
 			for (int i = 0; i < refs.size(); i++) {
 				Reference ref = (Reference) refs.get(i);
 				try {
+
 					ContentResource resource = chs.getResource(ref.getId());
 					UIBranchContainer branch = UIBranchContainer.make(joint, "attachment:");
 					UILink.make(branch, "attachment-icon", "/library/image/" + ctis.getContentTypeImage(resource.getContentType()));
@@ -91,12 +99,34 @@ public class AttachmentsViewRenderer {
 		for (QnaAttachment attachment : question.getAttachments()) {
 			try {
 				ContentResource resource = chs.getResource(attachment.getAttachmentId());
+
 				UIBranchContainer branch = UIBranchContainer.make(joint, "attachment:");
 				UILink.make(branch, "attachment-icon", "/library/image/" + ctis.getContentTypeImage(resource.getContentType()));
 				UILink.make(branch, "attachment-link", resource.getProperties().get(ResourceProperties.PROP_DISPLAY_NAME).toString(), resource.getUrl());
 				UILink.make(branch, "attachment-size", resource.getProperties().get(ResourceProperties.PROP_CONTENT_LENGTH).toString());
 			} catch (Exception e) {
-				log.error("Error getting attachment: " + attachment.getAttachmentId(),e);
+				log.error("Error retrieving attachment: " + attachment.getAttachmentId(),e);
+			}
+		}
+	}
+	
+	public void setupFilepickerSession(QnaQuestion question) {
+		ToolSession session = sessionManager.getCurrentToolSession();
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) == null) 
+		{
+			if (question.getAttachments().size() > 0) {
+				List<Reference> attachments = new ArrayList<Reference>();
+				for (QnaAttachment attachment : question.getAttachments()) {
+					try {
+						attachments.add(entityManager.newReference(chs.getReference(attachment.getAttachmentId())));
+					} catch (Exception e) {
+						log.error("Error retrieving attachment: " + attachment.getAttachmentId(),e);
+					}
+				}
+				
+				if (attachments.size() > 0) {
+					session.setAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS,attachments);
+				}
 			}
 		}
 	}

@@ -18,7 +18,11 @@
 
 package org.sakaiproject.qna.logic;
 
+import java.util.List;
+
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 public interface AttachmentLogic {
 	
@@ -28,4 +32,5 @@ public interface AttachmentLogic {
 	 */
 	public void deleteAttachment(String attachmentId) throws AttachmentException;
 	
+	public void synchAttachmentList(QnaQuestion question, List<Reference> attachments);
 }

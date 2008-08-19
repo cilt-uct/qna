@@ -71,6 +71,7 @@
 		<property name="chs" ref="org.sakaiproject.content.api.ContentHostingService" />
 		<property name="ctis" ref="org.sakaiproject.content.api.ContentTypeImageService" />
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+    	<property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager"/>
 	</bean>
 	
 	<bean class="org.sakaiproject.qna.tool.producers.AttachmentsHelperProducer" />
@@ -178,6 +179,7 @@
 		<property name="navBarRenderer" ref="NavbarRenderer" />
 		<property name="richTextEvolver" ref="richTextEvolver" />
 		<property name="ELEvaluator" ref="ELEvaluator" />
+		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 	</bean>
 
 	<bean

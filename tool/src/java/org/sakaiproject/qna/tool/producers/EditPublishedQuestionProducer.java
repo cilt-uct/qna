@@ -22,7 +22,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.qna.model.QnaAttachment;
+import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
+import org.sakaiproject.qna.tool.producers.renderers.AttachmentsViewRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 
 import uk.org.ponder.beanutil.BeanGetter;
@@ -62,7 +67,13 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
     }
-
+    
+    private AttachmentsViewRenderer attachmentsViewRenderer;
+	public void setAttachmentsViewRenderer(AttachmentsViewRenderer attachmentsViewRenderer) {
+		this.attachmentsViewRenderer = attachmentsViewRenderer;
+	}
+	
+    
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
@@ -71,8 +82,9 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 
 		String questionLocator = "QuestionLocator";
 		String questionOTP = questionLocator + "." + params.questionid;
-
-		if (((Collection)ELEvaluator.getBean(questionOTP + ".answers")).size() > 0) {
+		QnaQuestion question = (QnaQuestion)ELEvaluator.getBean(questionOTP);
+		
+		if (question.getAnswers().size() > 0) {
 			// Generate the warning if there is answers present
 			UIMessage.make(tofill, "error-message", "qna.warning.question-has-answers");
 		}
@@ -89,10 +101,15 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 //		Generate the question input box
 		UIInput questiontext = UIInput.make(form, "question-input:",questionOTP + ".questionText");
         richTextEvolver.evolveTextInput(questiontext);
-
+        
+		// Render attachments
+        attachmentsViewRenderer.setupFilepickerSession(question);
+		attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:");
+		UICommand.make(form, "add-attachment-button", UIMessage.make("qna.ask-question.add-remove-attachment")).setReturn("attach");
+        
 		// Generate the different buttons
 		UICommand.make(form, "update-button", UIMessage.make("qna.general.update"),questionLocator + ".edit");
-		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel") ).setReturn("cancel");
+		UICommand.make(form, "cancel-button",UIMessage.make("qna.general.cancel"),questionLocator + ".cancel" );
 
 	}
 
@@ -100,6 +117,7 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase("attach",new AttachmentsHelperParams(AttachmentsHelperProducer.VIEW_ID)));
 		return list;
 	}
 
@@ -116,5 +134,11 @@ public class EditPublishedQuestionProducer implements ViewComponentProducer,Navi
 				params.viewID = ((QuestionParams)incoming).returnToViewID;
 			}
 		}
+		if (result.resultingView instanceof AttachmentsHelperParams) {
+			AttachmentsHelperParams resultParams = (AttachmentsHelperParams)result.resultingView;
+			resultParams.returnToViewID = EditPublishedQuestionProducer.VIEW_ID;
+			resultParams.questionid = ((QuestionParams)incoming).questionid;
+		}
+		
 	}
 }

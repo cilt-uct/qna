@@ -29,7 +29,7 @@ public interface QuestionLogic {
 	/**
 	 * Get a question with a specific id
 	 *
-	 * @param questionId
+	 * @param questionid
 	 * 				unique id of a {@link QnaQuestion}
 	 * @return a {@link QnaQuestion} or null
 	 */
@@ -38,7 +38,7 @@ public interface QuestionLogic {
 	/**
 	 * Check if a question exists
 	 *
-	 * @param questionId
+	 * @param questionid
 	 * 			unique id of a {@link QnaQuestion}
 	 * @return	boolean
 	 */
@@ -57,7 +57,7 @@ public interface QuestionLogic {
 	/**
 	 * Remove a question
 	 *
-	 * @param questionId
+	 * @param questionid
 	 * 				{@link QnaQuestion} object
 	 * @throws AttachmentException 
 	 */
@@ -93,7 +93,7 @@ public interface QuestionLogic {
 	/**
 	 * Publishes question
 	 *
-	 * @param questionId unique id of {@link QnaQuestion}
+	 * @param questionid unique id of {@link QnaQuestion}
 	 * @param locationId a unique id which represents the current location of the user (entity reference)
 	 */
 	public void publishQuestion(String questionId, String locationId) ;
@@ -116,7 +116,7 @@ public interface QuestionLogic {
 	
 	/**
 	 * Add a {@link QnaQuestion} to a {@link QnaCategory}
-	 * @param questionId
+	 * @param questionid
 	 *            {@link QnaQuestion}
 	 * @param categoryId
 	 *            {@link QnaCategory}

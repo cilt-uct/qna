@@ -40,7 +40,7 @@ public interface AnswerLogic {
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId);
 	
 	/**
-	 *  Removes answer 
+	 *  Removes answer from database
 	 *  
 	 * @param answerId  unique id of a {@link QnaAnswer}
 	 * @param locationId unique if for location
@@ -72,7 +72,7 @@ public interface AnswerLogic {
 	public void saveAnswer(QnaAnswer answer, String locationId);
 	
 	/**
-	 * Createds default QnaAnswer object
+	 * Creates default QnaAnswer object
 	 * 
 	 * @param locationId
 	 * @param ownerId

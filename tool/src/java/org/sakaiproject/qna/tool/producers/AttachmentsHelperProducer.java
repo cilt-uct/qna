@@ -52,7 +52,16 @@ public class AttachmentsHelperProducer implements ViewComponentProducer, ViewPar
 	public void interceptActionResult(ARIResult result,
 			ViewParameters incoming, Object actionReturn) {
 		if (result.resultingView instanceof QuestionTextParams) {
-			((QuestionTextParams)result.resultingView).questionText = ((AttachmentsHelperParams)incoming).questionText;
+			QuestionTextParams resultParams = ((QuestionTextParams)result.resultingView);
+			AttachmentsHelperParams incomingParams = ((AttachmentsHelperParams)incoming);
+			resultParams.questionText = incomingParams.questionText;
+			
+			if (incomingParams.returnToViewID != null) {
+				resultParams.viewID = incomingParams.returnToViewID;
+			}
+			if (incomingParams.questionid != null) {
+				resultParams.questionid = incomingParams.questionid;
+			}
 		}
 	}
 

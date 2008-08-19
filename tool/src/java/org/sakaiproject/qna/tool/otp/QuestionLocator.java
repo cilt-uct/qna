@@ -125,14 +125,24 @@ public class QuestionLocator implements EntityBeanLocator  {
 	}
 	
 	public String edit() {
+		ToolSession session = sessionManager.getCurrentToolSession();
+		
 		for (String key : delivered.keySet()) {
 			if (!key.startsWith(NEW_PREFIX)) {
 				QnaQuestion toEdit = delivered.get(key);
+				
+				if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) {
+					attachmentLogic.synchAttachmentList(toEdit, (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
+				}
+				
 				questionLogic.saveQuestion(toEdit, externalLogic.getCurrentLocationId());
 			}
 		}
-		messages.addMessage(new TargettedMessage("qna.ask-question.updated-success",null,TargettedMessage.SEVERITY_INFO)
-	);
+		messages.addMessage(new TargettedMessage("qna.ask-question.updated-success",null,TargettedMessage.SEVERITY_INFO));
+		
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
+	    
 		return SAVED;
 	}
 
@@ -168,17 +178,26 @@ public class QuestionLocator implements EntityBeanLocator  {
 		
 		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
-			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
-			for (int i = 0; i < refs.size(); i++) {
-				Reference ref = (Reference) refs.get(i);
-				try {
-					attachmentLogic.deleteAttachment(ref.getId());
-				} catch (AttachmentException ae) {
-					messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_ERROR));
+			if (delivered.keySet().contains(NEW_1)) {
+	
+					List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+					for (int i = 0; i < refs.size(); i++) {
+						Reference ref = (Reference) refs.get(i);
+						try {
+							attachmentLogic.deleteAttachment(ref.getId());
+						} catch (AttachmentException ae) {
+							messages.addMessage(new TargettedMessage("qna.delete-question.attachment-error",null,TargettedMessage.SEVERITY_ERROR));
+						}
+					}
+	
+			} else {
+				for (QnaQuestion question : delivered.values()) { // Should only be one
+					attachmentLogic.synchAttachmentList(question, (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
+					questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 				}
 			}
 		}
-		
+				
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
 		

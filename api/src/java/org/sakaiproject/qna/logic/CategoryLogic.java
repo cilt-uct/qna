@@ -37,7 +37,7 @@ public interface CategoryLogic {
 	/**
 	 * Check if a category exists
 	 *
-	 * @param questionId
+	 * @param questionid
 	 * 			unique id of a {@link QnaCategory}
 	 * @return	boolean
 	 */

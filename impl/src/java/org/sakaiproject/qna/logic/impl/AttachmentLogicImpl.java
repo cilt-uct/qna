@@ -18,11 +18,18 @@
 
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.AttachmentLogic;
+import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.model.QnaAttachment;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 public class AttachmentLogicImpl implements AttachmentLogic {
 
@@ -30,6 +37,10 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 
 	private ContentHostingService chs;
 
+	public void setContentHostingService(ContentHostingService chs) {
+		this.chs = chs;
+	}
+	
 	public void deleteAttachment(String attachmentId) throws AttachmentException {
 		try {
 			if (attachmentId.toLowerCase().startsWith("/attachment"))
@@ -40,9 +51,18 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 		}
 		
 	}	
-	
-	public void setContentHostingService(ContentHostingService chs) {
-		this.chs = chs;
+		
+	public void synchAttachmentList(QnaQuestion question, List<Reference> attachments) {
+		if (question != null) {
+			question.getAttachments().clear(); // clear current attachments
+			
+			// Add all new attachments
+			for (Reference ref : attachments) {
+				QnaAttachment attachment = new QnaAttachment();
+				attachment.setAttachmentId(ref.getId());
+				question.addAttachment(attachment);
+			}
+		}
 	}
 
 }

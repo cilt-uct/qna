@@ -1,12 +1,9 @@
 package org.sakaiproject.qna.tool.params;
 
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
+public class QuestionTextParams extends QuestionParams {
 
-
-public class QuestionTextParams extends SimpleViewParameters {
-
-	  public String questionText;	
+	  public String questionText;
 	
 	  public QuestionTextParams() {
 		  

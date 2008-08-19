@@ -22,8 +22,14 @@ import java.util.Comparator;
 
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ *	Comparator to sort questions by question text 
+ */
 public class QuestionTextComparator implements Comparator<QnaQuestion> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
 		return q1.getQuestionText().compareToIgnoreCase(q2.getQuestionText());
 	}

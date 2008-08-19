@@ -28,8 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
-import org.sakaiproject.genericdao.api.search.Restriction;
-import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -97,12 +95,18 @@ public class QuestionLogicImpl implements QuestionLogic {
 	public void setDao(QnaDao dao) {
 		this.dao = dao;
 	}
-
+	
+	/**
+	 * @see QuestionLogic#getNewQuestions(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getNewQuestions(String locationId) {
 		return dao.getNewQuestions(locationId);
 	}
-
+	
+	/**
+	 * @see QuestionLogic#getPublishedQuestions(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getPublishedQuestions(String locationId) {
 		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
@@ -111,7 +115,10 @@ public class QuestionLogicImpl implements QuestionLogic {
 						ByPropsFinder.EQUALS });
 		return l;
 	}
-	
+
+	/**
+	 * @see QuestionLogic#getAllQuestions(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getAllQuestions(String locationId) {
 		List<QnaQuestion> l = dao.findByProperties(QnaQuestion.class,
@@ -120,10 +127,16 @@ public class QuestionLogicImpl implements QuestionLogic {
 		return l;
 	}
 	
+	/**
+	 * @see QuestionLogic#getQuestionById(String)
+	 */
 	public QnaQuestion getQuestionById(String questionId) {
 		return (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
 	}
 
+	/**
+	 * @see QuestionLogic#getQuestionsWithPrivateReplies(String)
+	 */
 	public List<QnaQuestion> getQuestionsWithPrivateReplies(String locationId) {
 		List<QnaQuestion> questions = getAllQuestions(locationId);
 		List<QnaQuestion> questionsWithPrivateReplies = new ArrayList<QnaQuestion>();
@@ -136,6 +149,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		return questionsWithPrivateReplies;
 	}
 
+	/**
+	 * @see QuestionLogic#incrementView(String)
+	 */
 	public void incrementView(String questionId) {
 		if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			QnaQuestion question = getQuestionById(questionId);	
@@ -148,6 +164,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
+	/**
+	 * @see QuestionLogic#publishQuestion(String, String)
+	 */
 	public void publishQuestion(String questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
@@ -166,6 +185,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
+	/**
+	 * @see QuestionLogic#existsQuestion(String)
+	 */
 	public boolean existsQuestion(String questionId) {
 		if (questionId == null || questionId.equals("")) {
 			return false;
@@ -178,6 +200,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
+	/**
+	 * @see QuestionLogic#removeQuestion(String, String)
+	 */
 	public void removeQuestion(String questionId, String locationId) throws AttachmentException {
 		QnaQuestion question = getQuestionById(questionId);
 		String userId = externalLogic.getCurrentUserId();
@@ -201,6 +226,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		}
 	}
 
+	/**
+	 * @see QuestionLogic#saveQuestion(QnaQuestion, String)
+	 */
 	public void saveQuestion(QnaQuestion question, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (existsQuestion(question.getId())) {
@@ -289,6 +317,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	}
 
+	/**
+	 * @see QuestionLogic#addQuestionToCategory(String, String, String)
+	 */
 	public void addQuestionToCategory(String questionId, String categoryId,
 			String locationId) {
 		
@@ -317,18 +348,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		categoryLogic.saveCategory(category, locationId);
 	}
 
-	public List filterListForPaging(List myList, int begIndex, int numItemsToDisplay) {
-        if (myList == null || myList.isEmpty())
-        	return myList;
-        
-        int endIndex = begIndex + numItemsToDisplay;
-        if (endIndex > myList.size()) {
-        	endIndex = myList.size();
-        }
-
-		return myList.subList(begIndex, endIndex);
-	}
-	
+	/**
+	 * @see QuestionLogic#retrieveURL(QnaQuestion, String)
+	 */
 	public String retrieveURL(QnaQuestion question, String view) {
 		Map<String,String> params = new HashMap<String, String>();
 		params.put(QUESTION_ID,question.getId());

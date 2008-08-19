@@ -64,6 +64,11 @@ public class MultipleBeanMediator {
 		this.sessionManager = sessionManager;
 	}
 	
+	/**
+	 * Moves question to other category and save
+	 * 
+	 * @return return key
+	 */
 	public String moveQuestionSave() {
 		QnaCategory categoryToLink = null;
 		Set<String> keys = questionLocator.getDeliveredBeans().keySet();
@@ -106,7 +111,10 @@ public class MultipleBeanMediator {
 	}
 
 
-	// Used for saving new question
+	/**
+	 * Saving a new question
+	 * @return return key
+	 */
     // TODO: When time permits: combine the two calls + try to remove categoryId string field from model
     public String saveNew() {
     	QnaCategory categoryToLink=null;
@@ -146,6 +154,11 @@ public class MultipleBeanMediator {
     	return "saved";
     }
     
+    /**
+     * Add attachments on session to {@link QnaQuestion}
+     * 
+     * @param question {@link QnaQuestion} to add attachments to
+     */
     private void addAttachments(QnaQuestion question) {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		
@@ -165,7 +178,11 @@ public class MultipleBeanMediator {
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
 	    session.removeAttribute(FilePickerHelper.FILE_PICKER_CANCEL);
     }
-
+    
+    /**
+     * Saves all beans
+     * @return return key
+     */
     public String saveAll() {
     	// If a new category was created. Check that category text is not empty.
 		if (!TextUtil.isEmptyWithoutTags(((QnaCategory) categoryLocator.locateBean(NEW_1)).getCategoryText())) {
@@ -200,7 +217,11 @@ public class MultipleBeanMediator {
 		return "saved";
     }
 
-	// Used when publishing questions
+	/**
+	 * Publishing a question
+	 * 
+	 * @return return key
+	 */
 	public String publish() {
 		saveAll();
 		messages.clear();
@@ -228,7 +249,7 @@ public class MultipleBeanMediator {
 	/**
 	 * Special method binding when questions and categories are deleted
 	 * Used for giving correct message
-	 * @return
+	 * @return return key
 	 */
 	public String deleteMultiple() {
 		messages.clear();

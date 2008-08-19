@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;
@@ -39,7 +40,13 @@ public class CategoryLocator implements EntityBeanLocator {
 	private TargettedMessageList messages;
 
 	private Map<String, QnaCategory> delivered = new HashMap<String, QnaCategory>();
-
+	
+	/**
+	 * Locate Category bean
+	 * 
+	 * @param name name of bean
+	 * @return {@link QnaCategory}
+	 */
 	public Object locateBean(String name) {
 		QnaCategory togo = delivered.get(name);
 		if (togo == null) {
@@ -56,7 +63,12 @@ public class CategoryLocator implements EntityBeanLocator {
 		}
 		return togo;
 	}
-
+	
+	/**
+	 * Edit category
+	 * 
+	 * @return return key
+	 */
 	public String edit() {
 		String categoryName = null;
 		for (QnaCategory category : delivered.values()) {
@@ -76,7 +88,12 @@ public class CategoryLocator implements EntityBeanLocator {
 		
         return "edited";
 	}
-
+	
+	/**
+	 * Save bean
+	 * 
+	 * @return return key
+	 */
     public String save() {
     	String categoryName = null;
         for (QnaCategory category : delivered.values()) {
@@ -96,6 +113,11 @@ public class CategoryLocator implements EntityBeanLocator {
         return "saved";
     }
 
+    /**
+     * Remove bean
+     * 
+     * @param bean to remove
+     */
 	public boolean remove(String beanname) {
 		try {
 			QnaCategory qnaCategory = categoryLogic.getCategoryById(beanname);
@@ -122,7 +144,12 @@ public class CategoryLocator implements EntityBeanLocator {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Delete all beans
+	 * 
+	 * @return return key
+	 */
 	public String delete() {
 		for (QnaCategory category : delivered.values()) {
             categoryLogic.removeCategory(category.getId(), externalLogic.getCurrentLocationId());

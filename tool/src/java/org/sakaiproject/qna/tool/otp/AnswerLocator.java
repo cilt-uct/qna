@@ -57,6 +57,12 @@ public class AnswerLocator implements EntityBeanLocator {
 		this.messages = messages;
 	}
 	
+	/**
+	 * Locate Answer bean
+	 * 
+	 * @param name name of bean
+	 * @return {@link QnaAnswer}
+	 */
 	public Object locateBean(String name) {
 		QnaAnswer togo = delivered.get(name);
 		if (togo == null) {
@@ -69,7 +75,11 @@ public class AnswerLocator implements EntityBeanLocator {
 		}
 		return togo;
 	}
-
+	
+	/**
+	 * Save all beans
+	 * @return return key
+	 */
     public String saveAll() {
         for (QnaAnswer answer : delivered.values()) {
         	if (TextUtil.isEmptyWithoutTags(answer.getAnswerText())) {
@@ -101,6 +111,10 @@ public class AnswerLocator implements EntityBeanLocator {
         return "saved";
     }
 	
+    /**
+     * Approve all answers
+     * @return return key
+     */
     public String approve() {
     	for (QnaAnswer answer : delivered.values()) {	
     		answerLogic.approveAnswer(answer.getId(), externalLogic.getCurrentLocationId());
@@ -109,6 +123,10 @@ public class AnswerLocator implements EntityBeanLocator {
     	return "marked-correct";
     }
     
+    /**
+     * Withdraw approval
+     * @return return key
+     */    
     public String withdrawApproval() {
     	for (QnaAnswer answer : delivered.values()) {
     		answerLogic.withdrawApprovalAnswer(answer.getId(), externalLogic.getCurrentLocationId());
@@ -117,6 +135,10 @@ public class AnswerLocator implements EntityBeanLocator {
     	return "approval-withdrawn";
     }
     
+    /**
+     * Delete answer
+     * @return return key
+     */
     public String delete() {
     	for (QnaAnswer answer : delivered.values()) {
     		answerLogic.removeAnswer(answer.getId(), externalLogic.getCurrentLocationId());

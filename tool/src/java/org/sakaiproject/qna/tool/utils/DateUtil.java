@@ -23,11 +23,23 @@ import java.util.Date;
 
 public class DateUtil {
 	
+	/**
+	 * Get simple date
+	 * 
+	 * @param date {@link Date}
+	 * @return date as yyyy-MM-dd
+	 */
 	public static String getSimpleDate(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date);
 	}
 	
+	/**
+	 * Get simple date and time
+	 * 
+	 * @param date {@link Date}
+	 * @return date as yyyy-MM-dd HH:mm
+	 */
 	public static String getSimpleDateTime(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return dateFormat.format(date);

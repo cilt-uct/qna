@@ -66,7 +66,12 @@ public class AttachmentsViewRenderer {
 		entityManager = em;
 	}
 	
-	// From session
+	/**
+	 * Create attachments view from session
+	 * 
+	 * @param tofill 	{@link UIContainer} to fill
+	 * @param divId		ID of div	
+	 */
 	public void makeAttachmentsView(UIContainer tofill, String divId) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		
@@ -91,6 +96,12 @@ public class AttachmentsViewRenderer {
 	}
 		
 	// From database
+	/**
+	 * Create attachments view from database
+	 * 
+	 * @param tofill 	{@link UIContainer} to fill
+	 * @param divId		ID of div	
+	 */
 	public void makeAttachmentsView(UIContainer tofill, String divId, QnaQuestion question) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		
@@ -110,6 +121,11 @@ public class AttachmentsViewRenderer {
 		}
 	}
 	
+	/**
+	 * Setup file picker session for specific question (loads attachments into question)
+	 * 
+	 * @param question {@link QnaQuestion}
+	 */
 	public void setupFilepickerSession(QnaQuestion question) {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) == null) 

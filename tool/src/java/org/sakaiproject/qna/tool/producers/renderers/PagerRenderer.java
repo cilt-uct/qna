@@ -48,6 +48,15 @@ public class PagerRenderer {
 	public Integer currentCount = DEFAULT_START_COUNT;		//actually set in the pager view parameters :-)
 	public Integer totalCount = 16;
 	
+	/**
+	 * Creates the pager
+	 * 
+	 * @param tofill			{@link UIContainer} to fill
+	 * @param divID				ID of div
+	 * @param currentViewID		Current ID being viewed
+	 * @param viewparams		View Parameters
+	 * @param totalCount		Total count
+	 */
 	@SuppressWarnings("unchecked")
 	public void makePager(UIContainer tofill, String divID, String currentViewID, ViewParameters viewparams, Integer totalCount) {
     	

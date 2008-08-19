@@ -55,6 +55,7 @@ import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
+import uk.org.ponder.rsf.view.ComponentProducer;
 import uk.org.ponder.rsf.view.DefaultView;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
@@ -128,6 +129,9 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     	this.viewHelper = viewHelper;
     }
     
+    /**
+     * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
+     */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
@@ -251,8 +255,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 
 	/**
 	 * Determine which renderer to use (as well as update the view type / session)
-	 * @param params
-	 * @return
+	 * @param params View parameters
+	 * @return {@link QuestionListRenderer} to use
 	 */
 	private QuestionListRenderer getRenderer(SortPagerViewParams params) {
 		QuestionListRenderer renderer = null;
@@ -286,6 +290,12 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		return renderer;
 	}
 
+	/**
+	 * Get renderer for view type specified 
+	 * 
+	 * @param view type of view {@link ViewTypeConstants}
+	 * @return {@link QuestionListRenderer} to use
+	 */
 	private QuestionListRenderer getRendererForViewType(String view) {
 		if (ViewTypeConstants.isValid(view)) {
 			if (view.equals(ViewTypeConstants.ALL_DETAILS)) {

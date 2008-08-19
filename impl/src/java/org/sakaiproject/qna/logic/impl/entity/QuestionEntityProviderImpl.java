@@ -35,6 +35,12 @@ public class QuestionEntityProviderImpl implements QuestionEntityProvider, CoreE
 		return ENTITY_PREFIX;
 	}
 
+	/**
+	 * Check if entity exists 
+	 * 
+	 * @param id id to check
+	 * @ return true if exists, false otherwise
+	 */
 	public boolean entityExists(String id) {
 		return questionLogic.existsQuestion(id);
 	}

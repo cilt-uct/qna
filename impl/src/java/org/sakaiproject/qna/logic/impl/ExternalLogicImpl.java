@@ -106,6 +106,9 @@ public class ExternalLogicImpl implements ExternalLogic {
         functionManager.registerFunction(QNA_UPDATE);
     }
     
+    /**
+     * @see ExternalLogic#getCurrentLocationId()
+     */
 	public String getCurrentLocationId() {
 		try {
 			
@@ -121,11 +124,17 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 
+    /**
+     * @see ExternalLogic#getQuestionViewUrl(String)
+     */
 	public String getQuestionViewUrl(String viewId) {
     	return ServerConfigurationService.getToolUrl() + Entity.SEPARATOR
     	+ toolManager.getCurrentPlacement().getId() + Entity.SEPARATOR + viewId;
     }
 	
+	/**
+	 * @see ExternalLogic#getLocationTitle(String)
+	 */
 	public String getLocationTitle(String locationId) {
         try {
 			 Site site = (Site) entityBroker.fetchEntity(locationId);
@@ -137,10 +146,16 @@ public class ExternalLogicImpl implements ExternalLogic {
         }
 	}
     
+	/**
+	 * @see ExternalLogic#getCurrentUserId()
+	 */
 	public String getCurrentUserId() {
 		return sessionManager.getCurrentSessionUserId();
 	}
 
+	/**
+	 * @see ExternalLogic#getUserDisplayName(String)
+	 */
 	public String getUserDisplayName(String userId) {
 		try {
 			return userDirectoryService.getUser(userId).getDisplayName();
@@ -150,10 +165,16 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 	
+	/**
+	 * @see ExternalLogic#isUserAdmin(String)
+	 */
 	public boolean isUserAdmin(String userId) {
 		return securityService.isSuperUser(userId);
 	}
 	
+	/**
+	 * @see ExternalLogic#hasMaintainRole(String)
+	 */
 	public boolean hasMaintainRole(String userId) {
 		try {
 			
@@ -169,7 +190,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 	
-
+	/**
+	 * @see ExternalLogic#isUserAllowedInLocation(String, String, String)
+	 */
 	public boolean isUserAllowedInLocation(String userId, String permission, String locationId) {
 		if ( securityService.unlock(userId, permission, locationId) ) {
 			return true;
@@ -177,6 +200,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		return false;
 	}
 
+	/**
+	 * @see ExternalLogic#getSiteContactEmail(String)
+	 */
 	public String getSiteContactEmail(String locationId) {
 		Site site = (Site) entityBroker.fetchEntity(locationId);
 		if (site.getProperties().getProperty(PROP_SITE_CONTACT_EMAIL) != null) {
@@ -186,6 +212,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 
+	/**
+	 * @see ExternalLogic#getSiteContactName(String)
+	 */
 	public String getSiteContactName(String locationId) {
 		Site site = (Site) entityBroker.fetchEntity(locationId);
 		if (site.getProperties().getProperty(PROP_SITE_CONTACT_NAME) != null) {
@@ -195,6 +224,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 
+	/**
+	 * @see ExternalLogic#getSiteUsersWithPermission(String, String)
+	 */	
 	@SuppressWarnings("unchecked")
 	public Set<String> getSiteUsersWithPermission(String locationId, String permission) {
 		Site site = (Site) entityBroker.fetchEntity(locationId);
@@ -209,6 +241,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 		return usersWithPermission;
 	}
 	
+	/**
+	 * @see ExternalLogic#getUserEmail(String)
+	 */
 	public String getUserEmail(String userId) {
 		try {
 			return userDirectoryService.getUser(userId).getEmail();
@@ -218,14 +253,23 @@ public class ExternalLogicImpl implements ExternalLogic {
 		}
 	}
 	
+	/**
+	 * @see ExternalLogic#getCurrentToolDisplayName()
+	 */
 	public String getCurrentToolDisplayName() {
 		return toolManager.getCurrentPlacement().getTool().getTitle();
 	}
 	
+	/**
+	 * @see ExternalLogic#getCurrentToolId()
+	 */
 	public String getCurrentToolId() {
 		return toolManager.getCurrentTool().getId();
 	}
 	
+	/**
+	 * @see ExternalLogic#sendEmailsToUsers(String, String[], String, String)
+	 */
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message) {
 	      InternetAddress fromAddress;
 	      try {
@@ -271,6 +315,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      return sendEmails(fromAddress, toEmails, subject, message);
 	}
 	
+	/**
+	 * @see ExternalLogic#sendEmails(String, String[], String, String)
+	 */
 	public String[] sendEmails(String from, String[] emails, String subject, String message) {
 	      InternetAddress fromAddress;
 	      try {
@@ -288,8 +335,10 @@ public class ExternalLogicImpl implements ExternalLogic {
 	      
 	      return sendEmails(fromAddress, toEmails, subject, message);
 	}
-	 
-	// Actual sending      
+	
+	/**
+	 * Actual sending of e-mail
+	 */
 	private String[] sendEmails(InternetAddress fromAddress, Collection<String> toEmails, String subject, String message) {
 	      InternetAddress[] replyTo = new InternetAddress[1];
 	      List<InternetAddress> listAddresses = new ArrayList<InternetAddress>();

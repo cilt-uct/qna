@@ -38,6 +38,10 @@ public class QuestionIteratorHelper {
 	private List<QnaQuestion> questionList;
     private ViewHelper viewHelper;
 	
+    /**
+     * Set question currently viewed
+     * @param current {@link QnaQuestion} currently being viewed
+     */
 	public void setCurrentQuestion(QnaQuestion current) {
 		if (current == null || current.getId() == null) {
 			throw new IllegalArgumentException("Question provided must be valid");
@@ -47,6 +51,10 @@ public class QuestionIteratorHelper {
 		questionList = getCurrentList();
 	}
 	
+	/**
+	 * Get previous question
+	 * @return {@link QnaQuestion}
+	 */
 	public QnaQuestion getPrevious() {
 		checkSetup();
 		if (!isFirst()) {
@@ -56,6 +64,10 @@ public class QuestionIteratorHelper {
 		}
 	}
 	
+	/**
+	 * Get next question
+	 * @return {@link QnaQuestion}
+	 */
 	public QnaQuestion getNext() {
 		checkSetup();
 		if (!isLast()) {
@@ -65,6 +77,10 @@ public class QuestionIteratorHelper {
 		}
 	}
 	
+	/**
+	 * Check if question is first in list
+	 * @return true if question is first, false otherwise
+	 */
 	public boolean isFirst() {
 		checkSetup();
 		if (questionList.indexOf(current) == 0) {
@@ -72,7 +88,11 @@ public class QuestionIteratorHelper {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Check if question is last in list
+	 * @return true if question is last, false otherwise
+	 */
 	public boolean isLast() {
 		checkSetup();
 		if (questionList.indexOf(current) == (questionList.size()-1)) {
@@ -81,6 +101,10 @@ public class QuestionIteratorHelper {
 		return false;
 	}
 	
+	/**
+	 * Retrieve message key for list type
+	 * @return key
+	 */
 	public String getListTypeMessageKey() {
 		checkSetup();
 		
@@ -107,6 +131,10 @@ public class QuestionIteratorHelper {
 		return "qna.general.blank";
 	}
 	
+	/**
+	 * Retrieve current list
+	 * @return {@link List} of sorted {@link QnaQuestion}
+	 */
 	private List<QnaQuestion> getCurrentList() {
 		checkSetup();
 		
@@ -136,6 +164,9 @@ public class QuestionIteratorHelper {
     	this.viewHelper = viewHelper;
     }
 	
+    /**
+     * Current question must be set
+     */
 	public void checkSetup() {
 		if (current == null) {
 			throw new IllegalStateException("Current selected question must be set");

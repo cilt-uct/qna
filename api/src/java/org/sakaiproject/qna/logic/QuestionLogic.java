@@ -24,6 +24,9 @@ import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ *	QNA API for questions 
+ */
 public interface QuestionLogic {
 	
 	/**
@@ -40,7 +43,7 @@ public interface QuestionLogic {
 	 *
 	 * @param questionid
 	 * 			unique id of a {@link QnaQuestion}
-	 * @return	boolean
+	 * @return	boolean true if it exists, false otherwise
 	 */
 	public boolean existsQuestion(String questionId);
 
@@ -66,7 +69,7 @@ public interface QuestionLogic {
 	/**
 	 * Get all (published and unpublished) questions for location
 	 * 	
-	 * @param locationId
+	 * @param locationId unique id which represents the current location of the user
 	 * @return a list of {@link QnaQuestion}
 	 */
 	public List<QnaQuestion> getAllQuestions(String locationId);
@@ -96,7 +99,7 @@ public interface QuestionLogic {
 	 * @param questionid unique id of {@link QnaQuestion}
 	 * @param locationId a unique id which represents the current location of the user (entity reference)
 	 */
-	public void publishQuestion(String questionId, String locationId) ;
+	public void publishQuestion(String questionId, String locationId);
 
 	/**
 	 * Get all questions with private replies
@@ -116,17 +119,20 @@ public interface QuestionLogic {
 	
 	/**
 	 * Add a {@link QnaQuestion} to a {@link QnaCategory}
+	 * 
 	 * @param questionid
-	 *            {@link QnaQuestion}
+	 *            unique id of {@link QnaQuestion}
 	 * @param categoryId
-	 *            {@link QnaCategory}
+	 *            unique id of {@link QnaCategory}
 	 * @param locationId 
+	 * 			  a unique id which represents the current location of the user
 	 */
 	public void addQuestionToCategory(String questionId,
 			String categoryId, String locationId);
 	
 	/**
 	 * Retrieves URL for a question based on a link
+	 * 
 	 * @param question Question to retrieve URL for
 	 * @param view Specific view for Question
 	 * @return String with URL

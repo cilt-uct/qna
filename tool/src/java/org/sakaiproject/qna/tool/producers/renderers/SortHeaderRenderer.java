@@ -35,6 +35,15 @@ public class SortHeaderRenderer {
 	public static final String BULLET_UP_IMG_SRC = "/library/image/sakai/sortascending.gif";
     public static final String BULLET_DOWN_IMG_SRC = "/library/image/sakai/sortdescending.gif";
     
+    /**
+     * Creates linked sorting header
+     * 
+     * @param tofill		{@link UIContainer} to fill
+     * @param divID			id of div
+     * @param viewparams	view parameters
+     * @param sort_by		{@link SortByConstants}
+     * @param link_text		Text of link 
+     */
     public void makeSortingLink (UIContainer tofill, String divID, ViewParameters viewparams, String sort_by, String link_text){
     	SortPagerViewParams params = (SortPagerViewParams) viewparams;
     	UIJointContainer joint = new UIJointContainer(tofill, divID, "sortHeader:", ""+1);

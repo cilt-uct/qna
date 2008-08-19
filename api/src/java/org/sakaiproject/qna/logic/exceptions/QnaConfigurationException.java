@@ -18,10 +18,17 @@
 
 package org.sakaiproject.qna.logic.exceptions;
 
+/**
+ * RuntimeException specific to QNA configurations
+ */
 public class QnaConfigurationException extends RuntimeException {
 	
 	private static final long serialVersionUID = -4134063107758895700L;
 
+	/**
+	 * Constructor
+	 * @param throwable Throwable caught that caused exception
+	 */
 	public QnaConfigurationException(String message) {
 		super(message);
 	}

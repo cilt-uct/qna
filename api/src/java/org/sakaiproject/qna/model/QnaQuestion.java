@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * This is a the options table entity
  *
- * @author Psybergate
  */
 public class QnaQuestion {
 
@@ -79,10 +78,8 @@ public class QnaQuestion {
 //	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/
 	private String categoryId;
 
-	private Map multipartMap;
-
 	/**
-	 *
+	 * Default constructor
 	 */
 	public QnaQuestion() {
 	}
@@ -285,12 +282,16 @@ public class QnaQuestion {
 	public void setAnswers(List<QnaAnswer> answers) {
 		this.answers = answers;
 	}
-
+	
+	/**
+	 * Add answer to this question
+	 * 
+	 * @param answer {@link QnaAnswer} to be added
+	 */
 	public void addAnswer(QnaAnswer answer) {
 		answer.setQuestion(this);
 		answers.add(answer);
 	}
-
 	
 	/**
 	 * 
@@ -304,6 +305,11 @@ public class QnaQuestion {
 		this.attachments = attachments;
 	}
 	
+	/**
+	 * Add attachment to this question
+	 * 
+	 * @param attachment {@link QnaAttachment} to be added
+	 */
 	public void addAttachment(QnaAttachment attachment) {
 		attachment.setQuestion(this);
 		attachments.add(attachment);
@@ -345,15 +351,12 @@ public class QnaQuestion {
 		return categoryId;
 	}
 
-	public Map getMultipartMap() {
-		return multipartMap;
-	}
-
-	public void setMultipartMap(Map multipartMap) {
-		this.multipartMap = multipartMap;
-	}
-
-	// Helper function
+	
+	/**
+	 *	Helper function to check if question has private replies
+	 *	
+	 *	@return true if question has private replies, false if otherwise 
+	 */
 	public boolean hasPrivateReplies() {
 		if (answers == null || answers.size() == 0) {
 			return false;

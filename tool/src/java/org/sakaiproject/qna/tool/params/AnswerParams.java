@@ -21,7 +21,7 @@ package org.sakaiproject.qna.tool.params;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 public class AnswerParams extends SimpleViewParameters {
-	public String answerid;
+	public String answerid;	  // Id of answer
 	public String questionid; // Id of question linked to this answer
 	
 	public AnswerParams() {}

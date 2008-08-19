@@ -56,7 +56,12 @@ public class QNAUtils {
 		      return cleanup;
 		   }
 	   
-	   
+	   /**
+	    * Check if String is valid e-mail address
+	    * 
+	    * @param email {@link String} to check
+	    * @return true if valid, false otherwise
+	    */
 		public static boolean isValidEmail(String email) {
 			// TODO: Use a generic Sakai utility class (when a suitable one exists)
 			

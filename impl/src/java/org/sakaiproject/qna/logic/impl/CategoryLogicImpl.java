@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.dao.QnaDao;
@@ -64,11 +63,17 @@ public class CategoryLogicImpl implements CategoryLogic {
 		this.qnaBundleLogic = qnaBundleLogic;
 	}
 	
+	/**
+	 * @see CategoryLogic#getCategoryById(String)
+	 */
 	public QnaCategory getCategoryById(String categoryId) {
 		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
 	}
-
+	
+	/**
+	 * @see CategoryLogic#removeCategory(String, String) 
+	 */
 	public void removeCategory(String categoryId, String locationId) {
 		log.debug("CategoryLogicImpl::removeCategory");
 		String userId = externalLogic.getCurrentUserId();
@@ -81,6 +86,9 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
+	/**
+	 * @see CategoryLogic#saveCategory(QnaCategory, String) 
+	 */
 	public void saveCategory(QnaCategory category, String locationId) {
 		log.debug("CategoryLogicImpl::saveCategory");
 		String userId = externalLogic.getCurrentUserId();
@@ -104,6 +112,9 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
+	/**
+	 * @see CategoryLogic#setNewCategoryDefaults(QnaCategory, String, String) 
+	 */
 	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId) {
 		if (qnaCategory.getId() == null) {
 			Date now = new Date();
@@ -119,7 +130,9 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-
+	/**
+	 * @see CategoryLogic#existsCategory(String) 
+	 */
 	public boolean existsCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::existsCategory");
 		if (categoryId == null || categoryId.equals("")) {
@@ -133,6 +146,9 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
+	/**
+	 * @see CategoryLogic#createDefaultCategory(String, String, String) 
+	 */
 	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText) {
 		log.debug("CategoryLogicImpl::createDefaultCategory");
 		QnaCategory qnaCategory = new QnaCategory();
@@ -147,11 +163,17 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return qnaCategory;
 	}
 
+	/**
+	 * @see CategoryLogic#getQuestionsForCategory(String) 
+	 */
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::getQuestionsForCategory");
 		return getCategoryById(categoryId).getQuestions();
 	}
 
+	/**
+	 * @see CategoryLogic#getCategoriesForLocation(String) 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
 		log.debug("CategoryLogicImpl::getCategoriesForLocation");
@@ -164,9 +186,10 @@ public class CategoryLogicImpl implements CategoryLogic {
 	}
 	
 	/**
-	 * Creates "general category"
-	 * @param locationId
-	 * @return
+	 * Creates "general category" so that there is always a category
+	 * 
+	 * @param locationId unique id of location
+	 * @return {@link QnaCategory} created
 	 */
 	private QnaCategory createGeneralCategory(String locationId) {
 		QnaCategory category = createDefaultCategory(locationId, "default",qnaBundleLogic.getString("qna.default-category.text"));

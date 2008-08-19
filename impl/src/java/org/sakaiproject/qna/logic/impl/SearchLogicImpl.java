@@ -50,6 +50,9 @@ public class SearchLogicImpl implements SearchLogic {
 		this.dao = dao;
 	}
 
+	/**
+	 * @see SearchLogic#getAnswers(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaAnswer> getAnswers(String search) {
 		log.debug("SearchLogicImpl::getAnswers");
@@ -65,6 +68,9 @@ public class SearchLogicImpl implements SearchLogic {
 		return dao.getSearchAnswers(search, currentLocationId);
 	}
 
+	/**
+	 * @see SearchLogic#getCategories(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaCategory> getCategories(String search) {
 		log.debug("SearchLogicImpl::getCategories");
@@ -84,6 +90,9 @@ public class SearchLogicImpl implements SearchLogic {
 		return findByProperties;
 	}
 
+	/**
+	 * @see SearchLogic#getQuestions(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getQuestions(String search) {
 		log.debug("SearchLogicImpl::getQuestions");
@@ -102,6 +111,5 @@ public class SearchLogicImpl implements SearchLogic {
 		);
 		return findByProperties;
 	}
-
 
 }

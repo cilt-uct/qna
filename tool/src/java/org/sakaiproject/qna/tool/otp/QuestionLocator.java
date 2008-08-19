@@ -64,7 +64,10 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
 	}
-
+	
+	/**
+	 * Remove bean
+	 */
 	public boolean remove(String beanname) {
 		try {
 			QnaQuestion question = questionLogic.getQuestionById(beanname);
@@ -99,7 +102,13 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public void set(String beanname, Object toset) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
-
+	
+	/**
+	 * Locate bean
+	 * 
+	 * @param name bean
+	 * @return {@link QnaQuestion}
+	 */
 	public Object locateBean(String name) {
 		QnaQuestion togo = delivered.get(name);
 		if (togo == null) {
@@ -112,7 +121,12 @@ public class QuestionLocator implements EntityBeanLocator  {
 		}
 		return togo;
 	}
-
+	
+	/**
+	 * Save all beans
+	 * 
+	 * @return return key
+	 */
 	public String saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			//question text needs to be escaped
@@ -124,6 +138,11 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return SAVED;
 	}
 	
+	/**
+	 * Edit existing bean
+	 * 
+	 * @return return key
+	 */
 	public String edit() {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		
@@ -145,7 +164,12 @@ public class QuestionLocator implements EntityBeanLocator  {
 	    
 		return SAVED;
 	}
-
+	
+	/**
+	 * Delete beans
+	 * 
+	 * @return key
+	 */
 	public String delete() {
 		for (QnaQuestion question : delivered.values()) {
 			try {
@@ -172,6 +196,12 @@ public class QuestionLocator implements EntityBeanLocator  {
 		return DELETE;
 	}
 	
+	/**
+	 * Cancel new question of editing of question
+	 * Attachments need to be cleared
+	 * 
+	 * @return return key
+	 */
 	public String cancel() {
 		// Clears file attachments from tool session
 		ToolSession session = sessionManager.getCurrentToolSession();

@@ -34,6 +34,7 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
+import uk.org.ponder.rsf.view.ComponentProducer;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
@@ -52,6 +53,9 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
 
     private final String HELPER = "sakai.permissions.helper";
 
+    /**
+     * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
+     */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 

@@ -23,11 +23,8 @@ import java.util.Date;
 /**
  * This is a the QnaAnswer table entity
  *
- * @author Psybergate
  */
 public class QnaAnswer {
-
-
 
 	private String id;
 

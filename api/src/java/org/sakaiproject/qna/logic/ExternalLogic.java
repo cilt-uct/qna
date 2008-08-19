@@ -44,6 +44,7 @@ public interface ExternalLogic {
 
 	/**
 	 * Get the display name for a user by their unique id
+	 * 
 	 * @param userId the current sakai user id (not username)
 	 * @return display name (probably firstname lastname) or "----------" (10 hyphens) if none found
 	 */
@@ -56,12 +57,15 @@ public interface ExternalLogic {
 	
 	/**
      * Returns URL to viewId pass in
+    
      * @param viewId of view to build path to
-     * @return a url path to the vie
+     * @return a url path to the view
      */
     public String getQuestionViewUrl(String viewId);
 
 	/**
+	 * Get title of a given location
+	 * 
 	 * @param locationId a unique id which represents the current location of the user (entity reference)
 	 * @return the title for the context or "--------" (8 hyphens) if none found
 	 */
@@ -69,6 +73,7 @@ public interface ExternalLogic {
 
 	/**
 	 * Check if this user has super admin access
+	 * 
 	 * @param userId the internal user id (not username)
 	 * @return true if the user has admin access, false otherwise
 	 */
@@ -76,8 +81,9 @@ public interface ExternalLogic {
 	
 	/**
 	 * Check if user has maintain role
-	 * @param userId
-	 * @return
+	 * 
+	 * @param userId the internal user id (not username)
+	 * @return true if user has maintain role, false otherwise
 	 */
 	public boolean hasMaintainRole(String userId); 
 	
@@ -93,66 +99,69 @@ public interface ExternalLogic {
 	public boolean isUserAllowedInLocation(String userId, String permission, String locationId);
     
 	/**
-	 * Name of site contact
+	 * Name of site contact for Location
 	 * 
-	 * @param locationId
-	 * @return
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
+	 * @return Name of site contant
 	 */
 	public String getSiteContactName(String locationId);
 	
 	/**
 	 * E-mail address of site contact
 	 * 
-	 * @param locationId
-	 * @return
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
+	 * @return e-mail address of site contact
 	 */
 	public String getSiteContactEmail(String locationId);
 	
 	/**
+	 * E-mail address for user
 	 * 
-	 * @param userId
-	 * @return
+	 * @param userId the internal user id (not username)
+	 * @return e-mailaddress of user
 	 */
 	public String getUserEmail(String userId);
 
 	/**
+	 * Retrieves all Users of site with specific permission
 	 * 
-	 * @param locationId
-	 * @param permission
-	 * @return
+	 * @param locationId a unique id which represents the current location of the user (entity reference)
+	 * @param permission permission to check
+	 * @return {@link Set} of user id's with specific permission for location
 	 */
 	public Set getSiteUsersWithPermission(String locationId, String permission);
 	
 	/**
-	 * Send e-mails to users
+	 * Send e-mails to users ids
 	 * 
-	 * @param from 
-	 * @param toUserIds
-	 * @param subject
-	 * @param message
+	 * @param from 			from address to be used
+	 * @param toUserIds 	array of sakai user ids
+	 * @param subject 		subject of e-mail
+	 * @param message 		message of e-mail
 	 * @return an array of email addresses that this message was sent to
 	 */
 	public String[] sendEmailsToUsers(String from, String[] toUserIds, String subject, String message);
 	
 	/**
+	 * Send e-mail to array of e-mail addresses
 	 * 
-	 * @param from
-	 * @param toEmails
-	 * @param subject
-	 * @param message
-	 * @return
+	 * @param from		from address to be used
+	 * @param toEmails	array of e-mail addresses
+	 * @param subject	subject of e-mail
+	 * @param message	 message of e-mail
+	 * @return an array of email addresses that this message was sent to
 	 */
 	public String[] sendEmails(String from, String[] emails, String subject, String message);
 	
 	/**
 	 * Return current tool display name
-	 * @return
+	 * @return display name of tool
 	 */
 	public String getCurrentToolDisplayName();
 	
 	/**
 	 * Return current tool id
-	 * @return
+	 * @return id of current tool
 	 */
 	public String getCurrentToolId();
 	

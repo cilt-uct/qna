@@ -44,6 +44,12 @@ public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
         log.debug("init");
     }
 
+    /**
+     * Get new questions for location
+     * 
+     * @param locationId unique id of location
+     * @return {@link List} of new {@link QnaQuestion}
+     */
     @SuppressWarnings("unchecked")
 	public List<QnaQuestion> getNewQuestions(String locationId) {
     	String hql = "from QnaQuestion as q where q.location = '" + locationId + "' and q.published=false "
@@ -53,7 +59,14 @@ public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
        	
     	return query.list();
     }
-
+    
+    /**
+     * Search answers
+     * 
+     * @param search search query
+     * @param location unique id of location
+     * @return {@link List} of {@link QnaAnswer}
+     */
     @SuppressWarnings("unchecked")
 	public List<QnaAnswer> getSearchAnswers(String search, String location) {
     	Criteria criteria = getSession().createCriteria(QnaAnswer.class);

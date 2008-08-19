@@ -44,6 +44,9 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
     	this.eventTrackingService = eventTrackingService;
     }
     
+    /**
+     * @see ExternalEventLogic#postEvent(String, Object)
+     */
     public void postEvent(String message, Object entity) {
 		if (entity != null) {
 			String reference = getEntityReference(entity);
@@ -54,6 +57,12 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
 		}
 	}
 	
+    /**
+     * Retrieves entity reference
+     * 
+     * @param entity Entity object
+     * @return entity reference
+     */
 	private String getEntityReference(Object entity) {
 	      String id = null;
 	      try {
@@ -68,6 +77,13 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
 	      }
 	}
 	
+	/**
+	 * Retrieves entity reference
+	 * 
+	 * @param refClass	Entity class
+	 * @param entityId	Id of entity
+	 * @return entity reference
+	 */
 	private String getEntityReference(Class refClass, String entityId) {
 		
 		String prefix =  null;

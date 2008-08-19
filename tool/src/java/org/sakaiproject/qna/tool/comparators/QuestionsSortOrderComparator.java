@@ -27,6 +27,9 @@ import org.sakaiproject.qna.model.QnaQuestion;
  */
 public class QuestionsSortOrderComparator implements Comparator<QnaQuestion> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
 		return q1.getSortOrder().compareTo(q2.getSortOrder());
 	}

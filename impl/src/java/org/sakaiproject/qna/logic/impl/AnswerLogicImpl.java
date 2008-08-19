@@ -71,6 +71,12 @@ public class AnswerLogicImpl implements AnswerLogic {
 		this.dao = dao;
 	}
 	
+	/**
+	 * Check if answer exists
+	 * 
+	 * @param answerId id to check
+	 * @return true if it exists, false otherwise
+	 */
 	public boolean existsAnswer(String answerId) {
 		if (answerId == null || answerId.equals("")) {
 			return false;
@@ -83,6 +89,9 @@ public class AnswerLogicImpl implements AnswerLogic {
 		}
 	}
 	
+	/**
+	 * @see AnswerLogic#saveAnswer(QnaAnswer, String)
+	 */
 	public void saveAnswer(QnaAnswer answer, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (!existsAnswer(answer.getId())) {
@@ -156,7 +165,10 @@ public class AnswerLogicImpl implements AnswerLogic {
 			}
 		}
 	}
-
+	
+	/**
+	 * @see AnswerLogic#approveAnswer(String, String)
+	 */
 	public void approveAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
@@ -174,16 +186,25 @@ public class AnswerLogicImpl implements AnswerLogic {
 			throw new SecurityException("Current user cannot approve answers for " + locationId + " because they do not have permission");
 		}
 	}
-
+	
+	/**
+	 * @see AnswerLogic#getAnswerById(String)
+	 */
 	public QnaAnswer getAnswerById(String answerId) {
 		return (QnaAnswer) dao.findById(QnaAnswer.class, answerId);
 	}
-
+	
+	/**
+	 * @see AnswerLogic#removeAnswer(String, String)
+	 */
 	public void removeAnswer(String answerId, String locationId) {
 		QnaAnswer answer = getAnswerById(answerId);
 		removeAnswerFromQuestion(answerId,answer.getQuestion().getId(), locationId);
 	}
 	
+	/**
+	 * @see AnswerLogic#removeAnswerFromQuestion(String, String, String)
+	 */
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
@@ -197,7 +218,10 @@ public class AnswerLogicImpl implements AnswerLogic {
 			throw new SecurityException("Current user cannot delete answers for " + locationId + " because they do not have permission");
 		}
 	}
-
+	
+	/**
+	 * @see AnswerLogic#withdrawApprovalAnswer(String, String)
+	 */
 	public void withdrawApprovalAnswer(String answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
@@ -211,6 +235,9 @@ public class AnswerLogicImpl implements AnswerLogic {
 		}
 	}
 	
+	/**
+	 * @see AnswerLogic#createDefaultAnswer(String)
+	 */
 	public QnaAnswer createDefaultAnswer(String locationId) {
 		QnaAnswer answer = new QnaAnswer();
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);

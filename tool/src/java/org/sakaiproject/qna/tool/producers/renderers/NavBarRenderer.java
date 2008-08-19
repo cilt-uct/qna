@@ -50,7 +50,14 @@ public class NavBarRenderer {
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
 	}
-
+	
+	/**
+	 * Renders navigation bar
+	 * 
+	 * @param tofill		{@link UIContainer} to fill
+	 * @param divID  		ID of div
+	 * @param currentViewID	View ID currently being viewed
+	 */
 	public void makeNavBar(UIContainer tofill, String divID, String currentViewID) {
     	// Front-end customization for navigation bar regarding permissions will come here
 		

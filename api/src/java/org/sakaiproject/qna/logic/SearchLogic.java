@@ -24,26 +24,32 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ * API for search function
+ */
 public interface SearchLogic {
 
 	/**
+	 * Searches questions	
 	 *
-	 * @param search
-	 * @return List<QnaQuestion>
+	 * @param search	{@link String} to search
+	 * @return List<QnaQuestion> list of {@link QnaQuestion} that matches query
 	 */
 	public List<QnaQuestion> getQuestions(String search);
 
 	/**
+	 * Searches answers
 	 *
-	 * @param search
-	 * @return List<QnaAnswer>
+	 * @param search	{@link String} to search
+	 * @return List<QnaAnswer>  list of {@link QnaAnswer} that matches query
 	 */
 	public List<QnaAnswer> getAnswers(String search);
 
 	/**
+	 * Searches categories
 	 *
-	 * @param search
-	 * @return List<QnaCategory>
+	 * @param search	{@link String} to search
+	 * @return List<QnaCategory>  list of {@link QnaCategory} that matches query
 	 */
 	public List<QnaCategory> getCategories(String search);
 }

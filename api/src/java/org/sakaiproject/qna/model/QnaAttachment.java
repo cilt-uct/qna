@@ -1,9 +1,18 @@
 package org.sakaiproject.qna.model;
 
+/**
+ *	QnaAttachment entity 
+ *
+ */
 public class QnaAttachment {
 	
-	private String id;
+	// Internal id in database
+	private String id; 
+	
+	// Question attachment is linked to
 	private QnaQuestion question;
+	
+	// ID of attachment in content hosting
 	private String attachmentId;
 	
 	public String getId() {

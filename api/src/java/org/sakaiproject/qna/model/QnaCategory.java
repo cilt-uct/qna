@@ -25,13 +25,12 @@ import java.util.List;
 /**
  * This is a the options table entity
  *
- * @author Psybergate
  */
 public class QnaCategory {
 
 	private String id;
 
-//  The list of questions associated with this option
+	//  The list of questions associated with this option
     private List<QnaQuestion> questions = new ArrayList<QnaQuestion>();
 
 	// The user (sakai userid) that created this category

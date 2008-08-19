@@ -132,6 +132,14 @@ public class QuestionsSorter {
 		}
 	}
 	
+	/**
+	 * Filter questions for sorter
+	 * 
+	 * @param questions {@link List} of {@link QnaQuestion}
+	 * @param fromIndex begin index
+	 * @param amount	amount to retrieve 
+	 * @return	sub list of questions based on parameters
+	 */
 	public List<QnaQuestion> filterQuestions(List<QnaQuestion> questions,int fromIndex, int amount) {
 		if ((amount + fromIndex) > questions.size()) {
 			return questions.subList(fromIndex, questions.size());

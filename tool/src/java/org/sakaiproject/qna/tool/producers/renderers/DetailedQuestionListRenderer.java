@@ -71,7 +71,10 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 	public void setQuestionsSorter(QuestionsSorter questionsSorter) {
 		this.questionsSorter = questionsSorter;
 	}
-
+	
+	/**
+	 * @see QuestionListRenderer#makeQuestionList(UIContainer, String, SortPagerViewParams, UIForm)
+	 */
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
 
 		UIMessage.make(tofill,"sort-message","qna.view-questions.sort-message");

@@ -22,9 +22,15 @@ import java.util.Comparator;
 
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ * Comparator to sort questions by category text
+ */
 public class QuestionsByCategoryTextComparator implements
 		Comparator<QnaQuestion> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaQuestion o1, QnaQuestion o2) {
 		if (o1.getCategory() == null && o2.getCategory() == null) {
 			return 0;

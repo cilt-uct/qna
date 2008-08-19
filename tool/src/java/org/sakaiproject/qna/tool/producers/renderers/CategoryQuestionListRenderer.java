@@ -78,6 +78,9 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		this.questionLogic = questionLogic;
 	}
 
+	/**
+	 * @see QuestionListRenderer#makeQuestionList(UIContainer, String, SortPagerViewParams, UIForm)	
+	 */
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams, UIForm form) {
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");

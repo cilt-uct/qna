@@ -33,6 +33,13 @@ import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 
 public class ComparatorUtil {
 	
+	/**
+	 * Get comparator to use by view type and sort by
+	 * 
+	 * @param viewType valid {@link ViewTypeConstants}
+	 * @param sortBy   valid {@link SortByConstants}	
+	 * @return {@link Comparator} to be used
+	 */
 	public static Comparator<QnaQuestion> getComparator(String viewType, String sortBy) {
 		if (viewType.equals(ViewTypeConstants.CATEGORIES)) {
 			return new QuestionsSortOrderComparator();

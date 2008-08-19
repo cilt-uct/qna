@@ -83,7 +83,10 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		String[] toolIds = { ExternalLogic.QNA_TOOL_ID };
 		return toolIds;
 	}
-
+	
+	/**
+	 * Transfers entities from location to location
+	 */
 	public void transferCopyEntities(String fromContext, String toContext,
 			List ids) {
 		try {

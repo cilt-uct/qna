@@ -55,19 +55,31 @@ public class NotificationLogicImpl implements NotificationLogic {
 		this.questionLogic = questionLogic;
 	}
 	
+	/**
+	 * @see NotificationLogic#sendPrivateReplyNotification(String[], QnaQuestion, String)
+	 */
 	public void sendPrivateReplyNotification(String[] userids, QnaQuestion question, String privateReplyText) {
 		externalLogic.sendEmailsToUsers(buildFrom(), userids, buildPrivateReplySubject(), buildPrivateReplyMessage(userids[0],question,privateReplyText));
 	}
 
+	/**
+	 * @see NotificationLogic#sendNewAnswerNotification(String[], QnaQuestion, String)
+	 */
 	public void sendNewAnswerNotification(String[] userids,	QnaQuestion question, String answerText) {
 		externalLogic.sendEmailsToUsers(buildFrom(), userids,buildNewAnswerSubject(), buildNewAnswerMessage(userids[0],question,answerText));
 	}
 	
+	/**
+	 * @see NotificationLogic#sendNewQuestionNotification(String[], QnaQuestio)
+	 */
 	public void sendNewQuestionNotification(String[] emails, QnaQuestion question) {
 		externalLogic.sendEmails(buildFrom(), emails, buildNewQuestionSubject(), buildNewQuestionMessage(question));
 		
 	}
 	
+	/**
+	 * @see NotificationLogic#sendNewAnswerNotification(String[], QnaQuestion, String)
+	 */
 	public void sendNewQuestionNotification(String[] emails, QnaQuestion question, String fromUserId) {
 		EmailValidator emailValidator = EmailValidator.getInstance();
 		String fromEmail = externalLogic.getUserEmail(fromUserId);
@@ -98,18 +110,38 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return "\"" + fromDisplayName + "\" <" + fromEmail + ">";
 	}
 	
+	/**
+	 * Build subject for private reply	 
+	 * @return subject
+	 */
 	private String buildPrivateReplySubject() {
 		return qnaBundleLogic.getString("qna.notification.private-reply-subject");
 	}
-	
+
+	/**
+	 * Build subject for new answer	 
+	 * @return subject
+	 */
 	private String buildNewAnswerSubject() {
 		return qnaBundleLogic.getString("qna.notification.new-answer-subject");
 	}
 	
+	/**
+	 * Build subject for new question
+	 * @return subject
+	 */
 	private String buildNewQuestionSubject() {
 		return qnaBundleLogic.getString("qna.notification.new-question-subject");
 	}
 	
+	/**
+	 * Build private reply
+	 * 
+	 * @param userId			user id of user
+	 * @param question			{@link QnaQuestion} 			
+	 * @param privateReplyText  Text of private reply
+	 * @return the message
+	 */
 	private String buildPrivateReplyMessage(String userId, QnaQuestion question, String privateReplyText) {
 		StringBuilder privateReply = new StringBuilder();
 		privateReply.append(externalLogic.getUserDisplayName(userId));
@@ -132,6 +164,14 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return privateReply.toString();
 	}
 	
+	/**
+	 * Build new answer message
+	 * 
+	 * @param userId			user id of user
+	 * @param question			{@link QnaQuestion} 			
+	 * @param answerText  Text of new answer
+	 * @return the message
+	 */	
 	private String buildNewAnswerMessage(String userId, QnaQuestion question, String answerText) {
 		StringBuilder newAnswerNotification = new StringBuilder();
 		newAnswerNotification.append(externalLogic.getUserDisplayName(userId));
@@ -160,6 +200,12 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return newAnswerNotification.toString();
 	}
 	
+	/**
+	 * Build new question message
+	 * 
+	 * @param question			{@link QnaQuestion} 			
+	 * @return the message
+	 */	
 	private String buildNewQuestionMessage(QnaQuestion question) {
 		StringBuilder newQuestionNotification = new StringBuilder();
 		newQuestionNotification.append(qnaBundleLogic.getFormattedMessage("qna.notification.new-question-body1", new String[]{getLocationTitle()}));
@@ -178,11 +224,17 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return newQuestionNotification.toString();
 	}
 	
-	// Copy of TextUtil method in tool
+	/**
+	 * Strip tags from html
+	 * Copy of TextUtil method in tool
+	 */
 	private String stripTags(String html) {
 		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
 	}
-
+	
+	/**
+	 * @return title of current location
+	 */
 	private String getLocationTitle() {
 		return externalLogic.getLocationTitle(externalLogic.getCurrentLocationId());
 	}

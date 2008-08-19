@@ -44,6 +44,7 @@ import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
+import uk.org.ponder.rsf.view.ComponentProducer;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
@@ -77,6 +78,9 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
     	this.searchLogic = searchLogic;
     }
 
+	/**
+	 * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
+	 */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 
 		SearchParams params = (SearchParams)viewparams;
@@ -182,7 +186,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 	/**
 	 * Determines if a category should be displayed in search results
 	 * @param {@link QnaCategory}
-	 * @return boolean
+	 * @return boolean if should be displayed, otherwise false
 	 */
 	private boolean display(QnaCategory category) {
 		return !category.getHidden();
@@ -191,7 +195,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 	/**
 	 * Determines if a question should be displayed in search results
 	 * @param {@link QnaQuestion}
-	 * @return boolean
+	 * @return boolean if should be displayed, otherwise false
 	 */
 	private boolean display(QnaQuestion question) {
     	if (question.getHidden()) {
@@ -208,7 +212,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 	/**
 	 * Determines if an answer should be displayed in search results
 	 * @param {@link QnaAnswer}
-	 * @return boolean
+	 * @return boolean if should be displayed, otherwise false
 	 */	
 	private boolean display(QnaAnswer answer) {
        	if (answer.getQuestion().getHidden()) {

@@ -20,6 +20,11 @@ package org.sakaiproject.qna.tool.otp;
 
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
+/**
+ * 
+ * Helper object used for deleting multiple questions and categories
+ *
+ */
 public class DeleteMultiplesHelper extends SimpleViewParameters {
 	public String[] questionids;
 	public String[] categoryids;

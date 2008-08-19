@@ -32,6 +32,9 @@ public class CategoryVPInferrer implements EntityViewParamsInferrer {
 		return new String[] {CategoryEntityProvider.ENTITY_PREFIX};
 	}
 
+	/**
+	 * @see EntityViewParamsInferrer#inferDefaultViewParameters(String)
+	 */
 	public ViewParameters inferDefaultViewParameters(String reference) {
 		IdEntityReference ref = new IdEntityReference(reference);
 		return new CategoryParams(CategoryProducer.VIEW_ID, "1", null, ref.id);

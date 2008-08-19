@@ -23,6 +23,10 @@ import java.util.List;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ *	QNA API for Category logic 
+ *
+ */
 public interface CategoryLogic {
 
 	/**
@@ -40,15 +44,16 @@ public interface CategoryLogic {
 	 * @param questionid
 	 * 			unique id of a {@link QnaCategory}
 	 * @return	boolean
+	 * 			true if it exists, false if it doesn't
 	 */
 	public boolean existsCategory(String categoryId);
 
 	/**
-	 * Save a category
+	 * Saves a category
 	 *
 	 * @param category
-	 *            {@link QnaCategory} object
-	 * @param locationId
+	 *            {@link QnaCategory} object to be saved
+	 * @param locationId unique id for location
 	 */
 	public void saveCategory(QnaCategory category, String locationId);
 
@@ -56,43 +61,43 @@ public interface CategoryLogic {
 	 * Removes a category
 	 *
 	 * @param categoryId
-	 *            {@link QnaCategory} object
-	 * @param locationId 
+	 *            {@link QnaCategory} object id to be removed
+	 * @param locationId unique id for location
 	 */
 	public void removeCategory(String categoryId, String locationId);
 
 	/**
 	 * Get questions for as specific category
 	 *
-	 * @param categoryId {@link QnaCategory} object
-	 * @return
+	 * @param categoryId 	id of a {@link QnaCategory}
+	 * @return {@link List} of {@link QnaQuestion} with all questions for a category
 	 */
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId);
 
 	/**
 	 * Get a list of categories for a location
 	 *
-	 * @param locationId
-	 * @return
+	 * @param locationId unique id for location
+	 * @return {@link List} of {@link QnaCategory} for location
 	 */
 	public List<QnaCategory> getCategoriesForLocation(String locationId);
 
 	/**
 	 * Creates a default category
 	 *
-	 * @param locationId
-	 * @param ownerId
-	 * @param categoryText
-	 * @return QnaCategory
+	 * @param locationId 	unique id for location
+	 * @param ownerId 		id of sakai user
+	 * @param categoryText 	text for category
+	 * @return QnaCategory 	new {@link QnaCategory} created
 	 */
 	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText);
 	
 	/**
-	 * Sets default values for a new qnaCategory object
+	 * Sets default values for a new {@link QnaCategory} object
 	 * 
-	 * @param qnaCategory
-	 * @param locationId
-	 * @param ownerId
+	 * @param qnaCategory 	{@link QnaCategory} object to set values to
+	 * @param locationId 	unique id for location
+	 * @param ownerId		id of sakai user
 	 */
 	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId);
 }

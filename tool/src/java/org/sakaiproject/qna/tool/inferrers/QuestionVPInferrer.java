@@ -32,6 +32,9 @@ public class QuestionVPInferrer implements EntityViewParamsInferrer {
 		return new String[] {QuestionEntityProvider.ENTITY_PREFIX};
 	}
 
+	/**
+	 * @see EntityViewParamsInferrer#inferDefaultViewParameters(String)
+	 */
 	public ViewParameters inferDefaultViewParameters(String reference) {
 		 IdEntityReference ref = new IdEntityReference(reference);
 		 return new QuestionParams(ViewQuestionProducer.VIEW_ID,ref.id,true);

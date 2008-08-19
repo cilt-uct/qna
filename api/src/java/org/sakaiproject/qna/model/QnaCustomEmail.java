@@ -24,7 +24,6 @@ import java.util.Date;
 /**
  * This is a the options table entity
  *
- * @author Psybergate
  */
 public class QnaCustomEmail {
 

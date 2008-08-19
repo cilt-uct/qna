@@ -41,6 +41,9 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 		this.chs = chs;
 	}
 	
+	/**
+	 * @see AttachmentLogic#deleteAttachment(String)
+	 */
 	public void deleteAttachment(String attachmentId) throws AttachmentException {
 		try {
 			if (attachmentId.toLowerCase().startsWith("/attachment"))
@@ -51,7 +54,10 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 		}
 		
 	}	
-		
+	
+	/**
+	 * @see AttachmentLogic#synchAttachmentList(QnaQuestion, List)
+	 */
 	public void synchAttachmentList(QnaQuestion question, List<Reference> attachments) {
 		if (question != null) {
 			question.getAttachments().clear(); // clear current attachments

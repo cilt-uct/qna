@@ -22,6 +22,9 @@ import java.util.Set;
 
 import org.sakaiproject.qna.model.QnaOptions;
 
+/**
+ *	QNA API for manipulation options 
+ */
 public interface OptionsLogic {
 
 	/**
@@ -30,7 +33,7 @@ public interface OptionsLogic {
 	 * @param locationId
 	 *            a unique id which represents the current location of the user
 	 *            (entity reference)
-	 * @return boolean
+	 * @return boolean true if moderation on, false if not
 	 */
 	public boolean isModerationOn(String locationId);
 
@@ -40,7 +43,7 @@ public interface OptionsLogic {
 	 * @param locationId
 	 *            a unique id which represents the current location of the user
 	 *            (entity reference)
-	 * @return {@link QnaOptions} object
+	 * @return {@link QnaOptions} for location
 	 */
 	public QnaOptions getOptionsForLocation(String locationId);
 	
@@ -56,19 +59,18 @@ public interface OptionsLogic {
 	/**
 	 * Save/update options uses current location id
 	 *
-	 * @param options
-	 *            to be saved
-	 * @param locationId TODO
+	 * @param options 		{@link QnaOptions} to be saved
+	 * @param locationId 	 a unique id which represents the current location of the user
 	 */
 	public void saveOptions(QnaOptions options, String locationId);
 
 	/**
-	 * Creates options at locationId
+	 * Creates options at locationId with default values
 	 *
 	 * @param locationId
 	 *            a unique id which represents the current location of the user
 	 *            (entity reference)
-	 * @param {@link QnaOptions} object
+	 * @param {@link QnaOptions} created
 	 */
 	public QnaOptions createDefaultOptions(String locationId);
 
@@ -80,7 +82,7 @@ public interface OptionsLogic {
 	 *            (entity reference)
 	 * @param mailList
 	 * 			  comma-separated mail list
-	 * @return TODO
+	 * @return true if there were invalid e-mail addresses, false if all were valid
 	 */
 	public boolean setCustomMailList(String locationId, String mailList);
 

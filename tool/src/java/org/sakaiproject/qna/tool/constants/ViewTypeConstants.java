@@ -27,6 +27,12 @@ public class ViewTypeConstants {
 	public static final String ALL_DETAILS 		= "ALL_DETAILS";
 	public static final String STANDARD 		= "STANDARD";
 
+	/**
+	 * Check if string is valid view type
+	 * 
+	 * @param str to check
+	 * @return true of valid, false if no
+	 */
 	public static boolean isValid(String str) {
 		if (str.equals(CATEGORIES) || 
 			str.equals(ALL_DETAILS) ||

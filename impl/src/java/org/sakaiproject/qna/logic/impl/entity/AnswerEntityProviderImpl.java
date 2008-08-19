@@ -35,7 +35,13 @@ public class AnswerEntityProviderImpl implements AnswerEntityProvider, CoreEntit
 	public String getEntityPrefix() {
 		return ENTITY_PREFIX;
 	}
-
+	
+	/**
+	 * Check if entity exists 
+	 * 
+	 * @param id id to check
+	 * @ return true if exists, false otherwise
+	 */
 	public boolean entityExists(String id) {
 		QnaAnswer answer = answerLogic.getAnswerById(id);
 		if (answer == null) {

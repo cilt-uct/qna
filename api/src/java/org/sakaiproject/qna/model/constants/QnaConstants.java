@@ -45,7 +45,12 @@ public class QnaConstants {
 	 */
 	public static final String UPDATE_RIGHTS = "update";
 	
-	
+	/**
+	 * Check if valid view type
+	 *  
+	 * @param viewType {@link String} view type to check
+	 * @return true if valid, false otherwise
+	 */
 	public static boolean isValidView(String viewType) {
 		if (viewType.equalsIgnoreCase(CATEGORY_VIEW) || viewType.equalsIgnoreCase(MOST_POPULAR_VIEW)) {
 			return true;

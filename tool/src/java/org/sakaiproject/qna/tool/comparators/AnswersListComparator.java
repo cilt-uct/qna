@@ -43,6 +43,8 @@ public class AnswersListComparator implements Comparator<QnaAnswer> {
 	 * 	- Answers added by lecturer (user with update rights) chronologically
 	 *  - Answers approved chronologically
 	 *  - Answers not approved chronologically
+	 *  
+	 *  @see Comparator#compare(Object, Object)
 	 */
 	public int compare(QnaAnswer a1, QnaAnswer a2) {
 		if (a1.isApproved() && a2.isApproved()) {

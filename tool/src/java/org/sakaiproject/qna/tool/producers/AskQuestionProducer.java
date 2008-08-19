@@ -57,6 +57,7 @@ import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
+import uk.org.ponder.rsf.view.ComponentProducer;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
@@ -122,7 +123,10 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
     public void setELEvaluator(BeanGetter ELEvaluator) {
         this.ELEvaluator = ELEvaluator;
     }
-
+    
+    /**
+     * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
+     */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QnaOptions options = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId());
 

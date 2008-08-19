@@ -43,16 +43,25 @@ public class QnaBundleLogicImpl implements QnaBundleLogic {
 		if (rb == null)
 			rb = new ResourceLoader(QNA_BUNDLE);
 	}
-
+	
+	/**
+	 * @see QnaBundleLogic#getString(String)
+	 */
 	public String getString(String key)
 	{
 		return rb.getString(key);
 	}
 	
+	/**
+	 * @see QnaBundleLogic#getFormattedMessage(String, Object[])
+	 */
 	public String getFormattedMessage(String key, Object[] parameters) {
 		return rb.getFormattedMessage(key, parameters);
 	}
 	
+	/**
+	 * @see QnaBundleLogic#getLocale()
+	 */
 	public Locale getLocale() {
 		return rb.getLocale();
 	}

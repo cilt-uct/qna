@@ -27,7 +27,6 @@ import org.sakaiproject.qna.model.constants.QnaConstants;
 /**
  * This is a the options table entity
  *
- * @author Psybergate
  */
 public class QnaOptions {
 
@@ -67,7 +66,7 @@ public class QnaOptions {
     private String commaSeparated;
     
 	/**
-	 *
+	 *	Empty constructor
 	 */
 	public QnaOptions() {
 	}

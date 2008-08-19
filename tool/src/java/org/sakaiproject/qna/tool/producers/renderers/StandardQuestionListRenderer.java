@@ -61,7 +61,10 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
     public void setPagerRenderer(PagerRenderer pagerRenderer) {
 		this.pagerRenderer = pagerRenderer;
 	}
-
+    
+    /**
+     * @see QuestionListRenderer#makeQuestionList(UIContainer, String, SortPagerViewParams, UIForm)
+     */
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams params, UIForm form) {
 		
 		UIJointContainer listTable = new UIJointContainer(tofill,divID,"question-list-table:");
@@ -102,6 +105,12 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		}
 	}
 	
+	/**
+	 * Should question be displayed or not
+	 * 
+	 * @param question {@link QnaQuestion}
+	 * @return true if should be displayed, false if not
+	 */
 	private boolean displayQuestion(QnaQuestion question) {
 		if (question.getHidden() != null && question.getHidden()) {
 			return false;

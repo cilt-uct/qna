@@ -57,10 +57,11 @@ public class QuestionIteratorRenderer {
 	}
 	
 	/**
+	 * Creates iterator
 	 * 
-	 * @param tofill
-	 * @param divID
-	 * @param current Current question
+	 * @param tofill	{@link UIContainer} to fill
+	 * @param divID		ID of div
+	 * @param current 	Current {@link QnaQuestion}
 	 */
 	public void makeQuestionIterator(UIContainer tofill, String divID, QnaQuestion current) {
 		 if (secondary) {
@@ -118,7 +119,12 @@ public class QuestionIteratorRenderer {
 		 } 		
 	}
 	 	
-		
+	 /**
+	  * Retrieve resulting view for question
+	  * 
+	  * @param question {@link QnaQuestion}
+	  * @return view ID
+	  */	
 	 private String getResultViewID(QnaQuestion question) {
 		 if (question.isPublished()) {
 			 return ViewQuestionProducer.VIEW_ID;

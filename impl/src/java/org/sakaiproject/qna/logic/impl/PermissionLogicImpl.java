@@ -29,6 +29,9 @@ public class PermissionLogicImpl implements PermissionLogic {
 		this.externalLogic = externalLogic;
 	}
 	
+	/**
+	 * @see PermissionLogic#canUpdate(String, String)
+	 */
 	public boolean canUpdate(String locationId, String userId) {
 		if (externalLogic.isUserAdmin(userId)) {
 			return true; // Administrators can update
@@ -39,6 +42,9 @@ public class PermissionLogicImpl implements PermissionLogic {
 		}
 	}
 
+	/**
+	 * @see PermissionLogic#canAddNewQuestion(String, String)
+	 */
 	public boolean canAddNewQuestion(String locationId, String userId) {
 		if (externalLogic.isUserAdmin(userId)) {
 			return true; 
@@ -49,6 +55,9 @@ public class PermissionLogicImpl implements PermissionLogic {
 		}		
 	}
 
+	/**
+	 * @see PermissionLogic#canAddNewCategory(String, String)
+	 */
 	public boolean canAddNewCategory(String locationId, String userId) {
 		if (externalLogic.isUserAdmin(userId)) {
 			return true; 
@@ -59,6 +68,9 @@ public class PermissionLogicImpl implements PermissionLogic {
 		}	
 	}
 
+	/**
+	 * @see PermissionLogic#canAddNewAnswer(String, String)
+	 */
 	public boolean canAddNewAnswer(String locationId, String userId) {
 		if (externalLogic.isUserAdmin(userId)) {
 			return true;
@@ -68,8 +80,5 @@ public class PermissionLogicImpl implements PermissionLogic {
 			return false;
 		}
 	}
-	
-	
-
 
 }

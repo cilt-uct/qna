@@ -18,6 +18,10 @@
 
 package org.sakaiproject.qna.tool.constants;
 
+/**
+ * Constants used for sorting of questions 
+ *
+ */
 public class SortByConstants {
 	public static final String QUESTIONS = "questions";
 	public static final String VIEWS 	= "views";
@@ -29,6 +33,12 @@ public class SortByConstants {
 	public static final String SORT_DIR_ASC = "asc";
 	public static final String SORT_DIR_DESC = "desc";
 	
+	/**
+	 * Check if string is valid sort by value
+	 * 
+	 * @param str to check
+	 * @return true of valid, false if not
+	 */
 	public static boolean isValid(String str) {
 		if (str.equals(QUESTIONS) || 
 			str.equals(VIEWS) ||

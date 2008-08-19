@@ -34,6 +34,13 @@ import uk.org.ponder.rsf.components.UIOutput;
 
 public class SearchBarRenderer {
 
+	/**
+	 * Renders search bar
+	 * 
+	 * @param tofill			{@link UIContainer} to fill
+	 * @param divID				id of div
+	 * @param currentViewID		current view id
+	 */
     public void makeSearchBar(UIContainer tofill, String divID, String currentViewID) {
 
     	UIJointContainer joint = new UIJointContainer(tofill, divID, "qna-search:");

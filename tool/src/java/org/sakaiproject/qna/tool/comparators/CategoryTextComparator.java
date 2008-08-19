@@ -27,6 +27,9 @@ import org.sakaiproject.qna.model.QnaCategory;
  */
 public class CategoryTextComparator implements Comparator<QnaCategory> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaCategory c1, QnaCategory c2) {
 		return c1.getCategoryText().compareToIgnoreCase(c2.getCategoryText());
 	}

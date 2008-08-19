@@ -22,15 +22,27 @@ import java.util.List;
 
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+/**
+ *	API for logic pertaining to attachments in QNA 
+ */
 public interface AttachmentLogic {
 	
 	/**
 	 * Deletes attachment
-	 * @param attachmentId
+	 * 
+	 * @param attachmentId unique ID of attachment in content hosting
+	 * @throws AttachmentException if an exception occurred while deleting attachment
 	 */
 	public void deleteAttachment(String attachmentId) throws AttachmentException;
 	
+	/**
+	 * Synchronizes the the list of {@link QnaAttachment} for a {@link QnaQuestion} with list of {@list Reference} supplied
+	 * 
+	 * @param question {@link QnaQuestion} object to link attachments to
+	 * @param attachments {@link List} of {@link Reference} to be linked to question
+	 */
 	public void synchAttachmentList(QnaQuestion question, List<Reference> attachments);
 }

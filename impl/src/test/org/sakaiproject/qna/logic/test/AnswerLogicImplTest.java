@@ -248,7 +248,7 @@ public class AnswerLogicImplTest extends
 	}
 
 	/**
-	 * 
+	 * Test removal of answer from question
 	 */
 	public void testRemoveAnswerFromQuestion() {
 		QnaQuestion questionRemove = questionLogic
@@ -283,7 +283,7 @@ public class AnswerLogicImplTest extends
 	}
 
 	/**
-	 * 
+	 * Test approval of answer
 	 */
 	public void testApproveAnswer() {
 		QnaAnswer answerToBeApproved = answerLogic.getAnswerById(tdp.answer2_location1.getId());
@@ -313,7 +313,7 @@ public class AnswerLogicImplTest extends
 	}
 
 	/**
-	 * 
+	 * Test withdrawal of approval
 	 */
 	public void testWithdrawApproval() {
 		QnaAnswer answerToWithdrawApproval = answerLogic.getAnswerById(tdp.answer1_location1.getId());

@@ -27,6 +27,10 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
 
+/**
+ *	Used in Organiser 
+ *
+ */
 public class OrganiserHelper {
 
 	// Instansiate to empty arrays
@@ -76,7 +80,10 @@ public class OrganiserHelper {
 		this.messages = messages;
 	}
 	
-
+	/**
+	 * Saves order
+	 * @return return key
+	 */
 	public String saveOrder() {
 		for (int k=0; k<catorder.length; k++) {
 			String id = catorder[k];

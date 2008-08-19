@@ -27,6 +27,9 @@ import org.sakaiproject.qna.model.QnaQuestion;
  */
 public class MostPopularComparator implements Comparator<QnaQuestion> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
 		return q2.getViews().compareTo(q1.getViews());
 	}

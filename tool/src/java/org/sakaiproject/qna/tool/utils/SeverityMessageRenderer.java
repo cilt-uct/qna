@@ -25,6 +25,7 @@ import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.decorators.UIStyleDecorator;
+import uk.org.ponder.rsf.renderer.MessageRenderer;
 import uk.org.ponder.stringutil.StringList;
 
 public class SeverityMessageRenderer extends uk.org.ponder.rsf.renderer.MessageRenderer
@@ -43,6 +44,9 @@ public class SeverityMessageRenderer extends uk.org.ponder.rsf.renderer.MessageR
     this.messagelocator = messagelocator;
   }
   
+  /**
+   * @see MessageRenderer#renderMessage(String)
+   */
   public UIMessage renderMessage(String key) {
     UIMessage togo = UIMessage.make(key);
     togo.setValue(messagelocator.getMessage(togo.messagekeys,
@@ -50,6 +54,9 @@ public class SeverityMessageRenderer extends uk.org.ponder.rsf.renderer.MessageR
     return togo;
   }
   
+  /**
+   * @see MessageRenderer#renderMessageList(TargettedMessageList)
+   */
   public UIBranchContainer renderMessageList(TargettedMessageList messagelist) {
     UIBranchContainer togo = new UIBranchContainer();
     StringList renderered = messagelist == null? new StringList() : 

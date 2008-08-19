@@ -39,7 +39,10 @@ public class AnswerVPInferrer implements EntityViewParamsInferrer {
 	public String[] getHandledPrefixes() {
 		return new String[] {AnswerEntityProvider.ENTITY_PREFIX};
 	}
-
+	
+	/**
+	 * @see EntityViewParamsInferrer#inferDefaultViewParameters(String)
+	 */
 	public ViewParameters inferDefaultViewParameters(String reference) {
 		IdEntityReference ref = new IdEntityReference(reference);
 		QnaAnswer answer = answerLogic.getAnswerById(ref.id);

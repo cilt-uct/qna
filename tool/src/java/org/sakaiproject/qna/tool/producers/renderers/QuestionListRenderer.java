@@ -25,5 +25,13 @@ import uk.org.ponder.rsf.components.UIForm;
 
 public interface QuestionListRenderer {
 	
+	/**
+	 * Creates question list
+	 * 
+	 * @param tofill		{@link UIContainer} to fill
+	 * @param divID			id of div
+	 * @param sortParams	View parameters
+	 * @param form			{@link UIForm} to be added to
+	 */
 	public void makeQuestionList(UIContainer tofill, String divID, SortPagerViewParams sortParams, UIForm form);
 }

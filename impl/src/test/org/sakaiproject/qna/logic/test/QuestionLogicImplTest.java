@@ -380,12 +380,18 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(tdp.question1_location1.getCategory().getId().equals(tdp.category1_location1.getId()));
 	}
 	
+	/**
+	 * Test get questions with private replies
+	 */
 	public void testGetQuestionsWithPrivateReplies() {
 		List<QnaQuestion> questions = questionLogic.getQuestionsWithPrivateReplies(LOCATION1_ID);
 		assertEquals(1, questions.size());
 		assertTrue(questions.contains(tdp.question2_location1));
 	}
 	
+	/**
+	 * Test get all questions
+	 */
 	public void testGetAllQuestions() {
 		List<QnaQuestion> questions = questionLogic.getAllQuestions(LOCATION1_ID);
 		assertEquals(5, questions.size());

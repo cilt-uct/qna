@@ -44,7 +44,10 @@ public class SakaiFCKTextEvolver implements TextInputEvolver {
 	public void setContentHostingService(ContentHostingService contentHostingService) {
 		this.contentHostingService = contentHostingService;
 	}
-
+	
+	/**
+	 * Make input be FCK text editor
+	 */
 	public UIJointContainer evolveTextInput(UIInput toevolve) {
 		toevolve.parent.remove(toevolve);
 		UIJointContainer joint = new UIJointContainer(toevolve.parent, toevolve.ID, COMPONENT_ID);

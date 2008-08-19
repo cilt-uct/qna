@@ -27,6 +27,9 @@ import org.sakaiproject.qna.model.QnaQuestion;
  */
 public class RecentChangesComparator implements Comparator<QnaQuestion> {
 
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
 		return q2.getDateLastModified().compareTo(q1.getDateLastModified());
 	}

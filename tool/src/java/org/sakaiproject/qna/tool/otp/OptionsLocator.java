@@ -52,6 +52,11 @@ public class OptionsLocator implements BeanLocator {
 	
 	private Map<String, QnaOptions>  delivered = new HashMap<String,QnaOptions>();
 	
+	/**
+	 * Locate bean
+	 * 
+	 * @return {@link QnaOptions}
+	 */
 	public Object locateBean(String name) {
 		QnaOptions togo = delivered.get(name);
 		if (togo == null) {
@@ -61,6 +66,10 @@ public class OptionsLocator implements BeanLocator {
 		return togo;
 	}
 	
+	/**
+	 * Saves all
+	 * @return return key
+	 */
 	public String saveAll() {
 		for (QnaOptions options : delivered.values()) {
 			optionsLogic.saveOptions(options, options.getLocation());

@@ -20,6 +20,9 @@ package org.sakaiproject.qna.logic;
 
 import org.sakaiproject.qna.model.QnaAnswer;
 
+/**
+ *	API for logic pertaining to Answers in QNA 
+ */
 public interface AnswerLogic {
 
 	/**
@@ -27,7 +30,7 @@ public interface AnswerLogic {
 	 *
 	 * @param answerId
 	 *            unique id of a {@link QnaAnswer}
-	 * @return {@link QnaAnswer}
+	 * @return {@link QnaAnswer} the answer found
 	 */
 	public QnaAnswer getAnswerById(String answerId);
 
@@ -35,7 +38,7 @@ public interface AnswerLogic {
 	 * Removes answer from question
 	 *
 	 * @param answerId  unique id of a {@link QnaAnswer}
-	 * @param locationId unique if for location
+	 * @param locationId unique id for location
 	 */
 	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId);
 	
@@ -43,7 +46,7 @@ public interface AnswerLogic {
 	 *  Removes answer from database
 	 *  
 	 * @param answerId  unique id of a {@link QnaAnswer}
-	 * @param locationId unique if for location
+	 * @param locationId unique id for location
 	 */
 	public void removeAnswer(String answerId, String locationId);
 
@@ -51,7 +54,7 @@ public interface AnswerLogic {
 	 * Approves answer	
 	 *
 	 * @param answerId  unique id of a {@link QnaAnswer}
-	 * @param locationId unique if for location
+	 * @param locationId unique id for location
 	 */
 	public void approveAnswer(String answerId, String locationId);
 
@@ -59,7 +62,7 @@ public interface AnswerLogic {
 	 * Withdraw approval for answer
 	 *
 	 * @param answerId  unique id of a {@link QnaAnswer}
-	 * @param locationId unique if for location
+	 * @param locationId unique id for location
 	 */
 	public void withdrawApprovalAnswer(String answerId, String locationId);
 	
@@ -67,15 +70,14 @@ public interface AnswerLogic {
 	 * Save an answer
 	 * 
 	 * @param answerId  unique id of a {@link QnaAnswer}
-	 * @param locationId unique if for location
+	 * @param locationId unique id for location
 	 */
 	public void saveAnswer(QnaAnswer answer, String locationId);
 	
 	/**
 	 * Creates default QnaAnswer object
 	 * 
-	 * @param locationId
-	 * @param ownerId
+	 * @param locationId unique id for location
 	 * @return {QnaAnswer} default QnaAnswer object
 	 */
 	public QnaAnswer createDefaultAnswer(String locationId);

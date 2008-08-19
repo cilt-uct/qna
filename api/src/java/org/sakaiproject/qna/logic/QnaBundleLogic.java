@@ -29,12 +29,24 @@ public interface QnaBundleLogic {
 	/** Path to bundle messages */
 	public static final String QNA_BUNDLE = "messages";
 	
+	/**
+	 * Get message with key
+	 * 
+	 * @param key specific key of message to retrieve
+	 * @return message as {@link String}
+	 */
 	public String getString(String key);
 	
+	/**
+	 * Get message with parameters
+	 * 
+	 * @param key specific key of message to retrieve
+	 * @param parameters array of parameters to format message
+	 * @return message as {@link String}
+	 */
 	public String getFormattedMessage(String key, Object[] parameters);
 	
 	/**
-	 * 
 	 * @return user's preferred locale
 	 */
 	public Locale getLocale();

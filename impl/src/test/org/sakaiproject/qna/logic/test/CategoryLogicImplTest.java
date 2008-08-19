@@ -208,6 +208,9 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertEquals(tdp.question5_location1.getQuestionText(), questions.get(3).getQuestionText());
 	}
 	
+	/**
+	 * Test get published question for category
+	 */
 	public void testGetPublishedQuestionsForCategory() {
 		QnaCategory category = categoryLogic.getCategoryById(tdp.category1_location1.getId());
 		List<QnaQuestion> questions = category.getPublishedQuestions();
@@ -217,11 +220,17 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(questions.contains(tdp.question4_location1));
 	}
 	
+	/**
+	 * Test get categories for location
+	 */
 	public void testGetCategoriesForLocation() {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(LOCATION1_ID);
 		assertEquals(3, categories.size());
 	}
 	
+	/**
+	 * Test saving of defaults
+	 */
 	public void testSaveDefaults() {
 		try {
 			categoryLogic.setNewCategoryDefaults(tdp.category1_location1, LOCATION1_ID, USER_UPDATE);
@@ -236,6 +245,9 @@ public class CategoryLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertEquals(category.getOwnerId(),USER_UPDATE);
 	}
 	
+	/**
+	 * Test create general category
+	 */
 	public void testCreateGeneralCategory() {
 		List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(LOCATION4_ID);
 		assertEquals(1, categories.size());

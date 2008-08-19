@@ -67,6 +67,9 @@ public class OptionsLogicImpl implements OptionsLogic {
 		this.serverConfigurationService = serverConfigurationService;
 	}
 	
+	/**
+	 * @see OptionsLogic#createDefaultOptions(String)
+	 */
 	public QnaOptions createDefaultOptions(String locationId) {
 
 		QnaOptions newOptions = new QnaOptions();
@@ -118,6 +121,9 @@ public class OptionsLogicImpl implements OptionsLogic {
 		return newOptions;
 	}
 
+	/**
+	 * @see OptionsLogic#getNotificationSet(String)
+	 */
 	@SuppressWarnings("unchecked")
 	public Set<String> getNotificationSet(String locationId) {
 		QnaOptions options = getOptionsForLocation(locationId);
@@ -140,7 +146,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 		return notificationSet;
 	}
-
+	
+	/**
+	 * @see OptionsLogic#getOptionsForLocation(String)
+	 */
 	public QnaOptions getOptionsForLocation(String locationId) {
 		List l = dao.findByProperties(QnaOptions.class,
 				new String[] { "location" }, new Object[] { locationId },
@@ -153,7 +162,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 			return newOptions;
 		}
 	}
-
+	
+	/**
+	 * @see OptionsLogic#isModerationOn(String)
+	 */
 	public boolean isModerationOn(String locationId) {
 		List l = dao.findByProperties(
 			QnaOptions.class,
@@ -169,7 +181,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * @see OptionsLogic#saveOptions(QnaOptions, String)
+	 */
 	public void saveOptions(QnaOptions options, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 
@@ -189,7 +204,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 
 	}
-
+	
+	/**
+	 * @see OptionsLogic#setCustomMailList(String, String)
+	 */
 	public boolean setCustomMailList(String locationId, String mailList) {
 		String userId = externalLogic.getCurrentUserId();
 
@@ -234,7 +252,10 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 		return invalidEmail;
 	}
-
+	
+	/**
+	 * @see OptionsLogic#getOptionsById(String)
+	 */
 	public QnaOptions getOptionsById(String id) {
 		return (QnaOptions)dao.findById(QnaOptions.class, id);
 	}

@@ -41,8 +41,9 @@ public interface ExternalEventLogic {
 	
     /**
 	 * Post a sakai event
-	 * @param message
-	 * @param entity
+	 * 
+	 * @param message	Message of event
+	 * @param entity	Entity event pertains to 
 	 */
 	public void postEvent(String message, Object entity);
 	

@@ -36,6 +36,7 @@ import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCaseReporter;
 import uk.org.ponder.rsf.view.ComponentChecker;
+import uk.org.ponder.rsf.view.ComponentProducer;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
@@ -58,6 +59,9 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 		this.navBarRenderer = navBarRenderer;
 	}
 
+    /**
+     * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
+     */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
 

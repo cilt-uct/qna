@@ -19,7 +19,7 @@
    </parent>
 
    <properties>
-      <rsfutil.version>0.7.2</rsfutil.version>
+      <rsfutil.version>0.7.3</rsfutil.version>
       <sakairsf.sakai.version>2.2.x</sakairsf.sakai.version>
       <deploy.webappname>Qna</deploy.webappname>
       <appserver.id>${sakai.appserver.id}</appserver.id>
@@ -37,7 +37,6 @@
 	  <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring</artifactId>
-         <!-- <version>${sakai.spring.version}</version> -->
          <scope>provided</scope>
       </dependency>
 	
@@ -86,7 +85,6 @@
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-content-api</artifactId>
-        
         <scope>provided</scope>
       </dependency>
 
@@ -94,39 +92,38 @@
 	  <dependency>
 	    <groupId>org.sakaiproject</groupId>
 	    <artifactId>sakai-authz-api</artifactId>
-	    
 	    <scope>provided</scope>
       </dependency>
 
       <dependency>
       	<groupId>org.sakaiproject</groupId>
       	<artifactId>sakai-tool-api</artifactId>
-      	
       	<scope>provided</scope>
       </dependency>
 
       <dependency>
       	<groupId>org.sakaiproject</groupId>
       	<artifactId>sakai-component-api</artifactId>
-      	
       </dependency>
 
       <dependency>
       	<groupId>org.sakaiproject</groupId>
       	<artifactId>sakai-event-api</artifactId>
-      	
       </dependency>
 
       <dependency>
       	<groupId>org.sakaiproject</groupId>
       	<artifactId>sakai-util-api</artifactId>
-      	
       </dependency>
+	 <dependency>
+      	<groupId>org.sakaiproject</groupId>
+      	<artifactId>sakai-util</artifactId>
+      </dependency>
+
 
 		<dependency>
 			<groupId>org.sakaiproject</groupId>
 			<artifactId>sakai-site-api</artifactId>
-			
 		</dependency>
 
       <dependency>

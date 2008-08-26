@@ -21,6 +21,8 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
@@ -68,6 +70,8 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     
     private static final String ADD_ICON_URL = "/library/image/silk/add.png";
     
+    private static Log log = LogFactory.getLog(QuestionsListProducer.class);
+    
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;
     private CategoryQuestionListRenderer categoryQuestionListRenderer;
@@ -79,6 +83,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     private OptionsLogic optionsLogic;
     private BeanGetter ELEvaluator;
     private ViewHelper viewHelper;
+   
 
     public String getViewID() {
         return VIEW_ID;
@@ -129,10 +134,11 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     	this.viewHelper = viewHelper;
     }
     
-    /**
+     /**
      * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
      */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
+		log.debug("fillComponents");
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
 

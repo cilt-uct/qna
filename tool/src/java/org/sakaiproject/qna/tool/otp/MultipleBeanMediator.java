@@ -106,7 +106,7 @@ public class MultipleBeanMediator {
 				);
 		}
 
-
+		
 		return "saved";
 	}
 
@@ -117,13 +117,15 @@ public class MultipleBeanMediator {
 	 */
     // TODO: When time permits: combine the two calls + try to remove categoryId string field from model
     public String saveNew() {
+    	log.debug("saveNew()");
     	QnaCategory categoryToLink=null;
 
 		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
 		addAttachments(newQuestion);
 		
 		if (TextUtil.isEmptyWithoutTags(newQuestion.getQuestionText())) {
-			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", null, TargettedMessage.SEVERITY_ERROR));
+			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
+			log.debug("attempted to save empty question");
 			return "error";
 		}
 
@@ -141,16 +143,19 @@ public class MultipleBeanMediator {
 		questionLocator.saveAll();
 		
 		if (newQuestion.isPublished()) {
+			log.debug("setting message qna.ask-question.save-success with text: " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) + "and severity " + TargettedMessage.SEVERITY_INFO);
 			messages.addMessage(
 					new TargettedMessage("qna.ask-question.save-success",
 					new Object[] { TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) },
 					TargettedMessage.SEVERITY_INFO)
 				);
 		} else {
+			log.debug("setting message qna.ask-question.save-success-unpublished  with text: and severity " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()));
 			messages.addMessage(
-					new TargettedMessage("qna.ask-question.save-success-unpublished",null,TargettedMessage.SEVERITY_INFO)
+					new TargettedMessage("qna.ask-question.save-success-unpublished",new Object[]{},TargettedMessage.SEVERITY_INFO)
 				);
 		}
+		log.debug("question saved: returning");
     	return "saved";
     }
     
@@ -254,7 +259,7 @@ public class MultipleBeanMediator {
 	public String deleteMultiple() {
 		messages.clear();
 		messages.addMessage(new TargettedMessage("qna.multiple-delete.delete-success",
-               null,
+               new Object[]{},
                TargettedMessage.SEVERITY_INFO));
 		return "delete";
 	}

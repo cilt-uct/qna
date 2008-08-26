@@ -80,7 +80,7 @@ public class AnswerLocator implements EntityBeanLocator {
 	 * Save all beans
 	 * @return return key
 	 */
-    public String saveAll() {
+    public void saveAll() {
         for (QnaAnswer answer : delivered.values()) {
         	if (TextUtil.isEmptyWithoutTags(answer.getAnswerText())) {
         		if (answer.isPrivateReply()) {
@@ -88,7 +88,8 @@ public class AnswerLocator implements EntityBeanLocator {
         		} else {
         			messages.addMessage(new TargettedMessage("qna.add-answer.answer-empty",null,TargettedMessage.SEVERITY_ERROR));
         		}
-        		return "empty-answer";
+        		//return "empty-answer";
+        		return;
         	} else {
         		//the answer needs to be escaped
         		String escapedAnswer = FormattedText.processFormattedText(answer.getAnswerText(), new StringBuilder());
@@ -108,7 +109,8 @@ public class AnswerLocator implements EntityBeanLocator {
 	        	}
         	}
         }
-        return "saved";
+        //return "saved";
+        return;
     }
 	
     /**

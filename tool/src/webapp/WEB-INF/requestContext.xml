@@ -3,13 +3,13 @@
 
 <beans>
 
-	<bean id="sakaiFCKTextEvolver"
+<!-- 	<bean id="sakaiFCKTextEvolver"
 		class="uk.ac.cam.caret.sakai.rsf.tmp.evolverimpl.SakaiFCKTextEvolver">
 		<property name="contentHostingService"
 			ref="org.sakaiproject.content.api.ContentHostingService" />
 		<property name="context" ref="sakai-Context" />
 	</bean>
-
+ -->
 	<!-- rich text evolver bean def -->
 	<bean id="richTextEvolver" parent="sakaiFCKTextEvolver" />
 

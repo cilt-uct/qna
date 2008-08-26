@@ -191,4 +191,9 @@ public class CategoryLocator implements EntityBeanLocator {
 	public Map<String, QnaCategory> getDeliveredBeans() {
 		return delivered;
 	}
+
+	public void saveAll() {
+		save();
+		
+	}
 }

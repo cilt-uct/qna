@@ -127,7 +127,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	 * 
 	 * @return return key
 	 */
-	public String saveAll() {
+	public void saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			//question text needs to be escaped
 			String escapedQ = FormattedText.processFormattedText(question.getQuestionText(), new StringBuilder());
@@ -135,7 +135,12 @@ public class QuestionLocator implements EntityBeanLocator  {
 			question.setQuestionText(escapedQ);
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 		}
-		return SAVED;
+		return;
+	}
+	
+	public String saveQuestions(){
+		saveAll();
+		return "Saved";
 	}
 	
 	/**

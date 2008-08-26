@@ -320,4 +320,11 @@
 		<property name="messages" ref="targettedMessageList"/>
 		<property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
    	</bean>
+   	
+   		<!-- error prograting bean -->
+	<bean id="allErrorsAllowable"
+		class="org.sakaiproject.qna.tool.utils.ErrorHandler">
+		<property name="errorStateManager" ref="errorStateManager" />
+	</bean>
+   	
 </beans>

@@ -97,8 +97,10 @@ public class CategoryLocator implements EntityBeanLocator {
     public String save() {
     	String categoryName = null;
         for (QnaCategory category : delivered.values()) {
-            categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
-            categoryName = category.getCategoryText();
+        	if  (category.getCategoryText() != null && !"".equals(category.getCategoryText().trim())) {
+        		categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
+        		categoryName = category.getCategoryText();
+        	}
         }
         if (delivered.size() > 1) {
         	messages.addMessage(new TargettedMessage("qna.category.saved-multiple",null,TargettedMessage.SEVERITY_INFO));

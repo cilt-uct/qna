@@ -150,7 +150,7 @@ public class MultipleBeanMediator {
 					TargettedMessage.SEVERITY_INFO)
 				);
 		} else {
-			log.debug("setting message qna.ask-question.save-success-unpublished  with text: and severity " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()));
+			//log.debug("setting message qna.ask-question.save-success-unpublished  with text: and severity " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()));
 			messages.addMessage(
 					new TargettedMessage("qna.ask-question.save-success-unpublished",new Object[]{},TargettedMessage.SEVERITY_INFO)
 				);

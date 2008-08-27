@@ -61,9 +61,10 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 		boolean error1Rendered = false; 
 		boolean error2Rendered = false;
 		
+		//Generate the page title
+		UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+		
 		if (params.questionids != null) {
-			//Generate the page title
-			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
 			
 			UIBranchContainer questionHeadings = UIBranchContainer.make(listTable, "question-headings:");
 
@@ -142,8 +143,7 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 					answerTotal += question.getAnswers().size();
 				}
 
-				// Generate the page title
-				UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+				
 
 				UIOutput.make(categoryContainer, "name", TextUtil.stripTags(category.getCategoryText()));
 				UIOutput.make(categoryContainer, "questions", questionList.size()+"");

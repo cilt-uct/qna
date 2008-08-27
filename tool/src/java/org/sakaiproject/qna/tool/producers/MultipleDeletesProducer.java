@@ -58,8 +58,13 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 
 		UIForm form = UIForm.make(tofill, "multiple-deletes-form");
 		UIJointContainer listTable = new UIJointContainer(form, "list-table", "list-table:");
-
+		boolean error1Rendered = false; 
+		boolean error2Rendered = false;
+		
 		if (params.questionids != null) {
+			//Generate the page title
+			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+			
 			UIBranchContainer questionHeadings = UIBranchContainer.make(listTable, "question-headings:");
 
 			UIMessage.make(questionHeadings, "dqs-name", "qna.delete-question.name-title");
@@ -86,17 +91,18 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 				}
 
 				// Generate the warning if the question has not been answered
-				if (optionsLogic.isModerationOn(locationId) && (!hasPrivateReply) && (answerList.size() == 0)) {
+				if (optionsLogic.isModerationOn(locationId) && (!hasPrivateReply) && (answerList.size() == 0) && !error1Rendered) {
 					UIMessage.make(tofill, "error-message1", "qna.warning.questions-not-answered");
+					error1Rendered = true;
 				}
 
 				// Generate warning for associated answers
-				if ((question.isPublished()) && (answerList.size() > 0)) {
+				if ((question.isPublished()) && (answerList.size() > 0 && !error2Rendered)) {
 					UIMessage.make(tofill, "error-message2", "qna.warning.questions-with-answers");
+					error2Rendered = true;
 				}
 
-				// Generate the page title
-				UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+				
 
 				UIOutput.make(questionContainer, "name", TextUtil.stripTags(question.getQuestionText()));
 				UIOutput.make(questionContainer, "category",  (question.getCategory() != null) ? question.getCategory().getCategoryText() : "");

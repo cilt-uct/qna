@@ -143,7 +143,7 @@ public class MultipleBeanMediator {
 		questionLocator.saveAll();
 		
 		if (newQuestion.isPublished()) {
-			log.debug("setting message qna.ask-question.save-success with text: " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) + "and severity " + TargettedMessage.SEVERITY_INFO);
+			//log.debug("setting message qna.ask-question.save-success with text: " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) + "and severity " + TargettedMessage.SEVERITY_INFO);
 			messages.addMessage(
 					new TargettedMessage("qna.ask-question.save-success",
 					new Object[] { TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) },

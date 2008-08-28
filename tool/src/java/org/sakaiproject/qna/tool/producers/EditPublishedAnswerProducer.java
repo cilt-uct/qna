@@ -96,7 +96,7 @@ public class EditPublishedAnswerProducer implements ViewComponentProducer, Navig
 
 	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
-		list.add(new NavigationCase("saved",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
+		list.add(new NavigationCase(null,new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel",new QuestionParams(ViewQuestionProducer.VIEW_ID)));
 		return list;
 	}

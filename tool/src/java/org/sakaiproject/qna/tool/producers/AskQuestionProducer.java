@@ -186,7 +186,9 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	displayOr = true;
         	   //if thee is only 1 category disable the select
             if (categories.size() ==1 ) {
+            	QnaCategory cat = (QnaCategory) categories.get(0);
             	dropDown.decorators = new DecoratorList(new UIDisabledDecorator(true));
+            	//form.parameters.add(new UIELBinding(questionOTP + ".categoryId", cat.getId()));
             }
         }
 

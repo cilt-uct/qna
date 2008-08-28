@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
@@ -55,6 +56,7 @@ public class MultipleBeanMediator {
 	private AnswerLocator answerLocator;
 
     private QuestionLogic questionLogic;
+    private CategoryLogic categoryLogic;
     private ExternalLogic externalLogic;
 
 	private TargettedMessageList messages;
@@ -126,12 +128,22 @@ public class MultipleBeanMediator {
 		QnaQuestion newQuestion = (QnaQuestion)questionLocator.locateBean(NEW_1);
 		addAttachments(newQuestion);
 		
+		log.debug("got question " + newQuestion.getId() + " in category " + newQuestion.getCategoryId());
 		if (TextUtil.isEmptyWithoutTags(newQuestion.getQuestionText())) {
 			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
 			log.debug("attempted to save empty question");
 			return "error";
 		}
 
+		if ( newQuestion.getCategoryId() == null ) {
+			//this should go in the default category
+			String location = externalLogic.getCurrentLocationId();
+			List cats = categoryLogic.getCategoriesForLocation(location);
+			QnaCategory cat = (QnaCategory)cats.get(0);
+			newQuestion.setCategoryId(cat.getId());
+			
+		}
+		
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {
 			if (newQuestion.getCategoryId() != null) {
 				categoryToLink = (QnaCategory)categoryLocator.locateBean(newQuestion.getCategoryId());
@@ -305,5 +317,9 @@ public class MultipleBeanMediator {
 
 	public void setMessageLocator(MessageLocator messageLocator) {
 		this.messageLocator = messageLocator;
+	}
+
+	public void setCategoryLogic(CategoryLogic cl) {
+		categoryLogic = cl;
 	}
 }

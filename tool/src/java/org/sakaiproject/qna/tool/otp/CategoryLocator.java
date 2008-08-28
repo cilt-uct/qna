@@ -96,12 +96,19 @@ public class CategoryLocator implements EntityBeanLocator {
 	 */
     public String save() {
     	String categoryName = null;
+    	int saved =0;
         for (QnaCategory category : delivered.values()) {
         	if  (category.getCategoryText() != null && !"".equals(category.getCategoryText().trim())) {
         		categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
         		categoryName = category.getCategoryText();
+        		saved ++;
         	}
         }
+        if (saved == 0) {
+        	messages.addMessage(new TargettedMessage("qna.category.saved-multiple-no-text",null,TargettedMessage.SEVERITY_ERROR));
+        	return "error";
+        }
+        
         if (delivered.size() > 1) {
         	messages.addMessage(new TargettedMessage("qna.category.saved-multiple",null,TargettedMessage.SEVERITY_INFO));
         } else {

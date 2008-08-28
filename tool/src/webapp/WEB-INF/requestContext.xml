@@ -103,6 +103,7 @@
 		<property name="searchBarRenderer" ref="SearchBarRenderer"/>
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic"/>
+		<property name="messages" ref="targettedMessageList"/>
 	</bean>
 
 	<bean class="org.sakaiproject.qna.tool.producers.PermissionsProducer">

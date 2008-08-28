@@ -29,6 +29,7 @@ import org.sakaiproject.qna.tool.params.SimpleReturnToParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 
+import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -52,6 +53,8 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
     private SearchBarRenderer searchBarRenderer;
     private PermissionLogic permissionLogic;
     private ExternalLogic externalLogic;
+    private TargettedMessageList messages;
+    
 
 	public String getViewID() {
         return VIEW_ID;
@@ -167,5 +170,9 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
 				((SimpleViewParameters)result.resultingView).viewID = ((SimpleReturnToParams)incoming).returnToViewID;
 			}
 		}
+	}
+
+	public void setMessages(TargettedMessageList messages) {
+		this.messages = messages;
 	}
 }

@@ -36,8 +36,10 @@ import org.sakaiproject.qna.tool.utils.TextUtil;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
 
+import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+import uk.org.ponder.rsf.components.UIMessage;
 
 /**
  * Mediator for working with multiple beans
@@ -57,7 +59,8 @@ public class MultipleBeanMediator {
 
 	private TargettedMessageList messages;
 	private SessionManager sessionManager;
-
+	private MessageLocator messageLocator;
+	
 	private static Log log = LogFactory.getLog(MultipleBeanMediator.class);
 		
 	public void setSessionManager(SessionManager sessionManager) {
@@ -144,11 +147,23 @@ public class MultipleBeanMediator {
 		
 		if (newQuestion.isPublished()) {
 			//log.debug("setting message qna.ask-question.save-success with text: " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) + "and severity " + TargettedMessage.SEVERITY_INFO);
-			messages.addMessage(
-					new TargettedMessage("qna.ask-question.save-success",
-					new Object[] { TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) },
-					TargettedMessage.SEVERITY_INFO)
+			//in the case of moderated questions the Category text can be null
+			log.debug("new question is: " + newQuestion.getQuestionText() + " in " + newQuestion.getCategoryId());
+			if (newQuestion.getCategoryId() != null) {
+				messages.addMessage(
+						new TargettedMessage("qna.ask-question.save-success",
+								new Object[] { TextUtil.stripTags(newQuestion.getCategory().getCategoryText()) },
+								TargettedMessage.SEVERITY_INFO)
 				);
+			} else {
+				//if moderated it gets saved in general questions
+				messages.addMessage(
+						new TargettedMessage("qna.ask-question.save-success",
+								new Object[] {messageLocator.getMessage("qna.default-category.text")},
+								TargettedMessage.SEVERITY_INFO)
+				);
+				
+			}
 		} else {
 			//log.debug("setting message qna.ask-question.save-success-unpublished  with text: and severity " + TextUtil.stripTags(newQuestion.getCategory().getCategoryText()));
 			messages.addMessage(
@@ -286,5 +301,9 @@ public class MultipleBeanMediator {
 
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;
+	}
+
+	public void setMessageLocator(MessageLocator messageLocator) {
+		this.messageLocator = messageLocator;
 	}
 }

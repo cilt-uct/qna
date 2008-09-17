@@ -32,9 +32,9 @@ public class QuestionsByAnswersComparator implements Comparator<QnaQuestion> {
 	 * @see Comparator#compare(Object, Object)
 	 */
 	public int compare(QnaQuestion o1, QnaQuestion o2) {
-		if (o1.getAnswers().size() > o2.getAnswers().size()) {
+		if (o2.getAnswers().size() > o1.getAnswers().size()) {
 			return -1;
-		} else if (o1.getAnswers().size() < o2.getAnswers().size()) {
+		} else if (o2.getAnswers().size() < o1.getAnswers().size()) {
 			return 1;
 		} else {
 			return 0;

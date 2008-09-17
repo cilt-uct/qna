@@ -31,7 +31,7 @@ public class MostPopularComparator implements Comparator<QnaQuestion> {
 	 * @see Comparator#compare(Object, Object)	
 	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
-		return q2.getViews().compareTo(q1.getViews());
+		return q1.getViews().compareTo(q2.getViews());
 	}
 
 }

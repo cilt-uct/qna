@@ -71,8 +71,6 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public boolean remove(String beanname) {
 		try {
 			QnaQuestion question = questionLogic.getQuestionById(beanname);
-			String questionText = question.getQuestionText();
-
 			questionLogic.removeQuestion(beanname, externalLogic.getCurrentLocationId());
 			delivered.remove(beanname);
 

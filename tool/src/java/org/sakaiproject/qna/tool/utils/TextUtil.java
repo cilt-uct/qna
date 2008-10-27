@@ -18,6 +18,8 @@
 
 package org.sakaiproject.qna.tool.utils;
 
+import org.sakaiproject.qna.utils.QNAUtils;
+
 /**
  * Utility class to format output to be display on front-end & methods on strings
  *
@@ -31,7 +33,8 @@ public class TextUtil {
 	 * @return String without tags
 	 */
 	public static String stripTags(String html) {
-		return html.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
+		String cleanup = QNAUtils.cleanupHtmlPtags(html);
+		return cleanup.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
 	}
 	
 	/**
@@ -41,7 +44,7 @@ public class TextUtil {
 	 * @return
 	 */
 	public static boolean isEmptyWithoutTags(String str) {
-		return (str == null || stripTags(str.trim()).equals(""));
+		return (str == null || "".equals(stripTags(str).trim()));
 	}
 
 }

@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;

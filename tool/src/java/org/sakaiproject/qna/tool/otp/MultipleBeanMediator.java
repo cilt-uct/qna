@@ -40,7 +40,6 @@ import org.sakaiproject.tool.api.ToolSession;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
-import uk.org.ponder.rsf.components.UIMessage;
 
 /**
  * Mediator for working with multiple beans
@@ -129,6 +128,7 @@ public class MultipleBeanMediator {
 		addAttachments(newQuestion);
 		
 		log.debug("got question " + newQuestion.getId() + " in category " + newQuestion.getCategoryId());
+		
 		if (TextUtil.isEmptyWithoutTags(newQuestion.getQuestionText())) {
 			messages.addMessage(new TargettedMessage("qna.ask-question.save-failure-empty", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
 			log.debug("attempted to save empty question");

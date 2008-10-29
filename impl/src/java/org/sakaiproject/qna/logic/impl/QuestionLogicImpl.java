@@ -234,14 +234,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 		if (existsQuestion(question.getId())) {
 
 			if (permissionLogic.canUpdate(locationId, userId)) {
-				if (question.isAnonymous()) {
-					if (!optionsLogic.getOptionsForLocation(locationId)
-							.getAnonymousAllowed()) {
-						throw new QnaConfigurationException("Location: "
-								+ locationId
-								+ " does not allow anonymous questions");
-					}
-				}
 				question.setDateLastModified(new Date());
 				question.setLastModifierId(userId);
 				dao.save(question);
@@ -323,7 +315,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 	public void addQuestionToCategory(String questionId, String categoryId,
 			String locationId) {
 		
-		String userId = externalLogic.getCurrentUserId();
 		QnaCategory category = categoryLogic.getCategoryById(categoryId);
 		QnaQuestion question = getQuestionById(questionId);
 

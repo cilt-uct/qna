@@ -281,6 +281,20 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			assertNotNull(qne);
 		}
 	}
+	
+	/**
+	 * Test publishing existing anonymous question into site that doesn't allow anonymous questions
+	 */
+	public void testPublishAnonymousInNonAnonymousLocation() {
+		externalLogicStub.currentUserId = USER_UPDATE;
+		assertFalse(optionsLogic.getOptionsForLocation(LOCATION1_ID).getAnonymousAllowed());
+		
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question5_location1.getId());
+		assertTrue(question.isAnonymous());
+		assertFalse(question.isPublished());
+		
+		questionLogic.publishQuestion(question.getId(), LOCATION1_ID);
+	}
 
 	/**
 	 * Test removal of question
@@ -357,6 +371,28 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 			fail("Should not have thrown exception");
 		}
 	}
+	
+	/**
+	 * Test editing existing anonymous question in location that doesn't allow anonymous
+	 */
+	public void testExistingAnonymousQuestion() {
+		externalLogicStub.currentUserId = USER_UPDATE;
+		assertFalse(optionsLogic.getOptionsForLocation(LOCATION1_ID).getAnonymousAllowed());
+				
+		QnaQuestion question = questionLogic.getQuestionById(tdp.question5_location1.getId());
+		assertTrue(question.isAnonymous());
+		
+		question.setQuestionText("something new");
+		
+		// Saving a existing anonymous question in non-anonymous location should not throw exception
+		try	{
+			questionLogic.saveQuestion(question, LOCATION1_ID);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Should not have thrown exception");
+		}
+	}
+	
 	/**
 	 * Test add question to category
 	 */

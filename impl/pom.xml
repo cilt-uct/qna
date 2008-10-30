@@ -28,7 +28,7 @@
          <groupId>org.sakaiproject.qna</groupId>
          <artifactId>qna-api</artifactId>
          <scope>provided</scope>
-      </dependency>
+      </dependency>      
 
 	  <!-- email dependencies -->
       <dependency>

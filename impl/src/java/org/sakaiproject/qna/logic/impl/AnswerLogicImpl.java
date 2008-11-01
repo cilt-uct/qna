@@ -18,7 +18,9 @@
 
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AnswerLogic;
@@ -244,6 +246,19 @@ public class AnswerLogicImpl implements AnswerLogic {
 		answer.setAnonymous(options.getAnonymousAllowed());
 		answer.setPrivateReply(false);
 		return answer;
+	}
+
+	public List<QnaAnswer> getAllAnswers(String context) {
+		//TODO this should be done in one query
+		List<QnaQuestion> qList = questionLogic.getAllQuestions(context);
+		List<QnaAnswer> aList = new ArrayList();
+		for (int i = 0; i < qList.size(); i++) {
+			QnaQuestion q = (QnaQuestion)qList.get(i);
+			List<QnaAnswer> a = q.getAnswers();
+			aList.addAll(a);
+		}
+		
+		return aList;
 	}
 
 }

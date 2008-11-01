@@ -130,6 +130,10 @@
          
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>org.sakaiproject</groupId>
+         <artifactId>sakai-search-api</artifactId>
+      </dependency>
 
 
       <!-- testing dependencies -->

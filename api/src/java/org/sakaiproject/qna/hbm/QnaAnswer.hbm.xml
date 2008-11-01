@@ -23,4 +23,8 @@
       <property name="privateReply" type="boolean" not-null="true"/>
       <property name="anonymous" type="boolean" not-null="true"/>
    </class>
+   
+
+   
+   
 </hibernate-mapping>

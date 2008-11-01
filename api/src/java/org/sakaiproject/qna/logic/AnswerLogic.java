@@ -18,6 +18,8 @@
 
 package org.sakaiproject.qna.logic;
 
+import java.util.List;
+
 import org.sakaiproject.qna.model.QnaAnswer;
 
 /**
@@ -81,5 +83,12 @@ public interface AnswerLogic {
 	 * @return {QnaAnswer} default QnaAnswer object
 	 */
 	public QnaAnswer createDefaultAnswer(String locationId);
+	
+	/**
+	 * Get all answers in a given site - needed by search for efficiency
+	 * @param locationId unique id which represents the current location of the user
+	 * @return a list of {@link QnaAnswer}
+	 */
+	public List<QnaAnswer> getAllAnswers(String context);
 
 }

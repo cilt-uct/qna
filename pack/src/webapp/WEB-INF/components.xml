@@ -138,6 +138,7 @@
 		</property>
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
 		<property name="addEvents">
 			<list>
 				<value>qna.question.created</value>
@@ -168,6 +169,7 @@
 		</property>
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
+		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
 		<property name="addEvents">
 			<list>
 				<value>qna.answer.created</value>

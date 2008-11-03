@@ -9,10 +9,12 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -62,7 +64,13 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	private SearchService searchService;
 	private SearchIndexBuilder searchIndexBuilder;
 	private String toolName;
+	private SecurityService securityService;
 	
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
+
 	public void setToolName(String toolName) {
 		this.toolName = toolName;
 	}
@@ -124,9 +132,23 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	 *  ContentProducer Methods
 	 */
 	
+	
+	
 	public boolean canRead(String reference) {
-		// TODO Auto-generated method stub
-		return true;
+		if (securityService.isSuperUser())
+			return true;
+		
+		String id = getId(reference);
+		QnaQuestion quest = questionLogic.getQuestionById(id);
+		if (quest != null) {
+			if (quest.isPublished() && securityService.unlock(ExternalLogic.QNA_READ, quest.getLocation()))
+				return true;
+			else if (securityService.unlock(ExternalLogic.QNA_UPDATE, quest.getLocation()))
+				return true;
+				
+		}
+		
+		return false;
 	}
 
 	public String getContainer(String ref) {
@@ -140,10 +162,31 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna question content " + reference);
 		String id = getId(reference);
-		QnaQuestion q = questionLogic.getQuestionById(id);
-		String ret = null;
-		ret = FormattedText.convertFormattedTextToPlaintext(q.getQuestionText());
-		return ret;
+		QnaQuestion quest = questionLogic.getQuestionById(id);
+		StringBuilder sb = new StringBuilder();
+		sb.append(FormattedText.convertFormattedTextToPlaintext(quest.getQuestionText()));
+		
+		
+		//check for attachements
+		List<QnaAttachment> qa = quest.getAttachments();
+		if (qa != null && qa.size()>0) {
+			for (int q = 0; q < qa.size(); q++) {
+				QnaAttachment attach = (QnaAttachment) qa.get(q);
+				log.info("getting ecp for " + attach.getAttachmentId());
+				EntityContentProducer ecp = searchIndexBuilder.newEntityContentProducer(attach.getAttachmentId());
+				if (ecp != null) {
+					String attachementDigest = ecp.getContent(attach.getAttachmentId());
+					sb.append("\n attachement: \n");
+					sb.append(attachementDigest);
+					sb.append("\n"); 
+				} else {
+					log.warn("no EntityContentProducer found for: " + attach.getAttachmentId());
+				}
+			}
+		}
+		
+		
+		return sb.toString();
 	}
 
 	public Reader getContentReader(String reference) {
@@ -178,15 +221,9 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 			QnaQuestion quest = (QnaQuestion)questions.get(i);
 			String ref = "/" + toolName + "/" + quest.getId();
 			refs.add(ref);
-			//check for attachements
-			List<QnaAttachment> qa = quest.getAttachments();
-			if (qa != null && qa.size()>0) {
-				for (int q = 0; q < qa.size(); q++) {
-					QnaAttachment attach = (QnaAttachment) qa.get(q);
-					refs.add(attach.getAttachmentId());
-				}
+	
 				
-			}
+			
 		}
 		return refs.iterator();
 	}

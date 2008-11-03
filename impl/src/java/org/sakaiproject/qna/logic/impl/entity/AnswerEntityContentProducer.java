@@ -9,11 +9,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.qna.logic.AnswerLogic;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
@@ -63,6 +65,11 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	private SearchService searchService;
 	private SearchIndexBuilder searchIndexBuilder;
 	private String toolName;
+	private SecurityService securityService;
+	
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
 	
 	public void setToolName(String toolName) {
 		this.toolName = toolName;
@@ -126,8 +133,18 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	 */
 	
 	public boolean canRead(String reference) {
-		// TODO Auto-generated method stub
-		return true;
+		if (securityService.isSuperUser())
+			return true;
+		
+		String id = getId(reference);
+		QnaAnswer a = answerLogic.getAnswerById(id);
+		if (a != null) {
+			if (securityService.unlock(ExternalLogic.QNA_READ, a.getQuestion().getLocation()))
+				return true;
+				
+		}
+		
+		return false;
 	}
 
 	public String getContainer(String ref) {

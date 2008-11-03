@@ -179,6 +179,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 			QnaAnswer a = (QnaAnswer)answers.get(i);
 			String ref = "/" + toolName + "/" + a.getId();
 			refs.add(ref);
+			
 		}
 		return refs.iterator();
 	}

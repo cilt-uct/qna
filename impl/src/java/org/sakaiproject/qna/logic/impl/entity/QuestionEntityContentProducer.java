@@ -14,6 +14,7 @@ import org.sakaiproject.entitybroker.EntityBroker;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
@@ -174,9 +175,18 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		log.debug("found " + questions.size() + " questions");
 		List<String> refs = new ArrayList<String>();
 		for (int i = 0; i < questions.size(); i++) {
-			QnaQuestion q = (QnaQuestion)questions.get(i);
-			String ref = "/" + toolName + "/" + q.getId();
+			QnaQuestion quest = (QnaQuestion)questions.get(i);
+			String ref = "/" + toolName + "/" + quest.getId();
 			refs.add(ref);
+			//check for attachements
+			List<QnaAttachment> qa = quest.getAttachments();
+			if (qa != null && qa.size()>0) {
+				for (int q = 0; q < qa.size(); q++) {
+					QnaAttachment attach = (QnaAttachment) qa.get(q);
+					refs.add(attach.getAttachmentId());
+				}
+				
+			}
 		}
 		return refs.iterator();
 	}

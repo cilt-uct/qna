@@ -19,6 +19,7 @@
 package org.sakaiproject.qna.tool.entity;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -27,6 +28,7 @@ import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.CollectionResolvable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Statisticable;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.entityprovider.search.Restriction;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
@@ -39,7 +41,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 /**
  * Entity provider for questions
  */
-public class QuestionEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful {
+public class QuestionEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful, Statisticable {
 	
 	public final static String ENTITY_PREFIX = "qna-question";
 
@@ -179,6 +181,23 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	public String[] getHandledInputFormats() {
 		return null;
 		//return new String[] {Formats.XML, Formats.JSON};
+	}
+
+	public String getAssociatedToolId() {
+		return "sakai.qna";
+	}
+
+	public String[] getEventKeys() {
+		String[] retval = new String[] { "qna.question.created",
+										 "qna.question.deleted",
+										 "qna.question.updated"};
+		
+		return retval;
+	}
+
+	public Map<String, String> getEventNames(Locale arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -18,6 +18,7 @@
 
 package org.sakaiproject.qna.tool.entity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,8 +29,10 @@ import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.CollectionResolvable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.RESTful;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.RedirectDefinable;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.Statisticable;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
+import org.sakaiproject.entitybroker.entityprovider.extension.TemplateMap;
 import org.sakaiproject.entitybroker.entityprovider.search.Restriction;
 import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
@@ -42,7 +45,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 /**
  * Entity provider for questions
  */
-public class QuestionEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful, Statisticable {
+public class QuestionEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful, 
+				Statisticable, RedirectDefinable {
 	
 	public final static String ENTITY_PREFIX = "qna-question";
 
@@ -77,10 +81,31 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 		return ENTITY_PREFIX;
 	}
 
-	public String createEntity(EntityReference arg0, Object arg1,
-			Map<String, Object> arg2) {
-		// TODO Auto-generated method stub
-		return null;
+	public String createEntity(EntityReference ref, Object entity,
+			Map<String, Object> params) {
+		String userReference = developerHelperService.getCurrentUserReference();
+        if (userReference == null) {
+            throw new SecurityException("user must be logged in to create new question");
+        }
+        QnaQuestion question = (QnaQuestion) entity;
+        
+        //location must be specified
+        if (question.getLocation() == null)
+        	throw new IllegalArgumentException("Location must be set to create an question");
+        
+        //can the user add a question in this location
+        Boolean isAllowed = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_NEW_QUESTION, question.getLocation());
+        if (!isAllowed) {
+        	throw new SecurityException("user cannot create question in: " + question.getLocation());
+        }
+        
+        question.setDateCreated(new Date());
+        question.setDateLastModified(new Date());
+        question.setOwnerId(developerHelperService.getCurrentUserId());
+        
+        questionLogic.saveQuestion(question, question.getLocation());
+        
+		return question.getId();
 	}
 
 	public Object getSampleEntity() {
@@ -205,8 +230,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	}
 
 	public String[] getHandledInputFormats() {
-		return null;
-		//return new String[] {Formats.XML, Formats.JSON};
+		return new String[] {Formats.XML, Formats.JSON};
 	}
 
 	public String getAssociatedToolId() {
@@ -224,6 +248,13 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	public Map<String, String> getEventNames(Locale arg0) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public TemplateMap[] defineURLMappings() {
+		return new TemplateMap[] {
+                new TemplateMap("/{prefix}/{questionId}/answer", AnswerEntityProvider.ENTITY_PREFIX + "{dot-extension}")
+		};
+		
 	}
 	
 }

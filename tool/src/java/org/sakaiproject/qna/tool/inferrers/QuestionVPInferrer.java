@@ -18,7 +18,9 @@
 
 package org.sakaiproject.qna.tool.inferrers;
 
-import org.sakaiproject.entitybroker.IdEntityReference;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.qna.logic.entity.QuestionEntityProvider;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
@@ -27,7 +29,7 @@ import uk.ac.cam.caret.sakai.rsf.entitybroker.EntityViewParamsInferrer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
 public class QuestionVPInferrer implements EntityViewParamsInferrer {
-
+	private static Log log = LogFactory.getLog(QuestionVPInferrer.class);
 	public String[] getHandledPrefixes() {
 		return new String[] {QuestionEntityProvider.ENTITY_PREFIX};
 	}
@@ -36,8 +38,9 @@ public class QuestionVPInferrer implements EntityViewParamsInferrer {
 	 * @see EntityViewParamsInferrer#inferDefaultViewParameters(String)
 	 */
 	public ViewParameters inferDefaultViewParameters(String reference) {
-		 IdEntityReference ref = new IdEntityReference(reference);
-		 return new QuestionParams(ViewQuestionProducer.VIEW_ID,ref.id,true);
+		 EntityReference ref = new EntityReference(reference);
+		 log.debug(reference.toString());
+		 return new QuestionParams(ViewQuestionProducer.VIEW_ID, ref.getId(), true);
 	}
 
 }

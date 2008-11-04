@@ -31,6 +31,7 @@ import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.DeveloperHelperServiceStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.NotificationLogicStub;
@@ -49,7 +50,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
 	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
 	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
-	
+	private DeveloperHelperServiceStub developerHelperServiceStub = new DeveloperHelperServiceStub();
 	
 	private TestDataPreload tdp = new TestDataPreload();
 
@@ -100,6 +101,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		questionLogic.setCategoryLogic(categoryLogic);
 		questionLogic.setNotificationLogic(notificationLogicStub);
 		questionLogic.setExternalEventLogic(externalEventLogicStub);
+		questionLogic.setDeveloperHelperService(developerHelperServiceStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);

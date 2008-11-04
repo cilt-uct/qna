@@ -108,7 +108,7 @@
 			class="org.sakaiproject.qna.logic.impl.entity.AnswerEntityProviderImpl">
 			<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
 	</bean>
-	-->
+	
     <bean id="org.sakaiproject.qna.logic.entity.QnaEntityProducer" 
     	class="org.sakaiproject.qna.logic.impl.entity.QnaEntityProducer"
       	init-method="init"
@@ -121,7 +121,7 @@
       <property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic" />
     </bean>
     
-    
+    -->
     <!-- Search Adaptors -->
 	<bean id="qnaQuestionAdaptor"
 		class="org.sakaiproject.qna.logic.impl.entity.QuestionEntityContentProducer"

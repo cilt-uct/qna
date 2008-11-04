@@ -76,14 +76,16 @@
 <!--  </bean>-->
 
   <!-- Inferrers -->
-  <bean class="org.sakaiproject.qna.tool.inferrers.QuestionVPInferrer"></bean>
+  
+  <bean class="org.sakaiproject.qna.tool.inferrers.QuestionVPInferrer"></bean> 
 
-  <bean class="org.sakaiproject.qna.tool.inferrers.CategoryVPInferrer"></bean>
-
+  
   <bean class="org.sakaiproject.qna.tool.inferrers.AnswerVPInferrer">
   	<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />
   </bean>
-  
+<!-- There is no category view - this returns the "edit category view
+  <bean class="org.sakaiproject.qna.tool.inferrers.CategoryVPInferrer"></bean>
+  -->
   
    <!-- added to propogate errors -->
    <bean id="redirectOnLevel1Error" class="uk.org.ponder.springutil.BooleanFactory">

@@ -151,7 +151,24 @@ public class QuestionLogicImpl implements QuestionLogic {
 	 * @see QuestionLogic#getQuestionById(String)
 	 */
 	public QnaQuestion getQuestionById(String questionId) {
-		return (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
+		QnaQuestion q = (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
+		
+		//the question may not exist
+		if (q == null)
+			return null;
+		
+		//does the user have rights to read the question?
+		String currentUserId = developerHelperService.getCurrentUserId();
+		log.info("got userId: " + currentUserId);
+		if (currentUserId == null) 
+            throw new SecurityException("User must be logged in in order to access question data: " + questionId);
+		String userReference = developerHelperService.getCurrentUserReference();
+		boolean allowRead = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_READ, q.getLocation());
+        if (!allowRead) {
+        	throw new SecurityException("User ("+userReference+") not allowed to access qna data: " + questionId);
+        }
+		
+		return q;
 	}
 
 	/**

@@ -31,6 +31,7 @@ import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
+import org.sakaiproject.qna.logic.test.stubs.DeveloperHelperServiceStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.NotificationLogicStub;
@@ -46,6 +47,7 @@ public class AnswerLogicImplTest extends
 	QuestionLogicImpl questionLogic;
 	OptionsLogicImpl optionsLogic;
 	CategoryLogicImpl categoryLogic;
+	
 	QnaDao dao;
 
 	private static Log log = LogFactory.getLog(AnswerLogicImplTest.class);
@@ -54,7 +56,8 @@ public class AnswerLogicImplTest extends
 	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
 	
 	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
-
+	private DeveloperHelperServiceStub developerHelperServiceStub = new DeveloperHelperServiceStub();
+	
 	private TestDataPreload tdp = new TestDataPreload();
 
 	protected String[] getConfigLocations() {
@@ -102,6 +105,7 @@ public class AnswerLogicImplTest extends
 		questionLogic.setExternalLogic(externalLogicStub);
 		questionLogic.setCategoryLogic(categoryLogic);
 		questionLogic.setExternalEventLogic(externalEventLogicStub);
+		questionLogic.setDeveloperHelperService(developerHelperServiceStub);
 		
 		// create and setup answer object
 		answerLogic = new AnswerLogicImpl();

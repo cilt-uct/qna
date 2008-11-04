@@ -38,6 +38,10 @@ public class CategoryEntityProvider extends AbstractEntityProvider implements Co
 	private CategoryLogic categoryLogic;
 	
 	
+	public void setCategoryLogic(CategoryLogic categoryLogic) {
+		this.categoryLogic = categoryLogic;
+	}
+
 	public String getEntityPrefix() {
 		return ENTITY_PREFIX;
 	}

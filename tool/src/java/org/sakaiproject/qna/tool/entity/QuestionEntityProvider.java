@@ -35,6 +35,7 @@ import org.sakaiproject.entitybroker.entityprovider.search.Search;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
+import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 
@@ -126,12 +127,33 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 		return question;
 	}
 
-	public void deleteEntity(EntityReference arg0, Map<String, Object> arg1) {
-		// TODO Auto-generated method stub
+	public void deleteEntity(EntityReference ref, Map<String, Object> params) {
+		  String id = ref.getId();
+	        String userReference = developerHelperService.getCurrentUserReference();
+	        if (userReference == null) {
+	            throw new SecurityException("anonymous user cannot delete option: " + ref);
+	        }
+	        QnaQuestion q = questionLogic.getQuestionById(id);
+	        if (q == null)
+	        	throw new IllegalArgumentException("No question found to delete for the given reference: " + ref);
+	        
+	        
+            boolean allowUpdate = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_UPDATE, q.getLocation());
+	        if (!allowUpdate)
+	        	throw new SecurityException("user: " + userReference +" cannot delete option: " + ref);
+	        	
+	        try {
+				questionLogic.removeQuestion(id, q.getLocation());
+			} catch (AttachmentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 	}
 
 	public List<?> getEntities(EntityReference ref, Search search) {
+		log.debug("getEntities: " + ref.toString() + " ," + search.toString());
+		
         // get the setting which indicates if we are getting polls we can admin or polls we can take
         boolean adminControl = false;
         Restriction adminRes = search.getRestrictionByProperty("admin");
@@ -150,26 +172,30 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
         String userId = null;
         if (userRes != null) {
             String currentUser = developerHelperService.getCurrentUserReference();
+            log.debug("current user: " + currentUser);
             String userReference = userRes.getStringValue(); 
             if (userReference == null) {
-                throw new IllegalArgumentException("Invalid request: Cannot limit polls by user when the value is null");
+                throw new IllegalArgumentException("Invalid request: Cannot limit questions by user when the value is null");
             }
             if (userReference.equals(currentUser) || developerHelperService.isUserAdmin(currentUser)) {
                 userId = developerHelperService.getUserIdFromRef(userReference); //requestStorage.getStoredValueAsType(String.class, "userId");
             } else {
-                throw new SecurityException("Only the admin can get polls for other users, you requested polls for: " + userReference);
+                throw new SecurityException("Only the admin can get questions for other users, you requested polls for: " + userReference);
             }
         } else {
             userId = developerHelperService.getCurrentUserId();
+            log.debug("current user: " + userId);
             if (userId == null) {
-                throw new SecurityException("No user is currently logged in so no polls data can be retrieved");
+                throw new SecurityException("No user is currently logged in so no qna data can be retrieved");
             }
         }
         String perm = ExternalLogic.QNA_READ;
         if (adminControl) {
             perm = ExternalLogic.QNA_UPDATE;
         }
+        log.debug("about to get questions");
         List<QnaQuestion> questions = questionLogic.findAllQuestionsForUserAndSitesAndPersmissions(userId, siteIds, perm);
+        
         
         return questions;
 	}

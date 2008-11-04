@@ -400,7 +400,7 @@ public class QuestionLogicImpl implements QuestionLogic {
             String[] siteIdsToSearch = allowedSites.toArray(new String[allowedSites.size()]);
             Search search = new Search();
             if (siteIdsToSearch.length > 0) {
-            	search.addRestriction(new Restriction("siteId", siteIdsToSearch));
+            	search.addRestriction(new Restriction("location", siteIdsToSearch));
             }
             search.addOrder(new Order("dateCreated", false));
             questions = dao.findBySearch(QnaQuestion.class, search);
@@ -431,8 +431,8 @@ public class QuestionLogicImpl implements QuestionLogic {
                  String type = r.getSubType();
                  if (SAKAI_SITE_TYPE.equals(type)) {
                     // this is a Site
-                    String siteId = r.getId();
-                    l.add(siteId);
+                	log.debug("adding " + authzGroupId);
+                    l.add(authzGroupId);
                  }
               }
            }

@@ -27,7 +27,6 @@
       <dependency>
          <groupId>org.sakaiproject.qna</groupId>
          <artifactId>qna-api</artifactId>
-         <scope>provided</scope>
       </dependency>      
 
 	  <!-- email dependencies -->
@@ -48,87 +47,36 @@
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring</artifactId>
-         <scope>provided</scope>
       </dependency>
 
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate</artifactId>
-         <scope>provided</scope>
       </dependency>
 
       <!-- Various Sakai dependencies -->
       <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-authz-api</artifactId>
-         
+         <groupId>org.sakaiproject.kernel</groupId>
+         <artifactId>sakai-kernel-api</artifactId>
       </dependency>
-
       <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-entity-api</artifactId>
-         
+      	<groupId>org.sakaiproject.kernel</groupId>
+      	<artifactId>sakai-component-manager</artifactId>
       </dependency>
-
       <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-site-api</artifactId>
-         
+      	<groupId>org.sakaiproject.kernel</groupId>
+      	<artifactId>sakai-kernel-util</artifactId>
       </dependency>
-
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-tool-api</artifactId>
-         
-      </dependency>
-
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-user-api</artifactId>
-         
-      </dependency>
-
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
+      <!-- <dependency>
+         <groupId>org.sakaiproject.kernel</groupId>
          <artifactId>sakai-util-api</artifactId>
          
       </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-component-api</artifactId>
-      	
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-event-api</artifactId>
-      	
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-util</artifactId>
-      	
-      </dependency>
-
-	  <dependency>
-		<groupId>org.sakaiproject</groupId>
-		<artifactId>sakai-content-api</artifactId>
-		
-	  </dependency>
-
+ -->
+    
       <dependency>
         <groupId>org.sakaiproject.entitybroker</groupId>
         <artifactId>entitybroker-api</artifactId>
-      	<scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>sakai-email-api</artifactId>
-         
-         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.sakaiproject</groupId>

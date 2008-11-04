@@ -138,4 +138,17 @@ public interface QuestionLogic {
 	 * @return String with URL
 	 */
 	public String retrieveURL(QnaQuestion question, String view);
+	
+	
+	/**
+	 * Get all the questions for a user in a set of sites (can be one) given the permission,
+     * will return only questions that can be update on if the permission is qna.update
+     * 
+     * @param userId a sakai internal user id (not eid)
+     * @param siteIds an array of site ids (can be null or empty to get the questions for all without security check)
+     * @param permissionConstant either the qna.update (for all questions a user can update on) or 
+     * qna.read for all the polls the user can read
+     * @return the list of all questions this user can access
+	 */
+	public List<QnaQuestion> findAllQuestionsForUserAndSitesAndPersmissions(String userId, String[] siteIds, String permissionConstant);
 }

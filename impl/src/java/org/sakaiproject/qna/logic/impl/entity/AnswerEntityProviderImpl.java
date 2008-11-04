@@ -19,12 +19,11 @@
 package org.sakaiproject.qna.logic.impl.entity;
 
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
-import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.entity.AnswerEntityProvider;
 import org.sakaiproject.qna.model.QnaAnswer;
 
-public class AnswerEntityProviderImpl implements AnswerEntityProvider, CoreEntityProvider, AutoRegisterEntityProvider {
+public class AnswerEntityProviderImpl implements AnswerEntityProvider, CoreEntityProvider {
 
 	private AnswerLogic answerLogic;
 	

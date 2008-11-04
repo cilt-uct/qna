@@ -37,13 +37,15 @@
 	  <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring</artifactId>
-         <scope>provided</scope>
       </dependency>
 	
 	  <dependency>
 		<groupId>org.sakaiproject.entitybroker</groupId>
         <artifactId>entitybroker-api</artifactId>
-      	<scope>provided</scope>
+      </dependency>
+      <dependency>
+		<groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-utils</artifactId>
       </dependency>
 		
       <!-- Sakai RSF dependency -->
@@ -75,55 +77,10 @@
       </dependency>
 
       <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-entity-api</artifactId>
-        <scope>provided</scope>
+        <groupId>org.sakaiproject.kernel</groupId>
+        <artifactId>sakai-kernel-api</artifactId>
       </dependency>
-
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-content-api</artifactId>
-        <scope>provided</scope>
-      </dependency>
-
-
-	  <dependency>
-	    <groupId>org.sakaiproject</groupId>
-	    <artifactId>sakai-authz-api</artifactId>
-	    <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-tool-api</artifactId>
-      	<scope>provided</scope>
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-component-api</artifactId>
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-event-api</artifactId>
-      </dependency>
-
-      <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-util-api</artifactId>
-      </dependency>
-	 <dependency>
-      	<groupId>org.sakaiproject</groupId>
-      	<artifactId>sakai-util</artifactId>
-      </dependency>
-
-
-		<dependency>
-			<groupId>org.sakaiproject</groupId>
-			<artifactId>sakai-site-api</artifactId>
-		</dependency>
-
+    
       <dependency>
         <groupId>org.sakaiproject.qna</groupId>
         <artifactId>qna-api</artifactId>

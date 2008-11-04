@@ -21,13 +21,23 @@ package org.sakaiproject.qna.logic.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.entity.api.EntityManager;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
+import org.sakaiproject.genericdao.api.search.Order;
+import org.sakaiproject.genericdao.api.search.Restriction;
+import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -43,6 +53,7 @@ import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.site.api.SiteService;
 
 public class QuestionLogicImpl implements QuestionLogic {
 
@@ -57,8 +68,17 @@ public class QuestionLogicImpl implements QuestionLogic {
 	private NotificationLogic notificationLogic;
 	private ExternalEventLogic externalEventLogic;
 	private DeveloperHelperService developerHelperService;
-	
+	private AuthzGroupService authzGroupService;
 	private QnaDao dao;
+	private EntityManager entityManager;
+	
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+		this.authzGroupService = authzGroupService;
+	}
 
 	public void setPermissionLogic(PermissionLogic permissionLogic) {
 		this.permissionLogic = permissionLogic;
@@ -347,5 +367,79 @@ public class QuestionLogicImpl implements QuestionLogic {
 		params.put(QUESTION_ID,question.getId());
 		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, null);
 	}
+
+	public List<QnaQuestion> findAllQuestionsForUserAndSitesAndPersmissions(
+			String userId, String[] siteIds, String permissionConstant) {
+		if (userId == null || permissionConstant == null) {
+            throw new IllegalArgumentException("userId and permissionConstant must be set");
+        }
+		List<QnaQuestion> questions = null;
+		// get all allowed sites for this user
+        List<String> allowedSites = getSitesForUser(userId, permissionConstant);
+        if (! allowedSites.isEmpty()) {
+            if (siteIds != null) {
+                if (siteIds.length > 0) {
+                    // filter down to just the requested ones
+                    for (int j = 0; j < allowedSites.size(); j++) {
+                        String siteId = allowedSites.get(j);
+                        boolean found = false;
+                        for (int i = 0; i < siteIds.length; i++) {
+                            if (siteId.equals(siteIds[i])) {
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            allowedSites.remove(j);
+                        }
+                    }
+                } else {
+                    // no sites to search so EXIT here
+                    return new ArrayList<QnaQuestion>();
+                }
+            }
+            String[] siteIdsToSearch = allowedSites.toArray(new String[allowedSites.size()]);
+            Search search = new Search();
+            if (siteIdsToSearch.length > 0) {
+            	search.addRestriction(new Restriction("siteId", siteIdsToSearch));
+            }
+            search.addOrder(new Order("dateCreated", false));
+            questions = dao.findBySearch(QnaQuestion.class, search);
+           
+        } 
+           
+		return questions;
+	}
+	
+	
+    private static final String SAKAI_SITE_TYPE = SiteService.SITE_SUBTYPE;
+    @SuppressWarnings("unchecked")
+    protected List<String> getSitesForUser(String userId, String permission) {
+        log.debug("userId: " + userId + ", permission: " + permission);
+
+        List<String> l = new ArrayList<String>();
+
+        // get the groups from Sakai
+        Set<String> authzGroupIds = 
+           authzGroupService.getAuthzGroupsIsAllowed(userId, permission, null);
+        Iterator<String> it = authzGroupIds.iterator();
+        while (it.hasNext()) {
+           String authzGroupId = it.next();
+           Reference r = entityManager.newReference(authzGroupId);
+           if (r.isKnownType()) {
+              // check if this is a Sakai Site or Group
+              if (r.getType().equals(SiteService.APPLICATION_ID)) {
+                 String type = r.getSubType();
+                 if (SAKAI_SITE_TYPE.equals(type)) {
+                    // this is a Site
+                    String siteId = r.getId();
+                    l.add(siteId);
+                 }
+              }
+           }
+        }
+
+        if (l.isEmpty()) log.info("Empty list of siteIds for user:" + userId + ", permission: " + permission);
+        return l;
+     }
 	
 }

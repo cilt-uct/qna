@@ -47,7 +47,10 @@
 		<groupId>org.sakaiproject.entitybroker</groupId>
         <artifactId>entitybroker-utils</artifactId>
       </dependency>
-		
+      <dependency>
+      	<groupId>org.sakaiproject.kernel</groupId>
+      	<artifactId>sakai-kernel-util</artifactId>
+      </dependency>
       <!-- Sakai RSF dependency -->
       <dependency>
          <groupId>uk.org.ponder.sakairsf</groupId>

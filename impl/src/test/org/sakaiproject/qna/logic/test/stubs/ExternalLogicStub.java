@@ -49,7 +49,9 @@ public class ExternalLogicStub implements ExternalLogic {
 	}
 
 	public boolean isUserAdmin(String userId) {
-		// TODO Auto-generated method stub
+		if ("admin".equals(userId))
+			return true;
+		
 		return false;
 	}
 

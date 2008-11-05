@@ -194,10 +194,15 @@ public class ExternalLogicImpl implements ExternalLogic {
 	 * @see ExternalLogic#isUserAllowedInLocation(String, String, String)
 	 */
 	public boolean isUserAllowedInLocation(String userId, String permission, String locationId) {
-		if ( securityService.unlock(userId, permission, locationId) ) {
-			return true;
-		}
-		return false;
+		log.debug("isUserAllowedInLocation(" +  userId + ", "+ permission + "," + locationId + ")");
+		Boolean allowed = false;
+		if (userId != null)
+			allowed = securityService.unlock(userId, permission, locationId);
+		else
+			allowed = securityService.unlock(permission, locationId);
+		
+		log.info("allowed: " + allowed);
+		return allowed;
 	}
 
 	/**

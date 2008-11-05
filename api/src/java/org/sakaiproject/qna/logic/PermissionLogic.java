@@ -51,4 +51,12 @@ public interface PermissionLogic {
 	 * @return true if user can add new answer, false if not
 	 */
 	public boolean canAddNewAnswer(String locationId, String userId);
+	
+	/**
+	 * Check if a user has the read permission in a location
+	 * @param location reference
+	 * @param userId can be null
+	 * @return
+	 */
+	public boolean canRead(String locationId, String userId);
 }

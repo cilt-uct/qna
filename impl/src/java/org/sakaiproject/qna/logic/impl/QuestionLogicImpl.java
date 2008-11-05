@@ -159,13 +159,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 		
 		//does the user have rights to read the question?
 		String currentUserId = developerHelperService.getCurrentUserId();
-		log.info("got userId: " + currentUserId);
-		if (currentUserId == null) 
-            throw new SecurityException("User must be logged in in order to access question data: " + questionId);
-		String userReference = developerHelperService.getCurrentUserReference();
-		boolean allowRead = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_READ, q.getLocation());
+ 		boolean allowRead = permissionLogic.canRead(q.getLocation(), currentUserId);
         if (!allowRead) {
-        	throw new SecurityException("User ("+userReference+") not allowed to access qna data: " + questionId);
+        	throw new SecurityException("User ("+ currentUserId +") not allowed to access qna data: " + questionId);
         }
 		
 		return q;

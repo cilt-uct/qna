@@ -18,11 +18,15 @@
 
 package org.sakaiproject.qna.logic.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 
-public class PermissionLogicImpl implements PermissionLogic {
+import sun.util.logging.resources.logging;
 
+public class PermissionLogicImpl implements PermissionLogic {
+	private static Log log = LogFactory.getLog(PermissionLogic.class);
 	
 	private ExternalLogic externalLogic;
 	public void setExternalLogic(ExternalLogic externalLogic) {
@@ -79,6 +83,17 @@ public class PermissionLogicImpl implements PermissionLogic {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean canRead(String locationId, String userId) {
+		log.debug("canRead: " + locationId + " user: " + userId);
+		if (externalLogic.isUserAdmin(userId)) {
+			log.debug("user is super user!");
+			return true;
+		} else if (externalLogic.isUserAllowedInLocation(userId, ExternalLogic.QNA_READ, locationId)) {
+			return true;
+		}
+		return false;
 	}
 
 }

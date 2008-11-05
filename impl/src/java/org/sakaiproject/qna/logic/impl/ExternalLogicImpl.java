@@ -201,7 +201,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 		else
 			allowed = securityService.unlock(permission, locationId);
 		
-		log.info("allowed: " + allowed);
+		log.debug("allowed: " + allowed);
 		return allowed;
 	}
 

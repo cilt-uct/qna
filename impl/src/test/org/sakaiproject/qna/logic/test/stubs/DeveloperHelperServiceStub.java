@@ -206,4 +206,9 @@ public class DeveloperHelperServiceStub implements DeveloperHelperService {
 		return null;
 	}
 
+	public String getMessage(String arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

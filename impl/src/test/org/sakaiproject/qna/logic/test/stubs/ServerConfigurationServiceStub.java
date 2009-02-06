@@ -143,4 +143,9 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		properties.put(key,value);
 	}
 
+	public String getRawProperty(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

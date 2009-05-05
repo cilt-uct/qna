@@ -235,7 +235,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 	public void interceptActionResult(ARIResult result, ViewParameters incoming, Object actionReturn) {
 		DeleteMultiplesHelper dmh = (DeleteMultiplesHelper)ELEvaluator.getBean("DeleteMultiplesHelper");
 
-		if ((dmh.getQuestionids() == null) & (dmh.getCategoryids() == null)) {
+		if ((dmh.getQuestionids() == null) && (dmh.getCategoryids() == null)) {
 			result.resultingView = new SimpleViewParameters(QuestionsListProducer.VIEW_ID);
 		} else if (result.resultingView instanceof QuestionParams) {
 			if (dmh.getQuestionids() == null) {

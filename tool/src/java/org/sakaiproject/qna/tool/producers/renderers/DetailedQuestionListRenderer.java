@@ -50,7 +50,7 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
 	private SortHeaderRenderer sortHeaderRenderer;
 	private QuestionsSorter questionsSorter;
 
-	public static final String DEFAULT_SORT_DIR = SortByConstants.SORT_DIR_ASC;
+	public static final String DEFAULT_SORT_DIR = SortByConstants.SORT_DIR_DESC;
 	public static final String DEFAULT_SORT_BY = SortByConstants.VIEWS;
 
 	private String current_sort_by = DEFAULT_SORT_BY;

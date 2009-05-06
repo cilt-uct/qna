@@ -276,6 +276,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 					params.sortBy = SortByConstants.VIEWS; // default
 				}
 				if (params.sortDir == null) {
+					log.info("here we are!");
 					params.sortDir = SortByConstants.SORT_DIR_ASC; // default
 				}
 			} else {

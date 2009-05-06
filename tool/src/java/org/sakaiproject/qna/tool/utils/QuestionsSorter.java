@@ -56,6 +56,8 @@ public class QuestionsSorter {
 	 * @return List of sorted QnaQuestions
 	 */
 	public List<QnaQuestion> getSortedQuestionList(String location, String viewType, String sortBy, boolean includeAll, boolean reverse) {
+		
+		
 		List<QnaQuestion> questions;
 		
 		if (viewType.equals(ViewTypeConstants.CATEGORIES)) {

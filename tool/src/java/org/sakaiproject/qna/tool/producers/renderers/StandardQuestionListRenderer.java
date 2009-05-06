@@ -21,6 +21,8 @@ package org.sakaiproject.qna.tool.producers.renderers;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
@@ -46,6 +48,7 @@ import uk.org.ponder.rsf.components.UIOutput;
  */
 public class StandardQuestionListRenderer implements QuestionListRenderer {
 
+	private static Log log = LogFactory.getLog(StandardQuestionListRenderer.class);
 	private QuestionsSorter questionsSorter;
 	private ExternalLogic externalLogic;
 	private PagerRenderer pagerRenderer;
@@ -72,7 +75,6 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		UIMessage.make(listTable,"rank-title","qna.view-questions.rank");
 		UIMessage.make(listTable,"question-title","qna.view-questions.questions");
 
-		Comparator<QnaQuestion> comparator = ComparatorUtil.getComparator(params.viewtype, params.sortBy);
 		if (params.sortBy.equals(SortByConstants.VIEWS)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.views");
 		} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {
@@ -80,13 +82,25 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 		} else if (params.sortBy.equals(SortByConstants.CREATED)) {
 			UIMessage.make(listTable,"ordered-by-title","qna.view-questions.created");
 		}
-
-		List<QnaQuestion> questionsAll = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, false);
+		log.debug("Sorted by:" + params.sortBy + " order: " + params.sortDir);
+		boolean reverseSort = false;
+		//if null find a default
+		if (params.sortDir == null && SortByConstants.CREATED.equals(params.sortBy)) {
+			params.sortDir = SortByConstants.SORT_DIR_DESC;
+		}
+		
+		
+		if (SortByConstants.SORT_DIR_DESC.equals(params.sortDir)) {
+			log.debug("we are rever sorting this list");
+			reverseSort = true;
+		} 
+		
+		List<QnaQuestion> questionsAll = questionsSorter.getSortedQuestionList(externalLogic.getCurrentLocationId(), params.viewtype, params.sortBy, false, reverseSort);
 		List<QnaQuestion> questions = questionsSorter.filterQuestions(questionsAll, params.current_start, params.current_count);
 
         int total_count = questionsAll != null ? questionsAll.size() : 0;
     	pagerRenderer.makePager(listTable, "pagerDiv:", params.viewID, params, total_count);
-
+    	
 		int rank = 1;
 		for (QnaQuestion qnaQuestion : questions) {
 			if (displayQuestion(qnaQuestion)) {

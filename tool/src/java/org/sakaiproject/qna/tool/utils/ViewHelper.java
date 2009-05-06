@@ -82,11 +82,17 @@ public class ViewHelper {
 			return (String)toolSession.getAttribute(SORT_BY_ATTR);
 		} else {
     		String defaultView = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getDefaultStudentView();
-    		if (defaultView.equals(QnaConstants.CATEGORY_VIEW)) {
+    		if (QnaConstants.CATEGORY_VIEW.equals(defaultView)) {
     			return null;
     		} else {
-    			toolSession.setAttribute(SORT_BY_ATTR, SortByConstants.VIEWS);
-    			return SortByConstants.VIEWS;
+    			if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), "qna.update", externalLogic.getCurrentLocationId())) {
+    				toolSession.setAttribute(SORT_BY_ATTR, SortByConstants.CREATED);
+    				return SortByConstants.CREATED; 
+				} else {
+					toolSession.setAttribute(SORT_BY_ATTR, SortByConstants.VIEWS);
+					return SortByConstants.VIEWS;
+				}
+    			
     		}
 		}
     }
@@ -101,6 +107,15 @@ public class ViewHelper {
     	if (toolSession.getAttribute(SORT_DIR_ATTR) != null) {
 			return (String)toolSession.getAttribute(SORT_DIR_ATTR);
 		} else {
+			if (toolSession.getAttribute(SORT_BY_ATTR) != null && SortByConstants.CREATED.equals(toolSession.getAttribute(SORT_BY_ATTR))) {
+				toolSession.setAttribute(SORT_DIR_ATTR, SortByConstants.SORT_DIR_DESC);
+				return  SortByConstants.SORT_DIR_DESC;
+			} else if (toolSession.getAttribute(SORT_BY_ATTR) != null && SortByConstants.VIEWS.equals(toolSession.getAttribute(SORT_BY_ATTR))) {
+				toolSession.setAttribute(SORT_DIR_ATTR, SortByConstants.SORT_DIR_DESC);
+				return  SortByConstants.SORT_DIR_DESC;
+			}
+			
+			
 			toolSession.setAttribute(SORT_DIR_ATTR, SortByConstants.SORT_DIR_ASC);
 			return  SortByConstants.SORT_DIR_ASC;
 		}

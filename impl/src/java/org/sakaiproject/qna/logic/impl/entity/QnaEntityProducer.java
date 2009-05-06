@@ -168,7 +168,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 			
 			// Custom emails
 			Set<QnaCustomEmail> customMailsOld = options.getCustomEmails();
-			Set<QnaCustomEmail> customMailsNew = new HashSet<QnaCustomEmail>();
+			
 			
 			for (QnaCustomEmail qnaCustomEmail : customMailsOld) {
 				QnaCustomEmail email = new QnaCustomEmail(qnaCustomEmail.getOwnerId(),qnaCustomEmail.getEmail(),qnaCustomEmail.getDateCreated());

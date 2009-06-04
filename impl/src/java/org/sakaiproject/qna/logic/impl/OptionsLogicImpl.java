@@ -218,8 +218,6 @@ public class OptionsLogicImpl implements OptionsLogic {
 		}
 		options.getCustomEmails().clear();
 
-		EmailValidator emailValidator = EmailValidator.getInstance();
-
 		boolean invalidEmail = processCustomMailList(mailList, options, userId);
 		saveOptions(options, locationId);
 

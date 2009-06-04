@@ -198,7 +198,7 @@ public class OptionsLogicImplTest extends
 		QnaOptions options = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
 
-		assertEquals(options.getEmailNotification(), new Boolean(true));
+		assertEquals(options.getEmailNotification(), Boolean.valueOf(true));
 		assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
 
@@ -351,7 +351,7 @@ public class OptionsLogicImplTest extends
 	 */
 	public void testGetMailAddressesNoNotification() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION4_ID);
-		assertEquals(options.getEmailNotification(), new Boolean(false));
+		assertEquals(options.getEmailNotification(), Boolean.valueOf(false));
 		assertEquals(optionsLogic.getNotificationSet(LOCATION4_ID).size(),0);
 	}
 	

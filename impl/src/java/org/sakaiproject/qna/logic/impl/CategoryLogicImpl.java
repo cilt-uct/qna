@@ -123,7 +123,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			qnaCategory.setOwnerId(ownerId);
 			qnaCategory.setLocation(locationId);
 			qnaCategory.setHidden(Boolean.FALSE);
-			qnaCategory.setSortOrder(new Integer(0));
+			qnaCategory.setSortOrder(Integer.valueOf(0));
 			qnaCategory.setHidden(false);
 		} else {
 			throw new RuntimeException("Should only be called on categories not yet persisted");

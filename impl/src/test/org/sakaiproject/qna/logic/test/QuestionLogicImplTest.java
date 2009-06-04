@@ -201,7 +201,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 
 		assertEquals(question.getOwnerId(), USER_LOC_3_UPDATE_1);
 		assertEquals(question.getLocation(), LOCATION3_ID);
-		assertEquals(question.getViews(), new Integer(0));
+		assertEquals(question.getViews(), Integer.valueOf(0));
 		assertFalse(question.isPublished());
 		assertNull(question.getCategory());
 
@@ -228,7 +228,7 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 
 		assertEquals(question.getOwnerId(), USER_UPDATE);
 		assertEquals(question.getLocation(), LOCATION1_ID);
-		assertEquals(question.getViews(), new Integer(0));
+		assertEquals(question.getViews(), Integer.valueOf(0));
 		assertTrue(question.isPublished());
 		assertTrue(questionLogic.existsQuestion(question.getId()));
 	}
@@ -333,13 +333,13 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	public void testViewsIncrement() {
 		externalLogicStub.currentUserId = USER_NO_UPDATE;
 		QnaQuestion question = questionLogic.getQuestionById(tdp.question4_location1.getId());
-		assertEquals(question.getViews(), new Integer(76));
+		assertEquals(question.getViews(), Integer.valueOf(76));
 		questionLogic.incrementView(tdp.question4_location1.getId());
-		assertEquals(question.getViews(), new Integer(77));
+		assertEquals(question.getViews(), Integer.valueOf(77));
 		
 		externalLogicStub.currentUserId = USER_UPDATE;
 		questionLogic.incrementView(tdp.question4_location1.getId());
-		assertEquals(question.getViews(), new Integer(77));
+		assertEquals(question.getViews(), Integer.valueOf(77));
 	}
 
 	/**

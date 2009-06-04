@@ -92,7 +92,7 @@ public class MultipleBeanMediator {
 		String oldCategory = question.getCategory() != null ? TextUtil.stripTags(question.getCategory().getCategoryText()) : null;
 
 		question.setCategory(categoryToLink);
-		question.setSortOrder(new Integer(categoryToLink.getPublishedQuestions().size()));
+		question.setSortOrder(Integer.valueOf(categoryToLink.getPublishedQuestions().size()));
 		questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 		
 		messages.clear();

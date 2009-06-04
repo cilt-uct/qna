@@ -124,7 +124,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 		if (params.id != null) {
 			if (params.type.equalsIgnoreCase("cat")) {
 				QnaCategory qnaCategory = categoryLogic.getCategoryById(params.id);
-				qnaCategory.setHidden(new Boolean(!params.visible));
+				qnaCategory.setHidden(Boolean.valueOf(!params.visible));
 				categoryLogic.saveCategory(qnaCategory, externalLogic.getCurrentLocationId());
 				if (params.visible) {
 					messages.addMessage(new TargettedMessage("qna.organise.category-visible", null, TargettedMessage.SEVERITY_INFO));
@@ -133,7 +133,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 				}
 			} else if (params.type.equalsIgnoreCase("que")) {
 				QnaQuestion qnaQuestion = questionLogic.getQuestionById(params.id);
-				qnaQuestion.setHidden(new Boolean(!params.visible));
+				qnaQuestion.setHidden(Boolean.valueOf(!params.visible));
 				questionLogic.saveQuestion(qnaQuestion, externalLogic.getCurrentLocationId());
 				if (params.visible) {
 					messages.addMessage(new TargettedMessage("qna.organise.question-visible", null, TargettedMessage.SEVERITY_INFO));

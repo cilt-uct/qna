@@ -90,7 +90,7 @@ public class OrganiserHelper {
 			QnaCategory category = categoryLogic.getCategoryById(id);
 			
 			if (category != null) {
-				category.setSortOrder(new Integer(k));
+				category.setSortOrder(Integer.valueOf(k));
 				categoryLogic.saveCategory(category, externalLogic.getCurrentLocationId());
 			}
 		}
@@ -110,7 +110,7 @@ public class OrganiserHelper {
 				}
 				tmpcatid = catid;
 	
-				question.setSortOrder(new Integer(nr));
+				question.setSortOrder(Integer.valueOf(nr));
 							
 				if (!question.getCategory().getId().equals(questionCategoryOrder[k])) {
 					question.setCategory(categoryLogic.getCategoryById(questionCategoryOrder[k]));

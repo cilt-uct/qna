@@ -22,11 +22,11 @@ import java.util.Date;
 
 /**
  * This is a the QnaAnswer table entity
- *
+ * 
  */
 public class QnaAnswer {
 
-	private String id;
+	private Long id;
 
 	// The question this answer is linked to
 	private QnaQuestion question;
@@ -34,10 +34,13 @@ public class QnaAnswer {
 	// The user (sakai userid) that posted this question
 	private String ownerId;
 
+	// The mobile number used to post answer (in case of anonymous postings via mobile)
+	private String ownerMobileNr;
+	
 	// The actual answer text
 	private String answerText;
 
-	//  The user (sakai userid) that last modified this question
+	// The user (sakai userid) that last modified this question
 	private String lastModifierId;
 
 	// The date this answer was last modified by someone
@@ -52,7 +55,7 @@ public class QnaAnswer {
 	// Is this answer a private reply to the user that posted the question
 	private Boolean privateReply;
 
-	// Is this answer anonymous
+	// Is this answer anonymous (TAKE NOTE: not used for anonymous postings from mobile)
 	private Boolean anonymous;
 
 	/**
@@ -80,14 +83,15 @@ public class QnaAnswer {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -99,7 +103,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param question the question to set
+	 * @param question
+	 *            the question to set
 	 */
 	public void setQuestion(QnaQuestion question) {
 		this.question = question;
@@ -113,7 +118,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param ownerId the ownerId to set
+	 * @param ownerId
+	 *            the ownerId to set
 	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
@@ -127,7 +133,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param answerText the answerText to set
+	 * @param answerText
+	 *            the answerText to set
 	 */
 	public void setAnswerText(String answerText) {
 		this.answerText = answerText;
@@ -141,7 +148,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param dateLastModified the dateLastModified to set
+	 * @param dateLastModified
+	 *            the dateLastModified to set
 	 */
 	public void setDateLastModified(Date dateLastModified) {
 		this.dateLastModified = dateLastModified;
@@ -155,7 +163,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param dateCreated the dateCreated to set
+	 * @param dateCreated
+	 *            the dateCreated to set
 	 */
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
@@ -169,7 +178,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param approved the approved to set
+	 * @param approved
+	 *            the approved to set
 	 */
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
@@ -183,7 +193,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param privateReply the privateReply to set
+	 * @param privateReply
+	 *            the privateReply to set
 	 */
 	public void setPrivateReply(Boolean privateReply) {
 		this.privateReply = privateReply;
@@ -197,7 +208,8 @@ public class QnaAnswer {
 	}
 
 	/**
-	 * @param anonymous the anonymous to set
+	 * @param anonymous
+	 *            the anonymous to set
 	 */
 	public void setAnonymous(Boolean anonymous) {
 		this.anonymous = anonymous;
@@ -210,18 +222,28 @@ public class QnaAnswer {
 	public void setLastModifierId(String lastModifierId) {
 		this.lastModifierId = lastModifierId;
 	}
+	
+	
+	public String getOwnerMobileNr() {
+		return ownerMobileNr;
+	}
 
-	/* (non-Javadoc)
+	public void setOwnerMobileNr(String ownerMobileNr) {
+		this.ownerMobileNr = ownerMobileNr;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof QnaAnswer){
-			return ((QnaAnswer)obj).getId().equals(this.getId());
+		if (obj instanceof QnaAnswer) {
+			return ((QnaAnswer) obj).getId().equals(this.getId());
 		}
 
 		return false;
 	}
-
 
 }

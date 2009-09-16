@@ -36,6 +36,15 @@ public interface NotificationLogic {
 	public void sendNewAnswerNotification(String[] userids, QnaQuestion question, String answerText);
 	
 	/**
+	 * Send SMS notification for new answers
+	 * 
+	 * @param mobileNrs		Mobile numbers to send to
+	 * @param question		{@link QnaQuestion} object with new answers
+	 * @param answerText	Text of new answer
+	 */
+	public void sendNewAnswerSmsNotification(String[] mobileNrs, QnaQuestion question, String answerText);
+	
+	/**
 	 * Send a private reply
 	 * 
 	 * @param userids			User ids to send to

@@ -20,6 +20,7 @@
 		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+		<property name="smsService" ref="org.sakaiproject.sms.api.SmsService" />
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.ExternalEventLogic" class="org.sakaiproject.qna.logic.impl.ExternalEventLogicImpl">
@@ -92,6 +93,35 @@
 		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
+	
+	<bean id="QnaCommandRegister"
+		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
+		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
+		<property name="toolKey" value="qna" />
+		<property name="commands">
+			<list>
+				<bean class="org.sakaiproject.qna.logic.impl.sms.QuestionSmsCommand">
+					<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+					<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
+					<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
+					<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
+				</bean>
+				<bean class="org.sakaiproject.qna.logic.impl.sms.AnswerSmsCommand">
+					<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+					<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
+					<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />			
+					<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />	
+				</bean>
+				<bean class="org.sakaiproject.qna.logic.impl.sms.ReplySmsCommand">
+					<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
+					<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />	
+					<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />	
+					<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />		
+				</bean>
+			</list>
+		</property>
+	</bean>	
+	
 	
 	<!-- entity beans -->
 	<!--  <bean id="org.sakaiproject.qna.logic.entity.QuestionEntityProvider" 

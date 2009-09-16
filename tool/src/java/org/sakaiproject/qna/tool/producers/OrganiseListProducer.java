@@ -22,19 +22,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.sakaiproject.qna.comparators.CategoriesSortOrderComparator;
+import org.sakaiproject.qna.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.OrganiseParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -204,26 +204,26 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 				
 					if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 						UILink.make(questionContainer, "edit-question-icon", EDIT_ICON_URL);
-						UIInternalLink editQuestion = UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId(),VIEW_ID));
+						UIInternalLink editQuestion = UIInternalLink.make(questionContainer, "edit-question-link", new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, qnaQuestion.getId().toString(),VIEW_ID));
 						editQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.edit-question-tooltip")));
 							
 						if (qnaQuestion.getHidden()) {
 							UILink.make(questionContainer, "hide-question-icon", LIGHTBULB_OFF_ICON_URL);
-							UIInternalLink showQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), true));
+							UIInternalLink showQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId().toString(), true));
 							showQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.show-question-tooltip")));
 						} else {
 							UILink.make(questionContainer, "hide-question-icon", LIGHTBULB_ON_ICON_URL);
-							UIInternalLink hideQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId(), false));
+							UIInternalLink hideQuestion = UIInternalLink.make(questionContainer, "hide-question-link", new OrganiseParams(OrganiseListProducer.VIEW_ID, "que", qnaQuestion.getId().toString(), false));
 							hideQuestion.decorators = new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.hide-question-tooltip")));
 						}
 
 						UILink.make(questionContainer, "delete-question-icon", DELETE_ICON_URL);
-						UIInternalLink deleteQuestion = UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId(),VIEW_ID));
+						UIInternalLink deleteQuestion = UIInternalLink.make(questionContainer, "delete-question-link", new QuestionParams(DeleteQuestionProducer.VIEW_ID, qnaQuestion.getId().toString(),VIEW_ID));
 						deleteQuestion.decorators =  new DecoratorList(new UITooltipDecorator(messageLocator.getMessage("qna.organise.delete-question-tooltip")));
 					}
 					
 					UISelectChoice.make(questionContainer, "question-sort-order-checkbox", queorder.getFullID(), queorderlist.size());
-					queorderlist.add(qnaQuestion.getId());
+					queorderlist.add(qnaQuestion.getId().toString());
 					UISelectChoice.make(questionContainer, "question-category-order-checkbox", questionCategoryOrder.getFullID(), questionCategoryOrderList.size());
 					questionCategoryOrderList.add(qnaQuestion.getCategory().getId());
 				}

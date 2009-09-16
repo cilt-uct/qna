@@ -33,7 +33,7 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
 
@@ -138,10 +138,8 @@ public class MultipleBeanMediator {
 		if ( newQuestion.getCategoryId() == null ) {
 			//this should go in the default category
 			String location = externalLogic.getCurrentLocationId();
-			List cats = categoryLogic.getCategoriesForLocation(location);
-			QnaCategory cat = (QnaCategory)cats.get(0);
+			QnaCategory cat = categoryLogic.getDefaultCategory(location);
 			newQuestion.setCategoryId(cat.getId());
-			
 		}
 		
 		if (TextUtil.isEmptyWithoutTags(((QnaCategory)categoryLocator.locateBean(NEW_1)).getCategoryText())) {

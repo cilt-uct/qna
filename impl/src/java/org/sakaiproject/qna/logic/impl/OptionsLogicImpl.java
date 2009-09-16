@@ -81,6 +81,12 @@ public class OptionsLogicImpl implements OptionsLogic {
 		
 		newOptions.setModerated(serverConfigurationService.getBoolean("qna.default.moderated", true));
 		
+		newOptions.setAllowUnknownMobile(serverConfigurationService.getBoolean("qna.default.allow-unknown-mobile", false));
+		
+		newOptions.setSmsNotification(serverConfigurationService.getBoolean("qna.default.sms-notification", false));
+		
+		newOptions.setMobileAnswersNr(serverConfigurationService.getInt("qna.default.mobile-answers-nr", 1));
+		
 		String notificationProperty = serverConfigurationService.getString("qna.default.notification", "none");
 		
 		if (notificationProperty.equalsIgnoreCase(QnaConstants.SITE_CONTACT)) {
@@ -128,22 +134,28 @@ public class OptionsLogicImpl implements OptionsLogic {
 	public Set<String> getNotificationSet(String locationId) {
 		QnaOptions options = getOptionsForLocation(locationId);
 		Set<String> notificationSet = new HashSet<String>();
-
-		if (options.getEmailNotification()) {
-			if (options.getEmailNotificationType().equals(QnaConstants.SITE_CONTACT)) {
-				notificationSet.add(externalLogic.getSiteContactEmail(locationId));
-			} else if (options.getEmailNotificationType().equals(QnaConstants.UPDATE_RIGHTS)) {
-				Set<String> users = externalLogic.getSiteUsersWithPermission(locationId,ExternalLogic.QNA_UPDATE);
-				for (String userId : users) {
-					notificationSet.add(externalLogic.getUserEmail(userId));
+		
+		try {
+			if (options.getEmailNotification()) {
+				if (options.getEmailNotificationType().equals(QnaConstants.SITE_CONTACT)) {
+					notificationSet.add(externalLogic.getSiteContactEmail(locationId));
+				} else if (options.getEmailNotificationType().equals(QnaConstants.UPDATE_RIGHTS)) {
+					Set<String> users = externalLogic.getSiteUsersWithPermission(locationId,ExternalLogic.QNA_UPDATE);
+					for (String userId : users) {
+						notificationSet.add(externalLogic.getUserEmail(userId));
+					}
+				} else if (options.getEmailNotificationType().equals(QnaConstants.CUSTOM_LIST)) {
+					Set<QnaCustomEmail> customMails = options.getCustomEmails();
+					for (QnaCustomEmail qnaCustomEmail : customMails) {
+						notificationSet.add(qnaCustomEmail.getEmail());
+					}
 				}
-			} else if (options.getEmailNotificationType().equals(QnaConstants.CUSTOM_LIST)) {
-				Set<QnaCustomEmail> customMails = options.getCustomEmails();
-				for (QnaCustomEmail qnaCustomEmail : customMails) {
-					notificationSet.add(qnaCustomEmail.getEmail());
-				}
-			}
+			}	
+		} catch (SecurityException se) {
+			// This might happen if anon does not have access to site or site isn't public, log it for now
+			log.error(se.getMessage(), se);
 		}
+		
 		return notificationSet;
 	}
 	
@@ -255,7 +267,7 @@ public class OptionsLogicImpl implements OptionsLogic {
 	 * @see OptionsLogic#getOptionsById(String)
 	 */
 	public QnaOptions getOptionsById(String id) {
-		return (QnaOptions)dao.findById(QnaOptions.class, id);
+		return dao.findById(QnaOptions.class, id);
 	}
 
 }

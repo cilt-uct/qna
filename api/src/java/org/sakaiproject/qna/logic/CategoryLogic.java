@@ -100,4 +100,12 @@ public interface CategoryLogic {
 	 * @param ownerId		id of sakai user
 	 */
 	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId);
+	
+	/**
+	 * Get default category for location (first one)
+	 * 
+	 * @param locationId	unique id for location
+	 * @return QnaCategory 	default {@link QnaCategory} for location
+	 */
+	public QnaCategory getDefaultCategory(String locationId);
 }

@@ -29,8 +29,46 @@ import org.sakaiproject.qna.model.QnaQuestion;
  */
 public interface QuestionLogic {
 	
+	
 	/**
-	 * Get a question with a specific id
+	 * Get a question with a specific id (specify user)
+	 * @param userId
+	 * 				unique id of user
+	 * @param ignorePermission 
+	 * 				boolean value to specify if read permission must be ignored
+	 * 				(userd for anon answer posts from mobile)
+	 * @param questionid
+	 * 				unique id of a {@link QnaQuestion}
+	 *
+	 * @return a {@link QnaQuestion} or null
+	 */
+	public QnaQuestion getQuestionById(Long questionId, String userId, boolean ignorePermission);
+	
+	/**
+	 * Get a question with a specific id (specify user)
+	 * @param userId
+	 * 				unique id of user
+	 * @param ignorePermission 
+	 * 				boolean value to specify if read permission must be ignored
+	 * 				(userd for anon answer posts from mobile)
+	 * @param questionid
+	 * 				unique id of a {@link QnaQuestion}
+	 *
+	 * @return a {@link QnaQuestion} or null
+	 */
+	public QnaQuestion getQuestionById(String questionId, String userId, boolean ignorePermission); 
+	
+	/**
+	 * Get a question with a specific id (for current user)
+	 *
+	 * @param questionid
+	 * 				unique id of a {@link QnaQuestion}
+	 * @return a {@link QnaQuestion} or null
+	 */
+	public QnaQuestion getQuestionById(Long questionId);
+	
+	/**
+	 * Get a question with a specific id (for current user)
 	 *
 	 * @param questionid
 	 * 				unique id of a {@link QnaQuestion}
@@ -45,10 +83,10 @@ public interface QuestionLogic {
 	 * 			unique id of a {@link QnaQuestion}
 	 * @return	boolean true if it exists, false otherwise
 	 */
-	public boolean existsQuestion(String questionId);
+	public boolean existsQuestion(Long questionId);
 
 	/**
-	 * Save a question
+	 * Saves a question. Default uses currentUserId as user
 	 *
 	 * @param question
 	 * 				{@link QnaQuestion} object
@@ -56,6 +94,27 @@ public interface QuestionLogic {
 	 * 				a unique id which represents the current location of the user (entity reference)
 	 */
 	public void saveQuestion(QnaQuestion question, String locationId);
+	
+	/**
+	 *  Saves a question. Specify a user
+	 * 
+	 * @param question
+	 * 				{@link QnaQuestion} object
+	 * @param locationId
+	 * 				a unique id which represents the location (entity reference)
+	 * @param userId
+	 * 				the internal user id (not username)
+	 */
+	public void saveQuestion(QnaQuestion question, String locationId, String userId);
+	
+	/**
+	 * Remove a question
+	 *
+	 * @param questionid
+	 * 				{@link QnaQuestion} object
+	 * @throws AttachmentException 
+	 */
+	public void removeQuestion(Long questionId, String locationId) throws AttachmentException;
 
 	/**
 	 * Remove a question
@@ -65,7 +124,7 @@ public interface QuestionLogic {
 	 * @throws AttachmentException 
 	 */
 	public void removeQuestion(String questionId, String locationId) throws AttachmentException;
-
+	
 	/**
 	 * Get all (published and unpublished) questions for location
 	 * 	
@@ -99,7 +158,7 @@ public interface QuestionLogic {
 	 * @param questionid unique id of {@link QnaQuestion}
 	 * @param locationId a unique id which represents the current location of the user (entity reference)
 	 */
-	public void publishQuestion(String questionId, String locationId);
+	public void publishQuestion(Long questionId, String locationId);
 
 	/**
 	 * Get all questions with private replies
@@ -115,7 +174,7 @@ public interface QuestionLogic {
 	 *
 	 * @param unique id of {@link QnaQuestion}
 	 */
-	public void incrementView(String questionId);
+	public void incrementView(Long questionId);
 	
 	/**
 	 * Add a {@link QnaQuestion} to a {@link QnaCategory}
@@ -127,7 +186,7 @@ public interface QuestionLogic {
 	 * @param locationId 
 	 * 			  a unique id which represents the current location of the user
 	 */
-	public void addQuestionToCategory(String questionId,
+	public void addQuestionToCategory(Long questionId,
 			String categoryId, String locationId);
 	
 	/**

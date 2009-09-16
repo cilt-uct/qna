@@ -34,15 +34,24 @@ public interface AnswerLogic {
 	 *            unique id of a {@link QnaAnswer}
 	 * @return {@link QnaAnswer} the answer found
 	 */
-	public QnaAnswer getAnswerById(String answerId);
+	public QnaAnswer getAnswerById(Long answerId);
 
+	/**
+	 * Get an answer with a specific id
+	 *
+	 * @param answerId
+	 *            unique id of a {@link QnaAnswer}
+	 * @return {@link QnaAnswer} the answer found
+	 */
+	public QnaAnswer getAnswerById(String answerId);
+	
 	/**
 	 * Removes answer from question
 	 *
 	 * @param answerId  unique id of a {@link QnaAnswer}
 	 * @param locationId unique id for location
 	 */
-	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId);
+	public void removeAnswerFromQuestion(Long answerId, Long questionId, String locationId);
 	
 	/**
 	 *  Removes answer from database
@@ -50,7 +59,7 @@ public interface AnswerLogic {
 	 * @param answerId  unique id of a {@link QnaAnswer}
 	 * @param locationId unique id for location
 	 */
-	public void removeAnswer(String answerId, String locationId);
+	public void removeAnswer(Long answerId, String locationId);
 
 	/**
 	 * Approves answer	
@@ -58,7 +67,7 @@ public interface AnswerLogic {
 	 * @param answerId  unique id of a {@link QnaAnswer}
 	 * @param locationId unique id for location
 	 */
-	public void approveAnswer(String answerId, String locationId);
+	public void approveAnswer(Long answerId, String locationId);
 
 	/**
 	 * Withdraw approval for answer
@@ -66,15 +75,24 @@ public interface AnswerLogic {
 	 * @param answerId  unique id of a {@link QnaAnswer}
 	 * @param locationId unique id for location
 	 */
-	public void withdrawApprovalAnswer(String answerId, String locationId);
+	public void withdrawApprovalAnswer(Long answerId, String locationId);
 	
 	/**
-	 * Save an answer
+	 * Save an answer (current user)
 	 * 
-	 * @param answerId  unique id of a {@link QnaAnswer}
+	 * @param answer a {@link QnaAnswer} to save
 	 * @param locationId unique id for location
 	 */
 	public void saveAnswer(QnaAnswer answer, String locationId);
+	
+	/**
+	 *  Save an answer (userId specified
+	 * 
+	 * @param answer a {@link QnaAnswer} to save
+	 * @param locationId unique id for location
+	 * @param userId unique user id
+	 */
+	public void saveAnswer(QnaAnswer answer, String locationId, String userId);
 	
 	/**
 	 * Creates default QnaAnswer object

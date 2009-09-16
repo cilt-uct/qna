@@ -16,7 +16,7 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.comparators;
+package org.sakaiproject.qna.comparators;
 
 import java.util.Comparator;
 

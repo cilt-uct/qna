@@ -28,8 +28,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
@@ -146,25 +144,57 @@ public class QuestionLogicImpl implements QuestionLogic {
 						locationId}, new int[] { ByPropsFinder.EQUALS});
 		return l;
 	}
-	
+
 	/**
-	 * @see QuestionLogic#getQuestionById(String)
+	 * @see QuestionLogic#getQuestionById(Long, String, boolean)
 	 */
-	public QnaQuestion getQuestionById(String questionId) {
-		QnaQuestion q = (QnaQuestion) dao.findById(QnaQuestion.class, questionId);
+	public QnaQuestion getQuestionById(Long questionId, String userId, boolean ignorePermission) {
+		QnaQuestion q = dao.findById(QnaQuestion.class, questionId);
 		
 		//the question may not exist
 		if (q == null)
 			return null;
 		
-		//does the user have rights to read the question?
-		String currentUserId = developerHelperService.getCurrentUserId();
- 		boolean allowRead = permissionLogic.canRead(q.getLocation(), currentUserId);
-        if (!allowRead) {
-        	throw new SecurityException("User ("+ currentUserId +") not allowed to access qna data: " + questionId);
-        }
-		
+		if (!ignorePermission) {
+			//does the user have rights to read the question?
+	 		boolean allowRead = permissionLogic.canRead(q.getLocation(), userId);
+	        if (!allowRead) {
+	        	throw new SecurityException("User ("+ userId +") not allowed to access qna data: " + questionId);
+	        }
+		}
+	
 		return q;
+	}	
+	
+	/**
+	 * @see QuestionLogic#getQuestionById(String, String, boolean)
+	 */
+	public QnaQuestion getQuestionById(String questionId, String userId, boolean ignorePermission) {
+		try {
+			Long id = Long.parseLong(questionId);
+			return getQuestionById(id, userId, ignorePermission);
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @see QuestionLogic#getQuestionById(Long)
+	 */
+	public QnaQuestion getQuestionById(Long questionId) {
+		return getQuestionById(questionId, developerHelperService.getCurrentUserId(), false);
+	}
+	
+	/**
+	 * @see QuestionLogic#getQuestionById(String)
+	 */
+	public QnaQuestion getQuestionById(String questionId) {
+		try {
+			Long id = Long.parseLong(questionId);
+			return getQuestionById(id);
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
 	}
 
 	/**
@@ -183,9 +213,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	/**
-	 * @see QuestionLogic#incrementView(String)
+	 * @see QuestionLogic#incrementView(Long)
 	 */
-	public void incrementView(String questionId) {
+	public void incrementView(Long questionId) {
 		if (!permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			QnaQuestion question = getQuestionById(questionId);	
 			
@@ -198,9 +228,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	/**
-	 * @see QuestionLogic#publishQuestion(String, String)
+	 * @see QuestionLogic#publishQuestion(Long, String)
 	 */
-	public void publishQuestion(String questionId, String locationId) {
+	public void publishQuestion(Long questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = getQuestionById(questionId);
@@ -219,9 +249,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	/**
-	 * @see QuestionLogic#existsQuestion(String)
+	 * @see QuestionLogic#existsQuestion(Long)
 	 */
-	public boolean existsQuestion(String questionId) {
+	public boolean existsQuestion(Long questionId) {
 		if (questionId == null || questionId.equals("")) {
 			return false;
 		} else {
@@ -234,9 +264,9 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}
 
 	/**
-	 * @see QuestionLogic#removeQuestion(String, String)
+	 * @see QuestionLogic#removeQuestion(Long, String)
 	 */
-	public void removeQuestion(String questionId, String locationId) throws AttachmentException {
+	public void removeQuestion(Long questionId, String locationId) throws AttachmentException {
 		QnaQuestion question = getQuestionById(questionId);
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
@@ -258,14 +288,27 @@ public class QuestionLogicImpl implements QuestionLogic {
 							+ " because they do not have permission");
 		}
 	}
-
+	
+	/**
+	 * @see QuestionLogic#removeQuestion(String, String)
+	 */
+	public void removeQuestion(String questionId, String locationId) throws AttachmentException {
+		removeQuestion(Long.parseLong(questionId), locationId);
+	}
+	
 	/**
 	 * @see QuestionLogic#saveQuestion(QnaQuestion, String)
 	 */
 	public void saveQuestion(QnaQuestion question, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
+		saveQuestion(question, locationId, userId);
+	}
+	
+	/**
+	 * @see QuestionLogic#saveQuestion(QnaQuestion, String, String)
+	 */
+	public void saveQuestion(QnaQuestion question, String locationId, String userId) {
 		if (existsQuestion(question.getId())) {
-
 			if (permissionLogic.canUpdate(locationId, userId)) {
 				question.setDateLastModified(new Date());
 				question.setLastModifierId(userId);
@@ -273,14 +316,20 @@ public class QuestionLogicImpl implements QuestionLogic {
 				externalEventLogic.postEvent(ExternalEventLogic.EVENT_QUESTION_UPDATE, question);
 			} else {
 				throw new SecurityException(
-						"Current user cannot save question for "
+						"User " + userId +" cannot save question for "
 								+ question.getLocation()
 								+ " because they do not have permission");
 			}
 		} else {
-			if (permissionLogic.canAddNewQuestion(locationId, userId)) {
+			if (permissionLogic.canAddNewQuestion(locationId, userId) || (userId == null && question.getOwnerMobileNr() != null)) {
 				QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-
+				
+				if (userId == null && !options.getAllowUnknownMobile()) {
+					throw new SecurityException(
+							"New questions cannot be saved anonymously via mobile for "
+									+ locationId);
+				}
+				
 				if (question.isAnonymous() == null) {
 					question.setAnonymous(options.getAnonymousAllowed()); // default for location
 				} else {
@@ -324,8 +373,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 				
 				// Notification
 				if (options.getEmailNotification()) {
-					String[] emails = (String[])optionsLogic.getNotificationSet(locationId).toArray(new String[]{});
-					if (options.getAnonymousAllowed()) {
+					String[] emails = optionsLogic.getNotificationSet(locationId).toArray(new String[]{});
+					if (options.getAnonymousAllowed() || question.getOwnerId() == null) {
 						notificationLogic.sendNewQuestionNotification(emails, question);
 					} else {
 						notificationLogic.sendNewQuestionNotification(emails, question, question.getOwnerId());
@@ -333,19 +382,18 @@ public class QuestionLogicImpl implements QuestionLogic {
 				}
 			} else {
 				throw new SecurityException(
-						"Current user cannot save new question for "
-								+ question.getLocation()
+						"User " + userId +  " cannot save new question for "
+								+ locationId
 								+ " because they do not have permission");
 			}
 
 		}
-
 	}
 
 	/**
-	 * @see QuestionLogic#addQuestionToCategory(String, String, String)
+	 * @see QuestionLogic#addQuestionToCategory(Long, String, String)
 	 */
-	public void addQuestionToCategory(String questionId, String categoryId,
+	public void addQuestionToCategory(Long questionId, String categoryId,
 			String locationId) {
 		
 		QnaCategory category = categoryLogic.getCategoryById(categoryId);
@@ -377,8 +425,8 @@ public class QuestionLogicImpl implements QuestionLogic {
 	 */
 	public String retrieveURL(QnaQuestion question, String view) {
 		Map<String,String> params = new HashMap<String, String>();
-		params.put(QUESTION_ID,question.getId());
-		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, null);
+		params.put(QUESTION_ID,question.getId().toString());
+		return developerHelperService.getToolViewURL(externalLogic.getCurrentToolId(), view, params, question.getLocation());
 	}
 
 	public List<QnaQuestion> findAllQuestionsForUserAndSitesAndPersmissions(

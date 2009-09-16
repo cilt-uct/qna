@@ -1,5 +1,5 @@
 /***********************************************************************************
- * AnswerParams.java
+ * CategoriesSortOrderComparator.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -16,19 +16,21 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.params;
+package org.sakaiproject.qna.comparators;
 
-import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
+import java.util.Comparator;
 
-public class AnswerParams extends SimpleViewParameters {
-	public String answerid;	  // Id of answer
-	public String questionid; // Id of question linked to this answer
+import org.sakaiproject.qna.model.QnaCategory;
+
+/**
+ * Sorts a collection of QnaCategory alphabetically by name
+ */
+public class CategoriesSortOrderComparator implements Comparator<QnaCategory> {
 	
-	public AnswerParams() {}
-	
-	public AnswerParams(String viewid, Long answerid, Long questionid) {
-		this.viewID = viewid;
-		this.answerid = answerid + "";
-		this.questionid = questionid + "";
+	/**
+	 * @see Comparator#compare(Object, Object)	
+	 */
+	public int compare(QnaCategory c1, QnaCategory c2) {
+		return c1.getSortOrder().compareTo(c2.getSortOrder());
 	}
 }

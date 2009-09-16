@@ -24,8 +24,8 @@ import java.util.Map;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.tool.utils.TextUtil;
 import org.sakaiproject.qna.utils.QNAUtils;
+import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.util.FormattedText;
 
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;

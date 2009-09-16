@@ -46,6 +46,6 @@ public class AnswerVPInferrer implements EntityViewParamsInferrer {
 	public ViewParameters inferDefaultViewParameters(String reference) {
 		IdEntityReference ref = new IdEntityReference(reference);
 		QnaAnswer answer = answerLogic.getAnswerById(ref.id);
-		return new QuestionParams(ViewQuestionProducer.VIEW_ID, answer.getQuestion().getId(), true);
+		return new QuestionParams(ViewQuestionProducer.VIEW_ID, answer.getQuestion().getId().toString(), true);
 	}
 }

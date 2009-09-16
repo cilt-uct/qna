@@ -32,7 +32,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.otp.CategoryLocator;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;

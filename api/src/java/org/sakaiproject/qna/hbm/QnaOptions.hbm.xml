@@ -26,5 +26,15 @@
       <property name="emailNotification" type="boolean"/>
       <property name="emailNotificationType" type="string" length="255"/>
       <property name="defaultStudentView" type="string" length="255"/>
+      <property name="allowUnknownMobile" type="boolean">
+      	<column name="allowUnknownMobile" default="false"/>
+      </property>
+      <property name="mobileAnswersNr" type="integer">
+      	<column name="mobileAnswersNr" default="1" />
+      </property>
+      <property name="smsNotification" type="boolean">
+      	<column name="smsNotification" default="false" />
+      </property>
+      
    </class>
 </hibernate-mapping>

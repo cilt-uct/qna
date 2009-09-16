@@ -21,61 +21,64 @@ package org.sakaiproject.qna.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is a the options table entity
- *
+ * 
  */
 public class QnaQuestion {
 
-	private String id;
+	private Long id;
 
-//	The category this question falls in
-    private QnaCategory category;
+	// The category this question falls in
+	private QnaCategory category;
 
-//  The list of answers associated with this question
-    private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
-    
-//  The list of attachments linked to this question    
-    private List<QnaAttachment> attachments = new ArrayList<QnaAttachment>();
+	// The list of answers associated with this question
+	private List<QnaAnswer> answers = new ArrayList<QnaAnswer>();
 
-//  The user (sakai userid) that posted this question
+	// The list of attachments linked to this question
+	private List<QnaAttachment> attachments = new ArrayList<QnaAttachment>();
+
+	// The user (sakai userid) that posted this question
 	private String ownerId;
-
-//  The user (sakai userid) that last modified this question
+	
+	// The mobile number used to post question (in case of anonymous postings via mobile)
+	private String ownerMobileNr;
+	
+	// The user (sakai userid) that last modified this question
 	private String lastModifierId;
 
-//	Sakai entity reference
+	// Sakai entity reference
 	private String location;
 
-// 	Text of the question text
+	// Text of the question text
 	private String questionText;
 
-//	How many times the question has been viewed
+	// How many times the question has been viewed
 	private Integer views;
 
-//  The date this question was last modified by someone
+	// The date this question was last modified by someone
 	private Date dateLastModified;
 
-//  The date this question was created
+	// The date this question was created
 	private Date dateCreated;
 
-//	Order of the question in category view
+	// Order of the question in category view
 	private Integer sortOrder;
 
-//	If this question is asked anonymously
+	// If this question is asked anonymously (TAKE NOTE: not used for anonymous postings from mobile)
 	private Boolean anonymous;
 
-//	If the question is published
+	// If the question is published
 	private Boolean published;
 
-//	If user needs to be notified of answer
+	// If user needs to be notified of answer
 	private Boolean notify;
 
 	private Boolean hidden;
 
-//	Category of id to be persisted. This is used by front-end and not persisted itself. There must be a better way of doing this :/
+	// Category of id to be persisted. This is used by front-end and not
+	// persisted itself. There must be a better way of doing this :/
 	private String categoryId;
 
 	/**
@@ -95,10 +98,12 @@ public class QnaQuestion {
 	 * @param anonymous
 	 * @param published
 	 * @param hidden
+	 * @param ownerMobileNr
 	 */
-	public QnaQuestion(QnaCategory category, String ownerId, String location, String questionText,
-			Integer views, Date dateLastModified, Date dateCreated,
-			Integer order, Boolean anonymous, Boolean published, Boolean hidden) {
+	public QnaQuestion(QnaCategory category, String ownerId, String location,
+			String questionText, Integer views, Date dateLastModified,
+			Date dateCreated, Integer order, Boolean anonymous,
+			Boolean published, Boolean hidden, String ownerMobileNr) {
 		this.category = category;
 		this.ownerId = ownerId;
 		this.lastModifierId = ownerId;
@@ -112,20 +117,21 @@ public class QnaQuestion {
 		this.published = published;
 		this.notify = false;
 		this.hidden = false;
-		
+		this.ownerMobileNr = ownerMobileNr;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -137,7 +143,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param category the category to set
+	 * @param category
+	 *            the category to set
 	 */
 	public void setCategory(QnaCategory category) {
 		this.category = category;
@@ -151,7 +158,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param ownerId the ownerId to set
+	 * @param ownerId
+	 *            the ownerId to set
 	 */
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
@@ -165,7 +173,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param location the location to set
+	 * @param location
+	 *            the location to set
 	 */
 	public void setLocation(String location) {
 		this.location = location;
@@ -179,7 +188,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param questionText the questionText to set
+	 * @param questionText
+	 *            the questionText to set
 	 */
 	public void setQuestionText(String questionText) {
 		this.questionText = questionText;
@@ -193,7 +203,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param views the views to set
+	 * @param views
+	 *            the views to set
 	 */
 	public void setViews(Integer views) {
 		this.views = views;
@@ -207,7 +218,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param dateLastModified the dateLastModified to set
+	 * @param dateLastModified
+	 *            the dateLastModified to set
 	 */
 	public void setDateLastModified(Date dateLastModified) {
 		this.dateLastModified = dateLastModified;
@@ -221,7 +233,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param dateCreated the dateCreated to set
+	 * @param dateCreated
+	 *            the dateCreated to set
 	 */
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
@@ -235,7 +248,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param order the order to set
+	 * @param order
+	 *            the order to set
 	 */
 	public void setSortOrder(Integer sortOrder) {
 		this.sortOrder = sortOrder;
@@ -249,7 +263,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param anonymous the anonymous to set
+	 * @param anonymous
+	 *            the anonymous to set
 	 */
 	public void setAnonymous(Boolean anonymous) {
 		this.anonymous = anonymous;
@@ -263,7 +278,8 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param published the published to set
+	 * @param published
+	 *            the published to set
 	 */
 	public void setPublished(Boolean published) {
 		this.published = published;
@@ -277,22 +293,24 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @param answers set list of answers to this question
+	 * @param answers
+	 *            set list of answers to this question
 	 */
 	public void setAnswers(List<QnaAnswer> answers) {
 		this.answers = answers;
 	}
-	
+
 	/**
 	 * Add answer to this question
 	 * 
-	 * @param answer {@link QnaAnswer} to be added
+	 * @param answer
+	 *            {@link QnaAnswer} to be added
 	 */
 	public void addAnswer(QnaAnswer answer) {
 		answer.setQuestion(this);
 		answers.add(answer);
 	}
-	
+
 	/**
 	 * 
 	 * @return list of attachments for question
@@ -300,28 +318,31 @@ public class QnaQuestion {
 	public List<QnaAttachment> getAttachments() {
 		return attachments;
 	}
-	
+
 	public void setAttachments(List<QnaAttachment> attachments) {
 		this.attachments = attachments;
 	}
-	
+
 	/**
 	 * Add attachment to this question
 	 * 
-	 * @param attachment {@link QnaAttachment} to be added
+	 * @param attachment
+	 *            {@link QnaAttachment} to be added
 	 */
 	public void addAttachment(QnaAttachment attachment) {
 		attachment.setQuestion(this);
 		attachments.add(attachment);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof QnaQuestion){
-			return ((QnaQuestion)obj).getId().equals(this.getId());
+		if (obj instanceof QnaQuestion) {
+			return ((QnaQuestion) obj).getId().equals(this.getId());
 		}
 
 		return false;
@@ -350,18 +371,25 @@ public class QnaQuestion {
 	public String getCategoryId() {
 		return categoryId;
 	}
-
 	
+	public String getOwnerMobileNr() {
+		return ownerMobileNr;
+	}
+
+	public void setOwnerMobileNr(String ownerMobileNr) {
+		this.ownerMobileNr = ownerMobileNr;
+	}
+
 	/**
-	 *	Helper function to check if question has private replies
-	 *	
-	 *	@return true if question has private replies, false if otherwise 
+	 * Helper function to check if question has private replies
+	 * 
+	 * @return true if question has private replies, false if otherwise
 	 */
 	public boolean hasPrivateReplies() {
 		if (answers == null || answers.size() == 0) {
 			return false;
 		} else {
-			for (QnaAnswer answer: answers) {
+			for (QnaAnswer answer : answers) {
 				if (answer.isPrivateReply()) {
 					return true;
 				}
@@ -377,5 +405,6 @@ public class QnaQuestion {
 	public void setHidden(Boolean hidden) {
 		this.hidden = hidden;
 	}
-
+	
+	
 }

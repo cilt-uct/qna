@@ -25,8 +25,10 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
+import org.sakaiproject.qna.tool.utils.IntegerReshaper;
 
 import uk.org.ponder.beanutil.BeanGetter;
+import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UIBoundBoolean;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -93,6 +95,12 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
     	UIBoundBoolean.make(form,"anonymous",optionsOTP + ".anonymousAllowed");
     	UIMessage.make(form,"anonymous-label","qna.options.anonymous-msg");
     	
+    	UIBoundBoolean.make(form,"unknown-mobile",optionsOTP + ".allowUnknownMobile");
+    	UIMessage.make(form,"unknown-mobile-label","qna.options.unknown-mobile-msg");
+    	
+       	UIBoundBoolean.make(form,"sms-notification",optionsOTP + ".smsNotification");
+    	UIMessage.make(form,"sms-notification-label","qna.options.sms-notification");
+    	
     	UIBoundBoolean notification = UIBoundBoolean.make(form,"notification",optionsOTP + ".emailNotification");
     	UIMessage.make(form,"notification-label","qna.options.notification-msg");
     	
@@ -135,9 +143,12 @@ public class OptionsProducer implements ViewComponentProducer, NavigationCaseRep
    	    
    	    UIInitBlock.make(form, "email-notification-init", "init_mail_notifications", new Object[] {notification,siteContact,customMail,updateRights,customMailInput});
    	    
+   	    UIMessage.make(form, "nr-answers-label", "qna.options.nr-of-answers");
+   	    UIInput nrAnswers = UIInput.make(form, "nr-answers-input", optionsOTP + ".mobileAnswersNr");
+   	    nrAnswers.darreshaper = new ELReference(IntegerReshaper.REFERENCE);
+   	    
         UICommand.make(form,"save-options-button",UIMessage.make("qna.general.save"),optionsLocator + ".saveAll");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
-
     }
 
 	public List<NavigationCase> reportNavigationCases() {

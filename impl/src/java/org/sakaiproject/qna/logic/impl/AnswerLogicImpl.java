@@ -27,8 +27,8 @@ import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
-import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -79,8 +79,8 @@ public class AnswerLogicImpl implements AnswerLogic {
 	 * @param answerId id to check
 	 * @return true if it exists, false otherwise
 	 */
-	public boolean existsAnswer(String answerId) {
-		if (answerId == null || answerId.equals("")) {
+	public boolean existsAnswer(Long answerId) {
+		if (answerId == null) {
 			return false;
 		} else {
 			if (getAnswerById(answerId) != null) {
@@ -96,16 +96,30 @@ public class AnswerLogicImpl implements AnswerLogic {
 	 */
 	public void saveAnswer(QnaAnswer answer, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
+		saveAnswer(answer, locationId, userId);
+	}
+	
+	/**
+	 * @see AnswerLogic#saveAnswer(QnaAnswer, String, String)
+	 */
+	public void saveAnswer(QnaAnswer answer, String locationId, String userId) {
+		
 		if (!existsAnswer(answer.getId())) {
-			if (permissionLogic.canAddNewAnswer(locationId, userId)) {
-				QnaQuestion question = questionLogic.getQuestionById(answer.getQuestion().getId());
+			if (permissionLogic.canAddNewAnswer(locationId, userId) || (userId == null && answer.getOwnerMobileNr() != null)) {
+				QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+				
+				if (userId == null && !options.getAllowUnknownMobile()) {
+					throw new SecurityException(
+							"New answers cannot be saved anonymously via mobile for "
+									+ locationId);
+				}
+				
+				QnaQuestion question = questionLogic.getQuestionById(answer.getQuestion().getId(), userId, (userId == null ) ? true : false);
 				if (question == null) {
 					throw new QnaConfigurationException("Question with id "+answer.getQuestion().getId()+" does not exist");
 				}
 				
 				if (question.getLocation().equals(locationId)) {
-					QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-	
 					if (answer.isAnonymous()) {
 						if (!options.getAnonymousAllowed()) {
 							throw new QnaConfigurationException("The location "
@@ -135,12 +149,17 @@ public class AnswerLogicImpl implements AnswerLogic {
 					externalEventLogic.postEvent(ExternalEventLogic.EVENT_ANSWER_CREATE, answer);
 					
 					// Notification emails
-					if (answer.isPrivateReply()) {
+					if (answer.isPrivateReply() && (question.getOwnerId() != null)) {
 						notificationLogic.sendPrivateReplyNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());
 					} else if (question.getNotify()) {
-						notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());
+						if (question.getOwnerId() != null) {
+							notificationLogic.sendNewAnswerNotification(new String[]{question.getOwnerId()}, question, answer.getAnswerText());	
+						}
+						
+						if (question.getOwnerMobileNr() != null && options.getSmsNotification()) {
+							notificationLogic.sendNewAnswerSmsNotification(new String[] {question.getOwnerMobileNr()}, question, answer.getAnswerText());
+						}
 					}
-					
 				} else {
 					throw new QnaConfigurationException(
 							"The location of the question ("
@@ -169,9 +188,9 @@ public class AnswerLogicImpl implements AnswerLogic {
 	}
 	
 	/**
-	 * @see AnswerLogic#approveAnswer(String, String)
+	 * @see AnswerLogic#approveAnswer(Long, String)
 	 */
-	public void approveAnswer(String answerId, String locationId) {
+	public void approveAnswer(Long answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
@@ -190,24 +209,36 @@ public class AnswerLogicImpl implements AnswerLogic {
 	}
 	
 	/**
-	 * @see AnswerLogic#getAnswerById(String)
+	 * @see AnswerLogic#getAnswerById(Long)
 	 */
-	public QnaAnswer getAnswerById(String answerId) {
-		return (QnaAnswer) dao.findById(QnaAnswer.class, answerId);
+	public QnaAnswer getAnswerById(Long answerId) {
+		return dao.findById(QnaAnswer.class, answerId);
 	}
 	
 	/**
-	 * @see AnswerLogic#removeAnswer(String, String)
+	 * @see AnswerLogic#getAnswerById(String)
 	 */
-	public void removeAnswer(String answerId, String locationId) {
+	public QnaAnswer getAnswerById(String answerId) {
+		try {
+			Long id = Long.parseLong(answerId);
+			return getAnswerById(id);
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @see AnswerLogic#removeAnswer(Long, String)
+	 */
+	public void removeAnswer(Long answerId, String locationId) {
 		QnaAnswer answer = getAnswerById(answerId);
 		removeAnswerFromQuestion(answerId,answer.getQuestion().getId(), locationId);
 	}
 	
 	/**
-	 * @see AnswerLogic#removeAnswerFromQuestion(String, String, String)
+	 * @see AnswerLogic#removeAnswerFromQuestion(Long, Long, String)
 	 */
-	public void removeAnswerFromQuestion(String answerId, String questionId, String locationId) {
+	public void removeAnswerFromQuestion(Long answerId, Long questionId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaQuestion question = questionLogic.getQuestionById(questionId);
@@ -222,9 +253,9 @@ public class AnswerLogicImpl implements AnswerLogic {
 	}
 	
 	/**
-	 * @see AnswerLogic#withdrawApprovalAnswer(String, String)
+	 * @see AnswerLogic#withdrawApprovalAnswer(Long, String)
 	 */
-	public void withdrawApprovalAnswer(String answerId, String locationId) {
+	public void withdrawApprovalAnswer(Long answerId, String locationId) {
 		String userId = externalLogic.getCurrentUserId();
 		if (permissionLogic.canUpdate(locationId, userId)) {
 			QnaAnswer answer = getAnswerById(answerId);
@@ -253,7 +284,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 		List<QnaQuestion> qList = questionLogic.getAllQuestions(context);
 		List<QnaAnswer> aList = new ArrayList();
 		for (int i = 0; i < qList.size(); i++) {
-			QnaQuestion q = (QnaQuestion)qList.get(i);
+			QnaQuestion q = qList.get(i);
 			List<QnaAnswer> a = q.getAnswers();
 			aList.addAll(a);
 		}

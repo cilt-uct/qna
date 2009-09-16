@@ -27,7 +27,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.producers.renderers.NavBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;

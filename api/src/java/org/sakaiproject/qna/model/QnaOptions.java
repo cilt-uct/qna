@@ -65,6 +65,15 @@ public class QnaOptions {
 //  This is the comma separated string used by the front-end to create the custom emails    
     private String commaSeparated;
     
+//	Allow new questions/answers from unknown mobile numbers
+    private Boolean allowUnknownMobile;
+
+//  Number of answers returned by mobile command 
+    private Integer mobileAnswersNr;
+
+//	Should SMS Notification be sent? Only used for new answers currently    
+    private Boolean smsNotification;
+    
 	/**
 	 *	Empty constructor
 	 */
@@ -72,7 +81,6 @@ public class QnaOptions {
 	}
 
 	/**
-	 * @param id
 	 * @param ownerId
 	 * @param location
 	 * @param dateLastModified
@@ -82,11 +90,13 @@ public class QnaOptions {
 	 * @param emailNotification
 	 * @param emailNotificationType
 	 * @param defaultStudentView
+	 * @param allowUnknownMobileNr TODO
+	 * @param id
 	 */
 	public QnaOptions(String ownerId, String location,
 			Date dateLastModified, Date dateCreated, Boolean anonymousAllowed,
 			Boolean moderated, Boolean emailNotification,
-			String emailNotificationType, String defaultStudentView) {
+			String emailNotificationType, String defaultStudentView, Boolean allowUnknownMobile) {
 		this.ownerId = ownerId;
 		this.location = location;
 		this.dateLastModified = dateLastModified;
@@ -96,6 +106,8 @@ public class QnaOptions {
 		this.emailNotification = emailNotification;
 		this.emailNotificationType = emailNotificationType;
 		this.defaultStudentView = defaultStudentView;
+		this.allowUnknownMobile = allowUnknownMobile;
+		this.mobileAnswersNr = 1;
 	}
 
 	/**
@@ -307,6 +319,32 @@ public class QnaOptions {
 	public void setCommaSeparated(String commaSeparated) {
 		this.commaSeparated = commaSeparated;
 	}
-	
+
+	public Boolean getAllowUnknownMobile() {
+		return allowUnknownMobile;
+	}
+
+	public void setAllowUnknownMobile(Boolean allowUnknownMobile) {
+		this.allowUnknownMobile = allowUnknownMobile;
+	}
+
+	public Integer getMobileAnswersNr() {
+		if (mobileAnswersNr == null) {
+			return 0;
+		}
+		return mobileAnswersNr;
+	}
+
+	public void setMobileAnswersNr(Integer mobileAnswersNr) {
+		this.mobileAnswersNr = mobileAnswersNr;
+	}
+
+	public Boolean getSmsNotification() {
+		return smsNotification;
+	}
+
+	public void setSmsNotification(Boolean smsNotification) {
+		this.smsNotification = smsNotification;
+	}
 	
 }

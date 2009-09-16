@@ -27,12 +27,11 @@ import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
@@ -131,7 +130,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
         		
         		if (display(qnaQuestion)) {
             		UIBranchContainer questionBranch = UIBranchContainer.make(tofill, "question:");
-            		UIInternalLink.make(questionBranch, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID, qnaQuestion.getId()));
+            		UIInternalLink.make(questionBranch, "view-question-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID, qnaQuestion.getId().toString()));
         			UIOutput.make(questionBranch, "question-text", questionText);
         			UIOutput.make(questionBranch, "question-timestamp", DateUtil.getSimpleDateTime(qnaQuestion.getDateLastModified()));
         			results++;
@@ -158,7 +157,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
         	if (allViewable || permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
         		if (display(answer)) {
             		UIBranchContainer answerBranch = UIBranchContainer.make(tofill, "answer:");
-        			UIInternalLink.make(answerBranch, "view-answer-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID,answer.getQuestion().getId()));
+        			UIInternalLink.make(answerBranch, "view-answer-link", UIMessage.make("qna.searchresults.view"), new QuestionParams(viewID,answer.getQuestion().getId().toString()));
         			UIOutput.make(answerBranch, "answer-text", answerText);
         			UIOutput.make(answerBranch, "answer-timestamp",  DateUtil.getSimpleDateTime(answer.getDateLastModified()));
         			results++;

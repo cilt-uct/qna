@@ -150,7 +150,7 @@ public class AnswerEntityProvider extends AbstractEntityProvider implements Core
 		if (securityService.isSuperUser())
 			return true;
 		
-		String id = answer.getId();
+		Long id = answer.getId();
 		QnaAnswer a = answerLogic.getAnswerById(id);
 		if (a != null) {
 			if (securityService.unlock(ExternalLogic.QNA_READ, a.getQuestion().getLocation()))

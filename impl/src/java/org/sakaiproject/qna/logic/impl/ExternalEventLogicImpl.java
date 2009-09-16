@@ -68,7 +68,8 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
 	      try {
 	         Class elementClass = entity.getClass();
 	         Method getIdMethod = elementClass.getMethod("getId", new Class[] {});
-	         id = (String) getIdMethod.invoke(entity, (Object[]) null);
+	         	         
+	         id = getIdMethod.invoke(entity, (Object[]) null).toString();
 	                  
 	         return getEntityReference(elementClass, id);
 	      } catch (Exception e) {

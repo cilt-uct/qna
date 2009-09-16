@@ -1,5 +1,5 @@
 /***********************************************************************************
- * QuestionsByAnswersComparator.java
+ * TextUtil.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -16,29 +16,34 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.comparators;
+package org.sakaiproject.qna.utils;
 
-import java.util.Comparator;
-
-import org.sakaiproject.qna.model.QnaQuestion;
 
 /**
- * Comparator to sort questions by number of answers
+ * Utility class to format output to be display on front-end & methods on strings
  *
  */
-public class QuestionsByAnswersComparator implements Comparator<QnaQuestion> {
-
+public class TextUtil {
+	
 	/**
-	 * @see Comparator#compare(Object, Object)
+	 * Strips all HTML tags from string
+	 * 
+	 * @param String with html tags
+	 * @return String without tags
 	 */
-	public int compare(QnaQuestion o1, QnaQuestion o2) {
-		if (o2.getAnswers().size() > o1.getAnswers().size()) {
-			return -1;
-		} else if (o2.getAnswers().size() < o1.getAnswers().size()) {
-			return 1;
-		} else {
-			return 0;
-		}
+	public static String stripTags(String html) {
+		String cleanup = QNAUtils.cleanupHtmlPtags(html);
+		return cleanup.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
+	}
+	
+	/**
+	 * Check if String is blank or null after all tags have been stripped
+	 * (Used to check empty FCKEditor input)
+	 * @param str
+	 * @return
+	 */
+	public static boolean isEmptyWithoutTags(String str) {
+		return (str == null || "".equals(stripTags(str).trim()));
 	}
 
 }

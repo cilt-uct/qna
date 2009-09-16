@@ -45,6 +45,9 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 	}
 
 	public int getInt(String name, int dflt) {
+		if (properties.get(name) != null) {
+			return Integer.parseInt(properties.get(name).toString());
+		}
 		return dflt;
 	}
 

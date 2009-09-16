@@ -6,9 +6,15 @@ import org.sakaiproject.qna.logic.QnaBundleLogic;
 
 public class QnaBundleLogicStub implements QnaBundleLogic {
 
+	private Object[] lastParameters;
+	
 	public String getFormattedMessage(String key, Object[] parameters) {
-		// TODO Auto-generated method stub
-		return null;
+		lastParameters = parameters;
+		return key;
+	}
+	
+	public Object[] getLastParameters() {
+		return lastParameters;
 	}
 
 	public Locale getLocale() {
@@ -20,7 +26,7 @@ public class QnaBundleLogicStub implements QnaBundleLogic {
 		if ("qna.default-category.text".equals(key)) {
 			return "general";
 		}
-		return null;
+		return key;
 	}
 
 }

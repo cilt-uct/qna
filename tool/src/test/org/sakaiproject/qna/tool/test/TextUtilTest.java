@@ -20,7 +20,7 @@ package org.sakaiproject.qna.tool.test;
 
 import junit.framework.TestCase;
 
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 
 public class TextUtilTest extends TestCase {

@@ -8,8 +8,8 @@
    <class name="org.sakaiproject.qna.model.QnaQuestion" table="qna_QUESTIONS">
 
       <!-- create the primary key id, using native is typically the best way -->
-      <id name="id" type="string">
-         <generator class="uuid.hex"/>
+      <id name="id" type="long">
+         <generator class="native"/>
       </id>
       <!-- linkage to the category -->
       <many-to-one name="category" lazy="false" class="org.sakaiproject.qna.model.QnaCategory">
@@ -28,8 +28,13 @@
       		<one-to-many class="org.sakaiproject.qna.model.QnaAttachment" />
       </bag>
 
-	  <property name="ownerId" type="string" length="255" not-null="true" />
-      <property name="lastModifierId" type="string" length="255" not-null="true" />
+	  <property name="ownerId" type="string" length="255" not-null="false" >
+	  	<column name="ownerId" not-null="false" />
+	  </property>
+	  <property name="ownerMobileNr" type="string" />
+      <property name="lastModifierId" type="string" length="255">
+      	<column name="lastModifierId" not-null="false" />
+      </property>
       <property name="location" type="string" length="255" not-null="true" />
       <property name="questionText" type="text" not-null="true" />
       <property name="views" type="integer" not-null="true" />

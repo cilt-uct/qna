@@ -1,5 +1,5 @@
 /***********************************************************************************
- * CategoriesSortOrderComparator.java
+ * QuestionsByCategoryTextComparator.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -16,21 +16,31 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.comparators;
+package org.sakaiproject.qna.comparators;
 
 import java.util.Comparator;
 
-import org.sakaiproject.qna.model.QnaCategory;
+import org.sakaiproject.qna.model.QnaQuestion;
 
 /**
- * Sorts a collection of QnaCategory alphabetically by name
+ * Comparator to sort questions by category text
  */
-public class CategoriesSortOrderComparator implements Comparator<QnaCategory> {
-	
+public class QuestionsByCategoryTextComparator implements
+		Comparator<QnaQuestion> {
+
 	/**
 	 * @see Comparator#compare(Object, Object)	
 	 */
-	public int compare(QnaCategory c1, QnaCategory c2) {
-		return c1.getSortOrder().compareTo(c2.getSortOrder());
+	public int compare(QnaQuestion o1, QnaQuestion o2) {
+		if (o1.getCategory() == null && o2.getCategory() == null) {
+			return 0;
+		} else if (o2.getCategory() == null) {
+			return 1;
+		} else if (o1.getCategory() == null) {
+			return -1;
+		} else {
+			return o1.getCategory().getCategoryText().compareToIgnoreCase(o2.getCategory().getCategoryText());
+		}
 	}
+
 }

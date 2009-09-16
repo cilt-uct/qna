@@ -30,7 +30,7 @@ import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.QuestionsSorter;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -118,12 +118,12 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
 
         	if (question.isPublished()) {
-        		UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId()));
+        		UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId().toString()));
         	} else {
         		if (question.hasPrivateReplies()) {
-        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId()));
+        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId().toString()));
         		} else {
-        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId()));
+        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId().toString()));
         		}
         	}
 
@@ -137,7 +137,7 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         		UIOutput.make(row,"question_row_category","");
         	}
         	UISelectChoice.make(row, "remove-question-checkbox", questionDeleteSelect.getFullID(), deletable.size());
-        	deletable.add(question.getId());
+        	deletable.add(question.getId().toString());
         }
 
         questionDeleteSelect.optionlist.setValue(deletable.toStringArray());

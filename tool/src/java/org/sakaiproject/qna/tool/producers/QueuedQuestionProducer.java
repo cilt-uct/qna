@@ -116,7 +116,9 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		}
 		
 		// Generate the different buttons
-		UICommand.make(form, "queued-question-reply", UIMessage.make("qna.queued-question.reply")).setReturn("private_reply");
+		if (question.getOwnerId() != null) { // Can't private reply if it is totally anonymous
+			UICommand.make(form, "queued-question-reply", UIMessage.make("qna.queued-question.reply")).setReturn("private_reply");	
+		}
 		UICommand.make(form, "queued-question-publish", UIMessage.make("qna.queued-question.publish")).setReturn("publish");
 		UICommand.make(form, "queued-question-delete", UIMessage.make("qna.general.delete")).setReturn("delete");
 		UICommand.make(form, "queued-question-cancel",UIMessage.make("qna.general.cancel") ).setReturn("cancel");

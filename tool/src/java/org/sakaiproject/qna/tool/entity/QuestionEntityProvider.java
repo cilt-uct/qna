@@ -105,7 +105,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
         
         questionLogic.saveQuestion(question, question.getLocation());
         
-		return question.getId();
+		return question.getId().toString();
 	}
 
 	public Object getSampleEntity() {
@@ -153,7 +153,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	}
 
 	public void deleteEntity(EntityReference ref, Map<String, Object> params) {
-		  String id = ref.getId();
+		    String id = ref.getId();
 	        String userReference = developerHelperService.getCurrentUserReference();
 	        if (userReference == null) {
 	            throw new SecurityException("anonymous user cannot delete option: " + ref);
@@ -168,7 +168,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	        	throw new SecurityException("user: " + userReference +" cannot delete option: " + ref);
 	        	
 	        try {
-				questionLogic.removeQuestion(id, q.getLocation());
+				questionLogic.removeQuestion(q.getId(), q.getLocation());
 			} catch (AttachmentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

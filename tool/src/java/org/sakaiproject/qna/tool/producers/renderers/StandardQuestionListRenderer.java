@@ -32,7 +32,7 @@ import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.ComparatorUtil;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.QuestionsSorter;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -106,7 +106,7 @@ public class StandardQuestionListRenderer implements QuestionListRenderer {
 			if (displayQuestion(qnaQuestion)) {
 				UIBranchContainer entry = UIBranchContainer.make(listTable, "question-entry:");
 				UIOutput.make(entry,"rank-nr",rank + "");
-				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId()));
+				UIInternalLink.make(entry,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,qnaQuestion.getId().toString()));
 				if (params.sortBy.equals(SortByConstants.VIEWS)) {
 					UIOutput.make(entry,"ordered-by",qnaQuestion.getViews() + "");
 				} else if (params.sortBy.equals(SortByConstants.MODIFIED)) {

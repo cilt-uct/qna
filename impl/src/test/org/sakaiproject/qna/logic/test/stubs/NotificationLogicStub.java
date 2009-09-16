@@ -46,4 +46,10 @@ public class NotificationLogicStub implements NotificationLogic {
 		
 	}
 
+	public void sendNewAnswerSmsNotification(String[] mobileNrs,
+			QnaQuestion question, String answerText) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

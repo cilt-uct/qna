@@ -20,14 +20,14 @@ package org.sakaiproject.qna.tool.utils;
 
 import java.util.Comparator;
 
+import org.sakaiproject.qna.comparators.MostPopularComparator;
+import org.sakaiproject.qna.comparators.QuestionTextComparator;
+import org.sakaiproject.qna.comparators.QuestionsByAnswersComparator;
+import org.sakaiproject.qna.comparators.QuestionsByCategoryTextComparator;
+import org.sakaiproject.qna.comparators.QuestionsSortOrderComparator;
+import org.sakaiproject.qna.comparators.RecentChangesComparator;
+import org.sakaiproject.qna.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.MostPopularComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionTextComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsByAnswersComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsByCategoryTextComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
-import org.sakaiproject.qna.tool.comparators.RecentChangesComparator;
-import org.sakaiproject.qna.tool.comparators.RecentQuestionsComparator;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 

@@ -1,5 +1,5 @@
 /***********************************************************************************
- * QuestionTextComparator.java
+ * RecentQuestionsComparator.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -16,22 +16,22 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.comparators;
+package org.sakaiproject.qna.comparators;
 
 import java.util.Comparator;
 
 import org.sakaiproject.qna.model.QnaQuestion;
 
 /**
- *	Comparator to sort questions by question text 
+ *	Comparator to sort list of QnaQuestion by date created (descending)
  */
-public class QuestionTextComparator implements Comparator<QnaQuestion> {
+public class RecentQuestionsComparator implements Comparator<QnaQuestion> {
 
 	/**
 	 * @see Comparator#compare(Object, Object)	
 	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
-		return q1.getQuestionText().compareToIgnoreCase(q2.getQuestionText());
+		return q1.getDateCreated().compareTo(q2.getDateCreated());
 	}
 
 }

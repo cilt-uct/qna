@@ -198,4 +198,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return category;
 	}
 	
+	public QnaCategory getDefaultCategory(String locationId) {
+		return getCategoriesForLocation(locationId).get(0);
+	}
 }

@@ -23,12 +23,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.sakaiproject.qna.comparators.CategoriesSortOrderComparator;
+import org.sakaiproject.qna.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.constants.ViewTypeConstants;
 

@@ -16,9 +16,17 @@
  *
  **********************************************************************************/
 
-
 package org.sakaiproject.qna.logic.test.stubs;
-import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
+
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_CONTACT_EMAIL;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_CONTACT_NAME;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION3_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_1;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_2;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_3;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_NO_UPDATE;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +36,7 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 public class ExternalLogicStub implements ExternalLogic {
 
 	public String currentUserId;
-	
+
 	public String getCurrentLocationId() {
 		// default is LOCATION1
 		return LOCATION1_ID;
@@ -51,12 +59,16 @@ public class ExternalLogicStub implements ExternalLogic {
 	public boolean isUserAdmin(String userId) {
 		if ("admin".equals(userId))
 			return true;
-		
+
 		return false;
 	}
 
 	public boolean isUserAllowedInLocation(String userId, String permission,
 			String locationId) {
+		if (userId == null) {
+			return false;
+		}
+		
 		if (userId.equals(USER_NO_UPDATE)) {
 			if (locationId.equals(LOCATION1_ID)) {
 				if (permission.equals(QNA_UPDATE)) {
@@ -65,20 +77,30 @@ public class ExternalLogicStub implements ExternalLogic {
 			}
 		} else if (userId.equals(USER_UPDATE)) {
 			if (locationId.equals(LOCATION1_ID)) {
-				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY) || permission.equals(QNA_NEW_ANSWER)) {
+				if (permission.equals(QNA_UPDATE)
+						|| permission.equals(QNA_NEW_QUESTION)
+						|| permission.equals(QNA_NEW_CATEGORY)
+						|| permission.equals(QNA_NEW_ANSWER)) {
 					return true;
-				} 
+				}
 			}
 		} else if (userId.equals(USER_LOC_3_UPDATE_1)
 				|| userId.equals(USER_LOC_3_UPDATE_2)
 				|| userId.equals(USER_LOC_3_UPDATE_3)) {
 			if (locationId.equals(LOCATION3_ID)) {
-				if (permission.equals(QNA_UPDATE) || permission.equals(QNA_NEW_QUESTION) || permission.equals(QNA_NEW_CATEGORY) || permission.equals(QNA_NEW_ANSWER)) {
+				if (permission.equals(QNA_UPDATE)
+						|| permission.equals(QNA_NEW_QUESTION)
+						|| permission.equals(QNA_NEW_CATEGORY)
+						|| permission.equals(QNA_NEW_ANSWER)) {
 					return true;
 				}
 			}
-		} 
-		
+		}
+
+		if (permission.equals(QNA_READ)) {
+			return true;
+		}
+
 		return false;
 
 	}
@@ -100,7 +122,8 @@ public class ExternalLogicStub implements ExternalLogic {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<String> getSiteUsersWithPermission(String locationId, String permission) {
+	public Set<String> getSiteUsersWithPermission(String locationId,
+			String permission) {
 		if (locationId.equals(LOCATION3_ID) && permission.equals(QNA_UPDATE)) {
 			Set users = new HashSet<String>();
 			users.add(USER_LOC_3_UPDATE_1);
@@ -127,8 +150,8 @@ public class ExternalLogicStub implements ExternalLogic {
 		return null;
 	}
 
-	public String[] sendEmails(String from, String[] toEmails,
-			String subject, String message) {
+	public String[] sendEmails(String from, String[] toEmails, String subject,
+			String message) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -143,6 +166,17 @@ public class ExternalLogicStub implements ExternalLogic {
 	}
 
 	public String getCurrentToolId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getSiteIdFromRef(String reference) {
+		// TODO Auto-generated method stub
+		return "ref-1111111";
+	}
+
+	public String[] sendSms(String[] mobileNrs, String fromId, String siteId,
+			String toolId, String message) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,5 +1,5 @@
 /***********************************************************************************
- * CategoryTextComparator.java
+ * OptionsProducer.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -15,22 +15,36 @@
  * limitations under the License.
  *
  **********************************************************************************/
+package org.sakaiproject.qna.tool.utils;
 
-package org.sakaiproject.qna.tool.comparators;
-
-import java.util.Comparator;
-
-import org.sakaiproject.qna.model.QnaCategory;
+import uk.org.ponder.mapping.DARReshaper;
+import uk.org.ponder.mapping.DataAlterationRequest;
 
 /**
- * Sorts a collection of QnaCategory alphabetically by name
+ * Used to reshape input value to integer 
+ *
  */
-public class CategoryTextComparator implements Comparator<QnaCategory> {
-
-	/**
-	 * @see Comparator#compare(Object, Object)	
-	 */
-	public int compare(QnaCategory c1, QnaCategory c2) {
-		return c1.getCategoryText().compareToIgnoreCase(c2.getCategoryText());
+public class IntegerReshaper implements DARReshaper {
+	
+	public static final String REFERENCE = "integerReshaper";
+	
+	public DataAlterationRequest reshapeDAR(DataAlterationRequest toshape) {
+		Object data = toshape.data;
+		Integer toReturn;
+		
+		if (data instanceof Integer) {
+			toReturn = (Integer)data;
+		} else {
+			try {
+				toReturn = Integer.parseInt(data.toString());	
+			} catch (NumberFormatException nfe) {
+				toReturn = 0;
+			}
+		}
+		
+	    DataAlterationRequest togo = new DataAlterationRequest(toshape.path, toReturn
+	            , toshape.type);
+	        return togo;
 	}
+
 }

@@ -23,14 +23,14 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.qna.comparators.CategoriesSortOrderComparator;
+import org.sakaiproject.qna.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.CategoriesSortOrderComparator;
-import org.sakaiproject.qna.tool.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
@@ -39,7 +39,7 @@ import org.sakaiproject.qna.tool.producers.QueuedQuestionProducer;
 import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
-import org.sakaiproject.qna.tool.utils.TextUtil;
+import org.sakaiproject.qna.utils.TextUtil;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -201,7 +201,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 			QnaQuestion qnaQuestion = questions.get(k);
 			if (!qnaQuestion.getHidden()) {
 				UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
-				UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId()));
+				UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId().toString()));
 				UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
 				UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
 				UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));
@@ -210,7 +210,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 					//UIOutput.make(question,"remove-question-cell");
 					//UIBoundBoolean.make(question, "remove-checkbox", false);
 					UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
-					deletable.add(qnaQuestion.getId());
+					deletable.add(qnaQuestion.getId().toString());
 				}
 			}
 		}

@@ -18,14 +18,29 @@
 
 package org.sakaiproject.qna.logic.test;
 
-import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_CONTACT_EMAIL;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION2_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION3_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION4_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_CUSTOM_EMAIL1;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_CUSTOM_EMAIL2;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_CUSTOM_EMAIL3;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_CUSTOM_EMAIL_INVALID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_CUSTOM_EMAIL_VALID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_1_EMAIL;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_2_EMAIL;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_3_EMAIL;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_NO_UPDATE;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
+
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
@@ -43,12 +58,13 @@ public class OptionsLogicImplTest extends
 
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
-	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
-	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
-	private ServerConfigurationServiceStub serverConfigurationServiceStub = new ServerConfigurationServiceStub();	
+	private final ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	private final ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
+	private final ServerConfigurationServiceStub serverConfigurationServiceStub = new ServerConfigurationServiceStub();	
 	
-	private TestDataPreload tdp = new TestDataPreload();
+	private final TestDataPreload tdp = new TestDataPreload();
 
+	@Override
 	protected String[] getConfigLocations() {
 		// point to the needed spring config files, must be on the classpath
 		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
@@ -57,10 +73,12 @@ public class OptionsLogicImplTest extends
 	}
 
 	// run this before each test starts
+	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
 	}
 
 	// run this before each test starts and as part of the transaction
+	@Override
 	protected void onSetUpInTransaction() {
 		// load the spring created dao class bean from the Spring Application
 		// Context
@@ -376,6 +394,8 @@ public class OptionsLogicImplTest extends
 		assertEquals(QnaConstants.SITE_CONTACT,options.getEmailNotificationType());
 		assertFalse(options.getEmailNotification());
 		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+		assertFalse(options.getAllowUnknownMobile());
+		assertEquals(new Integer(1), options.getMobileAnswersNr());
 	}
 	
 	/**
@@ -417,7 +437,37 @@ public class OptionsLogicImplTest extends
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 		assertFalse(options.getAnonymousAllowed());
 	}
-
+	
+	/**
+	 * Test default options with allow unknown mobile number as true
+	 */
+	public void testDefaultAllowUnknownMobile() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.allow-unknown-mobile", true);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertTrue(options.getAllowUnknownMobile());
+	}
+	
+	/**
+	 * Test default option for number of answers returned by mobile command
+	 */
+	public void testDefaultMobileAnswerNr() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.mobile-answers-nr", 3);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertEquals(new Integer(3), options.getMobileAnswersNr());
+	}
+	
+	/**
+	 * Test default options with allow unknown mobile number as false
+	 */
+	public void testDefaultNotAllowUnknownMobile() {
+		String locationId = LOCATION2_ID;
+		serverConfigurationServiceStub.setProperty("qna.default.allow-unknown-mobile", false);
+		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
+		assertFalse(options.getAllowUnknownMobile());
+	}
+	
 	/**
 	 * Test default options with student view property set to most_popular 
 	 */
@@ -544,5 +594,21 @@ public class OptionsLogicImplTest extends
 			}
 		}
 		assertTrue(contains);
+	}
+	
+	/**
+	 * Test that null mobile answers number return zero
+	 */
+	public void testNullMobileAnswersNrReturnZero() {
+		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
+		options.setMobileAnswersNr(null);
+		try {
+			externalLogicStub.currentUserId = USER_UPDATE;
+			optionsLogic.saveOptions(options, LOCATION1_ID);
+		} catch (SecurityException e) {
+			fail("Should have thrown exception");
+		}
+		
+		assertEquals(new Integer(0), options.getMobileAnswersNr());
 	}
 }

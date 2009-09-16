@@ -56,7 +56,7 @@
   <!-- For security purposes, only beans listed in the comma separated value list
       may be the target of EL operations coming in over the request -->
    <bean parent="requestAddressibleParent">
-      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper"/>
+      <property name="value" value="CategoryLocator,OptionsLocator,QuestionLocator,AnswerLocator,MultipleBeanMediator,DeleteMultiplesHelper,OrganiserHelper, integerReshaper"/>
    </bean>
 
    <!-- Control the location of the html templates (default: content/templates/) -->
@@ -104,4 +104,6 @@
            </bean>
        </property>
    </bean>
+   
+   <bean id="integerReshaper" class="org.sakaiproject.qna.tool.utils.IntegerReshaper" />
 </beans>

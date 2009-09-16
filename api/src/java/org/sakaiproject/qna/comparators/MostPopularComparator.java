@@ -1,5 +1,5 @@
 /***********************************************************************************
- * RecentChangesComparator.java
+ * MostPopularComparator.java
  * Copyright (c) 2008 Sakai Project/Sakai Foundation
  * 
  * Licensed under the Educational Community License, Version 2.0 (the "License"); 
@@ -16,22 +16,22 @@
  *
  **********************************************************************************/
 
-package org.sakaiproject.qna.tool.comparators;
+package org.sakaiproject.qna.comparators;
 
 import java.util.Comparator;
 
 import org.sakaiproject.qna.model.QnaQuestion;
 
 /**
- *	Comparator to sort list of QnaQuestion by most recent changes (descending)
+ *	Comparator to sort list of QnaQuestion by number of views (descending)
  */
-public class RecentChangesComparator implements Comparator<QnaQuestion> {
+public class MostPopularComparator implements Comparator<QnaQuestion> {
 
 	/**
 	 * @see Comparator#compare(Object, Object)	
 	 */
 	public int compare(QnaQuestion q1, QnaQuestion q2) {
-		return q2.getDateLastModified().compareTo(q1.getDateLastModified());
+		return q1.getViews().compareTo(q2.getViews());
 	}
 
 }

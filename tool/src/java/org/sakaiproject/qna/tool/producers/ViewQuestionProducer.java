@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.sakaiproject.qna.comparators.AnswersListComparator;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.sakaiproject.qna.tool.comparators.AnswersListComparator;
 import org.sakaiproject.qna.tool.otp.AnswerLocator;
 import org.sakaiproject.qna.tool.params.AnswerParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;
@@ -162,13 +162,13 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		}
 
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-			UIInternalLink editLink = UIInternalLink.make(tofill, "edit-question-link", UIMessage.make("qna.view-question.edit"), new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId()));
+			UIInternalLink editLink = UIInternalLink.make(tofill, "edit-question-link", UIMessage.make("qna.view-question.edit"), new QuestionParams(EditPublishedQuestionProducer.VIEW_ID, question.getId().toString()));
 			editLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.edit.tip")));
 			
-			UIInternalLink moveLink = UIInternalLink.make(tofill, "move-category-link", UIMessage.make("qna.view-question.move-category"), new QuestionParams(MoveQuestionProducer.VIEW_ID, question.getId()));
+			UIInternalLink moveLink = UIInternalLink.make(tofill, "move-category-link", UIMessage.make("qna.view-question.move-category"), new QuestionParams(MoveQuestionProducer.VIEW_ID, question.getId().toString()));
 			moveLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.move-category.tip")));
 			
-			UIInternalLink deleteLink = UIInternalLink.make(tofill, "delete-question-link", UIMessage.make("qna.general.delete"), new QuestionParams(DeleteQuestionProducer.VIEW_ID, question.getId()));
+			UIInternalLink deleteLink = UIInternalLink.make(tofill, "delete-question-link", UIMessage.make("qna.general.delete"), new QuestionParams(DeleteQuestionProducer.VIEW_ID, question.getId().toString()));
 			deleteLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.delete.tip")));
 		}
 
@@ -250,7 +250,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 				}
 
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-					if  (qnaAnswer.getOwnerId().equals(externalLogic.getCurrentUserId())) {
+					if (externalLogic.getCurrentUserId().equals(qnaAnswer.getOwnerId())) {
 						UIInternalLink editLink = UIInternalLink.make(answer,"edit-answer-link",UIMessage.make("qna.view-question.edit"),new AnswerParams(EditPublishedAnswerProducer.VIEW_ID,qnaAnswer.getId(),question.getId()));
 						editLink.decorators = new DecoratorList(new UITooltipDecorator(UIMessage.make("qna.view-question.edit-answer.tip")));
 					} else if (qnaAnswer.isApproved() && !permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), qnaAnswer.getOwnerId())) {

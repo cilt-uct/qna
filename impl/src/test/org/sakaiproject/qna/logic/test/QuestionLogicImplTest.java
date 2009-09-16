@@ -18,7 +18,12 @@
 
 package org.sakaiproject.qna.logic.test;
 
-import static org.sakaiproject.qna.logic.test.TestDataPreload.*;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION3_ID;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_NO_UPDATE_1;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_1;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_NO_UPDATE;
+import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
 
 import java.util.List;
 
@@ -28,8 +33,8 @@ import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.logic.exceptions.QnaConfigurationException;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
-import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
+import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
 import org.sakaiproject.qna.logic.impl.QuestionLogicImpl;
 import org.sakaiproject.qna.logic.test.stubs.DeveloperHelperServiceStub;
 import org.sakaiproject.qna.logic.test.stubs.ExternalEventLogicStub;
@@ -47,13 +52,14 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	
 	private static Log log = LogFactory.getLog(OptionsLogicImplTest.class);
 
-	private ExternalLogicStub externalLogicStub = new ExternalLogicStub();
-	private NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
-	private ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
-	private DeveloperHelperServiceStub developerHelperServiceStub = new DeveloperHelperServiceStub();
+	private final ExternalLogicStub externalLogicStub = new ExternalLogicStub();
+	private final NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
+	private final ExternalEventLogicStub externalEventLogicStub = new ExternalEventLogicStub();
+	private final DeveloperHelperServiceStub developerHelperServiceStub = new DeveloperHelperServiceStub();
 	
-	private TestDataPreload tdp = new TestDataPreload();
+	private final TestDataPreload tdp = new TestDataPreload();
 
+	@Override
 	protected String[] getConfigLocations() {
 		// point to the needed spring config files, must be on the classpath
 		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
@@ -62,10 +68,12 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 	}
 
 	// run this before each test starts
+	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
 	}
 
 	// run this before each test starts and as part of the transaction
+	@Override
 	protected void onSetUpInTransaction() {
 		// load the spring created dao class bean from the Spring Application
 		// Context
@@ -232,7 +240,21 @@ public class QuestionLogicImplTest extends AbstractTransactionalSpringContextTes
 		assertTrue(question.isPublished());
 		assertTrue(questionLogic.existsQuestion(question.getId()));
 	}
-
+	
+	public void testSaveQuestionSpecifyUser() {
+		QnaQuestion question = new QnaQuestion();
+		question.setQuestionText("blah blah blah");
+		try {
+			questionLogic.saveQuestion(question, LOCATION1_ID, USER_UPDATE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Should not have thrown exception");
+		}
+		
+		assertEquals(USER_UPDATE, question.getOwnerId());
+		assertTrue(questionLogic.existsQuestion(question.getId()));
+	}
+	
 	/**
 	 * Test publishing of question
 	 */

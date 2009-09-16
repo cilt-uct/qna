@@ -20,7 +20,8 @@
 		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
-		<property name="smsService" ref="org.sakaiproject.sms.api.SmsService" />
+		<!-- uncomment if using the sms service -->
+		<!-- ><property name="smsService" ref="org.sakaiproject.sms.api.SmsService" /> -->
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.ExternalEventLogic" class="org.sakaiproject.qna.logic.impl.ExternalEventLogicImpl">
@@ -93,8 +94,8 @@
 		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
-	
-	<bean id="QnaCommandRegister"
+	<!-- uncomment to enable SMS -->
+<!-- 	<bean id="QnaCommandRegister"
 		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
 		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
 		<property name="toolKey" value="qna" />
@@ -121,7 +122,7 @@
 			</list>
 		</property>
 	</bean>	
-	
+	 -->
 	
 	<!-- entity beans -->
 	<!--  <bean id="org.sakaiproject.qna.logic.entity.QuestionEntityProvider" 

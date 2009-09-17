@@ -182,14 +182,6 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 		return new SearchParams();
 	}
 	
-	/**
-	 * Determines if a category should be displayed in search results
-	 * @param {@link QnaCategory}
-	 * @return boolean if should be displayed, otherwise false
-	 */
-	private boolean display(QnaCategory category) {
-		return !category.getHidden();
-	}
 
 	/**
 	 * Determines if a question should be displayed in search results

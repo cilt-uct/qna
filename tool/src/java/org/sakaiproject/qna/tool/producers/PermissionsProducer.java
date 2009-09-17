@@ -51,7 +51,7 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
     private SessionManager sessionManager;
     private MessageLocator messageLocator;
 
-    private final String HELPER = "sakai.permissions.helper";
+    private final static String HELPER = "sakai.permissions.helper";
 
     /**
      * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)

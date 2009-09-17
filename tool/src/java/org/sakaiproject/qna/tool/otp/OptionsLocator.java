@@ -21,7 +21,6 @@ package org.sakaiproject.qna.tool.otp;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.model.QnaOptions;
 
@@ -33,7 +32,7 @@ public class OptionsLocator implements BeanLocator {
 
 	private OptionsLogic optionsLogic;
 	private TargettedMessageList messages;
-	private ExternalLogic externalLogic;
+	
 	
 	/**
 	 * @param optionsLogic the optionsLogic to set
@@ -42,9 +41,6 @@ public class OptionsLocator implements BeanLocator {
 		this.optionsLogic = optionsLogic;
 	}
 	
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
 	
 	public void setMessages(TargettedMessageList messages) {
 		this.messages = messages;

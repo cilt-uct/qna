@@ -186,7 +186,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	displayOr = true;
         	   //if thee is only 1 category disable the select
             if (categories.size() ==1 ) {
-            	QnaCategory cat = (QnaCategory) categories.get(0);
+            	//QnaCategory cat = (QnaCategory) categories.get(0);
             	dropDown.decorators = new DecoratorList(new UIDisabledDecorator(true));
             	//form.parameters.add(new UIELBinding(questionOTP + ".categoryId", cat.getId()));
             }
@@ -218,11 +218,11 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	UIMessage.make(form,"moderated-note","qna.ask-question.moderated-note");
         }
 
-        UICommand command = UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
+        UICommand.make(form,"add-question-button",UIMessage.make("qna.ask-question.add-question"),multipleBeanMediator + ".saveNew");
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel"), questionLocator + ".cancel");
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));

@@ -206,7 +206,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 	        form.addParameter(new UIELBinding(answerOTP + ".privateReply", false));
 	        form.addParameter(new UIELBinding(answerOTP + ".anonymous", new ELReference(optionsOTP + ".anonymousAllowed")));
 
-	        UICommand saveButton = UICommand.make(form,"add-answer-button",UIMessage.make("qna.view-question.add-answer"), answerLocator + ".saveAll");
+	        UICommand.make(form,"add-answer-button",UIMessage.make("qna.view-question.add-answer"), answerLocator + ".saveAll");
 	        UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 		}
 

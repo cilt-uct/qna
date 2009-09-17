@@ -38,10 +38,10 @@ public class AttachmentsHelperProducer implements ViewComponentProducer, ViewPar
      */
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams,
 			ComponentChecker checker) {
-	    AttachmentsHelperParams params = (AttachmentsHelperParams) viewparams;
+	    //AttachmentsHelperParams params = (AttachmentsHelperParams) viewparams;
 	    
 	    UIOutput.make(tofill, HelperViewParameters.HELPER_ID, "sakai.filepicker");
-	    UICommand goattach = UICommand.make(tofill, HelperViewParameters.POST_HELPER_BINDING).setReturn("processed");
+	    UICommand.make(tofill, HelperViewParameters.POST_HELPER_BINDING).setReturn("processed");
 	}
 
 	public ViewParameters getViewParameters() {

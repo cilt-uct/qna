@@ -124,9 +124,9 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		// Generate the question title
 		UIMessage.make(form, "question-title", "qna.publish-queued-question.question-title");
 				
-		UIVerbatim viewQuestionText = UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
+		UIVerbatim.make(form, "unpublished-question", question.getQuestionText());
 		
-		UIOutput span = UIOutput.make(form,"edit-span");
+		UIOutput.make(form,"edit-span");
 		
 		UIInput editQuestionText = UIInput.make(form, "unpublished-question-edit:", questionOTP  +".questionText");
 		richTextEvolver.evolveTextInput(editQuestionText);

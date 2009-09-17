@@ -162,7 +162,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna question content " + reference);
 		String id = getId(reference);
-		QnaQuestion quest = questionLogic.getQuestionById(id);
+		QnaQuestion quest = questionLogic.getQuestionById(id, null, true);
 		StringBuilder sb = new StringBuilder();
 		sb.append(FormattedText.convertFormattedTextToPlaintext(quest.getQuestionText()));
 		
@@ -232,7 +232,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		log.debug("getISteId: " + reference);
 		String id = getId(reference);
 		log.debug("getting question " + id);
-		QnaQuestion q = questionLogic.getQuestionById(id, null, false);
+		QnaQuestion q = questionLogic.getQuestionById(id, null, true);
 		if (q != null) {
 			String siteId = EntityReference.getIdFromRefByKey(q.getLocation(),"site");
 			log.debug("returning " + siteId);

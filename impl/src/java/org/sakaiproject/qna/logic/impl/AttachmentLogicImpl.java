@@ -25,8 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.AttachmentLogic;
-import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;

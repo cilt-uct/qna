@@ -229,7 +229,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	 * @see QuestionLogic#existsQuestion(Long)
 	 */
 	public boolean existsQuestion(Long questionId) {
-		if (questionId == null || questionId.equals("")) {
+		if (questionId == null) {
 			return false;
 		} else {
 			if (getQuestionById(questionId) != null) {

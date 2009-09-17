@@ -174,7 +174,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 	/**
 	 * @see CategoryLogic#getCategoriesForLocation(String) 
 	 */
-	@SuppressWarnings("unchecked")
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
 		log.debug("CategoryLogicImpl::getCategoriesForLocation");
 		List<QnaCategory> toReturn = dao.findBySearch(QnaCategory.class, new Search( new String[] {"location"}, new Object[] {locationId}, new int[] { Restriction.EQUALS}));

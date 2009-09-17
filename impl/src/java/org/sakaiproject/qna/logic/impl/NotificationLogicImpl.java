@@ -24,7 +24,6 @@ import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;
-import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;

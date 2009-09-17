@@ -64,7 +64,7 @@ public class ReplySmsCommand implements SmsCommand {
 	public String execute(String siteId, String userId, String mobileNr,
 			String... body) {
 		log.debug(getCommandKey() + " command called with parameters: ("
-				+ siteId + ", " + userId + ", " + body + ")");
+				+ siteId + ", " + userId + ", )");
 
 		if (body[0] == null || "".equals(body[0].trim())) {
 			return qnaBundleLogic.getString("qna.sms.no-question-id");

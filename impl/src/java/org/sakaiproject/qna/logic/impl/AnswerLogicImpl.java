@@ -270,7 +270,7 @@ public class AnswerLogicImpl implements AnswerLogic {
 	public List<QnaAnswer> getAllAnswers(String context) {
 		//TODO this should be done in one query
 		List<QnaQuestion> qList = questionLogic.getAllQuestions(context);
-		List<QnaAnswer> aList = new ArrayList();
+		List<QnaAnswer> aList = new ArrayList<QnaAnswer>();
 		for (int i = 0; i < qList.size(); i++) {
 			QnaQuestion q = qList.get(i);
 			List<QnaAnswer> a = q.getAnswers();

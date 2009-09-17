@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sakaiproject.entitybroker.IdEntityReference;
+import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
@@ -100,7 +100,7 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
 			prefix = "qna:" + refClass.getName();
 		}
 		
-		return new IdEntityReference(prefix, entityId).toString();
+		return new EntityReference(prefix, entityId).toString();
 	}
 	
 	

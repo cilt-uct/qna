@@ -23,8 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 
-import sun.util.logging.resources.logging;
-
 public class PermissionLogicImpl implements PermissionLogic {
 	private static Log log = LogFactory.getLog(PermissionLogic.class);
 	

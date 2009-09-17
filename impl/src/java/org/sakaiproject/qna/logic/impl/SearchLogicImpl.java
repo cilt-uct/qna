@@ -53,7 +53,7 @@ public class SearchLogicImpl implements SearchLogic {
 	/**
 	 * @see SearchLogic#getAnswers(String)
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public List<QnaAnswer> getAnswers(String search) {
 		log.debug("SearchLogicImpl::getAnswers");
 

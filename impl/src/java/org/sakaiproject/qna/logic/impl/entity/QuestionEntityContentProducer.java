@@ -232,7 +232,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		log.debug("getISteId: " + reference);
 		String id = getId(reference);
 		log.debug("getting question " + id);
-		QnaQuestion q = questionLogic.getQuestionById(id);
+		QnaQuestion q = questionLogic.getQuestionById(id, null, false);
 		if (q != null) {
 			String siteId = EntityReference.getIdFromRefByKey(q.getLocation(),"site");
 			log.debug("returning " + siteId);

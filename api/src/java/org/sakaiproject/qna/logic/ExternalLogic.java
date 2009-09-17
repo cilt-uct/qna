@@ -158,7 +158,7 @@ public interface ExternalLogic {
 	 *            permission to check
 	 * @return {@link Set} of user id's with specific permission for location
 	 */
-	public Set getSiteUsersWithPermission(String locationId, String permission);
+	public Set<String> getSiteUsersWithPermission(String locationId, String permission);
 
 	/**
 	 * Send e-mails to users ids

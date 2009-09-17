@@ -72,7 +72,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
             return true;
         }
         
-        QnaQuestion question = questionLogic.getQuestionById(id);
+        QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
         boolean exists = (question != null);
         return exists;
 	}
@@ -125,7 +125,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
             return new QnaAnswer();
         }
 		
-		QnaQuestion question = questionLogic.getQuestionById(id);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		if (question == null) {
 			throw new IllegalArgumentException("No qnaQuestion found for the given reference: " + ref);
 		}
@@ -158,7 +158,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	        if (userReference == null) {
 	            throw new SecurityException("anonymous user cannot delete option: " + ref);
 	        }
-	        QnaQuestion q = questionLogic.getQuestionById(id);
+	        QnaQuestion q = questionLogic.getQuestionById(Long.valueOf(id));
 	        if (q == null)
 	        	throw new IllegalArgumentException("No question found to delete for the given reference: " + ref);
 	        

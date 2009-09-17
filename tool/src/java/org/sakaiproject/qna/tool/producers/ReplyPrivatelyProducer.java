@@ -84,7 +84,7 @@ public class ReplyPrivatelyProducer implements ViewComponentProducer, Navigation
 			ComponentChecker checker) {
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
-		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
 
 		String answerLocator = "AnswerLocator";
 		String answerOTP = answerLocator + "." + AnswerLocator.NEW_1;

@@ -139,7 +139,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 			return true;
 		
 		String id = getId(reference);
-		QnaQuestion quest = questionLogic.getQuestionById(id);
+		QnaQuestion quest = questionLogic.getQuestionById(Long.valueOf(id));
 		if (quest != null) {
 			if (quest.isPublished() && securityService.unlock(ExternalLogic.QNA_READ, quest.getLocation()))
 				return true;
@@ -162,7 +162,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna question content " + reference);
 		String id = getId(reference);
-		QnaQuestion quest = questionLogic.getQuestionById(id, null, true);
+		QnaQuestion quest = questionLogic.getQuestionById(Long.valueOf(id), null, true);
 		StringBuilder sb = new StringBuilder();
 		sb.append(FormattedText.convertFormattedTextToPlaintext(quest.getQuestionText()));
 		
@@ -232,7 +232,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		log.debug("getISteId: " + reference);
 		String id = getId(reference);
 		log.debug("getting question " + id);
-		QnaQuestion q = questionLogic.getQuestionById(id, null, true);
+		QnaQuestion q = questionLogic.getQuestionById(Long.valueOf(id), null, true);
 		if (q != null) {
 			String siteId = EntityReference.getIdFromRefByKey(q.getLocation(),"site");
 			log.debug("returning " + siteId);
@@ -275,7 +275,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public boolean isForIndex(String reference) {
 		log.debug("is for Index: " + reference);
 		String id = getId(reference);
-		QnaQuestion q = questionLogic.getQuestionById(id, null, true);
+		QnaQuestion q = questionLogic.getQuestionById(Long.valueOf(id), null, true);
 		if (q != null)
 			return true;
 		

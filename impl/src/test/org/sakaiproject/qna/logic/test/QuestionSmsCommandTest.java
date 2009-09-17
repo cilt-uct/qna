@@ -119,7 +119,7 @@ public class QuestionSmsCommandTest extends
 	public void testSaveQuestion() {
 		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", "new question"));
 		String id = bundleLogicStub.getLastParameters()[0].toString();
-		QnaQuestion question = questionLogic.getQuestionById(id);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(USER_UPDATE, question.getOwnerId());
 		assertEquals("1234", question.getOwnerMobileNr());
@@ -134,7 +134,7 @@ public class QuestionSmsCommandTest extends
 		assertTrue(options.getAllowUnknownMobile());
 		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, null, "1234", "new question"));
 		String id = bundleLogicStub.getLastParameters()[0].toString();
-		QnaQuestion question = questionLogic.getQuestionById(id);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(null, question.getOwnerId());
 		assertEquals("1234", question.getOwnerMobileNr());
@@ -157,7 +157,7 @@ public class QuestionSmsCommandTest extends
 		assertTrue(options.getAllowUnknownMobile());
 		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, null, "1234", "new question"));
 		String id = bundleLogicStub.getLastParameters()[0].toString();
-		QnaQuestion question = questionLogic.getQuestionById(id);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(null, question.getOwnerId());
 		assertEquals("1234", question.getOwnerMobileNr());

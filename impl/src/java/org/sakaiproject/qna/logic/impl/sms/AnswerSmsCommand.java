@@ -76,8 +76,8 @@ public class AnswerSmsCommand implements SmsCommand {
 			return qnaBundleLogic.getString("qna.sms.no-question-id");
 		} else {
 			try {
-				QnaQuestion question = questionLogic.getQuestionById(body[0]
-						.trim(), userId, true);
+				QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(body[0]
+						.trim()), userId, true);
 				if (question == null) {
 					return qnaBundleLogic
 							.getString("qna.sms.invalid-question-id");
@@ -96,7 +96,7 @@ public class AnswerSmsCommand implements SmsCommand {
 							Collections.sort(answers,
 									new AnswersListComparator(permissionLogic,
 											siteRef));
-							String smsReply = new String();
+							String smsReply = "";
 
 							for (int i = 0; i < options.getMobileAnswersNr(); i++) {
 								if (i < answers.size()) {

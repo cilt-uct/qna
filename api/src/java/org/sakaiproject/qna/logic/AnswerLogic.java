@@ -36,15 +36,7 @@ public interface AnswerLogic {
 	 */
 	public QnaAnswer getAnswerById(Long answerId);
 
-	/**
-	 * Get an answer with a specific id
-	 *
-	 * @param answerId
-	 *            unique id of a {@link QnaAnswer}
-	 * @return {@link QnaAnswer} the answer found
-	 */
-	public QnaAnswer getAnswerById(String answerId);
-	
+
 	/**
 	 * Removes answer from question
 	 *

@@ -18,7 +18,7 @@
 
 package org.sakaiproject.qna.tool.inferrers;
 
-import org.sakaiproject.entitybroker.IdEntityReference;
+import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.entity.AnswerEntityProvider;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -44,8 +44,8 @@ public class AnswerVPInferrer implements EntityViewParamsInferrer {
 	 * @see EntityViewParamsInferrer#inferDefaultViewParameters(String)
 	 */
 	public ViewParameters inferDefaultViewParameters(String reference) {
-		IdEntityReference ref = new IdEntityReference(reference);
-		QnaAnswer answer = answerLogic.getAnswerById(ref.id);
+		EntityReference ref = new EntityReference(reference);
+		QnaAnswer answer = answerLogic.getAnswerById(Long.valueOf(ref.getId()));
 		return new QuestionParams(ViewQuestionProducer.VIEW_ID, answer.getQuestion().getId().toString(), true);
 	}
 }

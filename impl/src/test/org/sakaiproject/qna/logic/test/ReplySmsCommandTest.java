@@ -130,7 +130,7 @@ public class ReplySmsCommandTest extends
 	 * Test no invalid question id supplied
 	 */
 	public void testInvalidId() {
-		QnaQuestion question = questionLogic.getQuestionById("53");
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf("53"));
 		assertNull(question);
 		assertEquals("qna.sms.invalid-question-id", replySmsCommand.execute(SITE, USER_UPDATE, "1234", "53", "reply text"));
 	}

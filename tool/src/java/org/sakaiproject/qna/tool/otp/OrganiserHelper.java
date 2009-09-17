@@ -99,7 +99,7 @@ public class OrganiserHelper {
 		String tmpcatid = "";
 		for (int k=0; k<queorder.length; k++) {
 			String id = queorder[k];
-			QnaQuestion question = questionLogic.getQuestionById(id);
+			QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 			
 			if (question != null) {
 				String catid = questionCategoryOrder[k];

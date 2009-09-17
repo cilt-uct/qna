@@ -132,7 +132,7 @@ public class OrganiseListProducer implements ViewComponentProducer, NavigationCa
 					messages.addMessage(new TargettedMessage("qna.organise.category-hidden", null, TargettedMessage.SEVERITY_INFO));
 				}
 			} else if (params.type.equalsIgnoreCase("que")) {
-				QnaQuestion qnaQuestion = questionLogic.getQuestionById(params.id);
+				QnaQuestion qnaQuestion = questionLogic.getQuestionById(Long.valueOf(params.id));
 				qnaQuestion.setHidden(Boolean.valueOf(!params.visible));
 				questionLogic.saveQuestion(qnaQuestion, externalLogic.getCurrentLocationId());
 				if (params.visible) {

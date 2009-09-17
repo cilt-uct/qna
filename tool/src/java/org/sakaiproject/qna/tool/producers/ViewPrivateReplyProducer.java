@@ -82,7 +82,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 			ComponentChecker checker) {
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
-		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:", question);

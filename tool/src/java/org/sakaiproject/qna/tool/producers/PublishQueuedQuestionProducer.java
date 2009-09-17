@@ -105,7 +105,7 @@ public class PublishQueuedQuestionProducer implements ViewComponentProducer,Navi
 		
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
 		
 		String questionOTP = questionLocator + "." + question.getId();
 		

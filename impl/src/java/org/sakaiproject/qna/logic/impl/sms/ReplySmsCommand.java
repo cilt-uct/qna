@@ -79,7 +79,7 @@ public class ReplySmsCommand implements SmsCommand {
 
 			QnaQuestion question = null;
 			try {
-				question = questionLogic.getQuestionById(questionId, userId,
+				question = questionLogic.getQuestionById(Long.valueOf(questionId), userId,
 						true);
 			} catch (SecurityException se) {
 				return qnaBundleLogic.getFormattedMessage(

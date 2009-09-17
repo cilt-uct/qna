@@ -87,7 +87,7 @@ public class DeleteQuestionProducer implements ViewComponentProducer, Navigation
 
 		String locationId = externalLogic.getCurrentLocationId();
 
-		QnaQuestion question = questionLogic.getQuestionById(params.questionid);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(params.questionid));
 		List<QnaAnswer> answerList = question.getAnswers();
 		boolean hasPrivateReply = false;
 

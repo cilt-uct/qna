@@ -131,7 +131,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		String optionsOTP = optionsLocator + "." + optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getId();
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
-		QnaQuestion question = questionLogic.getQuestionById(questionParams.questionid);
+		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);

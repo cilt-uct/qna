@@ -167,35 +167,12 @@ public class QuestionLogicImpl implements QuestionLogic {
 	}	
 	
 	/**
-	 * @see QuestionLogic#getQuestionById(String, String, boolean)
-	 */
-	public QnaQuestion getQuestionById(String questionId, String userId, boolean ignorePermission) {
-		try {
-			Long id = Long.parseLong(questionId);
-			return getQuestionById(id, userId, ignorePermission);
-		} catch (NumberFormatException nfe) {
-			return null;
-		}
-	}
-	
-	/**
 	 * @see QuestionLogic#getQuestionById(Long)
 	 */
 	public QnaQuestion getQuestionById(Long questionId) {
 		return getQuestionById(questionId, developerHelperService.getCurrentUserId(), false);
 	}
 	
-	/**
-	 * @see QuestionLogic#getQuestionById(String)
-	 */
-	public QnaQuestion getQuestionById(String questionId) {
-		try {
-			Long id = Long.parseLong(questionId);
-			return getQuestionById(id);
-		} catch (NumberFormatException nfe) {
-			return null;
-		}
-	}
 
 	/**
 	 * @see QuestionLogic#getQuestionsWithPrivateReplies(String)

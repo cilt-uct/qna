@@ -44,20 +44,7 @@ public interface QuestionLogic {
 	 */
 	public QnaQuestion getQuestionById(Long questionId, String userId, boolean ignorePermission);
 	
-	/**
-	 * Get a question with a specific id (specify user)
-	 * @param userId
-	 * 				unique id of user
-	 * @param ignorePermission 
-	 * 				boolean value to specify if read permission must be ignored
-	 * 				(userd for anon answer posts from mobile)
-	 * @param questionid
-	 * 				unique id of a {@link QnaQuestion}
-	 *
-	 * @return a {@link QnaQuestion} or null
-	 */
-	public QnaQuestion getQuestionById(String questionId, String userId, boolean ignorePermission); 
-	
+
 	/**
 	 * Get a question with a specific id (for current user)
 	 *
@@ -67,14 +54,6 @@ public interface QuestionLogic {
 	 */
 	public QnaQuestion getQuestionById(Long questionId);
 	
-	/**
-	 * Get a question with a specific id (for current user)
-	 *
-	 * @param questionid
-	 * 				unique id of a {@link QnaQuestion}
-	 * @return a {@link QnaQuestion} or null
-	 */
-	public QnaQuestion getQuestionById(String questionId);
 
 	/**
 	 * Check if a question exists

@@ -69,7 +69,7 @@ public class AnswerEntityProvider extends AbstractEntityProvider implements Core
             return true;
         }
         
-        QnaAnswer answer = answerLogic.getAnswerById(id);
+        QnaAnswer answer = answerLogic.getAnswerById(Long.valueOf(id));
         boolean exists = (answer != null);
         return exists;
     }
@@ -101,7 +101,7 @@ public class AnswerEntityProvider extends AbstractEntityProvider implements Core
             return new QnaAnswer();
         }
 		
-		QnaAnswer answer = answerLogic.getAnswerById(id);
+		QnaAnswer answer = answerLogic.getAnswerById(Long.valueOf(id));
 		if (answer == null) {
 			throw new IllegalArgumentException("No qnaAnswer found for the given reference: " + ref);
 		}

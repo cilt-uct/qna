@@ -216,18 +216,6 @@ public class AnswerLogicImpl implements AnswerLogic {
 	}
 	
 	/**
-	 * @see AnswerLogic#getAnswerById(String)
-	 */
-	public QnaAnswer getAnswerById(String answerId) {
-		try {
-			Long id = Long.parseLong(answerId);
-			return getAnswerById(id);
-		} catch (NumberFormatException nfe) {
-			return null;
-		}
-	}
-	
-	/**
 	 * @see AnswerLogic#removeAnswer(Long, String)
 	 */
 	public void removeAnswer(Long answerId, String locationId) {

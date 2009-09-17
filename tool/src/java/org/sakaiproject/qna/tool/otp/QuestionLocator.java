@@ -70,7 +70,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	 */
 	public boolean remove(String beanname) {
 		try {
-			QnaQuestion question = questionLogic.getQuestionById(beanname);
+			QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(beanname));
 			questionLogic.removeQuestion(beanname, externalLogic.getCurrentLocationId());
 			delivered.remove(beanname);
 
@@ -113,7 +113,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 			 if (name.startsWith(NEW_PREFIX)) {
 				 togo = new QnaQuestion();
 			 } else {
-				 togo = questionLogic.getQuestionById(name);
+				 togo = questionLogic.getQuestionById(Long.valueOf(name));
 			 }
 			 delivered.put(name, togo);
 		}

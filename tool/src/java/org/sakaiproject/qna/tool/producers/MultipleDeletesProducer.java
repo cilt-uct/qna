@@ -81,7 +81,7 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 
 				form.parameters.add(new UIDeletionBinding(questionOTP));
 
-				QnaQuestion question = questionLogic.getQuestionById(params.questionids[k]);
+				QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(params.questionids[k]));
 				List<QnaAnswer> answerList = question.getAnswers();
 				boolean hasPrivateReply = false;
 

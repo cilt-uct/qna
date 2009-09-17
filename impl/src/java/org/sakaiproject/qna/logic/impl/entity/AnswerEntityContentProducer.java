@@ -137,7 +137,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 			return true;
 		
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(id);
+		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
 		if (a != null) {
 			if (securityService.unlock(ExternalLogic.QNA_READ, a.getQuestion().getLocation()))
 				return true;
@@ -157,7 +157,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna answer content " + reference);
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(id);
+		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
 		String ret = null;
 		ret = FormattedText.convertFormattedTextToPlaintext(a.getAnswerText());
 		return ret;
@@ -203,7 +203,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 
 	public String getSiteId(String reference) {
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(id);
+		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
 		String siteId = EntityReference.getIdFromRefByKey(a.getQuestion().getLocation(),"site");
 		log.debug("returnint " + siteId);
 		return siteId;
@@ -240,7 +240,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 
 	public boolean isForIndex(String reference) {
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(id);
+		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
 		if (a != null)
 			return true;
 		

@@ -69,7 +69,7 @@ public class AnswerLocator implements EntityBeanLocator {
 			 if (name.startsWith(NEW_PREFIX)) {
 				 togo = answerLogic.createDefaultAnswer(externalLogic.getCurrentLocationId());
 			 } else {
-				 togo = answerLogic.getAnswerById(name);
+				 togo = answerLogic.getAnswerById(Long.valueOf(name));
 			 }
 			 delivered.put(name, togo);
 		}

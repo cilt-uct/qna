@@ -275,7 +275,7 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public boolean isForIndex(String reference) {
 		log.debug("is for Index: " + reference);
 		String id = getId(reference);
-		QnaQuestion q = questionLogic.getQuestionById(id);
+		QnaQuestion q = questionLogic.getQuestionById(id, null, true);
 		if (q != null)
 			return true;
 		

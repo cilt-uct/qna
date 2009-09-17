@@ -132,20 +132,16 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 		String currentUserId = developerHelperService.getCurrentUserId();
 		log.info("got userId: " + currentUserId);
 		if (currentUserId == null) 
-            throw new SecurityException("User must be logged in in order to access poll data: " + ref);
-            
+            throw new SecurityException("User must be logged in in order to access qna data: " + ref);
+
 		if (! developerHelperService.isEntityRequestInternal(ref+"")) {
-            // not an internal request so we require user to be logged in
-            if (currentUserId == null) {
-                throw new SecurityException("User must be logged in in order to access qna data: " + ref);
-            } else {
-                String userReference = developerHelperService.getCurrentUserReference();
-                boolean allowRead = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_READ, question.getLocation());
-                if (!allowRead) {
-                	throw new SecurityException("User ("+userReference+") not allowed to access qna data: " + ref);
-                }
-                
-            }
+			// not an internal request so we require user to be logged in
+			String userReference = developerHelperService.getCurrentUserReference();
+			boolean allowRead = developerHelperService.isUserAllowedInEntityReference(userReference, ExternalLogic.QNA_READ, question.getLocation());
+			if (!allowRead) {
+				throw new SecurityException("User ("+userReference+") not allowed to access qna data: " + ref);
+
+			}
 		}
 		
 		

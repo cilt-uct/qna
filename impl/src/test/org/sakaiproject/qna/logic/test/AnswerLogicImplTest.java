@@ -78,6 +78,7 @@ public class AnswerLogicImplTest extends
 		dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
 		if (dao == null) {
 			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+			return;
 		}
 
 		permissionLogic = new PermissionLogicImpl();

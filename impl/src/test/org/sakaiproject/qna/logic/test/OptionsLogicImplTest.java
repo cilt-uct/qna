@@ -395,7 +395,7 @@ public class OptionsLogicImplTest extends
 		assertFalse(options.getEmailNotification());
 		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
 		assertFalse(options.getAllowUnknownMobile());
-		assertEquals(new Integer(1), options.getMobileAnswersNr());
+		assertEquals(Integer.valueOf(1), options.getMobileAnswersNr());
 	}
 	
 	/**
@@ -455,7 +455,7 @@ public class OptionsLogicImplTest extends
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.mobile-answers-nr", 3);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertEquals(new Integer(3), options.getMobileAnswersNr());
+		assertEquals(Integer.valueOf(3), options.getMobileAnswersNr());
 	}
 	
 	/**
@@ -609,6 +609,6 @@ public class OptionsLogicImplTest extends
 			fail("Should have thrown exception");
 		}
 		
-		assertEquals(new Integer(0), options.getMobileAnswersNr());
+		assertEquals(Integer.valueOf(0), options.getMobileAnswersNr());
 	}
 }

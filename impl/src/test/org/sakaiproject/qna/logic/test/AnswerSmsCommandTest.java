@@ -121,7 +121,7 @@ public class AnswerSmsCommandTest extends
 	 */
 	public void testGetAnswer() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
-		assertEquals(new Integer(1), options.getMobileAnswersNr()); 
+		assertEquals(Integer.valueOf(1), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
 		assertEquals(ANSWER_TEXT_1, answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));
@@ -136,7 +136,7 @@ public class AnswerSmsCommandTest extends
 		externalLogicStub.currentUserId = USER_UPDATE;
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		
-		assertEquals(new Integer(2), options.getMobileAnswersNr()); 
+		assertEquals(Integer.valueOf(2), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
 		assertEquals(ANSWER_TEXT_1 + ", " + ANSWER_TEXT_2, answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));
@@ -152,7 +152,7 @@ public class AnswerSmsCommandTest extends
 		externalLogicStub.currentUserId = USER_UPDATE;
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		
-		assertEquals(new Integer(0), options.getMobileAnswersNr()); 
+		assertEquals(Integer.valueOf(0), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
 		assertEquals("qna.sms.no-mobile-answers", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));

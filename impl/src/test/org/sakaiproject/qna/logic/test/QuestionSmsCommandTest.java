@@ -101,6 +101,8 @@ public class QuestionSmsCommandTest extends
 		questionSmsCommand.setQnaBundleLogic(bundleLogicStub);
 		questionSmsCommand.setQuestionLogic(questionLogic);
 		questionSmsCommand.setCategoryLogic(categoryLogic);
+		questionSmsCommand.setExternalLogic(externalLogicStub);
+
 	}
 	
 	/**
@@ -117,8 +119,8 @@ public class QuestionSmsCommandTest extends
 	 * Test saving of question
 	 */
 	public void testSaveQuestion() {
-		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", "new question"));
-		String id = bundleLogicStub.getLastParameters()[0].toString();
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", "new question"));
+		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(USER_UPDATE, question.getOwnerId());
@@ -130,10 +132,11 @@ public class QuestionSmsCommandTest extends
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		options.setAllowUnknownMobile(true);
+		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, null, "1234", "new question"));
-		String id = bundleLogicStub.getLastParameters()[0].toString();
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, null, "1234", "new question"));
+		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(null, question.getOwnerId());
@@ -153,10 +156,11 @@ public class QuestionSmsCommandTest extends
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		options.setAllowUnknownMobile(true);
 		options.setModerated(false);
+		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted", questionSmsCommand.execute(SITE, null, "1234", "new question"));
-		String id = bundleLogicStub.getLastParameters()[0].toString();
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, null, "1234", "new question"));
+		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
 		assertEquals(null, question.getOwnerId());

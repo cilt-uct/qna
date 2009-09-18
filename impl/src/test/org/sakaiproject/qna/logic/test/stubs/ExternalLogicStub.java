@@ -183,6 +183,6 @@ public class ExternalLogicStub implements ExternalLogic {
 
 	public String getSmsNumber() {
 		// TODO Auto-generated method stub
-		return null;
+		return "12345";
 	}
 }

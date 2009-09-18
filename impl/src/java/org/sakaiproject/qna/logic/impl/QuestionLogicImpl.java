@@ -117,7 +117,6 @@ public class QuestionLogicImpl implements QuestionLogic {
 	/**
 	 * @see QuestionLogic#getNewQuestions(String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<QnaQuestion> getNewQuestions(String locationId) {
 		return dao.getNewQuestions(locationId);
 	}

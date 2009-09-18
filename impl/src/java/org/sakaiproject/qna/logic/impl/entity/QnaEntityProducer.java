@@ -228,7 +228,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		return null;
 	}
 
-	public Collection getEntityAuthzGroups(Reference ref, String userId) {
+	public Collection<String> getEntityAuthzGroups(Reference ref, String userId) {
 		return null;
 	}
 

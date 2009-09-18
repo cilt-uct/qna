@@ -8,8 +8,7 @@ import org.sakaiproject.component.api.ServerConfigurationService;
 
 public class ServerConfigurationServiceStub implements ServerConfigurationService {
 	
-	
-	Map properties = new HashMap();
+	Map<String,Object> properties = new HashMap<String,Object>();
 	
 	public String getAccessPath() {
 		// TODO Auto-generated method stub

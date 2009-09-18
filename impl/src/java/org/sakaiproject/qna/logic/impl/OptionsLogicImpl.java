@@ -130,7 +130,6 @@ public class OptionsLogicImpl implements OptionsLogic {
 	/**
 	 * @see OptionsLogic#getNotificationSet(String)
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<String> getNotificationSet(String locationId) {
 		QnaOptions options = getOptionsForLocation(locationId);
 		Set<String> notificationSet = new HashSet<String>();

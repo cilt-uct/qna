@@ -116,7 +116,7 @@ public class ReplyPrivatelyProducer implements ViewComponentProducer, Navigation
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new QuestionParams(QueuedQuestionProducer.VIEW_ID)));
 		list.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));

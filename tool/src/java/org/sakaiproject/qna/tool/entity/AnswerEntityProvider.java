@@ -133,7 +133,7 @@ public class AnswerEntityProvider extends AbstractEntityProvider implements Core
 
 	public List<?> getEntities(EntityReference arg0, Search arg1) {
 		// TODO Auto-generated method stub
-		List<QnaAnswer> ret = new ArrayList(); //answerLogic.getAllAnswers(null);
+		List<QnaAnswer> ret = new ArrayList<QnaAnswer>(); //answerLogic.getAllAnswers(null);
 		return ret;
 	}
 

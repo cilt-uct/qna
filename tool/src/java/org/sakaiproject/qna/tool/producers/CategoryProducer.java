@@ -55,7 +55,6 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
     private ExternalLogic externalLogic;
     private TargettedMessageList messages;
     
-
 	public String getViewID() {
         return VIEW_ID;
     }
@@ -94,63 +93,32 @@ public class CategoryProducer implements ViewComponentProducer, NavigationCaseRe
         }
 
 		// Front-end customization regarding permissions/options will come here
-		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
-		searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
+        navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
+        searchBarRenderer.makeSearchBar(tofill, "searchTool:", VIEW_ID);
 
-		if (newentry) {
-			UIMessage.make(tofill, "page-title", "qna.category.create-title");
-			UIMessage.make(tofill, "category-note", "qna.category.create-note");
-		} else {
-			UIMessage.make(tofill, "page-title", "qna.category.edit-title");
-			UIMessage.make(tofill, "category-note", "qna.category.edit-note");
-		}
+        if (newentry) {
+        	UIMessage.make(tofill, "page-title", "qna.category.create-title");
+        	UIMessage.make(tofill, "category-note", "qna.category.create-note");
+        } else {
+        	UIMessage.make(tofill, "page-title", "qna.category.edit-title");
+        	UIMessage.make(tofill, "category-note", "qna.category.edit-note");
+        }
 
-		UIForm form = UIForm.make(tofill, "category-form");
+        UIForm form = UIForm.make(tofill, "category-form");
+        UIMessage.make(form, "category-label", "qna.category.category");
 
-		//UIJointContainer joint = new UIJointContainer(form, "fileInputDiv", "fileInputDiv:");
-
-		//int number = Integer.parseInt(params.number);
-
-		//for (int k=0; k<number; k++) {
-			//UIBranchContainer cell = UIBranchContainer.make(joint, "contentDiv:", "contentDiv:"+Integer.valueOf(k));
-
-			UIMessage.make(form, "category-label", "qna.category.category");
-
-			/*if (newentry) {
-				UIInput.make(form, "category-name", categoryOTP+(k+1)+".categoryText");
-			} else {*/
-				UIInput.make(form, "category-name", categoryOTP+".categoryText");
-			//}
-
-			/*if (number > 1) {
-				UIInternalLink.make(
-					form,
-					"category-remove-another",
-					new CategoryParams(CategoryProducer.VIEW_ID, new Integer(number-1).toString())
-				);
-			}*/
-		//}
-
-		if (newentry) {
-			/*UIInternalLink.make(
-				form,
-				"category-add-another",
-				UIMessage.make("qna.category.add-another"),
-				"#"
-				//new CategoryParams(CategoryProducer.VIEW_ID, new Integer(number+1).toString())
-			);*/
-			//UIMessage.make(form, "category-add-another", "qna.category.add-another");
-
-			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".save");
-		} else if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-			UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".edit");
-			UICommand.make(form, "remove-button", UIMessage.make("qna.general.delete"), categoryLocator+".remove");
-		}
+        UIInput.make(form, "category-name", categoryOTP+".categoryText");
+        if (newentry) {
+        	UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".save");
+        } else if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
+        	UICommand.make(form, "save-button", UIMessage.make("qna.general.save"), categoryLocator+".edit");
+        	UICommand.make(form, "remove-button", UIMessage.make("qna.general.delete"), categoryLocator+".remove");
+        }
         UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		  List<NavigationCase> l = new ArrayList<NavigationCase>();
 		  l.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		  l.add(new NavigationCase("saved", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));

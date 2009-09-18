@@ -39,18 +39,16 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	private static Log log = LogFactory.getLog(AnswerEntityContentProducer.class);
 	
 	// runtime dependency
-	private List addEvents = null;
+	private List<String> addEvents = null;
 
 	// runtime dependency
-	private List removeEvents = null;
+	private List<String> removeEvents = null;
 	
-	
-	public void setAddEvents(List addEvents) {
+	public void setAddEvents(List<String> addEvents) {
 		this.addEvents = addEvents;
 	}
 
-
-	public void setRemoveEvents(List removeEvents) {
+	public void setRemoveEvents(List<String> removeEvents) {
 		this.removeEvents = removeEvents;
 	}
 
@@ -109,16 +107,13 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	{
 
 		if ( "true".equals(serverConfigurationService.getString(
-				"search.enable", "false")))
-		{
-			for (Iterator i = addEvents.iterator(); i.hasNext();)
-			{
-				searchService.registerFunction((String) i.next());
+				"search.enable", "false"))) {
+			for (String i : addEvents) {
+				searchService.registerFunction(i);
 			}
-			
-			for (Iterator i = removeEvents.iterator(); i.hasNext();)
-			{
-				searchService.registerFunction((String) i.next());
+
+			for (String i : removeEvents) {
+				searchService.registerFunction(i);	
 			}
 			
 			searchIndexBuilder.registerEntityContentProducer(this);
@@ -184,7 +179,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 		return null;
 	}
 
-	public Iterator getSiteContentIterator(String context) {
+	public Iterator<String> getSiteContentIterator(String context) {
 		log.debug("getting qna answers for " + context);
 		
 		List<QnaAnswer> answers = answerLogic.getAllAnswers("/site/"+ context);
@@ -262,17 +257,15 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	public Integer getAction(Event event) {
 		String evt = event.getEvent();
 		if (evt == null) return SearchBuilderItem.ACTION_UNKNOWN;
-		for (Iterator i = addEvents.iterator(); i.hasNext();)
+		for (String match : addEvents)
 		{
-			String match = (String) i.next();
 			if (evt.equals(match))
 			{
 				return SearchBuilderItem.ACTION_ADD;
 			}
 		}
-		for (Iterator i = removeEvents.iterator(); i.hasNext();)
+		for (String match : removeEvents)
 		{
-			String match = (String) i.next();
 			if (evt.equals(match))
 			{
 				return SearchBuilderItem.ACTION_DELETE;

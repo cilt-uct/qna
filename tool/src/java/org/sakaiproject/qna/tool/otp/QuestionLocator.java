@@ -146,6 +146,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	 * 
 	 * @return return key
 	 */
+	@SuppressWarnings("unchecked")
 	public String edit() {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		
@@ -154,7 +155,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 				QnaQuestion toEdit = delivered.get(key);
 				
 				if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) {
-					attachmentLogic.synchAttachmentList(toEdit, (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
+					attachmentLogic.synchAttachmentList(toEdit, (List<Reference>) session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
 				}
 				
 				questionLogic.saveQuestion(toEdit, externalLogic.getCurrentLocationId());
@@ -205,6 +206,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	 * 
 	 * @return return key
 	 */
+	@SuppressWarnings("unchecked")
 	public String cancel() {
 		// Clears file attachments from tool session
 		ToolSession session = sessionManager.getCurrentToolSession();
@@ -213,9 +215,8 @@ public class QuestionLocator implements EntityBeanLocator  {
 		{
 			if (delivered.keySet().contains(NEW_1)) {
 	
-					List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
-					for (int i = 0; i < refs.size(); i++) {
-						Reference ref = (Reference) refs.get(i);
+					List<Reference> refs = (List<Reference>) session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+					for (Reference ref : refs) {
 						try {
 							attachmentLogic.deleteAttachment(ref.getId());
 						} catch (AttachmentException ae) {
@@ -225,7 +226,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	
 			} else {
 				for (QnaQuestion question : delivered.values()) { // Should only be one
-					attachmentLogic.synchAttachmentList(question, (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
+					attachmentLogic.synchAttachmentList(question, (List<Reference>) session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS));
 					questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());
 				}
 			}

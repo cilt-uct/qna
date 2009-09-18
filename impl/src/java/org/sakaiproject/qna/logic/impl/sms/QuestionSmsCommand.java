@@ -75,6 +75,7 @@ public class QuestionSmsCommand implements SmsCommand {
 			return qnaBundleLogic.getString("qna.sms.no-question-text");
 		} else {
 			String siteRef = "/site/" + siteId;
+			String siteTitle = externalLogic.getLocationTitle(siteRef);
 
 			QnaQuestion question = new QnaQuestion();
 			question.setQuestionText(body[0]);
@@ -100,8 +101,6 @@ public class QuestionSmsCommand implements SmsCommand {
 								siteId });
 			}
 
-		//String siteTitle = externalLogic.getLocationTitle(externalLogic.getCurrentLocationId());
-			String siteTitle = "abc";
 			String smsNumber = externalLogic.getSmsNumber();
 			
 			if (options.getSmsNotification()) {

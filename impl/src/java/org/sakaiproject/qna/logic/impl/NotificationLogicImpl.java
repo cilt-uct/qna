@@ -18,8 +18,6 @@
 
 package org.sakaiproject.qna.logic.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -30,8 +28,6 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 
 public class NotificationLogicImpl implements NotificationLogic {
-
-	private static Log log = LogFactory.getLog(NotificationLogicImpl.class);
 
 	private ExternalLogic externalLogic;
 	private QnaBundleLogic qnaBundleLogic;

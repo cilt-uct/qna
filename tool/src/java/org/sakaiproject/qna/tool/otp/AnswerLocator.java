@@ -157,7 +157,7 @@ public class AnswerLocator implements EntityBeanLocator {
 		this.answerLogic = answerLogic;
 	}
 	
-	public Map getDeliveredBeans() {
+	public Map<String, QnaAnswer> getDeliveredBeans() {
 		return delivered;
 	}
 }

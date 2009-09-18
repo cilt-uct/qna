@@ -18,7 +18,6 @@
 
 package org.sakaiproject.qna.tool.producers.renderers;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -29,7 +28,6 @@ import org.sakaiproject.qna.tool.constants.SortByConstants;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SortPagerViewParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
-import org.sakaiproject.qna.tool.utils.ComparatorUtil;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.tool.utils.QuestionsSorter;
 import org.sakaiproject.qna.utils.TextUtil;

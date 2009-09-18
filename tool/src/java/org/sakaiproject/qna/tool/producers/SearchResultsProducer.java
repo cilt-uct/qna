@@ -25,7 +25,6 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.params.SearchParams;
@@ -172,7 +171,7 @@ public class SearchResultsProducer implements ViewComponentProducer, NavigationC
 
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;

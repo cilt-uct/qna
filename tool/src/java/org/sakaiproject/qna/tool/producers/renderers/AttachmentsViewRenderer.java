@@ -72,17 +72,17 @@ public class AttachmentsViewRenderer {
 	 * @param tofill 	{@link UIContainer} to fill
 	 * @param divId		ID of div	
 	 */
+	@SuppressWarnings("unchecked")
 	public void makeAttachmentsView(UIContainer tofill, String divId) {
 		UIJointContainer joint = new UIJointContainer(tofill, divId,"attachments-view:");
 		
 		ToolSession session = sessionManager.getCurrentToolSession();
 		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
-			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
-			for (int i = 0; i < refs.size(); i++) {
-				Reference ref = (Reference) refs.get(i);
+			List<Reference> refs = (List<Reference>) session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+			
+			for (Reference ref : refs) {
 				try {
-
 					ContentResource resource = chs.getResource(ref.getId());
 					UIBranchContainer branch = UIBranchContainer.make(joint, "attachment:");
 					UILink.make(branch, "attachment-icon", "/library/image/" + ctis.getContentTypeImage(resource.getContentType()));

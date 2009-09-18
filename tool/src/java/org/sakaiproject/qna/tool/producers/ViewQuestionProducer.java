@@ -276,7 +276,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		}
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		return list;

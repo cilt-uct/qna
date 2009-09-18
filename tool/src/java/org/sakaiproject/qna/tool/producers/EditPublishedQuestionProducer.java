@@ -19,11 +19,8 @@
 package org.sakaiproject.qna.tool.producers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
 import org.sakaiproject.qna.tool.params.QuestionParams;

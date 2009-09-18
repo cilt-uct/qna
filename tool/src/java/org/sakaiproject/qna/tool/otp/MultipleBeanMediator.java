@@ -189,14 +189,14 @@ public class MultipleBeanMediator {
      * 
      * @param question {@link QnaQuestion} to add attachments to
      */
-    private void addAttachments(QnaQuestion question) {
+    @SuppressWarnings("unchecked")
+	private void addAttachments(QnaQuestion question) {
 		ToolSession session = sessionManager.getCurrentToolSession();
 		
 		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) 
 		{
-			List refs = (List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
-			for (int i = 0; i < refs.size(); i++) {
-				Reference ref = (Reference) refs.get(i);
+			List<Reference> refs = (List<Reference>) session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS);
+			for (Reference ref : refs) {
 				if (question != null) {
 					QnaAttachment attachment = new QnaAttachment();
 					attachment.setAttachmentId(ref.getId());

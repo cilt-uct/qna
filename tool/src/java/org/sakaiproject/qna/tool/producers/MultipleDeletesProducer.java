@@ -163,7 +163,7 @@ public class MultipleDeletesProducer implements ViewComponentProducer, Navigatio
 		UICommand.make(form, "cancel-button", UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("delete", new MultipleDeletesParams(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("cancel", new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));

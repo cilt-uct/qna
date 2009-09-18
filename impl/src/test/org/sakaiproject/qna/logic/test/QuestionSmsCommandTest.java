@@ -37,6 +37,7 @@ public class QuestionSmsCommandTest extends
 	private final DeveloperHelperServiceStub developerHelperServiceStub = new DeveloperHelperServiceStub();
 	private final NotificationLogicStub notificationLogicStub = new NotificationLogicStub();
 	
+	@SuppressWarnings("unused")
 	private final TestDataPreload tdp = new TestDataPreload();
 
 	private static Log log = LogFactory.getLog(QuestionSmsCommandTest.class);

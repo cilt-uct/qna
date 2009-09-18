@@ -120,7 +120,7 @@ public class ViewPrivateReplyProducer implements ViewComponentProducer, Navigati
 		UICommand.make(form,"cancel-button",UIMessage.make("qna.general.cancel")).setReturn("cancel");
 	}
 
-	public List reportNavigationCases() {
+	public List<NavigationCase> reportNavigationCases() {
 		List<NavigationCase> list = new ArrayList<NavigationCase>();
 		list.add(new NavigationCase("cancel",new SimpleViewParameters(QuestionsListProducer.VIEW_ID)));
 		list.add(new NavigationCase("publish",new QuestionParams(PublishQueuedQuestionProducer.VIEW_ID)));

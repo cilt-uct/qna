@@ -40,18 +40,18 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	private static Log log = LogFactory.getLog(QuestionEntityContentProducer.class);
 	
 	// runtime dependency
-	private List addEvents = null;
+	private List<String> addEvents = null;
 
 	// runtime dependency
-	private List removeEvents = null;
+	private List<String> removeEvents = null;
 	
 	
-	public void setAddEvents(List addEvents) {
+	public void setAddEvents(List<String> addEvents) {
 		this.addEvents = addEvents;
 	}
 
 
-	public void setRemoveEvents(List removeEvents) {
+	public void setRemoveEvents(List<String> removeEvents) {
 		this.removeEvents = removeEvents;
 	}
 
@@ -113,14 +113,13 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		if ( "true".equals(serverConfigurationService.getString(
 				"search.enable", "false")))
 		{
-			for (Iterator i = addEvents.iterator(); i.hasNext();)
-			{
-				searchService.registerFunction((String) i.next());
+			for (String i : addEvents) {
+				searchService.registerFunction(i);
 			}
 			
-			for (Iterator i = removeEvents.iterator(); i.hasNext();)
+			for (String i : removeEvents)
 			{
-				searchService.registerFunction((String) i.next());
+				searchService.registerFunction(i);
 			}
 			
 			searchIndexBuilder.registerEntityContentProducer(this);
@@ -212,18 +211,15 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 		return null;
 	}
 
-	public Iterator getSiteContentIterator(String context) {
+	public Iterator<String> getSiteContentIterator(String context) {
 		log.debug("getting qna questions for " + context);
 		List<QnaQuestion> questions = questionLogic.getAllQuestions("/site/"+ context);
 		log.debug("found " + questions.size() + " questions");
 		List<String> refs = new ArrayList<String>();
-		for (int i = 0; i < questions.size(); i++) {
-			QnaQuestion quest = (QnaQuestion)questions.get(i);
+		
+		for (QnaQuestion quest : questions) {
 			String ref = "/" + toolName + "/" + quest.getId();
 			refs.add(ref);
-	
-				
-			
 		}
 		return refs.iterator();
 	}
@@ -302,17 +298,13 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public Integer getAction(Event event) {
 		String evt = event.getEvent();
 		if (evt == null) return SearchBuilderItem.ACTION_UNKNOWN;
-		for (Iterator i = addEvents.iterator(); i.hasNext();)
-		{
-			String match = (String) i.next();
+		for (String match : addEvents) {
 			if (evt.equals(match))
 			{
 				return SearchBuilderItem.ACTION_ADD;
 			}
 		}
-		for (Iterator i = removeEvents.iterator(); i.hasNext();)
-		{
-			String match = (String) i.next();
+		for (String match : removeEvents) {
 			if (evt.equals(match))
 			{
 				return SearchBuilderItem.ACTION_DELETE;

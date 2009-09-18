@@ -21,9 +21,8 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
@@ -66,7 +65,6 @@ import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 public class AskQuestionProducer implements ViewComponentProducer, NavigationCaseReporter, ActionResultInterceptor, ViewParamsReporter {
 
 	public static final String VIEW_ID = "ask_question";
-	private static Log log = LogFactory.getLog(AskQuestionProducer.class);
 	
 	public String getViewID() {
 		return VIEW_ID;
@@ -127,6 +125,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
     /**
      * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
      */
+	@SuppressWarnings("unchecked")
 	public void fillComponents(UIContainer tofill, ViewParameters viewparams, ComponentChecker checker) {
 		QnaOptions options = optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId());
 
@@ -184,11 +183,9 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         	UIMessage.make(form, "category-title", "qna.ask-question.category");
         	UISelect dropDown = UISelect.make(form, "category-select", categoriesIds, categoriesText, questionOTP + ".categoryId" ); 
         	displayOr = true;
-        	   //if thee is only 1 category disable the select
+        	   //if there is only 1 category disable the select
             if (categories.size() ==1 ) {
-            	//QnaCategory cat = (QnaCategory) categories.get(0);
             	dropDown.decorators = new DecoratorList(new UIDisabledDecorator(true));
-            	//form.parameters.add(new UIELBinding(questionOTP + ".categoryId", cat.getId()));
             }
         }
 
@@ -204,7 +201,7 @@ public class AskQuestionProducer implements ViewComponentProducer, NavigationCas
         UIMessage.make(form,"attachments-title","qna.ask-question.attachments");
         
         ToolSession session = sessionManager.getCurrentToolSession();
-		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null && (((List)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS)).size() > 0)) 
+		if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null && (((List<Reference>)session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS)).size() > 0)) 
 		{
         	attachmentsViewRenderer.makeAttachmentsView(form, "attachmentsViewTool:");
         	UICommand.make(form, "add-attachment-button", UIMessage.make("qna.ask-question.add-remove-attachment")).setReturn("attach");

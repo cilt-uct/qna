@@ -20,6 +20,7 @@ package org.sakaiproject.qna.logic.impl.sms;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.AnswerLogic;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -44,6 +45,11 @@ public class ReplySmsCommand implements SmsCommand {
 	private AnswerLogic answerLogic;
 	private OptionsLogic optionsLogic;
 	private QnaBundleLogic qnaBundleLogic;
+	private ExternalLogic externalLogic;
+	
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;

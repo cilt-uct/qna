@@ -223,5 +223,11 @@ public interface ExternalLogic {
 	 * @return id of current tool
 	 */
 	public String getCurrentToolId();
-
+	
+	/**
+	 * Get incoming SMS number
+	 * @return SMS number (e.g. shortcode) or null if not enabled / unset.
+	 */
+	public String getSmsNumber();
+	
 }

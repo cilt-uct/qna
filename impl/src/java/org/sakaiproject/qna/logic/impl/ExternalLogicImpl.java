@@ -422,4 +422,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 			String toolId, String message) {
 		return smsService.sendSmsToMobileNumbers(mobileNrs, fromId, siteId, toolId, message);
 	}
+
+	public String getSmsNumber() {
+		
+		return ServerConfigurationService.getString("sms.shortcode", null);
+	}
 }

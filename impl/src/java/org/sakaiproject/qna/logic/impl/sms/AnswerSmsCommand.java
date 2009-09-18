@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.comparators.AnswersListComparator;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
@@ -50,6 +51,7 @@ public class AnswerSmsCommand implements SmsCommand {
 	private QnaBundleLogic qnaBundleLogic;
 	private PermissionLogic permissionLogic;
 	private OptionsLogic optionsLogic;
+	private ExternalLogic externalLogic;
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
@@ -65,6 +67,10 @@ public class AnswerSmsCommand implements SmsCommand {
 
 	public void setOptionsLogic(OptionsLogic optionsLogic) {
 		this.optionsLogic = optionsLogic;
+	}
+
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
 	}
 
 	public String execute(String siteId, String userId, String mobileNr,

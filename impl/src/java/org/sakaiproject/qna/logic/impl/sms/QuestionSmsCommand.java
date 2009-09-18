@@ -20,6 +20,7 @@ package org.sakaiproject.qna.logic.impl.sms;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.CategoryLogic;
+import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
@@ -43,6 +44,11 @@ public class QuestionSmsCommand implements SmsCommand {
 	private QnaBundleLogic qnaBundleLogic;
 	private OptionsLogic optionsLogic;
 	private CategoryLogic categoryLogic;
+	private ExternalLogic externalLogic;
+
+	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
+	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
@@ -94,9 +100,18 @@ public class QuestionSmsCommand implements SmsCommand {
 								siteId });
 			}
 
-			return qnaBundleLogic.getFormattedMessage(
-					"qna.sms.question-posted",
-					new Object[] { question.getId() });
+			String siteTitle = externalLogic.getLocationTitle(externalLogic.getCurrentLocationId());
+			String smsNumber = externalLogic.getSmsNumber();
+			
+			if (options.getSmsNotification()) {
+				return qnaBundleLogic.getFormattedMessage(
+					"qna.sms.question-posted.replies-sent",
+					new Object[] { siteTitle, question.getId() });
+			} else {
+				return qnaBundleLogic.getFormattedMessage(
+						"qna.sms.question-posted.no-replies",
+						new Object[] { siteTitle, question.getId(), smsNumber });
+			}
 		}
 	}
 

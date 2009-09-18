@@ -339,10 +339,18 @@ public class QnaOptions {
 		this.mobileAnswersNr = mobileAnswersNr;
 	}
 
+	/**
+	 * Send question answers by SMS to the user who asked the question, if the question was submitted by SMS.
+	 * @return
+	 */
 	public Boolean getSmsNotification() {
 		return smsNotification;
 	}
 
+	/**
+	 * Send question answers by SMS to the user who asked the question, if the question was submitted by SMS.
+	 * @return
+	 */
 	public void setSmsNotification(Boolean smsNotification) {
 		this.smsNotification = smsNotification;
 	}

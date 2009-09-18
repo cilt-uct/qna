@@ -144,7 +144,7 @@ public class AnswerSmsCommand implements SmsCommand {
 	}
 
 	public int getBodyParameterCount() {
-		return 1;
+		return 2;
 	}
 
 	public boolean isEnabled() {

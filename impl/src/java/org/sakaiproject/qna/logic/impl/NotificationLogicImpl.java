@@ -186,7 +186,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		privateReply.append(NEW_LINE);
 		privateReply.append(qnaBundleLogic.getFormattedMessage(
 				"qna.notification.private-reply-body1",
-				new String[] { getLocationTitle() }));
+				new String[] { externalLogic.getLocationTitle(question.getLocation()) }));
 		privateReply.append(NEW_LINE);
 		privateReply.append(NEW_LINE);
 		privateReply.append(qnaBundleLogic
@@ -224,7 +224,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(qnaBundleLogic.getFormattedMessage(
 				"qna.notification.new-answer-body1",
-				new String[] { getLocationTitle() }));
+				new String[] { externalLogic.getLocationTitle(question.getLocation()) }));
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(NEW_LINE);
 		newAnswerNotification.append(qnaBundleLogic
@@ -262,7 +262,8 @@ public class NotificationLogicImpl implements NotificationLogic {
 		StringBuilder newQuestionNotification = new StringBuilder();
 		newQuestionNotification.append(qnaBundleLogic.getFormattedMessage(
 				"qna.notification.new-question-body1",
-				new String[] { getLocationTitle() }));
+				new String[] { externalLogic.getLocationTitle(question.getLocation()) }));
+		
 		newQuestionNotification.append(NEW_LINE);
 		newQuestionNotification.append(NEW_LINE);
 		newQuestionNotification.append(qnaBundleLogic
@@ -288,14 +289,6 @@ public class NotificationLogicImpl implements NotificationLogic {
 		return html.replaceAll("\\<.*?>", "").replaceAll("&lt;", "<")
 				.replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll(
 						"&amp;", "&");
-	}
-
-	/**
-	 * @return title of current location
-	 */
-	private String getLocationTitle() {
-		return externalLogic.getLocationTitle(externalLogic
-				.getCurrentLocationId());
 	}
 
 }

@@ -155,4 +155,8 @@ public class AnswerSmsCommand implements SmsCommand {
 		return true;
 	}
 
+	public boolean requiresSiteId() {
+		return false;
+	}
+
 }

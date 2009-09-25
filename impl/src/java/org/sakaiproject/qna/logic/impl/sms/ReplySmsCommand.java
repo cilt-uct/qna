@@ -157,4 +157,8 @@ public class ReplySmsCommand implements SmsCommand {
 	public boolean isVisible() {
 		return true;
 	}
+
+	public boolean requiresSiteId() {
+		return false;
+	}
 }

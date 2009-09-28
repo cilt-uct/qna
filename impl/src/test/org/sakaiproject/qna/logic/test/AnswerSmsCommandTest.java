@@ -37,6 +37,7 @@ import org.sakaiproject.qna.logic.test.stubs.QnaBundleLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class AnswerSmsCommandTest extends
@@ -57,6 +58,7 @@ public class AnswerSmsCommandTest extends
 
 	private static Log log = LogFactory.getLog(AnswerSmsCommandTest.class);
 	
+	private static String CMD = "ANSWER";
 	private static String SITE_1 = "ref-1111111";
 	private static String SITE_3 = "ref-33333333";
 	
@@ -117,9 +119,11 @@ public class AnswerSmsCommandTest extends
 	 * Test empty or null body
 	 */
 	public void testEmptyBody() {
-		assertEquals("qna.sms.no-question-id", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", ""));
+		assertEquals("qna.sms.no-question-id", answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, "", 1), "1234"));
 		String nullString = null;
-		assertEquals("qna.sms.no-question-id", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", nullString));
+		assertEquals("qna.sms.no-question-id", answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, nullString, 1), "1234"));
 		assertEquals(5, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
 	
@@ -128,7 +132,8 @@ public class AnswerSmsCommandTest extends
 	 */
 	public void testInvalidQuestion() {
 		assertEquals(5, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
-		assertEquals("qna.sms.invalid-question-id", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", "0"));
+		assertEquals("qna.sms.invalid-question-id", answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, "0", 1), "1234"));
 	}
 	
 	/**
@@ -139,7 +144,8 @@ public class AnswerSmsCommandTest extends
 		assertEquals(Integer.valueOf(1), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
-		assertEquals(ANSWER_TEXT_1, answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));
+		assertEquals(ANSWER_TEXT_1, answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, question1.getId().toString(), 1), "1234" ));
 	}
 
 	/**
@@ -154,7 +160,11 @@ public class AnswerSmsCommandTest extends
 		assertEquals(Integer.valueOf(2), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
-		assertEquals(ANSWER_TEXT_1 + ", " + ANSWER_TEXT_2, answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));
+		
+		String answers = answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, question1.getId().toString(), 1), "1234");
+		System.out.println("Answers: " + answers);
+		assertEquals(ANSWER_TEXT_1 + ", " + ANSWER_TEXT_2, answers);
 	}
 	
 
@@ -170,7 +180,8 @@ public class AnswerSmsCommandTest extends
 		assertEquals(Integer.valueOf(0), options.getMobileAnswersNr()); 
 		
 		QnaQuestion question1 = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
-		assertEquals("qna.sms.no-mobile-answers", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", question1.getId().toString()));
+		assertEquals("qna.sms.no-mobile-answers", answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, question1.getId().toString(), 1), "1234"));
 	}
 	
 	/**
@@ -179,7 +190,8 @@ public class AnswerSmsCommandTest extends
 	public void testGetNoAnswers() {
 	
 		assertEquals(0, tdp.question3_location1.getAnswers().size()); 
-		assertEquals("qna.sms.no-answers-found", answerSmsCommand.execute(SITE_1, USER_UPDATE, "1234", tdp.question3_location1.getId().toString()));
+		assertEquals("qna.sms.no-answers-found", answerSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, tdp.question3_location1.getId().toString(), 1), "1234" ));
 	}
 	
 	/**
@@ -192,6 +204,7 @@ public class AnswerSmsCommandTest extends
 		optionsLogic.saveOptions(options, LOCATION3_ID);
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION3_ID).get(0);
 		assertEquals(ANSWER_TEXT_3, question.getAnswers().get(0).getAnswerText());
-		assertEquals("<ANSWER> 1", answerSmsCommand.execute(SITE_3, USER_LOC_3_UPDATE_1, "1234", question.getId().toString()));
+		assertEquals("<ANSWER> 1", answerSmsCommand.execute(
+				new ParsedMessage(USER_LOC_3_UPDATE_1, CMD, null, question.getId().toString(), 1), "1234" ));
 	}
 }

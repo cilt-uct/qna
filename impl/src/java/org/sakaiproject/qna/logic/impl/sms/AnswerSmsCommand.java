@@ -30,11 +30,12 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
+import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.SmsCommand;
 
 /**
  * Return the answers of a specific question in a specific Sakai site. Usage:
- * ANSWER <site> <question nr>
+ * ANSWER <question nr>
  * 
  * @author wilhelm@psybergate.co.za
  * 
@@ -50,7 +51,7 @@ public class AnswerSmsCommand implements SmsCommand {
 	private PermissionLogic permissionLogic;
 	private OptionsLogic optionsLogic;
 	private ExternalLogic externalLogic;
-
+	
 	public void setQuestionLogic(QuestionLogic questionLogic) {
 		this.questionLogic = questionLogic;
 	}
@@ -71,12 +72,14 @@ public class AnswerSmsCommand implements SmsCommand {
 		this.externalLogic = externalLogic;
 	}
 
-	public String execute(String siteId, String userId, String mobileNr,
-			String... body) {
-		log.debug(getCommandKey() + " command called with parameters: ("
-				+ siteId + ", " + userId + ", " + body[0] + ")");
+	public String execute(ParsedMessage message, String mobileNr) {
+		
+		String userId = message.getIncomingUserId();
+		String body[] = message.getBodyParameters();
 
-		if (body[0] == null || "".equals(body[0].trim())) {
+		log.debug(getCommandKey() + " command called with parameters: " + message);
+
+		if (body == null || body.length == 0 || body[0] == null || "".equals(body[0].trim())) {
 			return qnaBundleLogic.getString("qna.sms.no-question-id");
 		} else {
 			try {
@@ -86,13 +89,15 @@ public class AnswerSmsCommand implements SmsCommand {
 					return qnaBundleLogic
 							.getString("qna.sms.invalid-question-id");
 				} else {
-
+					String siteRef = question.getLocation();
+//					message.setSite(siteId);
+					log.debug("Location for question " + question.getId() + " is " + siteRef);
+					
 					List<QnaAnswer> answers = question.getAnswers();
 					if (answers.size() == 0) {
 						return qnaBundleLogic
 								.getString("qna.sms.no-answers-found");
 					} else {
-						String siteRef = "/site/" + siteId;
 						QnaOptions options = optionsLogic
 								.getOptionsForLocation(siteRef);
 
@@ -117,14 +122,14 @@ public class AnswerSmsCommand implements SmsCommand {
 						} else {
 							return qnaBundleLogic.getFormattedMessage(
 									"qna.sms.no-mobile-answers",
-									new Object[] { siteId });
+									new Object[] { siteRef });
 						}
 
 					}
 				}
 			} catch (SecurityException se) {
 				return qnaBundleLogic.getFormattedMessage(
-						"qna.sms.read-denied", new Object[] { userId, siteId });
+						"qna.sms.read-denied", new Object[] { userId, body[0] });
 			}
 		}
 	}
@@ -142,7 +147,7 @@ public class AnswerSmsCommand implements SmsCommand {
 	}
 
 	public int getBodyParameterCount() {
-		return 2;
+		return 1;
 	}
 
 	public boolean isEnabled() {

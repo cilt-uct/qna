@@ -24,6 +24,7 @@ import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.SmsCommand;
 
 /**
@@ -64,12 +65,15 @@ public class QuestionSmsCommand implements SmsCommand {
 		this.categoryLogic = categoryLogic;
 	}
 
-	public String execute(String siteId, String userId, String mobileNr,
-			String... body) {
-		log.debug(getCommandKey() + " command called with parameters: ("
-				+ siteId + ", " + userId + ", " + body[0] + ")");
+	public String execute(ParsedMessage message, String mobileNr) {
+		
+		String siteId = message.getSite();
+		String userId = message.getIncomingUserId();
+		String body[] = message.getBodyParameters();
+		
+		log.debug(getCommandKey() + " command called with parameters: " + message);
 
-		if (body[0] == null || "".equals(body[0].trim())) {
+		if (body == null || body.length == 0 || body[0] == null || "".equals(body[0].trim())) {
 			return qnaBundleLogic.getString("qna.sms.no-question-text");
 		} else {
 			String siteRef = "/site/" + siteId;

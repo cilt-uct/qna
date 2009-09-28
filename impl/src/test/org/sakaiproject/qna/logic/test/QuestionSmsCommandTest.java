@@ -34,6 +34,7 @@ import org.sakaiproject.qna.logic.test.stubs.QnaBundleLogicStub;
 import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class QuestionSmsCommandTest extends
@@ -56,7 +57,7 @@ public class QuestionSmsCommandTest extends
 	private final TestDataPreload tdp = new TestDataPreload();
 
 	private static Log log = LogFactory.getLog(QuestionSmsCommandTest.class);
-	
+	private static String CMD = "QUESTION";
 	private static String SITE = "ref-1111111";
 	
 	@Override
@@ -125,9 +126,11 @@ public class QuestionSmsCommandTest extends
 	 * Test empty or null body
 	 */
 	public void testEmptyBody() {
-		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", ""));
+		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, SITE, "", 1), "1234"));
 		String nullString = null;
-		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", nullString));
+		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, SITE, nullString, 0), "1234"));
 		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
 	
@@ -135,7 +138,8 @@ public class QuestionSmsCommandTest extends
 	 * Test saving of question
 	 */
 	public void testSaveQuestion() {
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, USER_UPDATE, "1234", "new question"));
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, SITE, "new question", 1), "1234" ));
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
@@ -151,7 +155,8 @@ public class QuestionSmsCommandTest extends
 		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, null, "1234", "new question"));
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+				new ParsedMessage(null, CMD, SITE, "new question", 1), "1234" ));
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());
@@ -163,7 +168,8 @@ public class QuestionSmsCommandTest extends
 	public void testSaveQuestionNullUserIdAnonMobileNotAllowed() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		assertFalse(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.anonymous-not-allowed", questionSmsCommand.execute(SITE, null, "1234", "new question"));
+		assertEquals("qna.sms.anonymous-not-allowed", questionSmsCommand.execute(
+				new ParsedMessage(null, CMD, SITE, "new question", 1), "1234" ));
 		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
 	
@@ -175,7 +181,8 @@ public class QuestionSmsCommandTest extends
 		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
 		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(SITE, null, "1234", "new question"));
+		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+				new ParsedMessage(null, CMD, SITE, "new question", 1), "1234" ));
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());

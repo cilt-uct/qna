@@ -24,11 +24,12 @@ import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.SmsCommand;
 
 /**
- * Reply to a existing question posted in a specific Sakai site. Usage: REPLY
- * <site> <question nr> <answer text>
+ * Reply to a existing question. 
+ * Usage: REPLY <question nr> <answer text>
  * 
  * @author wilhelm@psybergate.co.za
  * 
@@ -43,10 +44,7 @@ public class ReplySmsCommand implements SmsCommand {
 	private AnswerLogic answerLogic;
 	private OptionsLogic optionsLogic;
 	private QnaBundleLogic qnaBundleLogic;
-	private ExternalLogic externalLogic;
-	
 	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
 	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
@@ -65,12 +63,14 @@ public class ReplySmsCommand implements SmsCommand {
 		this.qnaBundleLogic = qnaBundleLogic;
 	}
 
-	public String execute(String siteId, String userId, String mobileNr,
-			String... body) {
-		log.debug(getCommandKey() + " command called with parameters: ("
-				+ siteId + ", " + userId + ", )");
+	public String execute(ParsedMessage message, String mobileNr) {
+		
+		String userId = message.getIncomingUserId();
+		String body[] = message.getBodyParameters();
 
-		if (body[0] == null || "".equals(body[0].trim())) {
+		log.debug(getCommandKey() + " command called with parameters: " + message);
+
+		if (body == null || body.length == 0 || body[0] == null || "".equals(body[0].trim())) {
 			return qnaBundleLogic.getString("qna.sms.no-question-id");
 		} else {
 			String questionId = body[0].trim();
@@ -87,12 +87,15 @@ public class ReplySmsCommand implements SmsCommand {
 						true);
 			} catch (SecurityException se) {
 				return qnaBundleLogic.getFormattedMessage(
-						"qna.sms.read-denied", new Object[] { userId, siteId });
+						"qna.sms.read-denied", new Object[] { userId, body[0] });
 			}
 
 			if (question == null) {
 				return qnaBundleLogic.getString("qna.sms.invalid-question-id");
 			} else {
+				
+				String siteId = question.getLocation();
+				
 				QnaAnswer answer = new QnaAnswer();
 				answer.setQuestion(question);
 				answer.setAnswerText(answerText);

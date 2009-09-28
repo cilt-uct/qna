@@ -36,7 +36,11 @@
 		<version>0.12-SNAPSHOT</version>
 		<scope>provided</scope>
 	  </dependency>
-	  
+	<dependency>
+	        <groupId>commons-lang</groupId>
+                        <artifactId>commons-lang</artifactId>
+        </dependency>
+  
 
 	  <!-- email dependencies -->
       <dependency>

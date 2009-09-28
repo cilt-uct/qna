@@ -132,7 +132,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 	 */
 	public boolean existsCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::existsCategory");
-		if (categoryId == null || categoryId.equals("")) {
+		if (categoryId == null || "".equals(categoryId)) {
 			return false;
 		} else {
 			if (getCategoryById(categoryId) != null) {
@@ -150,7 +150,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		log.debug("CategoryLogicImpl::createDefaultCategory");
 		QnaCategory qnaCategory = new QnaCategory();
 
-		if (categoryText != null && !categoryText.equals("")) {
+		if (categoryText != null && !"".equals(categoryText)) {
 			qnaCategory.setCategoryText(categoryText);
 		} else {
 			qnaCategory.setCategoryText(null);

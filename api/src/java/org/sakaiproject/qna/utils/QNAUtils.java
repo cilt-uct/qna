@@ -80,7 +80,7 @@ public class QNAUtils {
 		public static boolean isValidEmail(String email) {
 			// TODO: Use a generic Sakai utility class (when a suitable one exists)
 			
-			if (email == null || email.equals(""))
+			if (email == null || "".equals(email))
 				return false;
 			
 			email = email.trim();

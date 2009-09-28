@@ -51,7 +51,7 @@ public class SakaiFCKTextEvolver implements TextInputEvolver {
 
 		toevolve.ID = SEED_ID; // must change ID while unattached
 		joint.addComponent(toevolve);
-		String collectionID = context.equals("") ? "" : contentHostingService.getSiteCollection(context);
+		String collectionID = "".equals(context) ? "" : contentHostingService.getSiteCollection(context);
 		String js = HTMLUtil.emitJavascriptCall(
 			"SakaiProject.fckeditor.initializeEditor",
 			new String[] {

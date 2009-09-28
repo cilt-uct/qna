@@ -163,7 +163,7 @@ public class QnaQuestion {
 	}
 
 	/**
-	 * @return the location
+	 * @return the location, viz. the site reference (/site/siteid)
 	 */
 	public String getLocation() {
 		return location;
@@ -171,7 +171,7 @@ public class QnaQuestion {
 
 	/**
 	 * @param location
-	 *            the location to set
+	 *            the location to set in site reference format (/site/siteid)
 	 */
 	public void setLocation(String location) {
 		this.location = location;

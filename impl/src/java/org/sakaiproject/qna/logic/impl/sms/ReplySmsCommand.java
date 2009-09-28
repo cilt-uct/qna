@@ -44,7 +44,10 @@ public class ReplySmsCommand implements SmsCommand {
 	private AnswerLogic answerLogic;
 	private OptionsLogic optionsLogic;
 	private QnaBundleLogic qnaBundleLogic;
+	private ExternalLogic externalLogic;
+
 	public void setExternalLogic(ExternalLogic externalLogic) {
+		this.externalLogic = externalLogic;
 	}
 
 	public void setQuestionLogic(QuestionLogic questionLogic) {
@@ -94,8 +97,11 @@ public class ReplySmsCommand implements SmsCommand {
 				return qnaBundleLogic.getString("qna.sms.invalid-question-id");
 			} else {
 				
-				String siteId = question.getLocation();
-				
+				String siteRef = question.getLocation();
+				message.setSite(externalLogic.getSiteIdFromRef(siteRef));
+
+				log.debug("Location for question " + question.getId() + " is " + siteRef);
+
 				QnaAnswer answer = new QnaAnswer();
 				answer.setQuestion(question);
 				answer.setAnswerText(answerText);
@@ -103,7 +109,7 @@ public class ReplySmsCommand implements SmsCommand {
 				answer.setOwnerMobileNr(mobileNr);
 				answer.setAnonymous(false);
 
-				String siteRef = "/site/" + siteId;
+			//	String siteRef = "/site/" + siteId;
 
 				if (userId != null) {
 					try {
@@ -111,7 +117,7 @@ public class ReplySmsCommand implements SmsCommand {
 					} catch (SecurityException se) {
 						return qnaBundleLogic.getFormattedMessage(
 								"qna.sms.save-answer-denied", new Object[] {
-										siteId, userId });
+										siteRef, userId });
 					}
 
 					return qnaBundleLogic.getFormattedMessage(

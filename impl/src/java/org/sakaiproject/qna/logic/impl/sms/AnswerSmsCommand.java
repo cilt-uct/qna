@@ -90,7 +90,8 @@ public class AnswerSmsCommand implements SmsCommand {
 							.getString("qna.sms.invalid-question-id");
 				} else {
 					String siteRef = question.getLocation();
-//					message.setSite(siteId);
+					message.setSite(externalLogic.getSiteIdFromRef(siteRef));
+					
 					log.debug("Location for question " + question.getId() + " is " + siteRef);
 					
 					List<QnaAnswer> answers = question.getAnswers();

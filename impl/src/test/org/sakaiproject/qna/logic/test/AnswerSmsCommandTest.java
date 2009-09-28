@@ -110,6 +110,7 @@ public class AnswerSmsCommandTest extends
 		answerSmsCommand.setPermissionLogic(permissionLogic);
 		answerSmsCommand.setQnaBundleLogic(bundleLogicStub);
 		answerSmsCommand.setQuestionLogic(questionLogic);
+		answerSmsCommand.setExternalLogic(externalLogicStub);
 		
 		// preload testData
 		tdp.preloadTestData(dao);

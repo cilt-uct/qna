@@ -58,8 +58,6 @@ public class ReplySmsCommandTest extends
 	private static Log log = LogFactory.getLog(ReplySmsCommandTest.class);
 	
 	private static String CMD = "REPLY";
-
-	private static String SITE = "ref-1111111";
 	
 	@Override
 	protected String[] getConfigLocations() {
@@ -119,7 +117,8 @@ public class ReplySmsCommandTest extends
 		replySmsCommand.setQnaBundleLogic(bundleLogicStub);
 		replySmsCommand.setQuestionLogic(questionLogic);
 		replySmsCommand.setOptionsLogic(optionsLogic);
-		
+		replySmsCommand.setExternalLogic(externalLogicStub);
+
 		// preload testData
 		tdp.preloadTestData(dao);
 	}
@@ -137,38 +136,37 @@ public class ReplySmsCommandTest extends
 	/**
 	 * Test no answer ID supplied
 	 */
-	/*
-	public void testNoAnswerId() {
+	public void testNoAnswerText() {
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(1);
 		assertEquals(2, question.getAnswers().size());
-		assertEquals("qna.sms.no-answer-text", replySmsCommand.execute(SITE, USER_UPDATE, "1234", question.getId().toString(), null));
-		assertEquals("qna.sms.no-answer-text", replySmsCommand.execute(SITE, USER_UPDATE, "1234", question.getId().toString(), ""));
+		
+		assertEquals("qna.sms.no-answer-text", replySmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString(), 1), "1234"));
 	}
-	*/
+
 	/**
 	 * Test no invalid question id supplied
 	 */
-	/*
 	public void testInvalidId() {
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf("53"));
 		assertNull(question);
-		assertEquals("qna.sms.invalid-question-id", replySmsCommand.execute(SITE, USER_UPDATE, "1234", "53", "reply text"));
+		assertEquals("qna.sms.invalid-question-id", replySmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, "53 reply text", 2), "1234"));
 	}
-	*/
+
 	/**
 	 * Test save of answer
 	 */
-	/*
 	public void testSaveAnswer() {
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
-		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(SITE, USER_UPDATE, "1234", question.getId().toString(), "text"));
+		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(
+				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString() + " text", 2), "1234"));
 		assertEquals("text", question.getAnswers().get(0).getAnswerText());
 	}
-	*/
+
 	/**
 	 * Test save of answer (null userId)
 	 */
-	/*
 	public void testSaveAnswerNullUserId() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
@@ -177,17 +175,16 @@ public class ReplySmsCommandTest extends
 		assertTrue(options.getAllowUnknownMobile());
 		
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
-		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(SITE, null, "1234", question.getId().toString(), "text"));
+		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(
+				new ParsedMessage(null, CMD, null, question.getId().toString() + " text", 2), "1234"));
 		assertEquals("text", question.getAnswers().get(0).getAnswerText());
 		assertEquals(null, question.getAnswers().get(0).getOwnerId());
 		assertEquals("1234", question.getAnswers().get(0).getOwnerMobileNr());
 	}
-	*/
 	
 	/**
 	 * Test save answer with null user id where anon mobile postings not allowed
 	 */
-	/*
 	public void testSaveAnswerNullUserIdAnonMobileNotAllowed() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
@@ -197,8 +194,8 @@ public class ReplySmsCommandTest extends
 		
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
 		assertEquals(0, question.getAnswers().size());
-		assertEquals("qna.sms.anonymous-not-allowed", replySmsCommand.execute(SITE, null, "1234", question.getId().toString(), "new question"));
+		assertEquals("qna.sms.anonymous-not-allowed", replySmsCommand.execute(
+				new ParsedMessage(null, CMD, null, question.getId().toString() + " new question", 2), "1234"));
 		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).get(0).getAnswers().size()); 
 	}
-	*/
 }

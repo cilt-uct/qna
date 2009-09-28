@@ -78,7 +78,7 @@ public class ReplySmsCommand implements SmsCommand {
 		} else {
 			String questionId = body[0].trim();
 
-			if (body[1] == null || "".equals(body[1].trim())) {
+			if (body.length < 2 || body[1] == null || "".equals(body[1].trim())) {
 				return qnaBundleLogic.getString("qna.sms.no-answer-text");
 			}
 

@@ -59,8 +59,6 @@ public class AnswerSmsCommandTest extends
 	private static Log log = LogFactory.getLog(AnswerSmsCommandTest.class);
 	
 	private static String CMD = "ANSWER";
-	private static String SITE_1 = "ref-1111111";
-	private static String SITE_3 = "ref-33333333";
 	
 	@Override
 	protected String[] getConfigLocations() {

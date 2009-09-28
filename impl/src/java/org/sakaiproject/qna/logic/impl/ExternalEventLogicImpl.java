@@ -60,6 +60,7 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
      * @param entity Entity object
      * @return entity reference
      */
+	@SuppressWarnings("unchecked")
 	private String getEntityReference(Object entity) {
 	      String id = null;
 	      try {
@@ -82,6 +83,7 @@ public class ExternalEventLogicImpl implements ExternalEventLogic {
 	 * @param entityId	Id of entity
 	 * @return entity reference
 	 */
+	@SuppressWarnings("unchecked")
 	private String getEntityReference(Class refClass, String entityId) {
 		
 		String prefix =  null;

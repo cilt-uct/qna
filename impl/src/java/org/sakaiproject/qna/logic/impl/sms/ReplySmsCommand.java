@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
@@ -45,6 +46,15 @@ public class ReplySmsCommand implements ShortMessageCommand {
 	private OptionsLogic optionsLogic;
 	private QnaBundleLogic qnaBundleLogic;
 	private ExternalLogic externalLogic;
+	private PermissionLogic permissionLogic;
+	
+	public PermissionLogic getPermissionLogic() {
+		return permissionLogic;
+	}
+
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
+	}
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
@@ -70,6 +80,7 @@ public class ReplySmsCommand implements ShortMessageCommand {
 		
 		String userId = message.getIncomingUserId();
 		String body[] = message.getBodyParameters();
+		String serviceName = externalLogic.getServiceName();
 
 		log.debug(getCommandKey() + " command called with parameters: " + message);
 
@@ -98,6 +109,7 @@ public class ReplySmsCommand implements ShortMessageCommand {
 			} else {
 				
 				String siteRef = question.getLocation();
+				String siteTitle = externalLogic.getLocationTitle(siteRef);
 				message.setSite(externalLogic.getSiteIdFromRef(siteRef));
 				
 				log.debug("Location for question " + question.getId() + " is " + siteRef);
@@ -109,8 +121,12 @@ public class ReplySmsCommand implements ShortMessageCommand {
 				answer.setOwnerMobileNr(mobileNr);
 				answer.setAnonymous(false);
 
-			//	String siteRef = "/site/" + siteId;
-
+				// Anonymize user if anonymous allowed and user wouldn't be able to answer
+				if (optionsLogic.getOptionsForLocation(siteRef).getAllowUnknownMobile() 
+						&& !permissionLogic.canAddNewAnswer(siteRef, userId)) {
+					userId = null;
+				}
+				
 				if (userId != null) {
 					
 					try {
@@ -118,12 +134,12 @@ public class ReplySmsCommand implements ShortMessageCommand {
 					} catch (SecurityException se) {
 						return qnaBundleLogic.getFormattedMessage(
 								"qna.sms.save-answer-denied", new Object[] {
-										siteRef, userId });
+										siteTitle });
 					}
 
 					return qnaBundleLogic.getFormattedMessage(
 							"qna.sms.reply-posted", new Object[] {
-									question.getId(), answer.getId() });
+									question.getId(), siteTitle });
 				} else {
 					
 					if (optionsLogic.getOptionsForLocation(siteRef)
@@ -133,11 +149,12 @@ public class ReplySmsCommand implements ShortMessageCommand {
 						
 						return qnaBundleLogic.getFormattedMessage(
 								"qna.sms.reply-posted", new Object[] {
-										question.getId(), answer.getId() });
+										question.getId(), siteTitle });
 					} else {
 						return qnaBundleLogic
-								.getString("qna.sms.anonymous-not-allowed");
-					}
+						.getFormattedMessage("qna.sms.anonymous-not-allowed",
+								new Object[] { siteTitle, serviceName }	);
+				}
 					
 				}
 

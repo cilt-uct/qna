@@ -119,6 +119,7 @@ public class ReplySmsCommandTest extends
 		replySmsCommand.setQuestionLogic(questionLogic);
 		replySmsCommand.setOptionsLogic(optionsLogic);
 		replySmsCommand.setExternalLogic(externalLogicStub);
+		replySmsCommand.setPermissionLogic(permissionLogic);
 
 		// preload testData
 		tdp.preloadTestData(dao);

@@ -95,6 +95,13 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 					String siteTitle = externalLogic.getLocationTitle(siteRef);
 					
 					log.debug("Location for question " + question.getId() + " is " + siteRef);
+
+					QnaOptions options = optionsLogic.getOptionsForLocation(siteRef);
+
+					if (!options.getAllowUnknownMobile() && !permissionLogic.canRead(siteRef, userId)) {
+						return qnaBundleLogic.getFormattedMessage(
+								"qna.sms.read-denied", new Object[] { body[0] });						
+					}
 					
 					List<QnaAnswer> answers = question.getAnswers();
 					if (answers.size() == 0) {
@@ -102,8 +109,6 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 								.getFormattedMessage("qna.sms.no-answers-found", 
 										new Object[]{question.getId().toString(), siteTitle});
 					} else {
-						QnaOptions options = optionsLogic
-								.getOptionsForLocation(siteRef);
 
 						if (options.getMobileAnswersNr() > 0) {
 							Collections.sort(answers,
@@ -122,12 +127,14 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 								}
 							}
 							
-							return smsReply; // SMS tool will do truncation if
-												// necessary
+							// SMS service will do truncation if necessary
+							return qnaBundleLogic.getFormattedMessage(
+									options.getMobileAnswersNr() ==1 ? "qna.sms.answer.one" : "qna.sms.answer.many", 
+									new Object[] { question.getId().toString(), smsReply } ); 
 						} else {
 							return qnaBundleLogic.getFormattedMessage(
 									"qna.sms.no-mobile-answers",
-									new Object[] { siteRef });
+									new Object[] { question.getId().toString(), siteTitle });
 						}
 
 					}

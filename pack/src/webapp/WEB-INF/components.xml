@@ -122,6 +122,7 @@
 					<property name="answerLogic" ref="org.sakaiproject.qna.logic.AnswerLogic" />	
 					<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
 				    <property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />	
+				    <property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 				</bean>
 			</list>
 		</property>

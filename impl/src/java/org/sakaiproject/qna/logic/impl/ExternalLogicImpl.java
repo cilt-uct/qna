@@ -156,7 +156,8 @@ public class ExternalLogicImpl implements ExternalLogic {
 			return site.getTitle();
 		} catch (Exception e) {
 			// invalid site reference
-			log.debug("Invalid site reference:" + locationId);
+			log.debug("Invalid site reference or no permission:" + locationId, e);
+			
 			return "----------";
 		}
 	}
@@ -423,5 +424,9 @@ public class ExternalLogicImpl implements ExternalLogic {
 	public String getSmsNumber() {
 		
 		return ServerConfigurationService.getString("sms.shortcode", null);
+	}
+
+	public String getServiceName() {
+		return ServerConfigurationService.getString("ui.service", "Sakai");
 	}
 }

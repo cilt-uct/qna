@@ -120,6 +120,7 @@ public class QuestionSmsCommandTest extends
 		questionSmsCommand.setQuestionLogic(questionLogic);
 		questionSmsCommand.setCategoryLogic(categoryLogic);
 		questionSmsCommand.setExternalLogic(externalLogicStub);
+		questionSmsCommand.setPermissionLogic(permissionLogic);
 
 	}
 	
@@ -158,6 +159,7 @@ public class QuestionSmsCommandTest extends
 		assertTrue(options.getAllowUnknownMobile());
 		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
 				new ParsedMessage(null, CMD, SITE, "new question", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234" ));
+		
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
 		assertEquals("new question", question.getQuestionText());

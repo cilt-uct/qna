@@ -281,6 +281,7 @@ public class QuestionLogicImpl implements QuestionLogic {
 	 * @see QuestionLogic#saveQuestion(QnaQuestion, String, String)
 	 */
 	public void saveQuestion(QnaQuestion question, String locationId, String userId) {
+		
 		if (existsQuestion(question.getId())) {
 			if (permissionLogic.canUpdate(locationId, userId)) {
 				question.setDateLastModified(new Date());

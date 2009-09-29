@@ -87,17 +87,20 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 						.trim()), userId, true);
 				if (question == null) {
 					return qnaBundleLogic
-							.getString("qna.sms.invalid-question-id");
+							.getFormattedMessage("qna.sms.invalid-question-id",
+									new Object[]{ body[0] });
 				} else {
 					String siteRef = question.getLocation();
 					message.setSite(externalLogic.getSiteIdFromRef(siteRef));
+					String siteTitle = externalLogic.getLocationTitle(siteRef);
 					
 					log.debug("Location for question " + question.getId() + " is " + siteRef);
 					
 					List<QnaAnswer> answers = question.getAnswers();
 					if (answers.size() == 0) {
 						return qnaBundleLogic
-								.getString("qna.sms.no-answers-found");
+								.getFormattedMessage("qna.sms.no-answers-found", 
+										new Object[]{question.getId().toString(), siteTitle});
 					} else {
 						QnaOptions options = optionsLogic
 								.getOptionsForLocation(siteRef);
@@ -118,6 +121,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 									}
 								}
 							}
+							
 							return smsReply; // SMS tool will do truncation if
 												// necessary
 						} else {
@@ -130,7 +134,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 				}
 			} catch (SecurityException se) {
 				return qnaBundleLogic.getFormattedMessage(
-						"qna.sms.read-denied", new Object[] { userId, body[0] });
+						"qna.sms.read-denied", new Object[] { body[0] });
 			}
 		}
 	}
@@ -160,6 +164,10 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 	}
 
 	public boolean requiresSiteId() {
+		return false;
+	}
+
+	public boolean requiresUserId() {
 		return false;
 	}
 

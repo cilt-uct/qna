@@ -227,4 +227,8 @@ public interface ExternalLogic {
 	 */
 	public String getSmsNumber();
 	
+	/**
+	 * Get service name
+	 */
+	public String getServiceName();
 }

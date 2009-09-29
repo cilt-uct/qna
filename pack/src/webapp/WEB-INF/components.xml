@@ -107,6 +107,7 @@
 					<property name="qnaBundleLogic" ref="org.sakaiproject.qna.logic.QnaBundleLogic" />
 					<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
 					<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
+			        <property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 				</bean>
 				<bean class="org.sakaiproject.qna.logic.impl.sms.AnswerSmsCommand">
 					<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />

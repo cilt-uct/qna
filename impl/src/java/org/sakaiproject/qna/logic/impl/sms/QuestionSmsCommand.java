@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
+import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaOptions;
@@ -44,6 +45,15 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 	private OptionsLogic optionsLogic;
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;
+	private PermissionLogic permissionLogic;
+	
+	public PermissionLogic getPermissionLogic() {
+		return permissionLogic;
+	}
+
+	public void setPermissionLogic(PermissionLogic permissionLogic) {
+		this.permissionLogic = permissionLogic;
+	}
 
 	public void setExternalLogic(ExternalLogic externalLogic) {
 		this.externalLogic = externalLogic;
@@ -70,6 +80,7 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 		String siteId = message.getSite();
 		String userId = message.getIncomingUserId();
 		String body[] = message.getBodyParameters();
+		String serviceName = externalLogic.getServiceName();
 		
 		log.debug(getCommandKey() + " command called with parameters: " + message);
 
@@ -77,15 +88,23 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 			return qnaBundleLogic.getString("qna.sms.no-question-text");
 		} else {
 			String siteRef = "/site/" + siteId;
-			String siteTitle = externalLogic.getLocationTitle(siteRef);
+			String siteTitle = message.getSiteTitle();
 
 			QnaQuestion question = new QnaQuestion();
 			question.setQuestionText(body[0]);
 			question.setOwnerMobileNr(mobileNr);
+			
 			// Always default
 			question.setCategory(categoryLogic.getDefaultCategory(siteRef));
 			QnaOptions options = optionsLogic.getOptionsForLocation(siteRef);
 
+			// If we have a userid but the user would not have permission to post
+			// but anonymous posting is allowed, anonymize the user
+			
+			if (options.getAllowUnknownMobile() && !permissionLogic.canAddNewQuestion(siteRef, userId)) {
+					userId = null;
+			}
+			
 			try {
 				if (userId != null) {
 					questionLogic.saveQuestion(question, siteRef, userId);
@@ -94,13 +113,14 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 						questionLogic.saveQuestion(question, siteRef, null);
 					} else {
 						return qnaBundleLogic
-								.getString("qna.sms.anonymous-not-allowed");
+								.getFormattedMessage("qna.sms.anonymous-not-allowed",
+										new Object[] { siteTitle, serviceName }	);
 					}
 				}
+				
 			} catch (SecurityException se) {
 				return qnaBundleLogic.getFormattedMessage(
-						"qna.sms.save-question-denied", new Object[] { userId,
-								siteId });
+						"qna.sms.save-question-denied", new Object[] { siteTitle });
 			}
 
 			String smsNumber = externalLogic.getSmsNumber();
@@ -108,11 +128,11 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 			if (options.getSmsNotification()) {
 				return qnaBundleLogic.getFormattedMessage(
 					"qna.sms.question-posted.replies-sent",
-					new Object[] { siteTitle, question.getId() });
+					new Object[] { siteTitle, question.getId().toString() });
 			} else {
 				return qnaBundleLogic.getFormattedMessage(
 						"qna.sms.question-posted.no-replies",
-						new Object[] { siteTitle, question.getId(), smsNumber });
+						new Object[] { siteTitle, question.getId().toString(), smsNumber });
 			}
 		}
 	}
@@ -145,6 +165,10 @@ public class QuestionSmsCommand implements ShortMessageCommand {
 		return true;
 	}
 
+	public boolean requiresUserId() {
+		return false;
+	}
+	
 	public boolean canExecute(ParsedMessage arg0) {
 		return true;
 	}

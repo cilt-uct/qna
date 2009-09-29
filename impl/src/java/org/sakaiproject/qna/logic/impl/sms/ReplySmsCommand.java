@@ -99,7 +99,7 @@ public class ReplySmsCommand implements ShortMessageCommand {
 				
 				String siteRef = question.getLocation();
 				message.setSite(externalLogic.getSiteIdFromRef(siteRef));
-
+				
 				log.debug("Location for question " + question.getId() + " is " + siteRef);
 
 				QnaAnswer answer = new QnaAnswer();
@@ -112,6 +112,7 @@ public class ReplySmsCommand implements ShortMessageCommand {
 			//	String siteRef = "/site/" + siteId;
 
 				if (userId != null) {
+					
 					try {
 						answerLogic.saveAnswer(answer, siteRef, userId);
 					} catch (SecurityException se) {
@@ -124,9 +125,12 @@ public class ReplySmsCommand implements ShortMessageCommand {
 							"qna.sms.reply-posted", new Object[] {
 									question.getId(), answer.getId() });
 				} else {
+					
 					if (optionsLogic.getOptionsForLocation(siteRef)
 							.getAllowUnknownMobile()) {
+	
 						answerLogic.saveAnswer(answer, siteRef, null);
+						
 						return qnaBundleLogic.getFormattedMessage(
 								"qna.sms.reply-posted", new Object[] {
 										question.getId(), answer.getId() });
@@ -134,6 +138,7 @@ public class ReplySmsCommand implements ShortMessageCommand {
 						return qnaBundleLogic
 								.getString("qna.sms.anonymous-not-allowed");
 					}
+					
 				}
 
 			}
@@ -166,6 +171,10 @@ public class ReplySmsCommand implements ShortMessageCommand {
 	}
 
 	public boolean requiresSiteId() {
+		return false;
+	}
+
+	public boolean requiresUserId() {
 		return false;
 	}
 

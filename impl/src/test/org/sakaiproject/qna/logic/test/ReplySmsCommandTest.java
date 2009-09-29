@@ -35,6 +35,7 @@ import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
+import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 public class ReplySmsCommandTest extends
@@ -128,9 +129,9 @@ public class ReplySmsCommandTest extends
 	 */
 	public void testEmptyBody() {
 		assertEquals("qna.sms.no-question-id", replySmsCommand.execute(
-				new ParsedMessage(USER_UPDATE, CMD, null, "", 1), "1234"));
+				new ParsedMessage(USER_UPDATE, CMD, null, "", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 		assertEquals("qna.sms.no-question-id", replySmsCommand.execute(
-				new ParsedMessage(USER_UPDATE, CMD, null, null, 0), "1234"));
+				new ParsedMessage(USER_UPDATE, CMD, null, null, 0), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 	}
 	
 	/**
@@ -141,7 +142,8 @@ public class ReplySmsCommandTest extends
 		assertEquals(2, question.getAnswers().size());
 		
 		assertEquals("qna.sms.no-answer-text", replySmsCommand.execute(
-				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString(), 1), "1234"));
+				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString(), 1), 
+				ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 	}
 
 	/**
@@ -151,7 +153,8 @@ public class ReplySmsCommandTest extends
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf("53"));
 		assertNull(question);
 		assertEquals("qna.sms.invalid-question-id", replySmsCommand.execute(
-				new ParsedMessage(USER_UPDATE, CMD, null, "53 reply text", 2), "1234"));
+				new ParsedMessage(USER_UPDATE, CMD, null, "53 reply text", 2), 
+				ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 	}
 
 	/**
@@ -160,7 +163,8 @@ public class ReplySmsCommandTest extends
 	public void testSaveAnswer() {
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
 		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(
-				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString() + " text", 2), "1234"));
+				new ParsedMessage(USER_UPDATE, CMD, null, question.getId().toString() + " text", 2), 
+				ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 		assertEquals("text", question.getAnswers().get(0).getAnswerText());
 	}
 
@@ -176,7 +180,8 @@ public class ReplySmsCommandTest extends
 		
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
 		assertEquals("qna.sms.reply-posted", replySmsCommand.execute(
-				new ParsedMessage(null, CMD, null, question.getId().toString() + " text", 2), "1234"));
+				new ParsedMessage(null, CMD, null, question.getId().toString() + " text", 2),
+				ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 		assertEquals("text", question.getAnswers().get(0).getAnswerText());
 		assertEquals(null, question.getAnswers().get(0).getOwnerId());
 		assertEquals("1234", question.getAnswers().get(0).getOwnerMobileNr());
@@ -195,7 +200,8 @@ public class ReplySmsCommandTest extends
 		QnaQuestion question = questionLogic.getAllQuestions(LOCATION1_ID).get(0);
 		assertEquals(0, question.getAnswers().size());
 		assertEquals("qna.sms.anonymous-not-allowed", replySmsCommand.execute(
-				new ParsedMessage(null, CMD, null, question.getId().toString() + " new question", 2), "1234"));
+				new ParsedMessage(null, CMD, null, question.getId().toString() + " new question", 2),
+				ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
 		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).get(0).getAnswers().size()); 
 	}
 }

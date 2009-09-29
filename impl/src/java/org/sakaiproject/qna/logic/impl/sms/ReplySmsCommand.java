@@ -25,7 +25,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
-import org.sakaiproject.sms.logic.incoming.SmsCommand;
+import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 
 /**
  * Reply to a existing question. 
@@ -34,7 +34,7 @@ import org.sakaiproject.sms.logic.incoming.SmsCommand;
  * @author wilhelm@psybergate.co.za
  * 
  */
-public class ReplySmsCommand implements SmsCommand {
+public class ReplySmsCommand implements ShortMessageCommand {
 
 	private static Log log = LogFactory.getLog(ReplySmsCommand.class);
 	private static final String REPLY = "REPLY";
@@ -66,7 +66,7 @@ public class ReplySmsCommand implements SmsCommand {
 		this.qnaBundleLogic = qnaBundleLogic;
 	}
 
-	public String execute(ParsedMessage message, String mobileNr) {
+	public String execute(ParsedMessage message, String messageType, String mobileNr) {
 		
 		String userId = message.getIncomingUserId();
 		String body[] = message.getBodyParameters();
@@ -149,7 +149,7 @@ public class ReplySmsCommand implements SmsCommand {
 		return REPLY;
 	}
 
-	public String getHelpMessage() {
+	public String getHelpMessage(String messageType) {
 		return qnaBundleLogic.getString("qna.sms.reply-help");
 	}
 
@@ -167,5 +167,9 @@ public class ReplySmsCommand implements SmsCommand {
 
 	public boolean requiresSiteId() {
 		return false;
+	}
+
+	public boolean canExecute(ParsedMessage arg0) {
+		return true;
 	}
 }

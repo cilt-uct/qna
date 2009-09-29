@@ -31,7 +31,7 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
-import org.sakaiproject.sms.logic.incoming.SmsCommand;
+import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 
 /**
  * Return the answers of a specific question in a specific Sakai site. Usage:
@@ -40,7 +40,7 @@ import org.sakaiproject.sms.logic.incoming.SmsCommand;
  * @author wilhelm@psybergate.co.za
  * 
  */
-public class AnswerSmsCommand implements SmsCommand {
+public class AnswerSmsCommand implements ShortMessageCommand {
 
 	private static Log log = LogFactory.getLog(AnswerSmsCommand.class);
 	private static final String ANSWER = "ANSWER";
@@ -72,7 +72,7 @@ public class AnswerSmsCommand implements SmsCommand {
 		this.externalLogic = externalLogic;
 	}
 
-	public String execute(ParsedMessage message, String mobileNr) {
+	public String execute(ParsedMessage message, String messageType, String mobileNr) {
 		
 		String userId = message.getIncomingUserId();
 		String body[] = message.getBodyParameters();
@@ -143,7 +143,7 @@ public class AnswerSmsCommand implements SmsCommand {
 		return ANSWER;
 	}
 
-	public String getHelpMessage() {
+	public String getHelpMessage(String messageType) {
 		return qnaBundleLogic.getString("qna.sms.answer-help");
 	}
 
@@ -161,6 +161,10 @@ public class AnswerSmsCommand implements SmsCommand {
 
 	public boolean requiresSiteId() {
 		return false;
+	}
+
+	public boolean canExecute(ParsedMessage message) {
+		return true;
 	}
 
 }

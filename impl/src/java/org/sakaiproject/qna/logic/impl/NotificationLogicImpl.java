@@ -78,7 +78,7 @@ public class NotificationLogicImpl implements NotificationLogic {
 		externalLogic.sendSms(mobileNrs, "admin", externalLogic
 				.getSiteIdFromRef(question.getLocation()), externalLogic
 				.getCurrentToolId(), qnaBundleLogic.getFormattedMessage(
-				"qna.sms.new-answer", new Object[] { question.getId(),
+				"qna.sms.new-answer", new Object[] { question.getId().toString(),
 						TextUtil.stripTags(answerText) }));
 	}
 

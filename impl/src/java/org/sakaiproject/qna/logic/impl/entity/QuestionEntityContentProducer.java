@@ -153,7 +153,15 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 			return true;
 		
 		String id = getId(reference);
-		QnaQuestion quest = questionLogic.getQuestionById(Long.valueOf(id));
+		Long lid = null;
+		try {
+			lid =  Long.valueOf(id);
+		}
+		catch (NumberFormatException nfe) {
+			return false;
+		}
+		
+		QnaQuestion quest = questionLogic.getQuestionById(lid);
 		if (quest != null) {
 			if (quest.isPublished() && securityService.unlock(ExternalLogic.QNA_READ, quest.getLocation()))
 				return true;
@@ -176,7 +184,15 @@ public class QuestionEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna question content " + reference);
 		String id = getId(reference);
-		QnaQuestion quest = questionLogic.getQuestionById(Long.valueOf(id), null, true);
+		Long lid = null;
+		try {
+			lid =  Long.valueOf(id);
+		}
+		catch (NumberFormatException nfe) {
+			return null;
+		}
+		
+		QnaQuestion quest = questionLogic.getQuestionById(lid, null, true);
 		StringBuilder sb = new StringBuilder();
 		sb.append(FormattedText.convertFormattedTextToPlaintext(quest.getQuestionText()));
 		

@@ -108,7 +108,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <basedir>${basedir}</basedir>
-                    <header>https://source.sakaiproject.org/svn/sakai/branches/sakai-trunk-qa/ECLv2-header-template.txt</header>
+                    <header>https://source.sakaiproject.org/svn/sakai/branches/sakai-trunk-experimental/ECLv2-header-template.txt</header>
                     <!-- <header>${user.home}/.m2/license-template.txt</header> -->
                     <quiet>false</quiet>
                     <failIfMissing>true</failIfMissing>

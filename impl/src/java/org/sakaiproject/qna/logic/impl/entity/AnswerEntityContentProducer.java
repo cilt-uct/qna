@@ -143,9 +143,16 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	public boolean canRead(String reference) {
 		if (securityService.isSuperUser())
 			return true;
-		
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
+		Long lid = null;
+		try {
+			lid = Long.valueOf(id);
+		}
+		catch (NumberFormatException nfe) {
+			return false;
+		}
+		
+		QnaAnswer a = answerLogic.getAnswerById(lid);
 		if (a != null) {
 			if (securityService.unlock(ExternalLogic.QNA_READ, a.getQuestion().getLocation()))
 				return true;
@@ -165,7 +172,14 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	public String getContent(String reference) {
 		log.debug("getting qna answer content " + reference);
 		String id = getId(reference);
-		QnaAnswer a = answerLogic.getAnswerById(Long.valueOf(id));
+		Long lid = null;
+		try {
+			lid = Long.valueOf(id);
+		}
+		catch (NumberFormatException nfe) {
+			return null;
+		}
+		QnaAnswer a = answerLogic.getAnswerById(lid);
 		String ret = null;
 		ret = FormattedText.convertFormattedTextToPlaintext(a.getAnswerText());
 		return ret;

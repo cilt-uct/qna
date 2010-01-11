@@ -83,8 +83,17 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 			return qnaBundleLogic.getString("qna.sms.no-question-id");
 		} else {
 			try {
-				QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(body[0]
-						.trim()), userId, true);
+				Long id = null;
+				try {
+					id = Long.valueOf(body[0].trim());
+				}
+				catch (NumberFormatException e) {
+					return qnaBundleLogic
+					.getFormattedMessage("qna.sms.invalid-question-id",
+							new Object[]{ body[0] });
+				}
+				
+				QnaQuestion question = questionLogic.getQuestionById(id, userId, true);
 				if (question == null) {
 					return qnaBundleLogic
 							.getFormattedMessage("qna.sms.invalid-question-id",

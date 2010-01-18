@@ -15,12 +15,7 @@
  */
 package org.sakaiproject.qna.logic.test;
 
-import static org.sakaiproject.qna.logic.test.TestDataPreload.ANSWER_TEXT_1;
-import static org.sakaiproject.qna.logic.test.TestDataPreload.ANSWER_TEXT_2;
-import static org.sakaiproject.qna.logic.test.TestDataPreload.ANSWER_TEXT_3;
 import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION1_ID;
-import static org.sakaiproject.qna.logic.test.TestDataPreload.LOCATION3_ID;
-import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_LOC_3_UPDATE_1;
 import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
 
 import org.apache.commons.logging.Log;

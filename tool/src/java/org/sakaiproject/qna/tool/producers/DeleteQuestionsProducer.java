@@ -81,6 +81,8 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		if ((params.questionids == null) || (params.questionids.length == 0)) {
 			UIMessage.make(tofill, "error-message", "" +
 					"qna.warning.no-questions-selected");
+			//we can't render this page without a list of questions
+			return;
 		}
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);

@@ -86,6 +86,10 @@ public class MultipleBeanMediator {
 			categoryToLink = (QnaCategory)categoryLocator.locateBean(NEW_1);
 		}
 
+		if (categoryToLink == null) {
+			//not sure how this could happen but we can't continue
+			return null;
+		}
 		String oldCategory = question.getCategory() != null ? TextUtil.stripTags(question.getCategory().getCategoryText()) : null;
 
 		question.setCategory(categoryToLink);

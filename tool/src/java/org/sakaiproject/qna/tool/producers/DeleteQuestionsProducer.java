@@ -36,6 +36,7 @@ import uk.org.ponder.rsf.components.UIForm;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.decorators.UIRowsDecorator;
 import uk.org.ponder.rsf.flow.ARIResult;
 import uk.org.ponder.rsf.flow.ActionResultInterceptor;
 import uk.org.ponder.rsf.flow.jsfnav.NavigationCase;
@@ -119,19 +120,22 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 					hasPrivateReply = true;
 				}
 			}
-
+			
+			//we need a row object for the allerts
+			UIBranchContainer alertRow = UIBranchContainer.make(tofill, "alertsrow:"); 
+			
 			// Generate the warning if the question has not been answered
 			if (optionsLogic.isModerationOn(locationId) && (!hasPrivateReply) && (answerList.size() == 0)) {
-				UIMessage.make(tofill, "error-message1", "qna.warning.questions-not-answered");
+				UIMessage.make(alertRow, "error-message1", "qna.warning.questions-not-answered");
 			}
 
 			// Generate warning for associated answers
 			if ((question.isPublished()) && (answerList.size() > 0)) {
-				UIMessage.make(tofill, "error-message2", "qna.warning.questions-with-answers");
+				UIMessage.make(alertRow, "error-message2", "qna.warning.questions-with-answers");
 			}
 
 			// Generate confirmation warning for the delete action
-			UIMessage.make(tofill, "error-message3", "qna.warning.delete-confirmation-note");
+			UIMessage.make(alertRow, "error-message3", "qna.warning.delete-confirmation-note");
 
 			// Generate the page title
 			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");

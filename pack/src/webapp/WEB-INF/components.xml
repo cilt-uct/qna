@@ -95,6 +95,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 	</bean>
 	<!-- uncomment to enable SMS -->
+	<!--
  	<bean id="QnaCommandRegister"
 		class="org.sakaiproject.sms.logic.incoming.helper.SmsCommandRegisterHelper" init-method="init" >
 		<property name="incomingLogicManager" ref="org.sakaiproject.sms.logic.incoming.SmsIncomingLogicManager" />
@@ -127,7 +128,9 @@
 			</list>
 		</property>
 	</bean>	
-	
+	-->
+
+
 	<!-- entity beans -->
 	<!--  <bean id="org.sakaiproject.qna.logic.entity.QuestionEntityProvider" 
 			class="org.sakaiproject.qna.logic.impl.entity.QuestionEntityProviderImpl">

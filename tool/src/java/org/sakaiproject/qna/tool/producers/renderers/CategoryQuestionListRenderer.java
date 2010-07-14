@@ -49,6 +49,7 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.components.decorators.UIAlternativeTextDecorator;
 import uk.org.ponder.stringutil.StringList;
 
@@ -198,7 +199,8 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 			QnaQuestion qnaQuestion = questions.get(k);
 			if (!qnaQuestion.getHidden()) {
 				UIBranchContainer question = UIBranchContainer.make(entry, "question-entry:");
-				UIInternalLink.make(question,"question-link",TextUtil.stripTags(qnaQuestion.getQuestionText()),new QuestionParams(viewIdForLink,qnaQuestion.getId().toString()));
+				UIInternalLink.make(question,"question-link", (String)null, new QuestionParams(viewIdForLink,qnaQuestion.getId().toString()));
+				UIVerbatim.make(question,"question-link-text",TextUtil.stripTags(qnaQuestion.getQuestionText()));
 				UIOutput.make(question,"answers-nr",qnaQuestion.getAnswers().size() +"");
 				UIOutput.make(question,"views-nr",qnaQuestion.getViews().toString());
 				UIOutput.make(question,"question-modified-date",DateUtil.getSimpleDate(qnaQuestion.getDateLastModified()));

@@ -38,6 +38,7 @@ import uk.org.ponder.rsf.components.UIMessage;
 import uk.org.ponder.rsf.components.UIOutput;
 import uk.org.ponder.rsf.components.UISelect;
 import uk.org.ponder.rsf.components.UISelectChoice;
+import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.stringutil.StringList;
 
 public class DetailedQuestionListRenderer implements QuestionListRenderer {
@@ -115,15 +116,16 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         	UIBranchContainer row = UIBranchContainer.make(listTable, "question-entry:");
 
         	if (question.isPublished()) {
-        		UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId().toString()));
+        		UIInternalLink.make(row,"question-link", (String)null , new QuestionParams(ViewQuestionProducer.VIEW_ID,question.getId().toString()));
         	} else {
         		if (question.hasPrivateReplies()) {
-        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId().toString()));
+        			UIInternalLink.make(row,"question-link", (String)null, new QuestionParams(ViewPrivateReplyProducer.VIEW_ID,question.getId().toString()));
         		} else {
-        			UIInternalLink.make(row,"question-link",TextUtil.stripTags(question.getQuestionText()),new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId().toString()));
+        			UIInternalLink.make(row,"question-link", (String)null, new QuestionParams(QueuedQuestionProducer.VIEW_ID,question.getId().toString()));
         		}
         	}
 
+        	UIVerbatim.make(row,"question-link-text",TextUtil.stripTags(question.getQuestionText()));
         	UIOutput.make(row, "question_row_views", question.getViews() + "");
         	UIOutput.make(row, "question_row_answers", question.getAnswers().size() + "");
         	UIOutput.make(row, "question_row_created", DateUtil.getSimpleDate(question.getDateCreated()));

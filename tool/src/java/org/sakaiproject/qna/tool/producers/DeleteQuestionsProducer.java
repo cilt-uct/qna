@@ -103,6 +103,12 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 		UIMessage.make(questionHeadings, "dqs-views", "qna.view-questions.views");
 		UIMessage.make(questionHeadings, "dqs-modified", "qna.delete-question.modified-title");
 
+		// Generate the page title
+		UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+		
+		// Generate confirmation warning for the delete action
+		UIMessage.make(tofill, "error-message3", "qna.warning.delete-confirmation-note");
+		
 		for (int k=0; k<params.questionids.length; k++) {
 
 			UIBranchContainer questionContainer = UIBranchContainer.make(listTable, "question-entry:");
@@ -134,11 +140,9 @@ public class DeleteQuestionsProducer implements ViewComponentProducer, Navigatio
 				UIMessage.make(alertRow, "error-message2", "qna.warning.questions-with-answers");
 			}
 
-			// Generate confirmation warning for the delete action
-			UIMessage.make(alertRow, "error-message3", "qna.warning.delete-confirmation-note");
+			
 
-			// Generate the page title
-			UIMessage.make(tofill, "page-title", "qna.general.delete-confirmation");
+
 
 			UIOutput.make(questionContainer, "name", TextUtil.stripTags(question.getQuestionText()));
 			UIOutput.make(questionContainer, "category", (question.getCategory() != null) ? question.getCategory().getCategoryText() : "");

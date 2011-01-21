@@ -115,19 +115,6 @@
 			<url>https://source.sakaiproject.org/maven2</url>
 		</repository>
 		<repository>
-			<id>CARET-Maven2</id>
-			<name>CARET Maven 2 Repository</name>
-			<url>http://www2.caret.cam.ac.uk/maven2</url>
-		</repository>
-		<repository>
-			<id>CARET-Maven2-dev</id>
-			<name>CARET Maven 2 Development Repository</name>
-			<url>http://www2.caret.cam.ac.uk/maven2dev</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
 			<id>cet-release</id>
 			<name>cet releases</name>
 			<url>

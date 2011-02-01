@@ -88,6 +88,8 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 					id = Long.valueOf(body[0].trim());
 				}
 				catch (NumberFormatException e) {
+					//we need to be able to see whats going on
+					log.warn("non-numeric question id " + body[0]);
 					return qnaBundleLogic
 					.getFormattedMessage("qna.sms.invalid-question-id",
 							new Object[]{ body[0] });
@@ -95,6 +97,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 				
 				QnaQuestion question = questionLogic.getQuestionById(id, userId, true);
 				if (question == null) {
+					log.warn("can't find question with id " + id.toString());
 					return qnaBundleLogic
 							.getFormattedMessage("qna.sms.invalid-question-id",
 									new Object[]{ body[0] });

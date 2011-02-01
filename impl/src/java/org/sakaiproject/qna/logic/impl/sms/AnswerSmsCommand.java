@@ -86,7 +86,9 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 			try {
 				Long id = null;
 				try {
-					id = Long.valueOf(body[0].trim());
+					String stringId = parseText(body[0].trim());
+					
+					id = Long.valueOf(stringId);
 				}
 				catch (NumberFormatException e) {
 					//we need to be able to see whats going on
@@ -159,6 +161,12 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 		}
 	}
 
+	private String parseText(String text) {
+		//the sender could have included extranous text
+		String[] data = text.split(" ");
+		return data[0];
+	}
+
 	public String[] getAliases() {
 		return new String[] { ANSWER_ALIAS };
 	}
@@ -172,7 +180,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 	}
 
 	public int getBodyParameterCount() {
-		return 2;
+		return 1;
 	}
 
 	public boolean isEnabled() {

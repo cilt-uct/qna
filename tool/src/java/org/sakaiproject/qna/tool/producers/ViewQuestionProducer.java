@@ -35,6 +35,8 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.ELReference;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UICommand;
@@ -117,6 +119,10 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		this.optionsLogic = optionsLogic;
 	}
 	
+	private TargettedMessageList targettedMessageList;	
+	public void setTargettedMessageList(TargettedMessageList targettedMessageList) {
+		this.targettedMessageList = targettedMessageList;
+	}
 	/**
 	 * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
 	 */
@@ -132,6 +138,12 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
+		
+		//QNA-179 its possible the question doesn't exist
+		if (question == null) {
+			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-such-question", new Object[]{questionParams.questionid}, TargettedMessage.SEVERITY_ERROR));
+			return;
+		}
 		
 		if (!questionParams.direct) {
 			questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);

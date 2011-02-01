@@ -120,6 +120,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 		<property name="questionIteratorRenderer" ref="QuestionIteratorRenderer" />
+		<property name="targettedMessageList" ref="targettedMessageList"/>
 	</bean>
 
 	<bean
@@ -216,7 +217,7 @@
 		<property name="questionLogic" ref="org.sakaiproject.qna.logic.QuestionLogic" />
 		<property name="attachmentsViewRenderer" ref="AttachmentsViewRenderer" />
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
-
+		<property name="targettedMessageList" ref="targettedMessageList"/>
 	</bean>
 
 	<bean

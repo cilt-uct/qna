@@ -76,6 +76,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 		
 		String userId = message.getIncomingUserId();
 		String body[] = message.getBodyParameters();
+		
 
 		log.debug(getCommandKey() + " command called with parameters: " + message);
 
@@ -171,7 +172,7 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 	}
 
 	public int getBodyParameterCount() {
-		return 1;
+		return 2;
 	}
 
 	public boolean isEnabled() {

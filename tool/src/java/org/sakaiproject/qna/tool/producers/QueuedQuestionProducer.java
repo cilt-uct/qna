@@ -28,6 +28,8 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionIteratorRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -82,6 +84,11 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		this.questionIteratorRenderer = questionIteratorRenderer;
 	}
 	
+	private TargettedMessageList targettedMessageList;	
+	public void setTargettedMessageList(TargettedMessageList targettedMessageList) {
+		this.targettedMessageList = targettedMessageList;
+	}
+
 	/**
 	 * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
 	 */
@@ -89,10 +96,15 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
-
+		
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
 		searchBarRenderer.makeSearchBar(tofill, "searchTool", VIEW_ID);
-
+		//QNA-179 its possible the question doesn't exist
+		if (question == null) {
+			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-such-question", new Object[]{questionParams.questionid}, TargettedMessage.SEVERITY_ERROR));
+			return;
+		}
+		
 		questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);
 		// Generate the page title and the page sub title
 		UIMessage.make(tofill, "page-title", "qna.queued-question.title");

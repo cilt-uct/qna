@@ -117,6 +117,8 @@ public class QueuedQuestionProducer implements ViewComponentProducer,NavigationC
 		if (question.getAttachments().size() > 0) {
 			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question); }
 		
+		UIMessage.make(tofill,"queued-question-id","qna.view-question.id", new Object[] { question.getId() + ""});
+
 		// If anonymous remove name
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"queued-question-submitter","qna.queued-question.submitter-detail-anonymous", new Object[] {DateUtil.getSimpleDateTime(question.getDateLastModified()),question.getViews()});

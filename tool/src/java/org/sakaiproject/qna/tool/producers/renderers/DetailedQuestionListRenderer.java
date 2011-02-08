@@ -104,7 +104,8 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         sortHeaderRenderer.makeSortingLink(listTable, "tableheader.modified", params,
         		SortByConstants.MODIFIED, "qna.view-questions.modified");
         sortHeaderRenderer.makeSortingLink(listTable, "tableheader.category", params,
-        		SortByConstants.CATEGORY, "qna.view-questions.category");
+        		SortByConstants.CATEGORY, "qna.view-questions.category");        
+        UIMessage.make(listTable, "tableheader.id", "qna.view-questions.id");
         UIMessage.make(listTable, "tableheader.remove:", "qna.view-questions.remove");
 
         StringList deletable = new StringList();
@@ -137,6 +138,7 @@ public class DetailedQuestionListRenderer implements QuestionListRenderer {
         	}
         	UISelectChoice.make(row, "remove-question-checkbox", questionDeleteSelect.getFullID(), deletable.size());
         	deletable.add(question.getId().toString());
+        	UIOutput.make(row, "question_row_id", question.getId() + "");
         }
 
         questionDeleteSelect.optionlist.setValue(deletable.toStringArray());

@@ -163,6 +163,9 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 			attachmentsViewRenderer.makeAttachmentsView(tofill, "attachmentsViewTool:", question); }
 
 		String dateToDisplay = DateUtil.getSimpleDateTime(question.getDateLastModified());	
+		
+		UIMessage.make(tofill,"question-id","qna.view-question.id", new Object[] { question.getId() + ""});
+		
 		// If anonymous remove name
 		if (question.isAnonymous()) {
 			UIMessage.make(tofill,"question-submit-details","qna.view-question.submitter-detail-anonymous", new Object[] {dateToDisplay,question.getViews()});

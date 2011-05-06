@@ -20,8 +20,8 @@
 		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
 		<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
 		<property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
-		<!-- uncomment if using the sms service -->
-		<property name="smsService" ref="org.sakaiproject.sms.api.SmsService" />
+		<!-- uncomment if using the sms service 
+		<property name="smsService" ref="org.sakaiproject.sms.api.SmsService" />-->
 	</bean>
 	
 	<bean id="org.sakaiproject.qna.logic.ExternalEventLogic" class="org.sakaiproject.qna.logic.impl.ExternalEventLogicImpl">

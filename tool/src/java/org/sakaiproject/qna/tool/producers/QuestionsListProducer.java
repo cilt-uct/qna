@@ -40,6 +40,8 @@ import org.sakaiproject.qna.tool.utils.ViewHelper;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
+import uk.org.ponder.messageutil.TargettedMessage;
+import uk.org.ponder.messageutil.TargettedMessageList;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -131,6 +133,11 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     	this.viewHelper = viewHelper;
     }
     
+    private TargettedMessageList targettedMessageList;	
+	public void setTargettedMessageList(TargettedMessageList targettedMessageList) {
+		this.targettedMessageList = targettedMessageList;
+	}
+    
      /**
      * @see ComponentProducer#fillComponents(UIContainer, ViewParameters, ComponentChecker)
      */
@@ -213,6 +220,13 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 
 		UISelect select = UISelect.make(form, "view-select", options, labels, null, currentSelected);
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,currentSelected});
+		
+		//check if the user has permission
+		if (!permissionLogic.canRead(null, null)) {
+			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-permission", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
+			return;
+		}
+		
 		renderer.makeQuestionList(tofill, "questionListTool:", params, form);
     }
 

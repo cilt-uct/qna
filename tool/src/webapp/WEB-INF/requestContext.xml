@@ -261,6 +261,7 @@
 		<property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic"/>
 		<property name="ELEvaluator" ref="ELEvaluator"/>
 		<property name="viewHelper" ref="ViewHelper"/> 
+		<property name="targettedMessageList" ref="targettedMessageList"/>
 	</bean>
 
 	<bean id="OrganiserHelper" class="org.sakaiproject.qna.tool.otp.OrganiserHelper">

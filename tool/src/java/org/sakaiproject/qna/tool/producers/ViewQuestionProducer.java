@@ -134,6 +134,16 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		String optionsOTP = optionsLocator + "." + optionsLogic.getOptionsForLocation(externalLogic.getCurrentLocationId()).getId();
 
 		QuestionParams questionParams = (QuestionParams) viewparams;
+		
+		
+		//can the user read this question?
+		if (!permissionLogic.canRead(null, null)) {
+			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-permission", new Object[]{questionParams.questionid}, TargettedMessage.SEVERITY_ERROR));
+			return;
+		}
+		
+		
+		
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(questionParams.questionid));
 
 		navBarRenderer.makeNavBar(tofill, "navIntraTool:", VIEW_ID);
@@ -144,6 +154,8 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-such-question", new Object[]{questionParams.questionid}, TargettedMessage.SEVERITY_ERROR));
 			return;
 		}
+		
+		
 		
 		if (!questionParams.direct) {
 			questionIteratorRenderer.makeQuestionIterator(tofill, "iterator1:",question);

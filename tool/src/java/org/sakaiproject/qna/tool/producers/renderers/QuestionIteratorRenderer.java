@@ -68,7 +68,7 @@ public class QuestionIteratorRenderer {
 			 secondary = true;
 		 }
 		
-		 UIJointContainer iterator = new UIJointContainer(tofill,divID,"question-iterator:");
+		 new UIJointContainer(tofill,divID,"question-iterator:");
 		 questionIteratorHelper.setCurrentQuestion(current);
 		 
 		 if (!questionIteratorHelper.isFirst()) {
@@ -94,7 +94,7 @@ public class QuestionIteratorRenderer {
 	 *	Creates secondary Question Iterator, with different ids 
 	 */
 	private void makeSecondaryQuestionIterator(UIContainer tofill, String divID, QnaQuestion current) {
-		 UIJointContainer iterator = new UIJointContainer(tofill,divID,"question-iterator-secondary:");
+		 new UIJointContainer(tofill,divID,"question-iterator-secondary:");
 		 questionIteratorHelper.setCurrentQuestion(current);
 		 
 		 if (!questionIteratorHelper.isFirst()) {

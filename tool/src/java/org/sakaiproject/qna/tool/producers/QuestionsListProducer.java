@@ -222,7 +222,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
 		UIInitBlock.make(form, "view-select-init", "init_view_select", new Object[] {(select.getFullID() + "-selection"),form,options.length,currentSelected});
 		
 		//check if the user has permission
-		if (!permissionLogic.canRead(null, null)) {
+		if (!permissionLogic.canRead(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-permission", new Object[]{}, TargettedMessage.SEVERITY_ERROR));
 			return;
 		}

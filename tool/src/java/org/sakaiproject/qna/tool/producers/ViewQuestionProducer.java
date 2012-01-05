@@ -137,7 +137,7 @@ public class ViewQuestionProducer implements ViewComponentProducer, NavigationCa
 		
 		
 		//can the user read this question?
-		if (!permissionLogic.canRead(null, null)) {
+		if (!permissionLogic.canRead(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 			targettedMessageList.addMessage(new TargettedMessage("qna.warning.no-permission", new Object[]{questionParams.questionid}, TargettedMessage.SEVERITY_ERROR));
 			return;
 		}

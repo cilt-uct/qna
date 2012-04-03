@@ -38,7 +38,7 @@ import uk.org.ponder.messageutil.TargettedMessageList;
 
 public class QuestionLocator implements EntityBeanLocator  {
     public static final String NEW_PREFIX = "new ";
-    public static String NEW_1 = NEW_PREFIX + "1";
+    public static final String NEW_1 = NEW_PREFIX + "1";
 
     public static final String SAVED = "saved";
     public static final String CANCEL = "cancel";

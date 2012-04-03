@@ -29,7 +29,7 @@ import uk.org.ponder.messageutil.TargettedMessageList;
 public class CategoryLocator implements EntityBeanLocator {
 
     public static final String NEW_PREFIX = "new ";
-    public static String NEW_1 = NEW_PREFIX + "1";
+    public static final String NEW_1 = NEW_PREFIX + "1";
 
 	private CategoryLogic categoryLogic;
 	private ExternalLogic externalLogic;

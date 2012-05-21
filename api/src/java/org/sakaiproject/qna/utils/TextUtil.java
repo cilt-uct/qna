@@ -15,7 +15,7 @@
  */
 package org.sakaiproject.qna.utils;
 
-
+import org.apache.commons.lang.StringEscapeUtils;
 /**
  * Utility class to format output to be display on front-end & methods on strings
  *
@@ -30,7 +30,9 @@ public class TextUtil {
 	 */
 	public static String stripTags(String html) {
 		String cleanup = QNAUtils.cleanupHtmlPtags(html);
-		return cleanup.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
+		return StringEscapeUtils.unescapeHtml(cleanup.replaceAll("\\<.*?>","").replaceAll("&nbsp;"," "));
+
+		//return cleanup.replaceAll("\\<.*?>","").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&");
 	}
 	
 	/**

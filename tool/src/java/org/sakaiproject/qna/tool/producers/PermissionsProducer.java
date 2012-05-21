@@ -16,12 +16,17 @@
 package org.sakaiproject.qna.tool.producers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.util.ResourceLoader;
 
 import uk.ac.cam.caret.sakai.rsf.helper.HelperViewParameters;
 import uk.org.ponder.messageutil.MessageLocator;
@@ -66,6 +71,16 @@ public class PermissionsProducer implements ViewComponentProducer, ViewParamsRep
 		);
         session.setAttribute(PermissionsHelper.PREFIX, "qna.");
 
+        ResourceLoader pRb = new ResourceLoader("permissions");
+        Map<String, String> pRbValues = new HashMap<String, String>();
+        for (@SuppressWarnings("unchecked")Iterator<Entry<String, String>> mapIter = pRb.entrySet().iterator();mapIter.hasNext();)
+        {
+        	Entry<String, String> entry = mapIter.next();
+        	pRbValues.put(entry.getKey(), entry.getValue());
+        }
+      	session.setAttribute("permissionDescriptions", pRbValues); 
+        
+        
         UIOutput.make(tofill, HelperViewParameters.HELPER_ID, HELPER);
         UICommand.make(tofill, HelperViewParameters.POST_HELPER_BINDING, "", null);
 

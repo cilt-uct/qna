@@ -142,7 +142,7 @@
 
       <dependency>
          <groupId>net.sf.ehcache</groupId>
-         <artifactId>ehcache</artifactId>
+         <artifactId>ehcache-core</artifactId>
          <!-- <version>${sakai.ehcache.version}</version> -->
          <scope>provided</scope>
       </dependency>

@@ -15,6 +15,7 @@
  */
 package org.sakaiproject.qna.logic.test.stubs;
 
+import java.util.Date;
 import java.util.Stack;
 
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -166,10 +167,6 @@ public class FakeUser implements User {
 		return null;
 	}
 
-	public Element toXml(Document doc, Stack stack) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public int compareTo(Object arg0) {
 		// TODO Auto-generated method stub
@@ -182,6 +179,24 @@ public class FakeUser implements User {
 	}
 
 	public Time getModifiedTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Element toXml(Document doc, Stack<Element> stack) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Date getCreatedDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Date getModifiedDate() {
 		// TODO Auto-generated method stub
 		return null;
 	}

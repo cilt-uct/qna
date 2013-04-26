@@ -67,7 +67,7 @@ public class NavBarRenderer {
 		    	} else {
 		    		UIInternalLink.make(cell4, "item-link", UIMessage.make("qna.navbar.organise"), new SimpleViewParameters(OrganiseListProducer.VIEW_ID));
 		    	}
-		    	UIOutput.make(cell4, "item-separator");
+		    	
 
 
 		    	UIBranchContainer cell5 = UIBranchContainer.make(joint, "navigation-cell:", "5");
@@ -76,7 +76,7 @@ public class NavBarRenderer {
 		    	} else {
 		    		UIInternalLink.make(cell5, "item-link", UIMessage.make("qna.navbar.options"), new SimpleViewParameters(OptionsProducer.VIEW_ID));
 		    	}
-		    	UIOutput.make(cell5, "item-separator");
+		    	
 	    	}
 
 	    	if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, externalLogic.getCurrentLocationId())) {

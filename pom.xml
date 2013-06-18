@@ -40,7 +40,7 @@
 		<repository>
 			<id>uct-repo</id>
 			<layout>default</layout>
-			<url>http://source.cet.uct.ac.za:8081/nexus/content/groups/public/</url>
+			<url>http://source.cet.uct.ac.za/nexus/content/groups/public/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

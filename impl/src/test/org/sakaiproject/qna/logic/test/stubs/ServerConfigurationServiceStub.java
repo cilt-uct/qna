@@ -17,6 +17,7 @@ package org.sakaiproject.qna.logic.test.stubs;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -191,6 +192,18 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 
 	@Override
 	public ConfigData getConfigData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Locale[] getSakaiLocales() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Locale getLocaleFromString(String localeString) {
 		// TODO Auto-generated method stub
 		return null;
 	}

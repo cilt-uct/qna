@@ -106,9 +106,9 @@
 	</distributionManagement>
 	<!-- define source code repository location -->
 	<scm>
-		<connection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</connection>
-		<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/qna/trunk</developerConnection>
-		<url>https://source.sakaiproject.org/contrib/qna/trunk</url>
+		<connection>scm:svn:https://source.sakaiproject.org/contrib/qna/branches/QNA-203</connection>
+		<developerConnection>scm:svn:https://source.sakaiproject.org/contrib/qna/branches/QNA-203</developerConnection>
+		<url>https://source.sakaiproject.org/contrib/qna/branches/QNA-203</url>
 	</scm>
 		<issueManagement>
 		<system>jira</system>

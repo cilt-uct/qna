@@ -208,4 +208,28 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		return null;
 	}
 
+	@Override
+	public List<String> getToolGroup(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean toolGroupIsSelected(String groupName, String toolId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean toolGroupIsRequired(String groupName, String toolId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<String> getCategoryGroups(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -21,22 +21,24 @@
 		class="org.sakaiproject.qna.tool.entity.CategoryEntityProvider">
 		<property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic"/>
 	</bean>
-   <!-- handles configuration of internationalization messages -->
-   <bean id="messageLocator" class="org.sakaiproject.util.ResourceLoaderMessageSource"
-	                depends-on="TLABPostProcessorLoader">
-      
-         
-            <property name="basename">
-               <value>WEB-INF/bundle/messages</value>
-            </property>
-            <property name="cacheSeconds">
-               <value>10</value>
-            </property>
-         
-      
-      <!-- <property name="localeGetter" ref="requestLocaleProxy" />-->
-    </bean>
-
+   <!-- handles configuration of internationalization messages -->	
+	<bean id="messageLocator"
+		class="uk.org.ponder.springutil.SpringMessageLocator">
+		<property name="messageSource">
+			<bean
+				class="org.sakaiproject.util.ResourceLoaderMessageSource"
+				depends-on="TLABPostProcessorLoader">
+				<property name="basename">
+					<value>classpath:messages</value>
+				</property>
+				<property name="cacheSeconds">
+					<value>10</value>
+				</property>
+			</bean>
+		</property>
+		<property name="localeGetter" ref="requestLocaleProxy" />
+	</bean>
+	
   <!-- is this causing the TML NPE?
   , 
  -->

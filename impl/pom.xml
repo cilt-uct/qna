@@ -211,7 +211,7 @@
             <filtering>false</filtering>
          </resource>
          <resource>
-        	<directory>${basedir}/../tool/src/webapp/WEB-INF/bundle</directory>
+        	<directory>${basedir}/../tool/src/bundle</directory>
 	        <includes>
 	        	<include>**/*.properties</include>
 	        </includes>

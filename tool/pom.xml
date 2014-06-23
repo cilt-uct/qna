@@ -19,7 +19,6 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<properties>
-		<rsfutil.version>0.8.0-SNAPSHOT</rsfutil.version>
 		<deploy.webappname>Qna</deploy.webappname>
 		<appserver.id>${sakai.appserver.id}</appserver.id>
 	</properties>
@@ -58,22 +57,22 @@
 		<dependency>
 			<groupId>uk.org.ponder.sakairsf</groupId>
 			<artifactId>sakairsf</artifactId>
-			<version>${rsfutil.version}</version>
+            		<version>${sakairsf.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>uk.org.ponder.sakairsf</groupId>
 			<artifactId>SakaiRSFComponents-evolvers</artifactId>
-			<version>${rsfutil.version}</version>
+            		<version>${sakairsf.components.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>uk.org.ponder.sakairsf</groupId>
 			<artifactId>SakaiRSFComponents-templates</artifactId>
-			<version>${rsfutil.version}</version>
+            		<version>${sakairsf.components.version}</version>
 			<type>war</type>
 		</dependency>
-	  
+  
 		<!-- apache commons logging -->
 		<dependency>
 			<groupId>commons-logging</groupId>

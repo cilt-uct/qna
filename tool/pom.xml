@@ -11,7 +11,7 @@
 	<description>Qna webapp (tool)</description>
 	<packaging>war</packaging>
 
-	<!-- the base is the parent pom -->
+   <!-- the base is the parent pom -->
 	<parent>
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>qna</artifactId>
@@ -24,14 +24,14 @@
 		<appserver.id>${sakai.appserver.id}</appserver.id>
 	</properties>
 	<dependencies>
-		<!-- internal dependencies -->
+      <!-- internal dependencies -->
 		<dependency>
 			<groupId>org.sakaiproject.qna</groupId>
 			<artifactId>qna-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
-		<!--  Spring dependency -->
+	
+	  <!--  Spring dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -54,7 +54,7 @@
 			<groupId>org.sakaiproject.kernel</groupId>
 			<artifactId>sakai-kernel-util</artifactId>
 		</dependency>
-		<!-- Sakai RSF dependency -->
+      <!-- Sakai RSF dependency -->
 		<dependency>
 			<groupId>uk.org.ponder.sakairsf</groupId>
 			<artifactId>sakairsf</artifactId>
@@ -73,15 +73,7 @@
 			<version>${rsfutil.version}</version>
 			<type>war</type>
 		</dependency>
-
-		<!-- Templates not yet in main rsf template bundles -->
-		<dependency>
-			<groupId>za.ac.uct.cet.sakairsf</groupId>
-			<artifactId>SakaiRSFComponents-uct-templates</artifactId>
-			<version>0.7.4-sakai_2.2.x</version>
-			<type>war</type>
-		</dependency>
-
+	  
 		<!-- apache commons logging -->
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -114,37 +106,17 @@
 		</dependency>
 	</dependencies>
 
-	<!-- RSF (CARET) maven 2 repositories -->
+   <!-- RSF (CARET) maven 2 repositories -->
 	<repositories>
 		<repository>
 			<id>Sakaiproject-Maven2</id>
 			<name>Sakaiproject Maven 2 Repository</name>
 			<url>https://source.sakaiproject.org/maven2</url>
 		</repository>
-		<repository>
-			<id>cet-release</id>
-			<name>cet releases</name>
-			<url>
-				http://source.cet.uct.ac.za/nexus/content/repositories/releases
-			</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>cet-snapshots</id>
-			<name>cet snapshots</name>
-			<url>
-				http://source.cet.uct.ac.za/nexus/content/repositories/snapshots
-			</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<build>
-		<!-- unit testing -->
+      <!-- unit testing -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

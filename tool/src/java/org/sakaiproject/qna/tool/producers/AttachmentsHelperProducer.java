@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.sakaiproject.qna.tool.params.AttachmentsHelperParams;
 import org.sakaiproject.qna.tool.params.QuestionTextParams;
+import org.sakaiproject.rsf.helper.HelperViewParameters;
 import org.springframework.web.multipart.MultipartResolver;
 
-import uk.ac.cam.caret.sakai.rsf.helper.HelperViewParameters;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIOutput;

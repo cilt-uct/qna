@@ -19,8 +19,8 @@ import org.sakaiproject.entitybroker.IdEntityReference;
 import org.sakaiproject.qna.logic.entity.CategoryEntityProvider;
 import org.sakaiproject.qna.tool.params.CategoryParams;
 import org.sakaiproject.qna.tool.producers.CategoryProducer;
+import org.sakaiproject.rsf.entitybroker.EntityViewParamsInferrer;
 
-import uk.ac.cam.caret.sakai.rsf.entitybroker.EntityViewParamsInferrer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
 public class CategoryVPInferrer implements EntityViewParamsInferrer {

@@ -21,8 +21,8 @@ import org.sakaiproject.qna.logic.entity.AnswerEntityProvider;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.tool.params.QuestionParams;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
+import org.sakaiproject.rsf.entitybroker.EntityViewParamsInferrer;
 
-import uk.ac.cam.caret.sakai.rsf.entitybroker.EntityViewParamsInferrer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 
 public class AnswerVPInferrer implements EntityViewParamsInferrer {

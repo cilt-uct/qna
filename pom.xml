@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>master</artifactId>
-		<version>10-SNAPSHOT</version>
+		<version>11-SNAPSHOT</version>
 		<relativePath>../master/pom.xml</relativePath>
 	</parent>
 	<modules>
@@ -25,25 +25,7 @@
 		<module>tool</module>
 		<module>help</module>
 	</modules>
-	<repositories>
-		<repository>
-			<id>sakai-maven</id>
-			<name>Sakai Maven Repo</name>
-			<layout>default</layout>
-			<url>http://source.sakaiproject.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<!--<repository>
-			<id>uct-repo</id>
-			<layout>default</layout>
-			<url>http://source.cet.uct.ac.za/nexus/content/groups/public/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		      </repository>-->
-	</repositories>
+
 	<properties>
 		<!--<url.localsite>dav:http://source.sakaiproject.org/release/kernel/${project.version}</url.localsite>-->
 		<url.localsite>scp://source.sakaiproject.org/var/www/html/release/qna/${project.version}</url.localsite>

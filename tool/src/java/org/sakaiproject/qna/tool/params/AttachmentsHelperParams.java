@@ -15,10 +15,7 @@
  */
 package org.sakaiproject.qna.tool.params;
 
-
-import uk.ac.cam.caret.sakai.rsf.helper.HelperViewParameters;
-
-
+import org.sakaiproject.rsf.helper.HelperViewParameters;
 
 public class AttachmentsHelperParams extends HelperViewParameters {
 	 

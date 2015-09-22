@@ -24,11 +24,11 @@ import java.util.Map.Entry;
 
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.qna.logic.ExternalLogic;
+import org.sakaiproject.rsf.helper.HelperViewParameters;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.util.ResourceLoader;
 
-import uk.ac.cam.caret.sakai.rsf.helper.HelperViewParameters;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;

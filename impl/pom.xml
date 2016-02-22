@@ -47,12 +47,11 @@
          <artifactId>mail</artifactId>
       </dependency>
 
-      <!-- generic DAO -->
-      <dependency>
-         <groupId>org.sakaiproject</groupId>
-         <artifactId>generic-dao</artifactId>
-         <version>${generic-dao.version}</version>
-      </dependency>
+         <!-- generic-dao -->
+	<dependency>
+		<groupId>org.sakaiproject.genericdao</groupId>
+		<artifactId>generic-dao</artifactId>
+	</dependency>
 
       <!-- spring and hibernate -->
         <dependency>

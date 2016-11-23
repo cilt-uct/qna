@@ -57,19 +57,19 @@
 		<dependency>
 			<groupId>org.sakaiproject.rsf</groupId>
 			<artifactId>sakai-rsf-core</artifactId>
-			<version>${sakai.version}</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.rsf</groupId>
 			<artifactId>sakai-rsf-web-evolvers</artifactId>
-			<version>${sakai.version}</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.rsf</groupId>
 			<artifactId>sakai-rsf-web-templates</artifactId>
-			<version>${sakai.version}</version>
+			<version>${project.version}</version>
 			<type>war</type>
 		</dependency>
 

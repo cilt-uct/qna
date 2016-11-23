@@ -35,6 +35,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
 import org.sakaiproject.qna.logic.impl.PermissionLogicImpl;
@@ -44,10 +47,16 @@ import org.sakaiproject.qna.logic.test.stubs.ServerConfigurationServiceStub;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
+@DirtiesContext
+@ContextConfiguration(locations={
+		"/hibernate-test.xml",
+		"/spring-hibernate.xml"})
 public class OptionsLogicImplTest extends
-		AbstractTransactionalSpringContextTests {
+	AbstractTransactionalJUnit4SpringContextTests {
 
 	OptionsLogicImpl optionsLogic;
 	PermissionLogicImpl permissionLogic;
@@ -61,27 +70,14 @@ public class OptionsLogicImplTest extends
 	
 	private final TestDataPreload tdp = new TestDataPreload();
 
-	@Override
-	protected String[] getConfigLocations() {
-		// point to the needed spring config files, must be on the classpath
-		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
-		// they also need to be referenced in the project.xml file
-		return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
-	}
-
 	// run this before each test starts
-	@Override
-	protected void onSetUpBeforeTransaction() throws Exception {
-	}
-
-	// run this before each test starts and as part of the transaction
-	@Override
-	protected void onSetUpInTransaction() {
+	@Before
+	public void onSetUpBeforeTransaction() throws Exception {
 		// load the spring created dao class bean from the Spring Application
 		// Context
 		dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
 		if (dao == null) {
-			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+			log.error("onSetUpBeforeTransaction: DAO could not be retrieved from spring context");
 		}
 		
 		permissionLogic = new PermissionLogicImpl();
@@ -102,33 +98,35 @@ public class OptionsLogicImplTest extends
 	/**
 	 * Test to retrieve options
 	 */
+	@Test
 	public void testGetOptionsByLocation() {
 		QnaOptions options = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
-		assertNotNull(options);
-		assertTrue(options.getLocation().equals(LOCATION1_ID));
+		Assert.assertNotNull(options);
+		Assert.assertTrue(options.getLocation().equals(LOCATION1_ID));
 
-		assertEquals(options.isModerated(), tdp.options_location1
+		Assert.assertEquals(options.isModerated(), tdp.options_location1
 				.isModerated());
-		assertEquals(options.getAnonymousAllowed(), tdp.options_location1
+		Assert.assertEquals(options.getAnonymousAllowed(), tdp.options_location1
 				.getAnonymousAllowed());
 
-		assertEquals(options.getEmailNotification(), tdp.options_location1
+		Assert.assertEquals(options.getEmailNotification(), tdp.options_location1
 				.getEmailNotification());
-		assertEquals(options.getEmailNotificationType(), tdp.options_location1
+		Assert.assertEquals(options.getEmailNotificationType(), tdp.options_location1
 				.getEmailNotificationType());
 
-		assertEquals(options.getDefaultStudentView(), tdp.options_location1
+		Assert.assertEquals(options.getDefaultStudentView(), tdp.options_location1
 				.getDefaultStudentView());
 	}
 
 	/**
 	 * Test to modify options
 	 */
+	@Test
 	public void testModifyOptions() {
 		QnaOptions options = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
-		assertNotNull(options);
+		Assert.assertNotNull(options);
 		options.setAnonymousAllowed(true);
 		options.setModerated(false);
 		options.setEmailNotification(false);
@@ -141,9 +139,9 @@ public class OptionsLogicImplTest extends
 			externalLogicStub.currentUserId = USER_NO_UPDATE;
 			optionsLogic.saveOptions(options, LOCATION1_ID);
 
-			fail("Should have thrown exception");
+			Assert.fail("Should have thrown exception");
 		} catch (SecurityException e) {
-			assertNotNull(e);
+			Assert.assertNotNull(e);
 		}
 		
 		// Set user here with permissions
@@ -151,20 +149,20 @@ public class OptionsLogicImplTest extends
 			externalLogicStub.currentUserId = USER_UPDATE;
 			optionsLogic.saveOptions(options, LOCATION1_ID);
 		} catch (SecurityException e) {
-			fail("Should have thrown exception");
+			Assert.fail("Should have thrown exception");
 		}
 
 		QnaOptions modifiedOptions = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
 
-		assertNotNull(modifiedOptions);
-		assertEquals(options.getAnonymousAllowed(), modifiedOptions
+		Assert.assertNotNull(modifiedOptions);
+		Assert.assertEquals(options.getAnonymousAllowed(), modifiedOptions
 				.getAnonymousAllowed());
-		assertEquals(options.isModerated(), modifiedOptions
+		Assert.assertEquals(options.isModerated(), modifiedOptions
 				.isModerated());
-		assertEquals(options.getEmailNotification(), modifiedOptions
+		Assert.assertEquals(options.getEmailNotification(), modifiedOptions
 				.getEmailNotification());
-		assertEquals(options.getDefaultStudentView(), modifiedOptions
+		Assert.assertEquals(options.getDefaultStudentView(), modifiedOptions
 				.getDefaultStudentView());
 		
 	}
@@ -172,36 +170,38 @@ public class OptionsLogicImplTest extends
 	/**
 	 * Test creating new options for location without options saved yet
 	 */
+	@Test
 	public void testNewOptions() {
 		// Get new location id without options set
 		String locationId = LOCATION2_ID;
 
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
 
-		assertNotNull(options);
+		Assert.assertNotNull(options);
 	}
 	
 	/**
 	 * Test that default view can only be set as valid values
 	 */
+	@Test
 	public void testSetDefaultView() {
 		QnaOptions options = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
 
-		assertEquals(options.getDefaultStudentView(),
+		Assert.assertEquals(options.getDefaultStudentView(),
 				QnaConstants.CATEGORY_VIEW);
 
 		try {
 			options.setDefaultStudentView("silly_string");
-			fail("Should throw exception");
+			Assert.fail("Should throw exception");
 		} catch (IllegalArgumentException e) {
-			assertNotNull(e);
+			Assert.assertNotNull(e);
 		}
 
-		assertEquals(options.getDefaultStudentView(),
+		Assert.assertEquals(options.getDefaultStudentView(),
 				QnaConstants.CATEGORY_VIEW);
 		options.setDefaultStudentView(QnaConstants.MOST_POPULAR_VIEW);
-		assertEquals(options.getDefaultStudentView(),
+		Assert.assertEquals(options.getDefaultStudentView(),
 				QnaConstants.MOST_POPULAR_VIEW);
 	}
 
@@ -209,29 +209,31 @@ public class OptionsLogicImplTest extends
 	 * Test that only valid email notification types can be selected Test that
 	 * notification type is null when emailNotification is false
 	 */
+	@Test
 	public void testMailNotificationType() {
 		QnaOptions options = optionsLogic
 				.getOptionsForLocation(LOCATION1_ID);
 
-		assertEquals(options.getEmailNotification(), Boolean.valueOf(true));
-		assertEquals(options.getEmailNotificationType(),
+		Assert.assertEquals(options.getEmailNotification(), Boolean.valueOf(true));
+		Assert.assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
 
 		try {
 			options.setEmailNotificationType("silly_string");
-			fail("Should throw exception");
+			Assert.fail("Should throw exception");
 		} catch (IllegalArgumentException e) {
-			assertNotNull(e);
+			Assert.assertNotNull(e);
 		}
 
-		assertFalse(options.getEmailNotificationType().equals("silly_string"));
-		assertEquals(options.getEmailNotificationType(),
+		Assert.assertFalse(options.getEmailNotificationType().equals("silly_string"));
+		Assert.assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
 	}
 
 	/**
 	 * Test get/set of custom mail list
 	 */
+	@Test
 	public void testCustomMailList() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic
@@ -239,25 +241,25 @@ public class OptionsLogicImplTest extends
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
 		
 	
-		assertEquals(3, customEmails.size());
+		Assert.assertEquals(3, customEmails.size());
 		
-		assertTrue(customEmails.contains(tdp.customEmail1_location1));
-		assertTrue(customEmails.contains(tdp.customEmail2_location1));
-		assertTrue(customEmails.contains(tdp.customEmail3_location1));
+		Assert.assertTrue(customEmails.contains(tdp.customEmail1_location1));
+		Assert.assertTrue(customEmails.contains(tdp.customEmail2_location1));
+		Assert.assertTrue(customEmails.contains(tdp.customEmail3_location1));
 		
 		for (QnaCustomEmail qnaCustomEmail2 : customEmails) {
-			assertNotNull(qnaCustomEmail2.getId());
+			Assert.assertNotNull(qnaCustomEmail2.getId());
 		}
 		
 		boolean errorOccurred = optionsLogic.setCustomMailList(
 				LOCATION1_ID,
 				USER_CUSTOM_EMAIL_INVALID);
-		assertTrue(errorOccurred);
+		Assert.assertTrue(errorOccurred);
 
 		options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		customEmails = options.getCustomEmails();
 
-		assertEquals(customEmails.size(), 1);
+		Assert.assertEquals(customEmails.size(), 1);
 		
 		boolean contains = false;
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
@@ -265,25 +267,25 @@ public class OptionsLogicImplTest extends
 				contains = true;
 			}
 		}
-		assertTrue(contains);
+		Assert.assertTrue(contains);
 
 		errorOccurred = optionsLogic.setCustomMailList(
 				LOCATION1_ID,
 				USER_CUSTOM_EMAIL_VALID);
-		assertFalse(errorOccurred);
+		Assert.assertFalse(errorOccurred);
 		
 		options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		customEmails = options.getCustomEmails();
 		
 
-		assertEquals(customEmails.size(), 3);
+		Assert.assertEquals(customEmails.size(), 3);
 		
 		boolean foundEmail1 = false;
 		boolean foundEmail2 = false;
 		boolean foundEmail3 = false;
 		
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
-			assertNotNull(qnaCustomEmail.getId());
+			Assert.assertNotNull(qnaCustomEmail.getId());
 			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
 				foundEmail1 = true;
 			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL2)) {
@@ -292,54 +294,57 @@ public class OptionsLogicImplTest extends
 				foundEmail3 = true;
 			}
 		}
-		assertTrue(foundEmail1);
-		assertTrue(foundEmail2);
-		assertTrue(foundEmail3);
+		Assert.assertTrue(foundEmail1);
+		Assert.assertTrue(foundEmail2);
+		Assert.assertTrue(foundEmail3);
 		
 		// Add it again
 		errorOccurred = optionsLogic.setCustomMailList(
 				LOCATION1_ID,
 				"clown@college.org");
-		assertFalse(errorOccurred);
+		Assert.assertFalse(errorOccurred);
 		options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		customEmails = options.getCustomEmails();
 		
-		assertEquals(customEmails.size(), 1);
+		Assert.assertEquals(customEmails.size(), 1);
 	}
 
 	/**
 	 * Test get to get correct mail addresses based on options Test location set
 	 * as site contact
 	 */
+	@Test
 	public void testGetMailAddressesSiteContact() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
-		assertEquals(options.getEmailNotificationType(),
+		Assert.assertEquals(options.getEmailNotificationType(),
 				QnaConstants.SITE_CONTACT);
 		Set<String> notificationList = optionsLogic.getNotificationSet(LOCATION1_ID);
-		assertEquals(notificationList.size(), 1);
-		assertTrue(notificationList.contains(LOCATION1_CONTACT_EMAIL));
+		Assert.assertEquals(notificationList.size(), 1);
+		Assert.assertTrue(notificationList.contains(LOCATION1_CONTACT_EMAIL));
 	}
 
 	/**
 	 * Test get to get correct mail addresses based on options Test location set
 	 * as update rights
 	 */
+	@Test
 	public void testGetMailAddressesUpdateRights() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION3_ID);
-		assertEquals(options.getEmailNotificationType(),
+		Assert.assertEquals(options.getEmailNotificationType(),
 				QnaConstants.UPDATE_RIGHTS);
 		Set<String> notificationSet = optionsLogic.getNotificationSet(LOCATION3_ID);
-		assertEquals(notificationSet.size(), 3);
+		Assert.assertEquals(notificationSet.size(), 3);
 
-		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_1_EMAIL));
-		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_2_EMAIL));
-		assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_3_EMAIL));
+		Assert.assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_1_EMAIL));
+		Assert.assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_2_EMAIL));
+		Assert.assertTrue(notificationSet.contains(USER_LOC_3_UPDATE_3_EMAIL));
 	}
 
 	/**
 	 * Test get to get correct mail addresses based on options Test location set
 	 * as custom mail list
 	 */
+	@Test
 	public void testGetMailAddressesCustomList() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
@@ -347,218 +352,236 @@ public class OptionsLogicImplTest extends
 			options.setEmailNotificationType(QnaConstants.CUSTOM_LIST);
 			optionsLogic.saveOptions(options, LOCATION1_ID);
 		} catch (Exception e) {
-			fail("Should not throw exception");
+			Assert.fail("Should not throw exception");
 		}
 		
-		assertEquals(options.getEmailNotificationType(),QnaConstants.CUSTOM_LIST);
-		assertEquals(options.getCustomEmails().size(),3);
+		Assert.assertEquals(options.getEmailNotificationType(),QnaConstants.CUSTOM_LIST);
+		Assert.assertEquals(options.getCustomEmails().size(),3);
 		Set<String> notificationSet = optionsLogic.getNotificationSet(LOCATION1_ID);
 		Set<QnaCustomEmail> customMails = options.getCustomEmails();
-		assertEquals(notificationSet.size(), notificationSet.size());
+		Assert.assertEquals(notificationSet.size(), notificationSet.size());
 
 		for (QnaCustomEmail qnaCustomEmail : customMails) {
-			assertTrue(notificationSet.contains(qnaCustomEmail.getEmail()));
+			Assert.assertTrue(notificationSet.contains(qnaCustomEmail.getEmail()));
 		}
 	}
 
 	/**
 	 * Test to get zero mail addresses when notification is false for location
 	 */
+	@Test
 	public void testGetMailAddressesNoNotification() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION4_ID);
-		assertEquals(options.getEmailNotification(), Boolean.valueOf(false));
-		assertEquals(optionsLogic.getNotificationSet(LOCATION4_ID).size(),0);
+		Assert.assertEquals(options.getEmailNotification(), Boolean.valueOf(false));
+		Assert.assertEquals(optionsLogic.getNotificationSet(LOCATION4_ID).size(),0);
 	}
 	
 	/**
 	 * Test getOptionsById
 	 */
+	@Test
 	public void testGetById() {
 		QnaOptions optionsByLoc = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		QnaOptions optionsById = optionsLogic.getOptionsById(optionsByLoc.getId());
-		assertEquals(optionsByLoc.getId(), optionsById.getId());
-		assertEquals(LOCATION1_ID, optionsById.getLocation());
+		Assert.assertEquals(optionsByLoc.getId(), optionsById.getId());
+		Assert.assertEquals(LOCATION1_ID, optionsById.getLocation());
 	}
 	
 	/**
 	 * Test default options with no properties set
 	 */
+	@Test
 	public void testDefaultNoProperties() {
 		String locationId = LOCATION2_ID;
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.getAnonymousAllowed());
-		assertTrue(options.isModerated());
-		assertEquals(QnaConstants.SITE_CONTACT,options.getEmailNotificationType());
-		assertFalse(options.getEmailNotification());
-		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
-		assertFalse(options.getAllowUnknownMobile());
-		assertEquals(Integer.valueOf(1), options.getMobileAnswersNr());
+		Assert.assertFalse(options.getAnonymousAllowed());
+		Assert.assertTrue(options.isModerated());
+		Assert.assertEquals(QnaConstants.SITE_CONTACT,options.getEmailNotificationType());
+		Assert.assertFalse(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+		Assert.assertFalse(options.getAllowUnknownMobile());
+		Assert.assertEquals(Integer.valueOf(1), options.getMobileAnswersNr());
 	}
 	
 	/**
 	 * Test default options with moderated property set to false 
 	 */
+	@Test
 	public void testDefaultNotModerated() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.moderated", false);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.isModerated());
+		Assert.assertFalse(options.isModerated());
 	}
 
 	/**
 	 * Test default options with moderated property set to true 
 	 */
+	@Test
 	public void testDefaultModerated() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.moderated", true);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.isModerated());
+		Assert.assertTrue(options.isModerated());
 	}
 	
 	/**
 	 * Test default options with anonymous property set to true 
 	 */
+	@Test
 	public void testDefaultAnonymousAllowed() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.anonymous", true);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getAnonymousAllowed());
+		Assert.assertTrue(options.getAnonymousAllowed());
 	}
 
 	/**
 	 * Test default options with anonymous property set to false 
 	 */
+	@Test
 	public void testDefaultAnonymousNotAllowed() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.anonymous", false);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.getAnonymousAllowed());
+		Assert.assertFalse(options.getAnonymousAllowed());
 	}
 	
 	/**
 	 * Test default options with allow unknown mobile number as true
 	 */
+	@Test
 	public void testDefaultAllowUnknownMobile() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.allow-unknown-mobile", true);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getAllowUnknownMobile());
+		Assert.assertTrue(options.getAllowUnknownMobile());
 	}
 	
 	/**
 	 * Test default option for number of answers returned by mobile command
 	 */
+	@Test
 	public void testDefaultMobileAnswerNr() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.mobile-answers-nr", 3);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertEquals(Integer.valueOf(3), options.getMobileAnswersNr());
+		Assert.assertEquals(Integer.valueOf(3), options.getMobileAnswersNr());
 	}
 	
 	/**
 	 * Test default options with allow unknown mobile number as false
 	 */
+	@Test
 	public void testDefaultNotAllowUnknownMobile() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.allow-unknown-mobile", false);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.getAllowUnknownMobile());
+		Assert.assertFalse(options.getAllowUnknownMobile());
 	}
 	
 	/**
 	 * Test default options with student view property set to most_popular 
 	 */
+	@Test
 	public void testDefaultMostPopularView() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.view", QnaConstants.MOST_POPULAR_VIEW);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertEquals(QnaConstants.MOST_POPULAR_VIEW, options.getDefaultStudentView());
+		Assert.assertEquals(QnaConstants.MOST_POPULAR_VIEW, options.getDefaultStudentView());
 	}
 
 	/**
 	 * Test default options with student view property set to category 
 	 */
+	@Test
 	public void testDefaultCategoryView() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.view", QnaConstants.CATEGORY_VIEW);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+		Assert.assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
 	}
 	
 	/**
 	 * Test default options with student view property set to invalid
 	 */
+	@Test
 	public void testDefaultInvalidView() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.view", "invalid");
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
+		Assert.assertEquals(QnaConstants.CATEGORY_VIEW, options.getDefaultStudentView());
 	}
 	
 	/**
 	 * Test default options with notification property set to none 
 	 */
+	@Test
 	public void testDefaultNoNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification", "none");
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.getEmailNotification());
-		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+		Assert.assertFalse(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
 	}
 
 	/**
 	 * Test default options with notification property set to invalid 
 	 */
+	@Test
 	public void testDefaultInvalidNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification", "invalid");
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertFalse(options.getEmailNotification());
-		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+		Assert.assertFalse(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
 	}
 	
 	/**
 	 * Test default options with notification property set to site_contact 
 	 */
+	@Test
 	public void testDefaultSiteContactNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification", QnaConstants.SITE_CONTACT);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getEmailNotification());
-		assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
+		Assert.assertTrue(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.SITE_CONTACT, options.getEmailNotificationType());
 	}
 	
 	/**
 	 * Test default options with notification property set to update 
 	 */
+	@Test
 	public void testDefaultUpdateNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification", QnaConstants.UPDATE_RIGHTS);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getEmailNotification());
-		assertEquals(QnaConstants.UPDATE_RIGHTS, options.getEmailNotificationType());		
+		Assert.assertTrue(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.UPDATE_RIGHTS, options.getEmailNotificationType());		
 	}
 	
 	/**
 	 * Test default options with notification property set to valid custom mail list 
 	 */
+	@Test
 	public void testDefaultValidCustomNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification",USER_CUSTOM_EMAIL_VALID);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getEmailNotification());
+		Assert.assertTrue(options.getEmailNotification());
 		
-		assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
+		Assert.assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
 		
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
-		assertEquals(customEmails.size(), 3);
+		Assert.assertEquals(customEmails.size(), 3);
 		
 		boolean foundEmail1 = false;
 		boolean foundEmail2 = false;
 		boolean foundEmail3 = false;
 		
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
-			assertNotNull(qnaCustomEmail.getId());
+			Assert.assertNotNull(qnaCustomEmail.getId());
 			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL1)) {
 				foundEmail1 = true;
 			} else if (qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL2)) {
@@ -567,35 +590,37 @@ public class OptionsLogicImplTest extends
 				foundEmail3 = true;
 			}
 		}
-		assertTrue(foundEmail1);
-		assertTrue(foundEmail2);
-		assertTrue(foundEmail3);
+		Assert.assertTrue(foundEmail1);
+		Assert.assertTrue(foundEmail2);
+		Assert.assertTrue(foundEmail3);
 	}
 	
 	/**
 	 * Test default options with notification property set to custom mail list with some valid emails 
 	 */
+	@Test
 	public void testDefaultSomeValidCustomNotification() {
 		String locationId = LOCATION2_ID;
 		serverConfigurationServiceStub.setProperty("qna.default.notification",USER_CUSTOM_EMAIL_INVALID);
 		QnaOptions options = optionsLogic.getOptionsForLocation(locationId);
-		assertTrue(options.getEmailNotification());
-		assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
+		Assert.assertTrue(options.getEmailNotification());
+		Assert.assertEquals(QnaConstants.CUSTOM_LIST, options.getEmailNotificationType());
 		
 		Set<QnaCustomEmail> customEmails = options.getCustomEmails();
-		assertEquals(customEmails.size(), 1);
+		Assert.assertEquals(customEmails.size(), 1);
 		boolean contains = false;
 		for (QnaCustomEmail qnaCustomEmail : customEmails) {
 			if(qnaCustomEmail.getEmail().equals(USER_CUSTOM_EMAIL3)){
 				contains = true;
 			}
 		}
-		assertTrue(contains);
+		Assert.assertTrue(contains);
 	}
 	
 	/**
 	 * Test that null mobile answers number return zero
 	 */
+	@Test
 	public void testNullMobileAnswersNrReturnZero() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		options.setMobileAnswersNr(null);
@@ -603,9 +628,9 @@ public class OptionsLogicImplTest extends
 			externalLogicStub.currentUserId = USER_UPDATE;
 			optionsLogic.saveOptions(options, LOCATION1_ID);
 		} catch (SecurityException e) {
-			fail("Should have thrown exception");
+			Assert.fail("Should have thrown exception");
 		}
 		
-		assertEquals(Integer.valueOf(0), options.getMobileAnswersNr());
+		Assert.assertEquals(Integer.valueOf(0), options.getMobileAnswersNr());
 	}
 }

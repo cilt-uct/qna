@@ -20,6 +20,9 @@ import static org.sakaiproject.qna.logic.test.TestDataPreload.USER_UPDATE;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.impl.CategoryLogicImpl;
 import org.sakaiproject.qna.logic.impl.OptionsLogicImpl;
@@ -36,10 +39,16 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
+@DirtiesContext
+@ContextConfiguration(locations={
+		"/hibernate-test.xml",
+		"/spring-hibernate.xml"})
 public class QuestionSmsCommandTest extends
-		AbstractTransactionalSpringContextTests {
+	AbstractTransactionalJUnit4SpringContextTests {
 
 	QuestionSmsCommand questionSmsCommand;
 	OptionsLogicImpl optionsLogic;
@@ -60,28 +69,15 @@ public class QuestionSmsCommandTest extends
 	private static Log log = LogFactory.getLog(QuestionSmsCommandTest.class);
 	private static String CMD = "QUESTION";
 	private static String SITE = "ref-1111111";
-	
-	@Override
-	protected String[] getConfigLocations() {
-		// point to the needed spring config files, must be on the classpath
-		// (add component/src/webapp/WEB-INF to the build path in Eclipse),
-		// they also need to be referenced in the project.xml file
-		return new String[] { "hibernate-test.xml", "spring-hibernate.xml" };
-	}
 
 	// run this before each test starts
-	@Override
-	protected void onSetUpBeforeTransaction() throws Exception {
-	}
-	
-	// run this before each test starts and as part of the transaction
-	@Override
-	protected void onSetUpInTransaction() {
+	@Before
+	public void onSetUpBeforeTransaction() throws Exception {
 		// load the spring created dao class bean from the Spring Application
 		// Context
 		QnaDao dao = (QnaDao) applicationContext.getBean("org.sakaiproject.qna.dao.impl.QnaDaoTarget");
 		if (dao == null) {
-			log.error("onSetUpInTransaction: DAO could not be retrieved from spring context");
+			log.error("onSetUpBeforeTransaction: DAO could not be retrieved from spring context");
 		}
 			
 		permissionLogic = new PermissionLogicImpl();
@@ -127,55 +123,60 @@ public class QuestionSmsCommandTest extends
 	/**
 	 * Test empty or null body
 	 */
+	@Test
 	public void testEmptyBody() {
-		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
+		Assert.assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
 				new ParsedMessage(USER_UPDATE, CMD, SITE, "", 1), ShortMessageCommand.MESSAGE_TYPE_SMS, "1234"));
 		String nullString = null;
-		assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
+		Assert.assertEquals("qna.sms.no-question-text", questionSmsCommand.execute(
 				new ParsedMessage(USER_UPDATE, CMD, SITE, nullString, 0), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234"));
-		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
+		Assert.assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
 	
 	/**
 	 * Test saving of question
 	 */
+	@Test
 	public void testSaveQuestion() {
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+		Assert.assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
 				new ParsedMessage(USER_UPDATE, CMD, SITE, "new question", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234" ));
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
-		assertEquals("new question", question.getQuestionText());
-		assertEquals(USER_UPDATE, question.getOwnerId());
-		assertEquals("1234", question.getOwnerMobileNr());
-		assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
+		Assert.assertEquals("new question", question.getQuestionText());
+		Assert.assertEquals(USER_UPDATE, question.getOwnerId());
+		Assert.assertEquals("1234", question.getOwnerMobileNr());
+		Assert.assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
-	
+
+	@Test
 	public void testSaveQuestionNullUserId() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
 		options.setAllowUnknownMobile(true);
 		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
-		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+		Assert.assertTrue(options.getAllowUnknownMobile());
+		Assert.assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
 				new ParsedMessage(null, CMD, SITE, "new question", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234" ));
 		
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
-		assertEquals("new question", question.getQuestionText());
-		assertEquals(null, question.getOwnerId());
-		assertEquals("1234", question.getOwnerMobileNr());
-		assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
+		Assert.assertEquals("new question", question.getQuestionText());
+		Assert.assertEquals(null, question.getOwnerId());
+		Assert.assertEquals("1234", question.getOwnerMobileNr());
+		Assert.assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
-	
+
+	@Test
 	public void testSaveQuestionNullUserIdAnonMobileNotAllowed() {
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
-		assertFalse(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.anonymous-not-allowed", questionSmsCommand.execute(
+		Assert.assertFalse(options.getAllowUnknownMobile());
+		Assert.assertEquals("qna.sms.anonymous-not-allowed", questionSmsCommand.execute(
 				new ParsedMessage(null, CMD, SITE, "new question", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234" ));
-		assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
+		Assert.assertEquals(0, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
 	}
-	
+
+	@Test
 	public void testSaveQuestionNullUserIdNotModerated() {
 		externalLogicStub.currentUserId = USER_UPDATE;
 		QnaOptions options = optionsLogic.getOptionsForLocation(LOCATION1_ID);
@@ -183,16 +184,16 @@ public class QuestionSmsCommandTest extends
 		options.setModerated(false);
 		options.setSmsNotification(false);
 		optionsLogic.saveOptions(options, LOCATION1_ID);
-		assertTrue(options.getAllowUnknownMobile());
-		assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
+		Assert.assertTrue(options.getAllowUnknownMobile());
+		Assert.assertEquals("qna.sms.question-posted.no-replies", questionSmsCommand.execute(
 				new ParsedMessage(null, CMD, SITE, "new question", 1), ShortMessageCommand.MESSAGE_TYPE_SMS,"1234" ));
 		String id = bundleLogicStub.getLastParameters()[1].toString();
 		QnaQuestion question = questionLogic.getQuestionById(Long.valueOf(id));
-		assertEquals("new question", question.getQuestionText());
-		assertEquals(null, question.getOwnerId());
-		assertEquals("1234", question.getOwnerMobileNr());
-		assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
-		assertNotNull(question.getCategory());
+		Assert.assertEquals("new question", question.getQuestionText());
+		Assert.assertEquals(null, question.getOwnerId());
+		Assert.assertEquals("1234", question.getOwnerMobileNr());
+		Assert.assertEquals(1, questionLogic.getAllQuestions(LOCATION1_ID).size()); 
+		Assert.assertNotNull(question.getCategory());
 	}
 	
 }

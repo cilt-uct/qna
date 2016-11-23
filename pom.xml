@@ -11,12 +11,11 @@
 	<packaging>pom</packaging>
 	<version>11-SNAPSHOT</version>
   
- 
 	<parent>
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>master</artifactId>
 		<version>11-SNAPSHOT</version>
-		<relativePath>../master/pom.xml</relativePath>
+		<relativePath>../sakai/master/pom.xml</relativePath>
 	</parent>
 	<modules>
 		<module>api</module>
@@ -52,7 +51,7 @@
 			<dependency>
 				<groupId>org.sakaiproject.sms</groupId>
 				<artifactId>sms-api</artifactId>
-				<version>0.12</version>
+				<version>11-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 			<!--<dependency>

@@ -80,11 +80,6 @@
 			<groupId>org.sakaiproject.kernel</groupId>
 			<artifactId>sakai-kernel-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject.qna</groupId>
-			<artifactId>qna-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 	<!-- RSF (CARET) maven 2 repositories -->
 	<repositories>

@@ -438,11 +438,14 @@ public class ExternalLogicImpl implements ExternalLogic {
 
 	public String[] sendSms(String[] mobileNrs, String fromId, String siteId,
 			String toolId, String message) {
+		if (smsService == null) {
+			log.warn("SMS service is not enabled for Q&A");
+			return null;
+		}
 		return smsService.sendSmsToMobileNumbers(mobileNrs, fromId, siteId, toolId, message);
 	}
 
 	public String getSmsNumber() {
-		
 		return ServerConfigurationService.getString("sms.shortcode", null);
 	}
 

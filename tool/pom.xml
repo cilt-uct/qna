@@ -58,13 +58,11 @@
 			<groupId>org.sakaiproject.rsf</groupId>
 			<artifactId>sakai-rsf-core</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.rsf</groupId>
 			<artifactId>sakai-rsf-web-evolvers</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject.rsf</groupId>

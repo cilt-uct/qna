@@ -30,7 +30,7 @@ import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIInternalLink;
 import uk.org.ponder.rsf.components.UIJointContainer;
 import uk.org.ponder.rsf.components.UIMessage;
-import uk.org.ponder.rsf.components.UIOutput;
+import uk.org.ponder.rsf.components.decorators.UIStyleDecorator;
 import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 
 
@@ -61,36 +61,32 @@ public class NavBarRenderer {
 	    	UIJointContainer joint = new UIJointContainer(tofill,divID,"qna-navigation:");
 
 	    	if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
-		    	UIBranchContainer cell4 = UIBranchContainer.make(joint, "navigation-cell:", "4");
-		    	if (currentViewID.equals(OrganiseListProducer.VIEW_ID)) {
-		    		UIMessage.make(cell4, "item-text", "qna.navbar.organise");
-		    	} else {
-		    		UIInternalLink.make(cell4, "item-link", UIMessage.make("qna.navbar.organise"), new SimpleViewParameters(OrganiseListProducer.VIEW_ID));
-		    	}
-		    	
-
-
-		    	UIBranchContainer cell5 = UIBranchContainer.make(joint, "navigation-cell:", "5");
-		    	if (currentViewID.equals(OptionsProducer.VIEW_ID)) {
-		    		UIMessage.make(cell5, "item-text", "qna.navbar.options");
-		    	} else {
-		    		UIInternalLink.make(cell5, "item-link", UIMessage.make("qna.navbar.options"), new SimpleViewParameters(OptionsProducer.VIEW_ID));
-		    	}
-		    	
+		    	renderLink(joint, "4", "qna.navbar.organise", OrganiseListProducer.VIEW_ID, currentViewID);
+		    	renderLink(joint, "5", "qna.navbar.options", OptionsProducer.VIEW_ID, currentViewID);
 	    	}
 
 	    	if (externalLogic.isUserAllowedInLocation(externalLogic.getCurrentUserId(), SiteService.SECURE_UPDATE_SITE, externalLogic.getCurrentLocationId())) {
-		    	UIBranchContainer cell6 = UIBranchContainer.make(joint, "navigation-cell:", "6");
-		    	if (currentViewID.equals(PermissionsProducer.VIEW_ID)) {
-		    		UIMessage.make(cell6, "item-text", "qna.navbar.permissions");
-		    	} else {
-		    		UIInternalLink.make(cell6, "item-link", UIMessage.make("qna.navbar.permissions"), new SimpleViewParameters(PermissionsProducer.VIEW_ID));
-		    	}
-	    	}
-			
-			
+		    	renderLink(joint, "6", "qna.navbar.permissions", PermissionsProducer.VIEW_ID, currentViewID);
+	    	}	
 		}
-		
-
     }
+	
+	/**
+	 * Renders a Nav Link
+	 * 
+	 * @param joint
+	 * @param localId
+	 * @param messageKey
+	 * @param linkViewID
+	 * @param currentViewID
+	 */
+	private void renderLink(UIJointContainer joint, String localId, String messageKey, String linkViewID, String currentViewID) {
+
+		UIBranchContainer cell = UIBranchContainer.make(joint, "navigation-cell:", localId);
+		UIInternalLink link = UIInternalLink.make(cell, "item-link", UIMessage.make(messageKey), new SimpleViewParameters(linkViewID));
+
+		if (currentViewID != null && currentViewID.equals(linkViewID)) {
+			link.decorate( new UIStyleDecorator("inactive"));
+		}
+	}
 }

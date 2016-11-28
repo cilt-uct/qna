@@ -272,9 +272,9 @@
 							$('div.sortable-element-class').each(
 								function() {
 									if (this.id.match(expr)) {
-										var categoryId = $(this).children('input:checkbox[@name=category-sort-order-selection]')[0].value;
+										var categoryId = $(this).children('input:checkbox[name=\"category-sort-order-selection\"]')[0].value;
 
-										$(this).children('span.page-list').children('div.sortable-element-class').children('input:checkbox[@name=question-category-order-selection]').each (
+										$(this).children('span.page-list').children('div.sortable-element-class').children('input:checkbox[name=\"question-category-order-selection\"]').each (
 											function() {
 												this.value = categoryId;
 											}

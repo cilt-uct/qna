@@ -31,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.FunctionManager;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
-import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.email.api.EmailService;
 import org.sakaiproject.entity.api.Entity;
@@ -42,7 +41,6 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.utils.QNAUtils;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 import org.sakaiproject.sms.logic.smpp.SmsService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
@@ -144,8 +142,8 @@ public class ExternalLogicImpl implements ExternalLogic {
 	/**
 	 * @see ExternalLogic#getQuestionViewUrl(String)
 	 */
-	public String getQuestionViewUrl(String viewId) {
-		return ServerConfigurationService.getToolUrl() + Entity.SEPARATOR
+	public String getQuestionViewUrl(String viewId) {		
+		return ServerConfigurationService.getPortalUrl() + getCurrentLocationId() + "/tool" + Entity.SEPARATOR
 				+ toolManager.getCurrentPlacement().getId() + Entity.SEPARATOR
 				+ viewId;
 	}

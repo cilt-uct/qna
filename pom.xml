@@ -15,7 +15,7 @@
 		<groupId>org.sakaiproject</groupId>
 		<artifactId>master</artifactId>
 		<version>11-SNAPSHOT</version>
-		<relativePath>../sakai/master/pom.xml</relativePath>
+		<relativePath>../master/pom.xml</relativePath>
 	</parent>
 	<modules>
 		<module>api</module>

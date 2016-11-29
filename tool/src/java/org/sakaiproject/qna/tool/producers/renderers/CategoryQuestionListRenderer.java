@@ -209,7 +209,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 				if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
 					//UIOutput.make(question,"remove-question-cell");
 					//UIBoundBoolean.make(question, "remove-checkbox", false);
-					UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), select.optionlist.getValue().length+k);
+					UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), deletable.size());
 					deletable.add(qnaQuestion.getId().toString());
 				}
 				UIOutput.make(question,"question-id",qnaQuestion.getId() + "");

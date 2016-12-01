@@ -162,3 +162,7 @@ width: 80%;
   text-decoration: none;
   font-weight: bold;
 }
+.tableFlat th {
+	background: #A0A0A0;
+	color: #FFF;
+}

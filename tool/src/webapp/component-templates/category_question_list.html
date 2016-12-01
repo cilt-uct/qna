@@ -30,16 +30,16 @@
 <body>
 <!-- everything outside this div is thrown away -->
 <div rsf:id="question-list-table:" class="layoutViewContainer">
-   <table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Questions table" style="table-layout:fixed;">
+   <table class="tableFlat listHier lines nolines" cellpadding="0" cellspacing="0" summary="Questions table">
       <thead>
          <tr id="table-head">
-         	<th class="title" width="5%"></th>
-            <th class="title" rsf:id="categories-title" id="categories-title" width="45%">Categories</th>
-            <th class="title" rsf:id="answers-title" id="answers-title" width="10%">Answers</th>
-            <th class="title" rsf:id="views-title" id="views-title" width="10%">Views</th>
-            <th class="title" rsf:id="modified-title" id="modified-title" width="20%">Modified</th>
-            <th class="title" rsf:id="modified-title-longer" id="modified-title-longer" width="30%">Modified</th>
-            <th class="title" rsf:id="remove-title" id="remove" width="10%">Remove?</th>
+         	<th></th>
+            <th rsf:id="categories-title" id="categories-title">Categories</th>
+            <th rsf:id="answers-title" id="answers-title">Answers</th>
+            <th rsf:id="views-title" id="views-title">Views</th>
+            <th rsf:id="modified-title" id="modified-title">Modified</th>
+            <th rsf:id="modified-title-longer" id="modified-title-longer">Modified</th>
+            <th rsf:id="remove-title" id="remove">Remove?</th>
          </tr>
       </thead>
       <tbody>
@@ -53,7 +53,7 @@
 	            	<img rsf:id="new-question-icon" src="/library/image/silk/flag_yellow.png"/>
 	            	<span rsf:id="category-name" style="white-space: pre;overflow:hidden;" id="category-name">Assignments</span>
 	            	<a rsf:id="category-edit" id="category-edit" class="small">edit</a>
-					<script rsf:id="onclick-init" type="text/javascript">
+					<script rsf:id="onclick-init" type="text/javascript" style="display:none;">
    						init_questions_toggle("icon","entry","expandIconSrc","ExpandIconSrc");
 	         		</script>
             	</td>
@@ -62,9 +62,10 @@
 	            <td rsf:id="modified-date">2007-08-22</td>
 	            <td><input rsf:id="remove-category-checkbox" name="remove-category-checkbox" value="false" type="checkbox"/></td>
 	         </tr>
+			 			 
 		     <tr id="question-entry" rsf:id="question-entry:" style="display:none;">
 				<td></td>
-				<td style="overflow:hidden;"><a href="#" rsf:id="question-link" style="white-space: pre"><span rsf:id="question-link-text"/></a></td>
+				<td><a href="#" rsf:id="question-link"><span rsf:id="question-link-text"/></a></td>
 				<td rsf:id="answers-nr">3</td>
 				<td rsf:id="views-nr">88</td>
 				<td rsf:id="question-modified-date">2008-02-01</td>

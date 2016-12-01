@@ -88,7 +88,6 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 		UIMessage.make(listTable, "categories-title", "qna.view-questions.categories");
 		UIMessage.make(listTable, "answers-title", "qna.view-questions.answers");
 		UIMessage.make(listTable,"views-title","qna.view-questions.views");
-		UIMessage.make(listTable,"id-title","qna.view-questions.id");
 
 		// Creates remove heading for users with update rights
 		if (permissionLogic.canUpdate(externalLogic.getCurrentLocationId(), externalLogic.getCurrentUserId())) {
@@ -212,7 +211,6 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 					UISelectChoice.make(question, "remove-question-checkbox", select.getFullID(), deletable.size());
 					deletable.add(qnaQuestion.getId().toString());
 				}
-				UIOutput.make(question,"question-id",qnaQuestion.getId() + "");
 			}
 		}
 		StringList tmpIds = deletable;

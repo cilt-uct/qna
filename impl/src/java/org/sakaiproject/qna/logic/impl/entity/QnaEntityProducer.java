@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.EntityProducer;
@@ -43,6 +41,8 @@ import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,7 +51,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	
 	public static final String REFERENCE_ROOT = Entity.SEPARATOR + "qna";
 	
-	private static Log log = LogFactory.getLog(QnaEntityProducer.class);
+	private static Logger log = LoggerFactory.getLogger(QnaEntityProducer.class);
 	private EntityManager entityManager;
 	private SiteService siteService;
 	private QnaDao dao;

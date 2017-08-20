@@ -18,8 +18,6 @@ package org.sakaiproject.qna.tool.producers.renderers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentTypeImageService;
@@ -31,6 +29,8 @@ import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -45,7 +45,7 @@ public class AttachmentsViewRenderer {
 	private SessionManager sessionManager;
 	private EntityManager entityManager;
 	
-	private static Log log = LogFactory.getLog(AttachmentsViewRenderer.class);
+	private static Logger log = LoggerFactory.getLogger(AttachmentsViewRenderer.class);
 	
 	public void setChs(ContentHostingService chs) {
 		this.chs = chs;

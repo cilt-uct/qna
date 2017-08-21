@@ -17,8 +17,6 @@ package org.sakaiproject.qna.logic.impl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -27,10 +25,12 @@ import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SearchLogicImpl implements SearchLogic {
 
-	private static Log log = LogFactory.getLog(SearchLogicImpl.class);
+	private static Logger log = LoggerFactory.getLogger(SearchLogicImpl.class);
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
 	private QnaDao dao;

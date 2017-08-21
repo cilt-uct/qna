@@ -15,8 +15,6 @@
  */
 package org.sakaiproject.qna.logic.impl.sms;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
@@ -27,6 +25,8 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Post a question to a specific site Usage: QUESTION <site> <question text>
@@ -36,7 +36,7 @@ import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
  */
 public class QuestionSmsCommand implements ShortMessageCommand {
 
-	private static Log log = LogFactory.getLog(QuestionSmsCommand.class);
+	private static Logger log = LoggerFactory.getLogger(QuestionSmsCommand.class);
 	private static final String QUESTION = "QUESTION";
 	private static final String QUESTION_ALIAS = "Q";
 

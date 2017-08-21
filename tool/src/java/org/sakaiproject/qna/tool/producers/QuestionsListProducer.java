@@ -18,8 +18,6 @@ package org.sakaiproject.qna.tool.producers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
@@ -37,6 +35,8 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
 import org.sakaiproject.qna.tool.utils.ViewHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
@@ -69,7 +69,7 @@ public class QuestionsListProducer implements DefaultView, ViewComponentProducer
     
     private static final String ADD_ICON_URL = "/library/image/silk/add.png";
     
-    private static Log log = LogFactory.getLog(QuestionsListProducer.class);
+    private static Logger log = LoggerFactory.getLogger(QuestionsListProducer.class);
     
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;

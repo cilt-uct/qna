@@ -18,8 +18,6 @@ package org.sakaiproject.qna.tool.otp;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -33,6 +31,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -59,7 +59,7 @@ public class MultipleBeanMediator {
 	private SessionManager sessionManager;
 	private MessageLocator messageLocator;
 	
-	private static Log log = LogFactory.getLog(MultipleBeanMediator.class);
+	private static Logger log = LoggerFactory.getLogger(MultipleBeanMediator.class);
 		
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;

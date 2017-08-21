@@ -18,8 +18,6 @@ package org.sakaiproject.qna.logic.impl.sms;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.comparators.AnswersListComparator;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
@@ -32,6 +30,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Return the answers of a specific question in a specific Sakai site. Usage:
@@ -42,7 +42,7 @@ import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
  */
 public class AnswerSmsCommand implements ShortMessageCommand {
 
-	private static Log log = LogFactory.getLog(AnswerSmsCommand.class);
+	private static Logger log = LoggerFactory.getLogger(AnswerSmsCommand.class);
 	private static final String ANSWER = "ANSWER";
 	private static final String ANSWER_ALIAS = "A";
 

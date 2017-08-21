@@ -18,8 +18,6 @@ package org.sakaiproject.qna.tool.producers.renderers;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.qna.comparators.CategoriesSortOrderComparator;
 import org.sakaiproject.qna.comparators.QuestionsSortOrderComparator;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -37,6 +35,8 @@ import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.utils.TextUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -57,7 +57,7 @@ public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	private static final String EXPAND_ICON_URL = "/library/image/sakai/expand.gif";
 	private static final String COLLAPSE_ICON_URL = "/library/image/sakai/collapse.gif";
 	
-	 private static Log log = LogFactory.getLog(CategoryQuestionListRenderer.class);
+	 private static Logger log = LoggerFactory.getLogger(CategoryQuestionListRenderer.class);
 	
 	private ExternalLogic externalLogic;
 	private PermissionLogic permissionLogic;

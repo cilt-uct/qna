@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
@@ -49,10 +47,12 @@ import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QuestionLogicImpl implements QuestionLogic {
 
-	private static Log log = LogFactory.getLog(QuestionLogicImpl.class);
+	private static Logger log = LoggerFactory.getLogger(QuestionLogicImpl.class);
 	public static final String QUESTION_ID= "questionid";
 	
 	private PermissionLogic permissionLogic;

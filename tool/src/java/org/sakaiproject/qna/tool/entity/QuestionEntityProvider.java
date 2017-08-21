@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.capabilities.CollectionResolvable;
@@ -38,6 +36,8 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Entity provider for questions
@@ -47,7 +47,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	
 	public final static String ENTITY_PREFIX = "qna-question";
 
-	private static Log log = LogFactory.getLog(QuestionEntityProvider.class);
+	private static Logger log = LoggerFactory.getLogger(QuestionEntityProvider.class);
 	
 	/**
 	 * Injected services

@@ -18,43 +18,43 @@
    <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>qna</artifactId>
-      <version>11-SNAPSHOT</version>
+      <version>12-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
    <dependencies>
 
-      <!-- internal dependencies -->
-      <dependency>
-         <groupId>org.sakaiproject.qna</groupId>
-         <artifactId>qna-api</artifactId>
-         <scope>provided</scope>
-      </dependency>      
+        <!-- internal dependencies -->
+        <dependency>
+            <groupId>org.sakaiproject.qna</groupId>
+            <artifactId>qna-api</artifactId>
+            <scope>provided</scope>
+        </dependency>      
 
-	  <dependency>
-		<groupId>org.sakaiproject.sms</groupId>
-		<artifactId>sms-api</artifactId>
+    	<dependency>
+		    <groupId>org.sakaiproject.sms</groupId>
+		    <artifactId>sms-api</artifactId>
 		</dependency>
-	<dependency>
+
+	    <dependency>
 	        <groupId>commons-lang</groupId>
 	        <artifactId>commons-lang</artifactId>
         </dependency>
   
+	    <!-- email dependencies -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+        </dependency>
 
-	  <!-- email dependencies -->
-      <dependency>
-         <groupId>javax.mail</groupId>
-         <artifactId>mail</artifactId>
-      </dependency>
+        <!-- generic-dao -->
+        <dependency>
+            <groupId>org.sakaiproject.genericdao</groupId>
+            <artifactId>generic-dao</artifactId>
+            <version>${sakai.genericdao.version}</version>
+        </dependency>
 
-         <!-- generic-dao -->
-	<dependency>
-		<groupId>org.sakaiproject.genericdao</groupId>
-		<artifactId>generic-dao</artifactId>
-        <version>${sakai.genericdao.version}</version>
-	</dependency>
-
-      <!-- spring and hibernate -->
+        <!-- spring and hibernate -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -121,9 +121,7 @@
          <artifactId>search-api</artifactId>
       </dependency>
 
-
       <!-- testing dependencies -->
-
 
       <dependency>
          <groupId>org.hsqldb</groupId>
@@ -137,7 +135,6 @@
          <version>1.6.1</version>
          <scope>provided</scope>
       </dependency>
-
 
       <dependency>
          <groupId>commons-codec</groupId>
@@ -166,7 +163,6 @@
          <version>1.2_Java1.3</version>
          <scope>test</scope>
       </dependency>
-
 
       <dependency>
       	<groupId>commons-validator</groupId>

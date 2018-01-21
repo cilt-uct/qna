@@ -17,10 +17,11 @@ package org.sakaiproject.qna.logic.impl;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.util.ResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *  Shamelessly stolen from Assignment2
@@ -28,7 +29,7 @@ import org.sakaiproject.util.ResourceLoader;
 public class QnaBundleLogicImpl implements QnaBundleLogic {
 
 	private static ResourceLoader rb = null;
-	private static Log log = LogFactory.getLog(QnaBundleLogicImpl.class);
+	private static Logger log = LoggerFactory.getLogger(QnaBundleLogicImpl.class);
 	
 	public void init()
 	{

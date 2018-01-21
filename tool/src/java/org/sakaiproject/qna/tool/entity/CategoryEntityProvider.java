@@ -15,19 +15,20 @@
  */
 package org.sakaiproject.qna.tool.entity;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.model.QnaCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Entity provider for categories
  */
 public class CategoryEntityProvider extends AbstractEntityProvider implements CoreEntityProvider {
 	public final static String ENTITY_PREFIX = "qna-category";
-	private static Log log = LogFactory.getLog(CategoryEntityProvider.class);
+	private static Logger log = LoggerFactory.getLogger(CategoryEntityProvider.class);
 	
 	/**
 	 * Injected services

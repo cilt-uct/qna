@@ -25,8 +25,8 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Post a question to a specific site Usage: QUESTION <site> <question text>
@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
  * @author wilhelm@psybergate.co.za
  * 
  */
+@Slf4j
 public class QuestionSmsCommand implements ShortMessageCommand {
 
-	private static Logger log = LoggerFactory.getLogger(QuestionSmsCommand.class);
 	private static final String QUESTION = "QUESTION";
 	private static final String QUESTION_ALIAS = "Q";
 

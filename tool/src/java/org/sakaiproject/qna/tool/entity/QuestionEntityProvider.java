@@ -36,18 +36,18 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Entity provider for questions
  */
+@Slf4j
 public class QuestionEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful, 
 				Statisticable, RedirectDefinable {
 	
 	public final static String ENTITY_PREFIX = "qna-question";
 
-	private static Logger log = LoggerFactory.getLogger(QuestionEntityProvider.class);
 	
 	/**
 	 * Injected services
@@ -163,8 +163,7 @@ public class QuestionEntityProvider extends AbstractEntityProvider implements Co
 	        try {
 				questionLogic.removeQuestion(q.getId(), q.getLocation());
 			} catch (AttachmentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.warn(e.getLocalizedMessage(), e);
 			}
 		
 	}

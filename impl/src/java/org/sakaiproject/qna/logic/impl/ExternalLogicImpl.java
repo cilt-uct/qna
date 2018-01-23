@@ -45,16 +45,16 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ExternalLogicImpl implements ExternalLogic {
 
 	private final static String PROP_SITE_CONTACT_EMAIL = "contact-email";
 
 	private final static String PROP_SITE_CONTACT_NAME = "contact-name";
 
-	private static Logger log = LoggerFactory.getLogger(ExternalLogicImpl.class);
 
 	private FunctionManager functionManager;
 

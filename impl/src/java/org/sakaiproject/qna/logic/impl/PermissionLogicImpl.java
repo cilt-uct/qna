@@ -18,11 +18,12 @@ package org.sakaiproject.qna.logic.impl;
 
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PermissionLogicImpl implements PermissionLogic {
-	private static Logger log = LoggerFactory.getLogger(PermissionLogic.class);
+
 	
 	private ExternalLogic externalLogic;
 	public void setExternalLogic(ExternalLogic externalLogic) {

@@ -20,15 +20,16 @@ import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.model.QnaCategory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Entity provider for categories
  */
+@Slf4j
 public class CategoryEntityProvider extends AbstractEntityProvider implements CoreEntityProvider {
 	public final static String ENTITY_PREFIX = "qna-category";
-	private static Logger log = LoggerFactory.getLogger(CategoryEntityProvider.class);
+
 	
 	/**
 	 * Injected services

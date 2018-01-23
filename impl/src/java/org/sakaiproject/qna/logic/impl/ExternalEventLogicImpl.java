@@ -16,6 +16,7 @@
 package org.sakaiproject.qna.logic.impl;
 
 import java.lang.reflect.Method;
+
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.NotificationService;
@@ -27,14 +28,14 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ExternalEventLogicImpl implements ExternalEventLogic {
 
     private org.sakaiproject.event.api.EventTrackingService eventTrackingService;
-    
-    private static Logger log = LoggerFactory.getLogger(ExternalEventLogicImpl.class);
+
     
     public void setEventTrackingService(org.sakaiproject.event.api.EventTrackingService eventTrackingService) {
     	this.eventTrackingService = eventTrackingService;

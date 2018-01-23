@@ -30,8 +30,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Return the answers of a specific question in a specific Sakai site. Usage:
@@ -40,9 +40,9 @@ import org.slf4j.LoggerFactory;
  * @author wilhelm@psybergate.co.za
  * 
  */
+@Slf4j
 public class AnswerSmsCommand implements ShortMessageCommand {
 
-	private static Logger log = LoggerFactory.getLogger(AnswerSmsCommand.class);
 	private static final String ANSWER = "ANSWER";
 	private static final String ANSWER_ALIAS = "A";
 

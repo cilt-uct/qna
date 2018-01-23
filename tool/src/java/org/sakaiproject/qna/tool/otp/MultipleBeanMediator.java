@@ -31,9 +31,8 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
@@ -42,6 +41,7 @@ import uk.org.ponder.messageutil.TargettedMessageList;
  * Mediator for working with multiple beans
  *
  */
+@Slf4j
 public class MultipleBeanMediator {
 
     public static final String NEW_PREFIX = "new ";
@@ -58,8 +58,6 @@ public class MultipleBeanMediator {
 	private TargettedMessageList messages;
 	private SessionManager sessionManager;
 	private MessageLocator messageLocator;
-	
-	private static Logger log = LoggerFactory.getLogger(MultipleBeanMediator.class);
 		
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;

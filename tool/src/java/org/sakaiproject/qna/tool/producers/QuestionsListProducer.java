@@ -35,9 +35,8 @@ import org.sakaiproject.qna.tool.producers.renderers.QuestionListRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.SearchBarRenderer;
 import org.sakaiproject.qna.tool.producers.renderers.StandardQuestionListRenderer;
 import org.sakaiproject.qna.tool.utils.ViewHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.org.ponder.beanutil.BeanGetter;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
@@ -63,13 +62,13 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
+@Slf4j
 public class QuestionsListProducer implements DefaultView, ViewComponentProducer, NavigationCaseReporter, ViewParamsReporter, ActionResultInterceptor {
 
     public static final String VIEW_ID = "questions_list";
     
     private static final String ADD_ICON_URL = "/library/image/silk/add.png";
     
-    private static Logger log = LoggerFactory.getLogger(QuestionsListProducer.class);
     
     private NavBarRenderer navBarRenderer;
     private SearchBarRenderer searchBarRenderer;

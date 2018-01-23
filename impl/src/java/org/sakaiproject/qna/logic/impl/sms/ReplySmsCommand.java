@@ -25,8 +25,8 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Reply to a existing question. 
@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
  * @author wilhelm@psybergate.co.za
  * 
  */
+@Slf4j
 public class ReplySmsCommand implements ShortMessageCommand {
 
-	private static Logger log = LoggerFactory.getLogger(ReplySmsCommand.class);
 	private static final String REPLY = "REPLY";
 	private static final String REPLY_ALIAS = "R";
 

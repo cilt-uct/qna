@@ -25,12 +25,12 @@ import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SearchLogicImpl implements SearchLogic {
 
-	private static Logger log = LoggerFactory.getLogger(SearchLogicImpl.class);
 	private PermissionLogic permissionLogic;
 	private ExternalLogic externalLogic;
 	private QnaDao dao;

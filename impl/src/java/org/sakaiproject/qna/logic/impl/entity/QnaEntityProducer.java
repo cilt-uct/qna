@@ -41,17 +41,17 @@ import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 {
 	
 	public static final String REFERENCE_ROOT = Entity.SEPARATOR + "qna";
 	
-	private static Logger log = LoggerFactory.getLogger(QnaEntityProducer.class);
 	private EntityManager entityManager;
 	private SiteService siteService;
 	private QnaDao dao;

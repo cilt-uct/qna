@@ -17,7 +17,6 @@ package org.sakaiproject.qna.dao.impl;
 
 import java.util.List;
 
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,8 +26,8 @@ import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementations of any specialized DAO methods from the specialized DAO that allows the developer to extend the functionality of the
@@ -36,10 +35,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author Sakai App Builder -AZ
  */
+@Slf4j
 public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
-
-
-    private static Logger log = LoggerFactory.getLogger(QnaDaoImpl.class);
 
 
     public void init() {

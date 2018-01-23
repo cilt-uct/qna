@@ -47,12 +47,12 @@ import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class QuestionLogicImpl implements QuestionLogic {
 
-	private static Logger log = LoggerFactory.getLogger(QuestionLogicImpl.class);
 	public static final String QUESTION_ID= "questionid";
 	
 	private PermissionLogic permissionLogic;

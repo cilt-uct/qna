@@ -35,9 +35,8 @@ import org.sakaiproject.qna.tool.producers.ViewPrivateReplyProducer;
 import org.sakaiproject.qna.tool.producers.ViewQuestionProducer;
 import org.sakaiproject.qna.tool.utils.DateUtil;
 import org.sakaiproject.qna.utils.TextUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
@@ -53,11 +52,10 @@ import uk.org.ponder.rsf.components.UIVerbatim;
 import uk.org.ponder.rsf.components.decorators.UIAlternativeTextDecorator;
 import uk.org.ponder.stringutil.StringList;
 
+@Slf4j
 public class CategoryQuestionListRenderer implements QuestionListRenderer {
 	private static final String EXPAND_ICON_URL = "/library/image/sakai/expand.gif";
 	private static final String COLLAPSE_ICON_URL = "/library/image/sakai/collapse.gif";
-	
-	 private static Logger log = LoggerFactory.getLogger(CategoryQuestionListRenderer.class);
 	
 	private ExternalLogic externalLogic;
 	private PermissionLogic permissionLogic;

@@ -17,19 +17,18 @@ package org.sakaiproject.qna.logic.impl;
 
 import java.util.Locale;
 
-
 import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.util.ResourceLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *  Shamelessly stolen from Assignment2
  */
+@Slf4j
 public class QnaBundleLogicImpl implements QnaBundleLogic {
 
 	private static ResourceLoader rb = null;
-	private static Logger log = LoggerFactory.getLogger(QnaBundleLogicImpl.class);
 	
 	public void init()
 	{

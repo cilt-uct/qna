@@ -25,6 +25,7 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 
+
 public class NotificationLogicImpl implements NotificationLogic {
 
 	private ExternalLogic externalLogic;

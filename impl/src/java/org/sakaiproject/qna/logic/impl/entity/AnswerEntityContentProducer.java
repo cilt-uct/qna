@@ -35,8 +35,8 @@ import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.util.FormattedText;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * | event                | ref                                            |
@@ -49,9 +49,9 @@ import org.slf4j.LoggerFactory;
  * @author dhorwitz
  *
  */
+@Slf4j
 public class AnswerEntityContentProducer implements EntityContentProducer {
 
-	private static Logger log = LoggerFactory.getLogger(AnswerEntityContentProducer.class);
 	
 	// runtime dependency
 	private List<String> addEvents = null;

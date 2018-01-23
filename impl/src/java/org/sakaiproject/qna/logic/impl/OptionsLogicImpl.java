@@ -31,12 +31,12 @@ import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OptionsLogicImpl implements OptionsLogic {
 
-	private static Logger log = LoggerFactory.getLogger(OptionsLogicImpl.class);
 
 	private PermissionLogic permissionLogic;
 	private QnaDao dao;

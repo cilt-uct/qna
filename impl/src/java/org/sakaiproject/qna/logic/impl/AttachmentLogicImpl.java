@@ -23,12 +23,12 @@ import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AttachmentLogicImpl implements AttachmentLogic {
 
-	private static Logger log = LoggerFactory.getLogger(AttachmentLogicImpl.class);
 
 	private ContentHostingService chs;
 

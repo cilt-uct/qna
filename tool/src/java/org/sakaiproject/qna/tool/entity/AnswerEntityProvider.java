@@ -31,16 +31,16 @@ import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.qna.logic.AnswerLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Entity provider for answers  
  */
+@Slf4j
 public class AnswerEntityProvider extends AbstractEntityProvider implements CoreEntityProvider, RESTful, Statisticable {
 	public final static String ENTITY_PREFIX = "qna-answer";
 
-	private static Logger log = LoggerFactory.getLogger(AnswerEntityProvider.class);
 	/**
 	 * Injected services
 	 */

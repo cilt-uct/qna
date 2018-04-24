@@ -9,10 +9,10 @@
    </organization>
    <inceptionYear>2007</inceptionYear>
    <description>Qna implementation</description>
-   <packaging>jar</packaging>
-   <properties>
-      <deploy.target />
-   </properties>
+    <packaging>sakai-component</packaging>
+    <properties>
+        <deploy.target>components</deploy.target>
+    </properties>
 
    <!-- the base is parent -->
    <parent>
@@ -221,7 +221,7 @@
       </plugins>
       <testResources>
          <testResource>
-            <directory>${basedir}/../pack/src/webapp/WEB-INF</directory>
+            <directory>${basedir}/src/webapp/WEB-INF</directory>
             <includes>
                <include>spring-hibernate.xml</include>
                <include>logic-support.xml</include>

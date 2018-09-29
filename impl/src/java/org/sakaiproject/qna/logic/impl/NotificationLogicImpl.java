@@ -15,8 +15,8 @@
  */
 package org.sakaiproject.qna.logic.impl;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.validator.EmailValidator;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.NotificationLogic;

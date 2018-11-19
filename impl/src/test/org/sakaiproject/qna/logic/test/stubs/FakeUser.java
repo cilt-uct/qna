@@ -20,7 +20,6 @@ import java.util.Stack;
 
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.qna.logic.test.TestDataPreload;
-import org.sakaiproject.time.api.Time;
 import org.sakaiproject.user.api.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -173,16 +172,6 @@ public class FakeUser implements User {
 		return 0;
 	}
 
-	public Time getCreatedTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Time getModifiedTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public Element toXml(Document doc, Stack<Element> stack) {
 		// TODO Auto-generated method stub
@@ -197,6 +186,12 @@ public class FakeUser implements User {
 
 	@Override
 	public Date getModifiedDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDisplayId(String context) {
 		// TODO Auto-generated method stub
 		return null;
 	}

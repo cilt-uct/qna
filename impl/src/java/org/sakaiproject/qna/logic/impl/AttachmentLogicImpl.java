@@ -24,17 +24,15 @@ import org.sakaiproject.qna.logic.exceptions.AttachmentException;
 import org.sakaiproject.qna.model.QnaAttachment;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AttachmentLogicImpl implements AttachmentLogic {
 
 
-	private ContentHostingService chs;
+	@Setter private ContentHostingService contentHostingService;
 
-	public void setContentHostingService(ContentHostingService chs) {
-		this.chs = chs;
-	}
 	
 	/**
 	 * @see AttachmentLogic#deleteAttachment(String)
@@ -42,7 +40,7 @@ public class AttachmentLogicImpl implements AttachmentLogic {
 	public void deleteAttachment(String attachmentId) throws AttachmentException {
 		try {
 			if (attachmentId.toLowerCase().startsWith("/attachment"))
-		          chs.removeResource(attachmentId);
+		          contentHostingService.removeResource(attachmentId);
 		} catch (Exception e) {
 			log.error("Error deleting attachment: " + attachmentId , e);
 			throw new AttachmentException(e);

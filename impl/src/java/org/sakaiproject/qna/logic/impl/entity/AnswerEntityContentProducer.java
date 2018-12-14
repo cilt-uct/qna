@@ -36,6 +36,7 @@ import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
 import org.sakaiproject.util.FormattedText;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -70,50 +71,14 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	/**
 	 * Injected Services and settings
 	 */
-	private AnswerLogic answerLogic;
-	private EntityBroker entityBroker;
-	private ServerConfigurationService serverConfigurationService;
-	private SearchService searchService;
-	private SearchIndexBuilder searchIndexBuilder;
-	private String toolName;
-	private SecurityService securityService;
-	
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-	
-	public void setToolName(String toolName) {
-		this.toolName = toolName;
-	}
+	@Setter private AnswerLogic answerLogic;
+	@Setter private EntityBroker entityBroker;
+	@Setter private ServerConfigurationService serverConfigurationService;
+	@Setter private SearchService searchService;
+	@Setter private SearchIndexBuilder searchIndexBuilder;
+	@Setter private String toolName;
+	@Setter private SecurityService securityService;
 
-
-	public void setAnswerLogic(AnswerLogic questionLogic) {
-		this.answerLogic = questionLogic;
-	}
-
-
-	public void setEntityBroker(EntityBroker entityBroker) {
-		this.entityBroker = entityBroker;
-	}
-
-
-	public void setServerConfigurationService(
-			ServerConfigurationService serverConfigurationService) {
-		this.serverConfigurationService = serverConfigurationService;
-	}
-
-
-	public void setSearchService(SearchService searchService) {
-		this.searchService = searchService;
-	}
-
-
-	public void setSearchIndexBuilder(SearchIndexBuilder searchIndexBuilder) {
-		this.searchIndexBuilder = searchIndexBuilder;
-	}
-
-	
-	
 	
 	/***
 	 * Init

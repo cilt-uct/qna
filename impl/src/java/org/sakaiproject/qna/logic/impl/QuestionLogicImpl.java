@@ -48,6 +48,7 @@ import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.site.api.SiteService;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -55,61 +56,18 @@ public class QuestionLogicImpl implements QuestionLogic {
 
 	public static final String QUESTION_ID= "questionid";
 	
-	private PermissionLogic permissionLogic;
-	private OptionsLogic optionsLogic;
-	private ExternalLogic externalLogic;
-	private CategoryLogic categoryLogic;
-	private AttachmentLogic attachmentLogic;
-	private NotificationLogic notificationLogic;
-	private ExternalEventLogic externalEventLogic;
-	private DeveloperHelperService developerHelperService;
-	private AuthzGroupService authzGroupService;
-	private QnaDao dao;
-	private EntityManager entityManager;
-	
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+	@Setter private PermissionLogic permissionLogic;
+	@Setter private OptionsLogic optionsLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private CategoryLogic categoryLogic;
+	@Setter private AttachmentLogic attachmentLogic;
+	@Setter private NotificationLogic notificationLogic;
+	@Setter private ExternalEventLogic externalEventLogic;
+	@Setter private DeveloperHelperService developerHelperService;
+	@Setter private AuthzGroupService authzGroupService;
+	@Setter private QnaDao dao;
+	@Setter private EntityManager entityManager;
 
-	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
-		this.authzGroupService = authzGroupService;
-	}
-
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
-
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
-	public void setCategoryLogic(CategoryLogic categoryLogic) {
-		this.categoryLogic = categoryLogic;
-	}
-	
-	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
-		this.attachmentLogic = attachmentLogic;
-	}
-	
-	public void setNotificationLogic(NotificationLogic notificationLogic) {
-		this.notificationLogic = notificationLogic;
-	}
-
-	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
-		this.externalEventLogic = externalEventLogic;
-	}
-	
-	public void setDeveloperHelperService(DeveloperHelperService developerHelperService) {
-		this.developerHelperService = developerHelperService;
-	}
-	
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
 	
 	/**
 	 * @see QuestionLogic#getNewQuestions(String)

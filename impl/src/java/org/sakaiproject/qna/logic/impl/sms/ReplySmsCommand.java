@@ -26,6 +26,7 @@ import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,40 +42,13 @@ public class ReplySmsCommand implements ShortMessageCommand {
 	private static final String REPLY = "REPLY";
 	private static final String REPLY_ALIAS = "R";
 
-	private QuestionLogic questionLogic;
-	private AnswerLogic answerLogic;
-	private OptionsLogic optionsLogic;
-	private QnaBundleLogic qnaBundleLogic;
-	private ExternalLogic externalLogic;
-	private PermissionLogic permissionLogic;
+	@Setter private QuestionLogic questionLogic;
+	@Setter private AnswerLogic answerLogic;
+	@Setter private OptionsLogic optionsLogic;
+	@Setter private QnaBundleLogic qnaBundleLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private PermissionLogic permissionLogic;
 	
-	public PermissionLogic getPermissionLogic() {
-		return permissionLogic;
-	}
-
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
-	}
-
-	public void setAnswerLogic(AnswerLogic answerLogic) {
-		this.answerLogic = answerLogic;
-	}
-
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-
-	public void setQnaBundleLogic(QnaBundleLogic qnaBundleLogic) {
-		this.qnaBundleLogic = qnaBundleLogic;
-	}
 
 	public String execute(ParsedMessage message, String messageType, String mobileNr) {
 		

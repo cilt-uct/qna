@@ -20,32 +20,22 @@ import java.util.List;
 import org.sakaiproject.genericdao.api.finders.ByPropsFinder;
 import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.ExternalLogic;
-import org.sakaiproject.qna.logic.PermissionLogic;
 import org.sakaiproject.qna.logic.SearchLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SearchLogicImpl implements SearchLogic {
 
-	private PermissionLogic permissionLogic;
-	private ExternalLogic externalLogic;
-	private QnaDao dao;
+	///@Setter private PermissionLogic permissionLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private QnaDao dao;
 
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
 
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
 
 	/**
 	 * @see SearchLogic#getAnswers(String)

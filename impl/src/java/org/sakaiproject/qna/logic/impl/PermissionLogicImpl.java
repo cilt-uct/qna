@@ -19,16 +19,15 @@ package org.sakaiproject.qna.logic.impl;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.PermissionLogic;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PermissionLogicImpl implements PermissionLogic {
 
 	
-	private ExternalLogic externalLogic;
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
+	@Setter private ExternalLogic externalLogic;
+
 	
 	/**
 	 * @see PermissionLogic#canUpdate(String, String)

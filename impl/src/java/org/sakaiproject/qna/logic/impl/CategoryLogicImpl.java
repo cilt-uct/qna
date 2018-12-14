@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
-import org.sakaiproject.qna.dao.QnaDao;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalEventLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
@@ -29,37 +28,19 @@ import org.sakaiproject.qna.logic.QnaBundleLogic;
 import org.sakaiproject.qna.model.QnaCategory;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CategoryLogicImpl implements CategoryLogic {
 
 
-	private PermissionLogic permissionLogic;
-	private ExternalLogic externalLogic;
-	private org.sakaiproject.qna.dao.QnaDao dao;
-	private ExternalEventLogic externalEventLogic;
-	private QnaBundleLogic qnaBundleLogic;
+	@Setter private PermissionLogic permissionLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private org.sakaiproject.qna.dao.QnaDao dao;
+	@Setter private ExternalEventLogic externalEventLogic;
+	@Setter private QnaBundleLogic qnaBundleLogic;
 
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
-
-	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
-		this.externalEventLogic = externalEventLogic;
-	}
-	
-	public void setQnaBundleLogic(QnaBundleLogic qnaBundleLogic) {
-		this.qnaBundleLogic = qnaBundleLogic;
-	}
 	
 	/**
 	 * @see CategoryLogic#getCategoryById(String)

@@ -30,7 +30,6 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.qna.dao.QnaDao;
-import org.sakaiproject.qna.logic.AttachmentLogic;
 import org.sakaiproject.qna.logic.CategoryLogic;
 import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.logic.OptionsLogic;
@@ -44,6 +43,7 @@ import org.sakaiproject.site.api.SiteService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,20 +52,12 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	
 	public static final String REFERENCE_ROOT = Entity.SEPARATOR + "qna";
 	
-	private EntityManager entityManager;
-	private SiteService siteService;
-	private QnaDao dao;
-	private CategoryLogic categoryLogic;
-	private OptionsLogic optionsLogic;
-	private AttachmentLogic attachmentLogic;
-	
-	public void setEntityManager(EntityManager em) {
-		entityManager = em;
-	}
-	
-	public void setSiteService(SiteService siteService) {
-		this.siteService = siteService;
-	}
+	@Setter private EntityManager entityManager;
+	@Setter private SiteService siteService;
+	@Setter private QnaDao dao;
+	@Setter private CategoryLogic categoryLogic;
+	@Setter private OptionsLogic optionsLogic;
+
 	
 	public void init() {
 		try {
@@ -184,21 +176,6 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		return false;
 	}
 
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
-
-	public void setCategoryLogic(CategoryLogic categoryLogic) {
-		this.categoryLogic = categoryLogic;
-	}
-	
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-	
-	public void setAttachmentLogic(AttachmentLogic attachmentLogic) {
-		this.attachmentLogic = attachmentLogic;
-	}
 	
 	// NOT IMPLEMENTED
 	

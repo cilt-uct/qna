@@ -41,7 +41,6 @@
 	</bean>
 
 	<bean id="org.sakaiproject.qna.logic.SearchLogic" class="org.sakaiproject.qna.logic.impl.SearchLogicImpl">
-		<property name="permissionLogic" ref="org.sakaiproject.qna.logic.PermissionLogic" />
 		<property name="externalLogic" ref="org.sakaiproject.qna.logic.ExternalLogic" />
 		<property name="dao" ref="org.sakaiproject.qna.dao.QnaDao" />
 	</bean>
@@ -154,7 +153,6 @@
       <property name="dao"  ref="org.sakaiproject.qna.dao.QnaDao" />
       <property name="categoryLogic" ref="org.sakaiproject.qna.logic.CategoryLogic" />
       <property name="optionsLogic" ref="org.sakaiproject.qna.logic.OptionsLogic" />
-      <property name="attachmentLogic" ref="org.sakaiproject.qna.logic.AttachmentLogic" />
     </bean>
     
     <!-- Search Adaptors -->

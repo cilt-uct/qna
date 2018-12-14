@@ -25,34 +25,20 @@ import org.sakaiproject.qna.logic.QuestionLogic;
 import org.sakaiproject.qna.model.QnaQuestion;
 import org.sakaiproject.qna.utils.TextUtil;
 
+import lombok.Setter;
+
 
 public class NotificationLogicImpl implements NotificationLogic {
 
-	private ExternalLogic externalLogic;
-	private QnaBundleLogic qnaBundleLogic;
-	private ServerConfigurationService serverConfigurationService;
-	private QuestionLogic questionLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private QnaBundleLogic qnaBundleLogic;
+	@Setter private ServerConfigurationService serverConfigurationService;
+	@Setter private QuestionLogic questionLogic;
 
 	public static final String NEW_LINE = "\n";
 	public static final String VIEW_QUESTION = "/view_question";
 	public static final String PUBLISH_QUESTION = "/queued_question";
 
-	public void setServerConfigurationService(
-			ServerConfigurationService serverConfigurationService) {
-		this.serverConfigurationService = serverConfigurationService;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-
-	public void setQnaBundleLogic(QnaBundleLogic qnaBundleLogic) {
-		this.qnaBundleLogic = qnaBundleLogic;
-	}
-
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
-	}
 
 	/**
 	 * @see NotificationLogic#sendPrivateReplyNotification(String[],

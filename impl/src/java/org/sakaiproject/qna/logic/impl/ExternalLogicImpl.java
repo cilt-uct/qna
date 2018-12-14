@@ -46,6 +46,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -56,60 +57,15 @@ public class ExternalLogicImpl implements ExternalLogic {
 	private final static String PROP_SITE_CONTACT_NAME = "contact-name";
 
 
-	private FunctionManager functionManager;
-
-	public void setFunctionManager(FunctionManager functionManager) {
-		this.functionManager = functionManager;
-	}
-
-	private SessionManager sessionManager;
-
-	public void setSessionManager(SessionManager sessionManager) {
-		this.sessionManager = sessionManager;
-	}
-
-	private ToolManager toolManager;
-
-	public void setToolManager(ToolManager toolManager) {
-		this.toolManager = toolManager;
-	}
-
-	private SecurityService securityService;
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
-	private SiteService siteService;
-
-	public void setSiteService(SiteService siteService) {
-		this.siteService = siteService;
-	}
-
-	private UserDirectoryService userDirectoryService;
-
-	public void setUserDirectoryService(
-			UserDirectoryService userDirectoryService) {
-		this.userDirectoryService = userDirectoryService;
-	}
-
-	private EntityBroker entityBroker;
-
-	public void setEntityBroker(EntityBroker entityBroker) {
-		this.entityBroker = entityBroker;
-	}
-
-	private EmailService emailService;
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
-
-	private SmsService smsService;
-
-	public void setSmsService(SmsService smsService) {
-		this.smsService = smsService;
-	}
+	@Setter private FunctionManager functionManager;
+	@Setter private SessionManager sessionManager;
+	@Setter private ToolManager toolManager;
+	@Setter private SecurityService securityService;
+	@Setter private SiteService siteService;
+	@Setter private UserDirectoryService userDirectoryService;
+	@Setter private EntityBroker entityBroker;
+	@Setter private EmailService emailService;
+	@Setter private SmsService smsService;
 
 	public void init() {
 		log.debug("init");

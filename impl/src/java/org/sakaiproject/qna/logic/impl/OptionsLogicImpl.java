@@ -32,37 +32,19 @@ import org.sakaiproject.qna.model.QnaCustomEmail;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.constants.QnaConstants;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class OptionsLogicImpl implements OptionsLogic {
 
 
-	private PermissionLogic permissionLogic;
-	private QnaDao dao;
-	private ExternalLogic externalLogic;
-	private ExternalEventLogic externalEventLogic;
-	private ServerConfigurationService serverConfigurationService;
-	
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
+	@Setter private PermissionLogic permissionLogic;
+	@Setter private QnaDao dao;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private ExternalEventLogic externalEventLogic;
+	@Setter private ServerConfigurationService serverConfigurationService;
 
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-	
-	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
-		this.externalEventLogic = externalEventLogic;
-	}
-	
-	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
-		this.serverConfigurationService = serverConfigurationService;
-	}
 	
 	/**
 	 * @see OptionsLogic#createDefaultOptions(String)

@@ -32,44 +32,18 @@ import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.model.QnaOptions;
 import org.sakaiproject.qna.model.QnaQuestion;
 
+import lombok.Setter;
+
 public class AnswerLogicImpl implements AnswerLogic {
 
-	private PermissionLogic permissionLogic;
-	private OptionsLogic optionsLogic;
-	private QuestionLogic questionLogic;
-	private ExternalLogic externalLogic;
-	private NotificationLogic notificationLogic;
-	private ExternalEventLogic externalEventLogic;
-	private QnaDao dao;
-	
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
+	@Setter private PermissionLogic permissionLogic;
+	@Setter private OptionsLogic optionsLogic;
+	@Setter private QuestionLogic questionLogic;
+	@Setter private ExternalLogic externalLogic;
+	@Setter private NotificationLogic notificationLogic;
+	@Setter	private ExternalEventLogic externalEventLogic;
+	@Setter private QnaDao dao;
 
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
-	
-	public void setNotificationLogic(NotificationLogic notificationLogic) {
-		this.notificationLogic = notificationLogic;
-	}
-
-	public void setExternalEventLogic(ExternalEventLogic externalEventLogic) {
-		this.externalEventLogic = externalEventLogic;
-	}
-	
-	public void setDao(QnaDao dao) {
-		this.dao = dao;
-	}
-	
 	/**
 	 * Check if answer exists
 	 * 

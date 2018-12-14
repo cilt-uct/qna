@@ -31,6 +31,7 @@ import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.sms.logic.incoming.ParsedMessage;
 import org.sakaiproject.sms.logic.incoming.ShortMessageCommand;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,31 +47,12 @@ public class AnswerSmsCommand implements ShortMessageCommand {
 	private static final String ANSWER = "ANSWER";
 	private static final String ANSWER_ALIAS = "A";
 
-	private QuestionLogic questionLogic;
-	private QnaBundleLogic qnaBundleLogic;
-	private PermissionLogic permissionLogic;
-	private OptionsLogic optionsLogic;
-	private ExternalLogic externalLogic;
-	
-	public void setQuestionLogic(QuestionLogic questionLogic) {
-		this.questionLogic = questionLogic;
-	}
+	@Setter private QuestionLogic questionLogic;
+	@Setter private QnaBundleLogic qnaBundleLogic;
+	@Setter private PermissionLogic permissionLogic;
+	@Setter private OptionsLogic optionsLogic;
+	@Setter private ExternalLogic externalLogic;
 
-	public void setQnaBundleLogic(QnaBundleLogic qnaBundleLogic) {
-		this.qnaBundleLogic = qnaBundleLogic;
-	}
-
-	public void setPermissionLogic(PermissionLogic permissionLogic) {
-		this.permissionLogic = permissionLogic;
-	}
-
-	public void setOptionsLogic(OptionsLogic optionsLogic) {
-		this.optionsLogic = optionsLogic;
-	}
-
-	public void setExternalLogic(ExternalLogic externalLogic) {
-		this.externalLogic = externalLogic;
-	}
 
 	public String execute(ParsedMessage message, String messageType, String mobileNr) {
 		

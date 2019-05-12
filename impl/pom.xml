@@ -30,12 +30,10 @@
             <artifactId>qna-api</artifactId>
             <scope>provided</scope>
         </dependency>      
-
-    	<dependency>
-		    <groupId>org.sakaiproject.sms</groupId>
-		    <artifactId>sms-api</artifactId>
-		</dependency>
-
+      <dependency>
+        <groupId>org.sakaiproject.sms</groupId>
+        <artifactId>sms-api</artifactId>
+    </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
@@ -44,14 +42,12 @@
         <groupId>org.apache.commons</groupId>
          <artifactId>commons-text</artifactId>
        </dependency>
-
   
-	    <!-- email dependencies -->
+      <!-- email dependencies -->
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
         </dependency>
-
 
         <!-- generic-dao -->
         <dependency>
@@ -87,7 +83,6 @@
             <artifactId>spring-jdbc</artifactId>
             <scope>test</scope>
         </dependency>
-
          <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -108,15 +103,13 @@
          <artifactId>sakai-kernel-api</artifactId>
       </dependency>
       <dependency>
-      	<groupId>org.sakaiproject.kernel</groupId>
-      	<artifactId>sakai-component-manager</artifactId>
+        <groupId>org.sakaiproject.kernel</groupId>
+        <artifactId>sakai-component-manager</artifactId>
       </dependency>
       <dependency>
-      	<groupId>org.sakaiproject.kernel</groupId>
-      	<artifactId>sakai-kernel-util</artifactId>
-      </dependency>
-
-    
+        <groupId>org.sakaiproject.kernel</groupId>
+        <artifactId>sakai-kernel-util</artifactId>
+      </dependency>    
       <dependency>
         <groupId>org.sakaiproject.entitybroker</groupId>
         <artifactId>entitybroker-api</artifactId>
@@ -127,62 +120,48 @@
       </dependency>
 
       <!-- testing dependencies -->
-
       <dependency>
          <groupId>org.hsqldb</groupId>
          <artifactId>hsqldb</artifactId>
          <scope>provided</scope>
       </dependency>
-<!--  
-      <dependency>
-         <groupId>dom4j</groupId>
-         <artifactId>dom4j</artifactId>
-         <scope>provided</scope>
-      </dependency>
--->
       <dependency>
          <groupId>commons-codec</groupId>
          <artifactId>commons-codec</artifactId>
-         <version>1.4</version>
       </dependency>
-
       <dependency>
          <groupId>commons-collections</groupId>
          <artifactId>commons-collections</artifactId>
       </dependency>
-
       <dependency>
          <groupId>net.sf.ehcache</groupId>
          <artifactId>ehcache-core</artifactId>
          <scope>provided</scope>
       </dependency>
-      	<dependency>
-	  	<groupId>org.slf4j</groupId>
-   	  	<artifactId>slf4j-log4j12</artifactId>
-	  </dependency>
-
+        <dependency>
+      <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
       <dependency>
          <groupId>easymock</groupId>
          <artifactId>easymock</artifactId>
          <version>1.2_Java1.3</version>
          <scope>test</scope>
       </dependency>
-
       <dependency>
-      	<groupId>commons-validator</groupId>
-      	<artifactId>commons-validator</artifactId>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
       </dependency>
       <dependency>
-      	<groupId>commons-lang</groupId>
-      	<artifactId>commons-lang</artifactId>
-      	<scope>test</scope>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <scope>test</scope>
       </dependency>
-	  <dependency>
-	  	<groupId>oro</groupId>
-	  	<artifactId>oro</artifactId>
-	  	<version>2.0.8</version>
-	  </dependency>
-	  
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.8</version>
+    </dependency>
    </dependencies>
 
    <build>
@@ -202,11 +181,11 @@
             <filtering>false</filtering>
          </resource>
          <resource>
-        	<directory>${basedir}/../tool/src/bundle</directory>
-	        <includes>
-	        	<include>**/*.properties</include>
-	        </includes>
-      	 </resource>
+          <directory>${basedir}/../tool/src/bundle</directory>
+          <includes>
+            <include>**/*.properties</include>
+          </includes>
+         </resource>
       </resources>
 
       <!-- unit testing -->

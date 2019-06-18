@@ -62,7 +62,11 @@
     <system>jira</system>
     <url>http://jira.sakaiproject.org/browse/QNA</url>
   </issueManagement>
-
+  <scm>
+    <connection>scm:git:git://github.com/cilt-uct/qna.git</connection>
+    <developerConnection>scm:git:git@github.com:https://github.com/cilt-uct/qna.git</developerConnection>
+    <url>scm:git:https://github.com/cilt-uct/qna.git</url>
+  </scm>
     
   <pluginRepositories>
     <pluginRepository>

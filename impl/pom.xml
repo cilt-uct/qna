@@ -143,19 +143,14 @@
          <artifactId>slf4j-log4j12</artifactId>
     </dependency>
       <dependency>
-         <groupId>easymock</groupId>
+         <groupId>org.easymock</groupId>
          <artifactId>easymock</artifactId>
-         <version>1.2_Java1.3</version>
+         <version>4.0.2</version>
          <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>commons-validator</groupId>
         <artifactId>commons-validator</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <scope>test</scope>
       </dependency>
     <dependency>
       <groupId>oro</groupId>

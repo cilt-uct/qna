@@ -23,8 +23,9 @@ import org.sakaiproject.qna.logic.ExternalLogic;
 import org.sakaiproject.qna.model.QnaAnswer;
 import org.sakaiproject.qna.utils.QNAUtils;
 import org.sakaiproject.qna.utils.TextUtil;
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.api.FormattedText;
 
+import lombok.Setter;
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
@@ -36,6 +37,7 @@ public class AnswerLocator implements EntityBeanLocator {
 	
 	private ExternalLogic externalLogic;
 	private AnswerLogic answerLogic;
+	@Setter private FormattedText formattedText;
 	
 	private TargettedMessageList messages;
 	
@@ -89,7 +91,7 @@ public class AnswerLocator implements EntityBeanLocator {
         		return;
         	} else {
         		//the answer needs to be escaped
-        		String escapedAnswer = FormattedText.processFormattedText(answer.getAnswerText(), new StringBuilder());
+        		String escapedAnswer = formattedText.processFormattedText(answer.getAnswerText(), new StringBuilder());
         		//now clean up
         		escapedAnswer = QNAUtils.cleanupHtmlPtags(escapedAnswer);
         		answer.setAnswerText(escapedAnswer);

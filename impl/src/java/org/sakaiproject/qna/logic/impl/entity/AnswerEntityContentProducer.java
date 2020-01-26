@@ -34,7 +34,7 @@ import org.sakaiproject.search.api.EntityContentProducer;
 import org.sakaiproject.search.api.SearchIndexBuilder;
 import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.search.model.SearchBuilderItem;
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.api.FormattedText;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +78,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 	@Setter private SearchIndexBuilder searchIndexBuilder;
 	@Setter private String toolName;
 	@Setter private SecurityService securityService;
+	@Setter private FormattedText formattedText;
 
 	
 	/***
@@ -146,7 +147,7 @@ public class AnswerEntityContentProducer implements EntityContentProducer {
 		}
 		QnaAnswer a = answerLogic.getAnswerById(lid);
 		String ret = null;
-		ret = FormattedText.convertFormattedTextToPlaintext(a.getAnswerText());
+		ret = formattedText.convertFormattedTextToPlaintext(a.getAnswerText());
 		return ret;
 	}
 

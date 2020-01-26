@@ -30,8 +30,9 @@ import org.sakaiproject.qna.utils.QNAUtils;
 import org.sakaiproject.qna.utils.TextUtil;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.api.FormattedText;
 
+import lombok.Setter;
 import uk.org.ponder.beanutil.entity.EntityBeanLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
@@ -53,6 +54,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	private TargettedMessageList messages;
 
 	private SessionManager sessionManager;
+	@Setter private FormattedText formattedText;
 	
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
@@ -125,7 +127,7 @@ public class QuestionLocator implements EntityBeanLocator  {
 	public void saveAll() {
 		for (QnaQuestion question : delivered.values()) {
 			//question text needs to be escaped
-			String escapedQ = FormattedText.processFormattedText(question.getQuestionText(), new StringBuilder());
+			String escapedQ = formattedText.processFormattedText(question.getQuestionText(), new StringBuilder());
 			escapedQ = QNAUtils.cleanupHtmlPtags(escapedQ);
 			question.setQuestionText(escapedQ);
 			questionLogic.saveQuestion(question, externalLogic.getCurrentLocationId());

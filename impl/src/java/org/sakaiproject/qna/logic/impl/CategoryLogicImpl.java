@@ -15,9 +15,12 @@
  */
 package org.sakaiproject.qna.logic.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.sakaiproject.genericdao.api.search.Order;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -42,17 +45,13 @@ public class CategoryLogicImpl implements CategoryLogic {
 	@Setter private QnaBundleLogic qnaBundleLogic;
 
 	
-	/**
-	 * @see CategoryLogic#getCategoryById(String)
-	 */
+	@Override
 	public QnaCategory getCategoryById(String categoryId) {
 		log.debug("CategoryLogicImpl::getCategoryById");
 		return (QnaCategory) dao.findById(QnaCategory.class, categoryId);
 	}
 	
-	/**
-	 * @see CategoryLogic#removeCategory(String, String) 
-	 */
+	@Override
 	public void removeCategory(String categoryId, String locationId) {
 		log.debug("CategoryLogicImpl::removeCategory");
 		String userId = externalLogic.getCurrentUserId();
@@ -65,9 +64,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-	/**
-	 * @see CategoryLogic#saveCategory(QnaCategory, String) 
-	 */
+	@Override
 	public void saveCategory(QnaCategory category, String locationId) {
 		log.debug("CategoryLogicImpl::saveCategory");
 		String userId = externalLogic.getCurrentUserId();
@@ -91,9 +88,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-	/**
-	 * @see CategoryLogic#setNewCategoryDefaults(QnaCategory, String, String) 
-	 */
+	@Override
 	public void setNewCategoryDefaults(QnaCategory qnaCategory,String locationId, String ownerId) {
 		if (qnaCategory.getId() == null) {
 			Date now = new Date();
@@ -109,9 +104,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-	/**
-	 * @see CategoryLogic#existsCategory(String) 
-	 */
+	@Override
 	public boolean existsCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::existsCategory");
 		if (categoryId == null || "".equals(categoryId)) {
@@ -125,9 +118,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		}
 	}
 
-	/**
-	 * @see CategoryLogic#createDefaultCategory(String, String, String) 
-	 */
+	@Override
 	public QnaCategory createDefaultCategory(String locationId, String ownerId, String categoryText) {
 		log.debug("CategoryLogicImpl::createDefaultCategory");
 		QnaCategory qnaCategory = new QnaCategory();
@@ -142,25 +133,43 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return qnaCategory;
 	}
 
-	/**
-	 * @see CategoryLogic#getQuestionsForCategory(String) 
-	 */
+	@Override
 	public List<QnaQuestion> getQuestionsForCategory(String categoryId) {
 		log.debug("CategoryLogicImpl::getQuestionsForCategory");
 		return getCategoryById(categoryId).getQuestions();
 	}
 
-	/**
-	 * @see CategoryLogic#getCategoriesForLocation(String) 
-	 */
+	@Override
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
 		log.debug("CategoryLogicImpl::getCategoriesForLocation");
-		List<QnaCategory> toReturn = dao.findBySearch(QnaCategory.class, new Search( new String[] {"location"}, new Object[] {locationId}, new int[] { Restriction.EQUALS}));
+		Search search = new Search( new String[] {"location"}, new Object[] {locationId}, new int[] { Restriction.EQUALS});
+		//search.addOrder(new Order("categoryText"));
+		List<QnaCategory> toReturn = dao.findBySearch(QnaCategory.class, search);
 		
 		if (toReturn.size() == 0) { // If location has no categories yet create default "general category"
 			toReturn.add(createGeneralCategory(locationId));
 		}
-		return toReturn;
+		return getCategoryOrder(toReturn);
+	}
+	
+	private List<QnaCategory> getCategoryOrder(List<QnaCategory> list) {
+		if (list == null) {
+			return null;
+		}
+		List<QnaCategory> order = new ArrayList<>();
+		// ownerId - General questions
+		for (int i = 0; i < list.size(); i++) {
+			QnaCategory c = list.get(i);
+			if ("default".contentEquals(c.getOwnerId())) {
+				order.add(c);
+				list.remove(i);
+			}
+		}
+		list.sort(Comparator.comparing(QnaCategory::getCategoryText, String.CASE_INSENSITIVE_ORDER));
+		log.info("list: {}", list);
+		
+		order.addAll(list);
+		return order;
 	}
 	
 	/**
@@ -176,6 +185,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 		return category;
 	}
 	
+	@Override
 	public QnaCategory getDefaultCategory(String locationId) {
 		return getCategoriesForLocation(locationId).get(0);
 	}

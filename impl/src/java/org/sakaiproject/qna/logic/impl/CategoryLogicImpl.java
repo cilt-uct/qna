@@ -20,7 +20,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.sakaiproject.genericdao.api.search.Order;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.logic.CategoryLogic;
@@ -143,7 +142,6 @@ public class CategoryLogicImpl implements CategoryLogic {
 	public List<QnaCategory> getCategoriesForLocation(String locationId) {
 		log.debug("CategoryLogicImpl::getCategoriesForLocation");
 		Search search = new Search( new String[] {"location"}, new Object[] {locationId}, new int[] { Restriction.EQUALS});
-		//search.addOrder(new Order("categoryText"));
 		List<QnaCategory> toReturn = dao.findBySearch(QnaCategory.class, search);
 		
 		if (toReturn.size() == 0) { // If location has no categories yet create default "general category"

@@ -67,6 +67,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		}
 	}
 	
+	@Override
 	public String[] myToolIds() {
 		String[] toolIds = { ExternalLogic.QNA_TOOL_ID };
 		return toolIds;
@@ -75,8 +76,8 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	/**
 	 * Transfers entities from location to location
 	 */
-	public void transferCopyEntities(String fromContext, String toContext,
-			List ids) {
+	private void transferCopyEntities(String fromContext, String toContext,
+			List<String> ids) {
 		try {
 			String fromLocation = siteService.getSite(fromContext).getReference();
 			String toLocation = siteService.getSite(toContext).getReference();
@@ -168,73 +169,78 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 		}
 	}
 
+	@Override
 	public String getLabel() {
 		return "qna";
 	}
 
+	@Override
 	public boolean willArchiveMerge() {
 		return false;
 	}
-
 	
-	// NOT IMPLEMENTED
-	
-	public String getEntityPrefix() {
-		return null;
-	}
-	
+	@Override
 	public String merge(String siteId, Element root, String archivePath,
-			String fromSiteId, Map attachmentNames, Map userIdTrans,
-			Set userListAllowImport) {
+			String fromSiteId, Map<String,String> attachmentNames, Map<String,String> userIdTrans,
+			Set<String> userListAllowImport) {
 		return null;
 	}
 
+	@Override
 	public boolean parseEntityReference(String reference, Reference ref) {
 		return false;
 	}
 	
-	public String archive(String siteId, Document doc, Stack stack,
-			String archivePath, List attachments) {
+	@Override
+	public String archive(String siteId, Document doc, Stack<Element> stack,
+			String archivePath, List<Reference> attachments) {
 		return null;
 	}
 
+	@Override
 	public Entity getEntity(Reference ref) {
 		return null;
 	}
 
+	@Override
 	public Collection<String> getEntityAuthzGroups(Reference ref, String userId) {
 		return null;
 	}
 
+	@Override
 	public String getEntityDescription(Reference ref) {
 		return null;
 	}
 
+	@Override
 	public ResourceProperties getEntityResourceProperties(Reference ref) {
 		return null;
 	}
 
+	@Override
 	public String getEntityUrl(Reference ref) {
 		return null;
 	}
 
+	@Override
 	public HttpAccess getHttpAccess() {
 		return null;
 	}
 
-	public void transferCopyEntities(String fromContext, String toContext,
-			List ids, boolean cleanup) {
-		if (cleanup) {
+	@Override
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids,
+			List<String> transferOptions) {
+		
 			// Delete all old categories from toContext
 			String toLocation = "/site/" + toContext;
 			List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(toLocation);
 			for (QnaCategory category : categories) {
 				categoryLogic.removeCategory(category.getId(), toLocation);
 			}
-		}
 		
 		// Copy everything from fromContext to toContext
-		transferCopyEntities(fromContext, toContext, ids);		
+		transferCopyEntities(fromContext, toContext, ids);
+		return null;
 	}
 
 }

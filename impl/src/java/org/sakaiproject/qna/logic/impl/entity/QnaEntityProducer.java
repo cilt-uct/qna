@@ -229,18 +229,26 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 
 	@Override
 	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids,
-			List<String> transferOptions) {
+			List<String> transferOptions, boolean cleanup) {
 		
+		if (cleanup) {
 			// Delete all old categories from toContext
 			String toLocation = "/site/" + toContext;
 			List<QnaCategory> categories = categoryLogic.getCategoriesForLocation(toLocation);
 			for (QnaCategory category : categories) {
 				categoryLogic.removeCategory(category.getId(), toLocation);
 			}
+		}
 		
 		// Copy everything from fromContext to toContext
 		transferCopyEntities(fromContext, toContext, ids);
 		return null;
+	}
+
+	@Override
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids,
+			List<String> transferOptions) {
+		return transferCopyEntities(fromContext, toContext, ids, transferOptions, false);
 	}
 
 }

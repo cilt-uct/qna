@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -249,6 +250,11 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
         @Override
         public List<Pattern> getPatternList(String name, List<String> dflt) {
             // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Set<String> getCommaSeparatedListAsSet(String key) {
             return null;
         }
 }

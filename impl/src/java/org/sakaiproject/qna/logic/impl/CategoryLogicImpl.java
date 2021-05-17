@@ -20,6 +20,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.sakaiproject.genericdao.api.search.Order;
 import org.sakaiproject.genericdao.api.search.Restriction;
 import org.sakaiproject.genericdao.api.search.Search;
 import org.sakaiproject.qna.logic.CategoryLogic;

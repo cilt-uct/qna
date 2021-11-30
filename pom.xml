@@ -9,11 +9,11 @@
   </organization>
   <inceptionYear>2007</inceptionYear>
   <packaging>pom</packaging>
-  
+
   <parent>
     <groupId>org.sakaiproject</groupId>
     <artifactId>master</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>21-SNAPSHOT</version>
     <relativePath>../master/pom.xml</relativePath>
   </parent>
   <modules>
@@ -67,7 +67,7 @@
     <developerConnection>scm:git:git@github.com:https://github.com/cilt-uct/qna.git</developerConnection>
     <url>scm:git:https://github.com/cilt-uct/qna.git</url>
   </scm>
-    
+
   <pluginRepositories>
     <pluginRepository>
       <id>mc-release</id>

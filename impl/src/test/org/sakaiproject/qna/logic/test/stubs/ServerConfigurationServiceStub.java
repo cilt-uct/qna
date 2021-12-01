@@ -23,12 +23,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.sakaiproject.component.api.ServerConfigurationService;
 
 public class ServerConfigurationServiceStub implements ServerConfigurationService {
-	
+
 	Map<String,Object> properties = new HashMap<String,Object>();
-	
+
 	public String getAccessPath() {
 		// TODO Auto-generated method stub
 		return null;
@@ -43,7 +44,7 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		if (properties.get(name) != null) {
 			return (Boolean)properties.get(name);
 		}
-		
+
 		return dflt;
 	}
 
@@ -125,6 +126,11 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		return null;
 	}
 
+        public long getLong(String name, long dflt)
+        {
+            return NumberUtils.toLong(getString(name), dflt);
+        }
+
 	public List<String> getToolCategories(String category) {
 		// TODO Auto-generated method stub
 		return null;
@@ -159,7 +165,7 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void setProperty(String key,Object value) {
 		properties.put(key,value);
 	}
@@ -190,7 +196,7 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
 	@Override
 	public void registerListener(ConfigurationListener configurationListener) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

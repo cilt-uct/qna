@@ -148,6 +148,7 @@
     <bean id="org.sakaiproject.qna.logic.entity.QnaEntityProducer" 
     	class="org.sakaiproject.qna.logic.impl.entity.QnaEntityProducer"
       	init-method="init">
+      <property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService" />
       <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager"/>
       <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
       <property name="dao"  ref="org.sakaiproject.qna.dao.QnaDao" />

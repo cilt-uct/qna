@@ -18,6 +18,10 @@ package org.sakaiproject.qna.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.sakaiproject.qna.model.constants.QnaConstants;
 
@@ -365,4 +369,62 @@ public class QnaOptions {
 		this.smsNotification = smsNotification;
 	}
 	
+   /**
+    * Serialize the resource into XML, adding an element to the doc under the top of the stack element.
+    *
+    * @param doc
+    *        The DOM doc to contain the XML (or null for a string return).
+    * @param stack
+    *        The DOM elements, the top of which is the containing element of the new "resource" element.
+    * @return The newly added element.
+    */
+   @SuppressWarnings("unchecked")
+   public Element toXml(Document doc, Stack stack)
+   {
+      Element optionsElement = doc.createElement("options");
+
+      if (stack.isEmpty())
+      {
+         doc.appendChild(optionsElement);
+      }
+      else
+      {
+         ((Element) stack.peek()).appendChild(optionsElement);
+      }
+
+      stack.push(optionsElement);
+
+      optionsElement.setAttribute("ownerId", getOwnerId());
+
+      if (getDateCreated() != null) {
+        optionsElement.setAttribute("created", getDateCreated().toString());
+      }
+      if (getDateLastModified() != null) {
+        optionsElement.setAttribute("modified", getDateLastModified().toString());
+      }
+      if (getAnonymousAllowed() != null) {
+        optionsElement.setAttribute("anonymous", getAnonymousAllowed().toString());
+      }
+      if (isModerated() != null) {
+        optionsElement.setAttribute("moderated", isModerated().toString());
+      }
+      if (getEmailNotification() != null) {
+	optionsElement.setAttribute("email-notification", getEmailNotification().toString());
+      }
+      if (getEmailNotificationType() != null) {
+	optionsElement.setAttribute("email-notification-type", getEmailNotificationType());
+      }
+      if (!"".equals(getCustomEmailDisplay())) {
+         optionsElement.setAttribute("email-notification-list", getCustomEmailDisplay());
+      }
+      if (getDefaultStudentView() != null) {
+        optionsElement.setAttribute("default-view", getDefaultStudentView());
+      }
+
+      stack.pop();
+
+      return optionsElement;
+
+   } // toXml
+
 }

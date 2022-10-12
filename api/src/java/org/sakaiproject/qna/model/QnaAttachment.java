@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 package org.sakaiproject.qna.model;
+import java.util.Stack;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *	QnaAttachment entity 
@@ -53,4 +57,39 @@ public class QnaAttachment {
 	public void setAttachmentId(String attachmentId) {
 		this.attachmentId = attachmentId;
 	}
+
+   /**
+    * Serialize the resource into XML, adding an element to the doc under the top of the stack element.
+    *
+    * @param doc
+    *        The DOM doc to contain the XML (or null for a string return).
+    * @param stack
+    *        The DOM elements, the top of which is the containing element of the new "resource" element.
+    * @return The newly added element.
+    */
+   @SuppressWarnings("unchecked")
+   public Element toXml(Document doc, Stack stack)
+   {
+      Element attachmentElement = doc.createElement("attachment");
+
+      if (stack.isEmpty())
+      {
+         doc.appendChild(attachmentElement);
+      }
+      else
+      {
+         ((Element) stack.peek()).appendChild(attachmentElement);
+      }
+
+      stack.push(attachmentElement);
+
+      attachmentElement.setAttribute("id", getId());
+      attachmentElement.setAttribute("attachmentId", getAttachmentId());
+
+      stack.pop();
+
+      return attachmentElement;
+
+   } // toXml
+
 }

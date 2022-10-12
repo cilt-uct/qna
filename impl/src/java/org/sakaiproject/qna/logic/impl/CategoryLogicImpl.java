@@ -165,7 +165,7 @@ public class CategoryLogicImpl implements CategoryLogic {
 			}
 		}
 		list.sort(Comparator.comparing(QnaCategory::getCategoryText, String.CASE_INSENSITIVE_ORDER));
-		log.info("list: {}", list);
+		log.debug("list: {}", list);
 		
 		order.addAll(list);
 		return order;

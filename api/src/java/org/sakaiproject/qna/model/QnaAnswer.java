@@ -16,6 +16,11 @@
 package org.sakaiproject.qna.model;
 
 import java.util.Date;
+import java.util.Stack;
+
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * This is a the QnaAnswer table entity
@@ -253,5 +258,54 @@ public class QnaAnswer {
 			return false;
 		return true;
 	}
+
+   /**
+    * Serialize the resource into XML, adding an element to the doc under the top of the stack element.
+    *
+    * @param doc
+    *        The DOM doc to contain the XML (or null for a string return).
+    * @param stack
+    *        The DOM elements, the top of which is the containing element of the new "resource" element.
+    * @return The newly added element.
+    */
+   @SuppressWarnings("unchecked")
+   public Element toXml(Document doc, Stack stack)
+   {
+      Element answerElement = doc.createElement("answer");
+
+      if (stack.isEmpty())
+      {
+         doc.appendChild(answerElement);
+      }
+      else
+      {
+         ((Element) stack.peek()).appendChild(answerElement);
+      }
+
+      stack.push(answerElement);
+
+      answerElement.setAttribute("id", getId().toString());
+      answerElement.setAttribute("created", getDateCreated().toString());
+      if (getOwnerId() != null) {
+        answerElement.setAttribute("owner", getOwnerId());
+      }
+      if (getLastModifierId() != null) {
+        answerElement.setAttribute("last-modifier", getOwnerId());
+      }
+      if (getDateLastModified() != null) {
+        answerElement.setAttribute("modified", getDateLastModified().toString());
+      }
+      answerElement.setAttribute("approved", isApproved().toString());
+      answerElement.setAttribute("private-reply", isPrivateReply().toString());
+      answerElement.setAttribute("anonymous", isAnonymous().toString());
+
+      CDATASection cdata = doc.createCDATASection(answerText);
+      answerElement.appendChild(cdata);
+
+      stack.pop();
+
+      return answerElement;
+
+   } // toXml
 
 }

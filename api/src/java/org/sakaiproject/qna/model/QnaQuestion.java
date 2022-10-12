@@ -18,6 +18,11 @@ package org.sakaiproject.qna.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
+
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * This is a the options table entity
@@ -414,5 +419,55 @@ public class QnaQuestion {
 		this.hidden = hidden;
 	}
 	
+   /**
+    * Serialize the resource into XML, adding an element to the doc under the top of the stack element.
+    *
+    * @param doc
+    *        The DOM doc to contain the XML (or null for a string return).
+    * @param stack
+    *        The DOM elements, the top of which is the containing element of the new "resource" element.
+    * @return The newly added element.
+    */
+   @SuppressWarnings("unchecked")
+   public Element toXml(Document doc, Stack stack)
+   {
+      Element questionElement = doc.createElement("question");
+
+      if (stack.isEmpty())
+      {
+         doc.appendChild(questionElement);
+      }
+      else
+      {
+         ((Element) stack.peek()).appendChild(questionElement);
+      }
+
+      stack.push(questionElement);
+
+      questionElement.setAttribute("id", getId().toString());
+      if (getOwnerId() != null) {
+        questionElement.setAttribute("owner", getOwnerId());
+      }
+      if (getLastModifierId() != null) {
+        questionElement.setAttribute("last-modifier", getOwnerId());
+      }
+      questionElement.setAttribute("created", getDateCreated().toString());
+      questionElement.setAttribute("modified", getDateLastModified().toString());
+      questionElement.setAttribute("sortorder", getSortOrder().toString());
+      questionElement.setAttribute("anonymous", isAnonymous().toString());
+      questionElement.setAttribute("hidden", getHidden().toString());
+      questionElement.setAttribute("published", isPublished().toString());
+      questionElement.setAttribute("views", getViews().toString());
+
+      CDATASection cdata = doc.createCDATASection(questionText);
+      questionElement.appendChild(cdata);
+
+      stack.pop();
+
+      return questionElement;
+
+   } // toXml
+
+
 	
 }

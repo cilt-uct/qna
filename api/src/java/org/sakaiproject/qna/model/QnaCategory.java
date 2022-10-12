@@ -18,6 +18,11 @@ package org.sakaiproject.qna.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 /**
  * This is a the options table entity
@@ -245,5 +250,44 @@ public class QnaCategory {
 	public void setHidden(Boolean hidden) {
 		this.hidden = hidden;
 	}
+
+   /**
+    * Serialize the resource into XML, adding an element to the doc under the top of the stack element.
+    *
+    * @param doc
+    *        The DOM doc to contain the XML (or null for a string return).
+    * @param stack
+    *        The DOM elements, the top of which is the containing element of the new "resource" element.
+    * @return The newly added element.
+    */
+   @SuppressWarnings("unchecked")
+   public Element toXml(Document doc, Stack stack)
+   {
+      Element categoryElement = doc.createElement("category");
+
+      if (stack.isEmpty())
+      {
+         doc.appendChild(categoryElement);
+      }
+      else
+      {
+         ((Element) stack.peek()).appendChild(categoryElement);
+      }
+
+      stack.push(categoryElement);
+
+      categoryElement.setAttribute("id", getId());
+      categoryElement.setAttribute("name", getCategoryText());
+      categoryElement.setAttribute("ownerId", getOwnerId());
+      categoryElement.setAttribute("created", getDateCreated().toString());
+      categoryElement.setAttribute("modified", getDateLastModified().toString());
+      categoryElement.setAttribute("sortorder", getSortOrder().toString());
+      categoryElement.setAttribute("hidden", getHidden().toString());
+
+      stack.pop();
+
+      return categoryElement;
+
+   } // toXml
 
 }

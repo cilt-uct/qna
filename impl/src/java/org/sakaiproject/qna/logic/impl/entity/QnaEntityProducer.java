@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.EntityProducer;
@@ -51,13 +52,17 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 {
 	
 	public static final String REFERENCE_ROOT = Entity.SEPARATOR + "qna";
-	
+
+	private static final String ARCHIVE_ELEMENT = "org.sakaiproject.qna";
+	private static final String VERSION_ATTR = "version";
+	private static final String ARCHIVE_VERSION = "21";
+
+	@Setter private ContentHostingService contentHostingService;
 	@Setter private EntityManager entityManager;
 	@Setter private SiteService siteService;
 	@Setter private QnaDao dao;
 	@Setter private CategoryLogic categoryLogic;
 	@Setter private OptionsLogic optionsLogic;
-
 	
 	public void init() {
 		try {
@@ -176,7 +181,7 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 
 	@Override
 	public boolean willArchiveMerge() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -194,7 +199,78 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 	@Override
 	public String archive(String siteId, Document doc, Stack<Element> stack,
 			String archivePath, List<Reference> attachments) {
-		return null;
+
+		String archiveLog = String.format("archiving Q&A for site %s", siteId);
+		log.info(archiveLog);
+
+		String location = siteService.siteReference(siteId);
+
+		StringBuilder results = new StringBuilder();
+		results.append(archiveLog).append("\n");
+
+		int categoriesCount = 0;
+		int questionsCount = 0;
+		int attachmentsCount = 0;
+		int answersCount = 0;
+
+		// start with an element with our very own (service) name
+		Element element = doc.createElement(ARCHIVE_ELEMENT);
+		element.setAttribute(VERSION_ATTR, ARCHIVE_VERSION);
+		element.setAttribute("siteid", siteId);
+		((Element) stack.peek()).appendChild(element);
+		stack.push(element);
+
+		// Categories
+		for (QnaCategory category : categoryLogic.getCategoriesForLocation(location)) {
+			categoriesCount++;
+
+			Element categoryElement = category.toXml(doc, stack);
+
+			// Questions
+			for (QnaQuestion question : category.getQuestions()) {
+				questionsCount++;
+
+				Element questionElement = question.toXml(doc, stack);
+
+				// Question attachments
+				for (QnaAttachment attachment : question.getAttachments()) {
+					attachmentsCount++;
+
+					Element attachmentElement = attachment.toXml(doc, stack);
+					questionElement.appendChild(attachmentElement);
+
+		                        // Append to the attachment reference list for archive
+					Reference ref = entityManager.newReference(contentHostingService.getReference(attachment.getAttachmentId()));
+					attachments.add(ref);
+				}
+
+				// Answers
+				for (QnaAnswer answer : question.getAnswers()) {
+					answersCount++;
+
+					Element answerElement = answer.toXml(doc, stack);
+					questionElement.appendChild(answerElement);
+				}
+
+				categoryElement.appendChild(questionElement);
+			}
+
+			element.appendChild(categoryElement);
+		}
+
+		// Options
+		QnaOptions options = optionsLogic.getOptionsForLocation(location);
+		Element optionsElement = options.toXml(doc, stack);
+		element.appendChild(optionsElement);
+
+		stack.pop();
+
+		String archiveCount = String.format("archived categories: %d, questions: %d, attachments: %d, answers: %d",
+				categoriesCount, questionsCount, attachmentsCount, answersCount);
+		log.info(archiveCount);
+		results.append(archiveCount).append("\n");
+
+		return results.toString();
 	}
 
 	@Override
@@ -250,5 +326,4 @@ public class QnaEntityProducer implements EntityProducer, EntityTransferrer
 			List<String> transferOptions) {
 		return transferCopyEntities(fromContext, toContext, ids, transferOptions, false);
 	}
-
 }

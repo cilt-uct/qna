@@ -45,7 +45,7 @@ public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
 
     /**
      * Get new questions for location
-     * 
+     *
      * @param locationId unique id of location
      * @return {@link List} of new {@link QnaQuestion}
      */
@@ -58,17 +58,17 @@ public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
         Query query = session.createQuery(hql);
     	return query.list();
     }
-    
+
     /**
      * Search answers
-     * 
+     *
      * @param search search query
      * @param location unique id of location
      * @return {@link List} of {@link QnaAnswer}
      */
     @SuppressWarnings("unchecked")
     public List<QnaAnswer> getSearchAnswers(String search, String location) {
-        
+
         Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
     	Criteria criteria = session.createCriteria(QnaAnswer.class);
     	criteria.add(Restrictions.ilike("answerText", search));
@@ -78,6 +78,6 @@ public class QnaDaoImpl extends HibernateGeneralGenericDao implements QnaDao {
 
     	return criteria.list();
     }
-    
-      
+
+
 }

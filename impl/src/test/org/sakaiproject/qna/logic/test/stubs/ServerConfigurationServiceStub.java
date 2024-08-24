@@ -263,4 +263,19 @@ public class ServerConfigurationServiceStub implements ServerConfigurationServic
         public Set<String> getCommaSeparatedListAsSet(String key) {
             return null;
         }
+
+	@Override
+	public String getSmtpFrom() {
+		return null;
+	}
+
+	@Override
+	public String getSmtpPort() {
+		return null;
+	}
+
+	@Override
+	public String getSmtpServer() {
+		return null;
+	}
 }
